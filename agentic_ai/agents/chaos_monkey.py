@@ -64,6 +64,7 @@ class TargetType(Enum):
     CACHE = "cache"
     QUEUE = "queue"
     API = "api"
+    SERVER = "server"
 
 
 class SeverityLevel(Enum):
@@ -502,7 +503,7 @@ class ChaosMonkeyAgent:
 
         # Abort all running runs
         for run in self.runs.values():
-            if run.experiment_id == experiment_id and run.status == "running":
+            if run.experiment_id == experiment_id and run.status in ("running", "pending"):
                 run.status = "aborted"
                 run.completed_at = datetime.utcnow()
 

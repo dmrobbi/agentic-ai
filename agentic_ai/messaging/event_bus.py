@@ -6,6 +6,7 @@ Provides event streaming with support for event sourcing,
 event handlers, and event filtering.
 """
 
+from datetime import timedelta
 import json
 import logging
 from dataclasses import dataclass, field, asdict
@@ -384,4 +385,3 @@ def on_event(event_type: str):
 
 
 # Import timedelta for replay_events
-from datetime import timedelta

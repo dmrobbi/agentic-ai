@@ -147,6 +147,30 @@ class SimpleStateStore:
             del self._data[key]
 
 
+@dataclass
+class SecurityAssessment:
+    """Security assessment record."""
+    assessment_id: str
+    title: str
+    assessment_type: str
+    scope: str
+    assessor: str
+    status: str = "planned"
+    controls: list = field(default_factory=list)
+    findings: list = field(default_factory=list)
+
+
+@dataclass
+class SecurityControl:
+    """Security control within an assessment."""
+    control_id: str
+    assessment_id: str
+    name: str
+    description: str
+    status: str = "implemented"
+    effectiveness: str = "effective"
+
+
 class SecurityAgent:
     """
     Security Agent for vulnerability scanning, incident response,
@@ -882,6 +906,36 @@ class SecurityAgent:
     # Utilities
     # ============================================
 
+    def create_assessment(self, title: str = "", assessment_type: str = "security",
+                         scope: str = "", assessor: str = "", **kwargs) -> SecurityAssessment:
+        """Create a security assessment."""
+        assessment_id = self._generate_id("assess")
+        assessment = SecurityAssessment(
+            assessment_id=assessment_id,
+            title=title,
+            assessment_type=assessment_type,
+            scope=scope,
+            assessor=assessor,
+        )
+        self._assessments = getattr(self, '_assessments', {})
+        self._assessments[assessment_id] = assessment
+        return assessment
+
+    def add_control(self, assessment_id: str = "", name: str = "",
+                    description: str = "", **kwargs) -> SecurityControl:
+        """Add a control to a security assessment."""
+        control_id = self._generate_id("ctrl")
+        control = SecurityControl(
+            control_id=control_id,
+            assessment_id=assessment_id,
+            name=name,
+            description=description,
+        )
+        self._assessments = getattr(self, '_assessments', {})
+        if assessment_id in self._assessments:
+            self._assessments[assessment_id].controls.append(control)
+        return control
+
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
         timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
@@ -928,6 +982,8 @@ def get_capabilities() -> Dict[str, Any]:
             'log_access',
             'detect_anomalies',
             'generate_security_report',
+        'create_assessment',
+        'add_control',
         ],
         'threat_types': [t.value for t in ThreatType],
         'severity_levels': [s.value for s in SeverityLevel],

@@ -42,6 +42,11 @@ class IncidentSeverity(Enum):
     SEV2 = "sev2"  # High - Confirmed compromise
     SEV3 = "sev3"  # Medium - Suspicious activity
     SEV4 = "sev4"  # Low - Policy violation
+    # Aliases for compatibility
+    LOW = "sev4"
+    MEDIUM = "sev3"
+    HIGH = "sev2"
+    CRITICAL = "sev1"
 
 
 class IncidentStatus(Enum):
@@ -93,7 +98,8 @@ class Incident:
     title: str
     severity: IncidentSeverity
     status: IncidentStatus
-    category: str  # malware, phishing, data_breach, unauthorized_access, etc.
+    description: str = ""  # Incident description
+    category: str = "security"  # malware, phishing, data_breach, unauthorized_access, etc.
     threat_actor: Optional[ThreatActor] = None
     detected_at: datetime = field(default_factory=datetime.utcnow)
     contained_at: Optional[datetime] = None
@@ -224,12 +230,12 @@ class SecurityOperationsAgent:
 
     def create_alert(
         self,
-        title: str,
-        description: str,
-        severity: AlertSeverity,
-        source: str,
-        rule_name: str,
-        affected_asset: str,
+        title: str = "",
+        description: str = "",
+        severity: AlertSeverity = AlertSeverity.MEDIUM,
+        source: str = "",
+        rule_name: str = "",
+        affected_asset: str = "",
         source_ip: Optional[str] = None,
         dest_ip: Optional[str] = None,
         user: Optional[str] = None,
@@ -313,19 +319,36 @@ class SecurityOperationsAgent:
     # Incident Management
     # ============================================
 
+    def report_security_incident(self, title: str, description: str, severity: str, incident_type: str = "security", affected_systems: Optional[List[str]] = None, source_ip: str = "", **kwargs) -> "Incident":
+        """Alias for create_incident with test-compatible signature."""
+        # Convert string severity to IncidentSeverity if needed
+        sev = severity
+        if isinstance(severity, str):
+            sev_map = {"low": IncidentSeverity.SEV4, "medium": IncidentSeverity.SEV3, "high": IncidentSeverity.SEV2, "critical": IncidentSeverity.SEV1}
+            sev = sev_map.get(severity.lower(), IncidentSeverity.MEDIUM)
+        return self.create_incident(
+            title=title,
+            description=description,
+            severity=sev,
+            category=incident_type,
+            affected_systems=affected_systems,
+        )
     def create_incident(
         self,
         title: str,
-        severity: IncidentSeverity,
-        category: str,
+        description: str = "",
+        severity = IncidentSeverity.SEV3,
+        category: str = "security",
         threat_actor: Optional[ThreatActor] = None,
         affected_systems: Optional[List[str]] = None,
         affected_users: Optional[List[str]] = None,
+        incident_type: str = "security",
     ) -> Incident:
         """Create a security incident."""
         incident = Incident(
             incident_id=self._generate_id("inc"),
             title=title,
+            description=description,
             severity=severity,
             status=IncidentStatus.DETECTED,
             category=category,
@@ -338,6 +361,20 @@ class SecurityOperationsAgent:
         logger.info(f"Created incident: {incident.title} ({incident.severity.value})")
         return incident
 
+    def report_security_incident(self, title: str, description: str, severity: str, incident_type: str = "security", affected_systems: Optional[List[str]] = None, source_ip: str = "", **kwargs) -> "Incident":
+        """Alias for create_incident with test-compatible signature."""
+        # Convert string severity to IncidentSeverity if needed
+        sev = severity
+        if isinstance(severity, str):
+            sev_map = {"low": IncidentSeverity.SEV4, "medium": IncidentSeverity.SEV3, "high": IncidentSeverity.SEV2, "critical": IncidentSeverity.SEV1}
+            sev = sev_map.get(severity.lower(), IncidentSeverity.MEDIUM)
+        return self.create_incident(
+            title=title,
+            description=description,
+            severity=sev,
+            category=incident_type,
+            affected_systems=affected_systems,
+        )
     def update_incident_status(
         self,
         incident_id: str,

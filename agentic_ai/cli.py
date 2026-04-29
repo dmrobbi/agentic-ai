@@ -364,7 +364,8 @@ def chaos_status():
     console.print(run_table)
 
     # Resiliency
-    console.print(f"\n[bold]Average Resiliency Score:[/bold] [green]{dashboard['resiliency']['average_score']:.1f}/100[/green]")
+    console.print(
+        f"\n[bold]Average Resiliency Score:[/bold] [green]{dashboard['resiliency']['average_score']:.1f}/100[/green]")
 
 
 # ============================================================================

@@ -6,6 +6,7 @@ WebSocket-based real-time updates and operational transformation
 for collaborative editing.
 """
 
+from datetime import timedelta
 from typing import Dict, Any, List, Optional, Set, Callable
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -355,8 +356,8 @@ class RealTimeCollaboration:
         return users
 
     def update_cursor(self, user_id: str, document_id: str,
-                     position: int, selection_start: Optional[int] = None,
-                     selection_end: Optional[int] = None):
+                      position: int, selection_start: Optional[int] = None,
+                      selection_end: Optional[int] = None):
         """Update a user's cursor position."""
         with self._lock:
             if user_id not in self._users:
@@ -420,7 +421,7 @@ class RealTimeCollaboration:
         return result
 
     def subscribe(self, document_id: str, subscriber_id: str,
-                 callback: Callable) -> bool:
+                  callback: Callable) -> bool:
         """Subscribe to document events."""
         channel = self._get_or_create_channel(document_id)
         return channel.subscribe(subscriber_id, callback)
@@ -483,4 +484,3 @@ class RealTimeCollaboration:
 
 
 # Import timedelta
-from datetime import timedelta

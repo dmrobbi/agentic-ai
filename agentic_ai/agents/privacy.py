@@ -12,6 +12,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.agents.data_governance import DataClassification
 
 
 logger = logging.getLogger(__name__)
@@ -34,6 +35,7 @@ class DataSubjectRight(Enum):
     ACCESS = "access"  # Right to access
     RECTIFICATION = "rectification"  # Right to correct
     ERASURE = "erasure"  # Right to delete (RTBF)
+    DELETION = "erasure"  # Alias for ERASURE
     PORTABILITY = "portability"  # Right to data portability
     RESTRICTION = "restriction"  # Right to restrict processing
     OBJECTION = "objection"  # Right to object
@@ -173,6 +175,9 @@ class DataBreach:
 
 
 class PrivacyAgent:
+    ProcessingPurpose = ProcessingPurpose
+    DataSubjectRight = DataSubjectRight
+    DataClassification = DataClassification
     """
     Privacy Agent for GDPR, CCPA, and privacy regulation compliance,
     data subject rights, consent management, and privacy assessments.
@@ -527,19 +532,29 @@ class PrivacyAgent:
     # Processing Activities (ROPA)
     # ============================================
 
+    def register_processing_activity(self, *args, **kwargs):
+        """Alias for add_processing_activity."""
+        return self.add_processing_activity(*args, **kwargs)
+
     def add_processing_activity(
         self,
         name: str,
         description: str,
         data_categories: List[str],
-        purposes: List[ProcessingPurpose],
-        legal_basis: str,
-        retention_days: int,
+        purpose: "ProcessingPurpose | List[ProcessingPurpose]" = None,
+        purposes: List[ProcessingPurpose] = None,
+        legal_basis: str = "legitimate_interest",
+        retention_days: int = 365,
         data_recipients: Optional[List[str]] = None,
         cross_border: bool = False,
         risk_level: str = "low",
     ) -> DataProcessingActivity:
         """Add a processing activity (Record of Processing Activities)."""
+        # Handle purpose/purposes alias
+        if purpose is not None and purposes is None:
+            purposes = [purpose] if not isinstance(purpose, list) else purpose
+        if purposes is None:
+            purposes = []
         activity = DataProcessingActivity(
             activity_id=self._generate_id("ropa"),
             name=name,
@@ -581,7 +596,8 @@ class PrivacyAgent:
         name: str,
         project_description: str,
         data_categories: List[str],
-        processing_purposes: List[ProcessingPurpose],
+        processing_purpose: "ProcessingPurpose | List[ProcessingPurpose]" = None,
+        purposes: List[ProcessingPurpose] = None,
     ) -> PrivacyImpactAssessment:
         """Create a Privacy Impact Assessment."""
         pia = PrivacyImpactAssessment(

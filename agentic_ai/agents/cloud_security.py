@@ -23,6 +23,7 @@ class CloudProvider(Enum):
     AZURE = "azure"
     GCP = "gcp"
     MULTI = "multi_cloud"
+    KUBERNETES = "kubernetes"
 
 
 class ResourceType(Enum):
@@ -43,6 +44,16 @@ class ResourceType(Enum):
     GCS = "gcs"
     BIGQUERY = "bigquery"
     GKE = "gke"
+    # Azure-prefixed aliases
+    AZURE_VM = "vm"
+    AZURE_STORAGE = "storage_account"
+    AZURE_SQL = "sql_database"
+    AZURE_FUNCTION = "function"
+    # GCP-prefixed aliases
+    GCP_VM = "gce"
+    GCP_STORAGE = "gcs"
+    GCP_BIGQUERY = "bigquery"
+    GCP_GKE = "gke"
 
 
 class ComplianceFramework(Enum):

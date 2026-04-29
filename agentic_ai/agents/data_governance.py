@@ -202,7 +202,7 @@ class DataGovernanceAgent:
         classification: DataClassification,
         owner: str,
         location: str,
-        system: str,
+        system: str = "default",
         steward: Optional[str] = None,
         tags: Optional[List[str]] = None,
     ) -> DataAsset:

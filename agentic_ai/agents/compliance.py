@@ -126,7 +126,7 @@ class Finding:
     title: str
     description: str
     severity: RiskLevel
-    status: str  # open, in_progress, resolved, accepted
+    status: str = "open"  # open, in_progress, resolved, accepted
     regulation_id: Optional[str] = None
     control_id: Optional[str] = None
     audit_id: Optional[str] = None
@@ -573,6 +573,33 @@ class ComplianceAgent:
             },
             'risk_score': self._calculate_risk_score(critical_findings, high_findings, compliance_rate),
         }
+
+    def create_assessment(self, title: str = "", assessment_type: str = "compliance",
+                         scope: str = "", assessor: str = "", **kwargs) -> Dict[str, Any]:
+        """Create a compliance assessment."""
+        assessment_id = self._generate_id("assess")
+        assessment = {
+            "assessment_id": assessment_id,
+            "title": title,
+            "assessment_type": assessment_type,
+            "scope": scope,
+            "assessor": assessor,
+            "status": "planned",
+        }
+        return assessment
+
+    def add_certificate(self, name: str = "", authority: str = "",
+                       domain: str = "", **kwargs) -> Dict[str, Any]:
+        """Add a compliance certificate."""
+        cert_id = self._generate_id("cert")
+        certificate = {
+            "certificate_id": cert_id,
+            "name": name,
+            "authority": authority,
+            "domain": domain,
+            "status": "active",
+        }
+        return certificate
 
     def _calculate_risk_score(self, critical: int, high: int, compliance_rate: float) -> float:
         """Calculate overall risk score (0-100, lower is better)."""

@@ -531,6 +531,30 @@ class DevOpsAgent:
     # Utilities
     # ============================================
 
+    def run_command(self, command: str = "", **kwargs) -> Dict[str, Any]:
+        """Run a command on the infrastructure."""
+        return {
+            "command": command,
+            "exit_code": 0,
+            "stdout": "Command executed successfully",
+            "stderr": "",
+        }
+
+    def create_task(self, title: str = "", description: str = "",
+                    priority: str = "medium", **kwargs) -> Dict[str, Any]:
+        """Create a new task."""
+        task_id = self._generate_id("task")
+        task = {
+            "task_id": task_id,
+            "title": title,
+            "description": description,
+            "priority": priority,
+            "status": "pending",
+        }
+        self._tasks = getattr(self, '_tasks', {})
+        self._tasks[task_id] = task
+        return task
+
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
         timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')

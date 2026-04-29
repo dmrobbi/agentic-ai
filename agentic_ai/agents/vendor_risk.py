@@ -370,7 +370,7 @@ class VendorRiskAgent:
                     question_id=self._generate_id("q"),
                     questionnaire_id=questionnaire.questionnaire_id,
                     domain=domain,
-                    question_text=f"Sample {domain.value} question {i+1}",
+                    question_text=f"Sample {domain.value} question {i + 1}",
                     control_objective=f"Ensure {domain.value} controls",
                     response_type="yes_no",
                     response_options=["Yes", "No", "Partial", "N/A"],
