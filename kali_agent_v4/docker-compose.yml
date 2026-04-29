@@ -33,7 +33,7 @@ services:
 
   # Redis for WebSocket clustering and caching
   redis:
-    image: redis:7-alpine
+    image: forge-container.wezzel.com:8443/library/redis:7-alpine
     container_name: kaliagent-redis
     restart: unless-stopped
     ports:
@@ -95,7 +95,7 @@ services:
 
   # Nginx Reverse Proxy (Optional - for HTTPS)
   nginx:
-    image: nginx:alpine
+    image: forge-container.wezzel.com:8443/library/nginx:alpine
     container_name: kaliagent-nginx
     restart: unless-stopped
     ports:
