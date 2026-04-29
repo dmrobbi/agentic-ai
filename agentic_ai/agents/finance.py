@@ -102,10 +102,11 @@ class FinanceAgent(BaseAgent):
         # Support both budget_name and name
         budget_label = budget_name or name or "Default Budget"
         budget_id = f"BUD-{len(self.budgets)+1:04d}"
-        budget = Budget(budget_id=budget_id, name=budget_label, total=total,
+        computed_total = total or sum(categories.values()) if categories else total
+        budget = Budget(budget_id=budget_id, name=budget_label, total=computed_total,
                         categories=categories or {})
         self.budgets.append(budget)
-        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": total, "categories": categories or {}, "budget": {"budget_id": budget_id, "name": budget_label, "total": total, "categories": categories or {}}}
+        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": computed_total, "categories": categories or {}, "budget": {"budget_id": budget_id, "name": budget_label, "total": computed_total, "categories": categories or {}}}
 
     def analyze_spending(self, period: str = "month", category: str = "") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
@@ -119,10 +120,12 @@ class FinanceAgent(BaseAgent):
     def create_invoice(self, customer: str = "", client: str = "", amount: float = 0.0,
                        items: List[Dict[str, Any]] = None) -> Dict[str, Any]:
         customer = customer or client
+        item_subtotal = sum(item.get("amount", item.get("quantity", 1) * item.get("price", 0)) for item in (items or []))
+        subtotal = amount or item_subtotal
         invoice_id = f"INV-{len(self.invoices)+1:04d}"
-        invoice = Invoice(invoice_id=invoice_id, customer=customer, amount=amount, items=items or [])
+        invoice = Invoice(invoice_id=invoice_id, customer=customer, amount=subtotal, items=items or [])
         self.invoices.append(invoice)
-        return {"status": "created", "invoice_id": invoice_id, "customer": customer, "amount": amount, "invoice": {"invoice_id": invoice_id, "customer": customer, "amount": amount, "subtotal": amount}}
+        return {"status": "created", "invoice_id": invoice_id, "customer": customer, "amount": subtotal, "invoice": {"invoice_id": invoice_id, "customer": customer, "amount": subtotal, "subtotal": subtotal}}
 
     def generate_report(self, report_type: str = "summary", period: str = "month") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)

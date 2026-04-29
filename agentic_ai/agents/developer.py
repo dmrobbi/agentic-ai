@@ -6,9 +6,11 @@ class DeveloperAgent(BaseAgent):
     agent_type = "developer"
     permission = Permission.STANDARD
 
-    def __init__(self, agent_id=None, name=None, inference_engine=None, state_store=None, message_bus=None):
+    def __init__(self, agent_id=None, name=None, inference_engine=None, state_store=None, message_bus=None,
+                 project_path: str = ""):
         super().__init__(agent_id=agent_id, name=name, inference_engine=inference_engine,
                          state_store=state_store, message_bus=message_bus)
+        self.project_path = project_path
         self._tools = {
             "review_code": self.review_code,
             "implement_feature": self.implement_feature,

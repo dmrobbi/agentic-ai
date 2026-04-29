@@ -46,13 +46,16 @@ class BaseAgent:
     permission: Permission = Permission.STANDARD
 
     def __init__(self, agent_id: str = None, name: str = None,
-                 inference_engine=None, state_store=None, message_bus=None):
+                 inference_engine=None, state_store=None, message_bus=None,
+                 permission: Permission = None):
         self.agent_id = agent_id or f"{self.agent_type}-{id(self):08x}"
         self.name = name or self.agent_type
         self.inference_engine = inference_engine
         self.state_store = state_store
         self.bus = message_bus
         self.status = AgentStatus.IDLE
+        if permission is not None:
+            self.permission = permission
         self._tools: Dict[str, Any] = {}
         self._history: List[Dict[str, Any]] = []
 
