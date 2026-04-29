@@ -5,13 +5,12 @@ Collaboration Session Management
 Manages collaborative sessions with multiple participants.
 """
 
-from typing import Dict, Any, List, Optional, Set, Callable
+from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
-import json
 
 
 class SessionStatus(str, Enum):

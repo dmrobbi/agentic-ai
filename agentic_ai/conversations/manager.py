@@ -6,11 +6,10 @@ Manages multiple conversation threads between agents.
 """
 
 from typing import Optional, Dict, Any, List
-from datetime import datetime
 import uuid
 
 from .thread import MessageThread, ConversationMessage, MessageType
-from .state import ConversationState, ConversationStatus
+from .state import ConversationState
 
 
 class ConversationManager:

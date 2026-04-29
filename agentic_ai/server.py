@@ -9,9 +9,8 @@ Simple demo server for testing deployment.
 import os
 import logging
 from datetime import datetime
-from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 

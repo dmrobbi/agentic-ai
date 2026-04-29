@@ -6,12 +6,11 @@ Manages consensus-based decision making across multiple agents.
 """
 
 from typing import Optional, Dict, Any, List, Callable
-from datetime import datetime, timedelta
+from datetime import datetime
 from .proposal import (
     Proposal, Vote, VoteOption, ConsensusType,
     ProposalStatus, ConsensusResult
 )
-import uuid
 
 
 class ConsensusEngine:

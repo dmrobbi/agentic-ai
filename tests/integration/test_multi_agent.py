@@ -9,7 +9,7 @@ Tests verify agents can collaborate and share context effectively.
 import pytest
 from datetime import datetime, timedelta
 
-from agentic_ai.agents.cyber.soc import SOCAgent
+from agentic_ai.agents.cyber.soc import SecurityOperationsAgent as SOCAgent
 from agentic_ai.agents.devops import DevOpsAgent
 from agentic_ai.agents.communications import CommunicationsAgent
 from agentic_ai.agents.legal import LegalAgent

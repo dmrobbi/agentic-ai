@@ -9,10 +9,9 @@ using the message bus and event bus.
 import json
 import logging
 import uuid
-from dataclasses import dataclass, field, asdict
+from dataclasses import dataclass, field
 from datetime import datetime
-from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Type, TypeVar
+from typing import Any, Callable, Dict, List, Optional, TypeVar
 from abc import ABC, abstractmethod
 
 from .message_bus import MessageBus, Message, MessageType
@@ -394,12 +393,10 @@ class AgentProtocol(ABC):
     @abstractmethod
     def initialize(self) -> None:
         """Initialize agent-specific resources."""
-        pass
 
     @abstractmethod
     def shutdown(self) -> None:
         """Shutdown agent gracefully."""
-        pass
 
     def run(self) -> None:
         """Run agent main loop."""

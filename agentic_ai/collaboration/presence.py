@@ -5,7 +5,7 @@ Presence & Activity Tracking
 Track user presence, activity, and generate activity feeds.
 """
 
-from typing import Dict, Any, List, Optional, Set, Callable
+from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum

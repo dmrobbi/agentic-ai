@@ -11,7 +11,6 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
-from copy import deepcopy
 
 
 class LockType(str, Enum):
