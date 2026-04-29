@@ -87,29 +87,35 @@ class FinanceAgent(BaseAgent):
         except ValueError:
             return {"error": f"Invalid transaction type: {type}"}
         txn_id = f"TXN-{len(self.transactions)+1:04d}"
+        transaction_id = f"TX-{len(self.transactions)+1:06d}"
         txn = Transaction(txn_id=txn_id, type=txn_type, amount=amount,
                           category=category, description=description)
         self.transactions.append(txn)
-        return {"status": "recorded", "txn_id": txn_id, "type": type, "amount": amount, "category": category}
+        return {"status": "recorded", "transaction_id": transaction_id, "txn_id": txn_id, "type": type, "amount": amount, "category": category}
 
-    def create_budget(self, name: str = "", total: float = 0.0,
-                      categories: Dict[str, float] = None) -> Dict[str, Any]:
+    def create_budget(self, budget_name: str = "", name: str = "", total: float = 0.0,
+                      categories: Dict[str, float] = None,
+                      permission: Permission = None) -> Dict[str, Any]:
+        # Support both budget_name and name
+        budget_label = budget_name or name or "Default Budget"
         budget_id = f"BUD-{len(self.budgets)+1:04d}"
-        budget = Budget(budget_id=budget_id, name=name, total=total,
+        budget = Budget(budget_id=budget_id, name=budget_label, total=total,
                         categories=categories or {})
         self.budgets.append(budget)
-        return {"status": "created", "budget_id": budget_id, "name": name, "total": total}
+        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": total, "categories": categories or {}}
 
     def analyze_spending(self, period: str = "month", category: str = "") -> Dict[str, Any]:
-        expenses = [t for t in self.transactions if t.type == TransactionType.EXPENSE]
-        total_spent = sum(t.amount for t in expenses)
+        income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
+        expenses = sum(t.amount for t in self.transactions if t.type == TransactionType.EXPENSE)
         by_category = {}
-        for t in expenses:
+        expense_transactions = [t for t in self.transactions if t.type == TransactionType.EXPENSE]
+        for t in expense_transactions:
             by_category[t.category] = by_category.get(t.category, 0) + t.amount
-        return {"period": period, "total_spent": total_spent, "transaction_count": len(expenses), "by_category": by_category}
+        return {"period": period, "total_income": income, "total_spent": expenses, "net": income - expenses, "transaction_count": len(expense_transactions), "by_category": by_category}
 
-    def create_invoice(self, customer: str = "", amount: float = 0.0,
+    def create_invoice(self, customer: str = "", client: str = "", amount: float = 0.0,
                        items: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+        customer = customer or client
         invoice_id = f"INV-{len(self.invoices)+1:04d}"
         invoice = Invoice(invoice_id=invoice_id, customer=customer, amount=amount, items=items or [])
         self.invoices.append(invoice)
