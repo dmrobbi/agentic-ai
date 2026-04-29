@@ -355,7 +355,7 @@ class LegalAgent:
         # Determine status
         if non_compliant == 0:
             status = ComplianceStatus.COMPLIANT
-        elif non_compliant <= len(checklist) * 0.2:
+        elif non_compliant <= len(checklist) * 0.5:  # Up to 50% non-compliant = partially compliant
             status = ComplianceStatus.PARTIALLY_COMPLIANT
         else:
             status = ComplianceStatus.NON_COMPLIANT

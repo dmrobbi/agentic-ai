@@ -321,6 +321,7 @@ class MarketingAgent:
                 product=product,
                 benefit=benefit,
                 offer=offer or benefit,
+                feature=product,
             )
             subjects.append(subject)
         return subjects

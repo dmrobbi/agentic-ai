@@ -79,7 +79,7 @@ class Feedback:
         if self.feedback_type == FeedbackType.EXPLICIT_POSITIVE:
             return (self.rating or 5.0) / 5.0  # 0.8-1.0
         elif self.feedback_type == FeedbackType.EXPLICIT_NEGATIVE:
-            return -(5.0 - (self.rating or 1.0)) / 5.0  # -0.8 to -1.0
+            return -(5.0 - (self.rating or 1.0)) / 4.0  # rating 1→-1.0, rating 5→0.0
         elif self.feedback_type == FeedbackType.IMPLICIT_SUCCESS:
             return 0.5  # Mild positive
         elif self.feedback_type == FeedbackType.IMPLICIT_FAILURE:
@@ -94,11 +94,12 @@ class Feedback:
 class FeedbackCollector:
     """Collects and aggregates feedback for agents."""
 
-    def __init__(self):
+    def __init__(self, performance_tracker=None):
         self.feedback: List[Feedback] = []
         self.agent_feedback: Dict[str, List[Feedback]] = {}
         self.task_type_feedback: Dict[str, List[Feedback]] = {}
         self._callbacks: List = []
+        self.performance_tracker = performance_tracker
 
     def add_feedback(self, feedback: Feedback) -> str:
         """Add feedback to the collector."""
@@ -205,6 +206,11 @@ class FeedbackCollector:
         )
 
         self.add_feedback(feedback)
+
+        # Also update performance tracker if linked
+        if self.performance_tracker:
+            self.performance_tracker.record_correction(agent_id, task_type)
+
         return feedback
 
     def get_agent_feedback(self, agent_id: str) -> List[Feedback]:

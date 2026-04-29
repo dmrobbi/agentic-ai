@@ -80,7 +80,7 @@ class SalesAgent(BaseAgent):
         lead_id = f"LEAD-{len(self.leads)+1:04d}"
         lead = Lead(lead_id=lead_id, name=name, company=company, email=email, value=value)
         self.leads.append(lead)
-        return {"status": "created", "lead_id": lead_id, "name": name, "company": company, "email": email}
+        return {"status": "created", "lead_id": lead_id, "lead": {"lead_id": lead_id, "name": name, "company": company, "email": email, "status": "new", "score": 0.0}}
 
     def qualify_lead(self, lead_id: str = "", score: float = 0.0, name: str = "") -> Dict[str, Any]:
         search_id = lead_id
@@ -88,7 +88,7 @@ class SalesAgent(BaseAgent):
             if lead.lead_id == search_id or lead.name == name:
                 lead.status = LeadStatus.QUALIFIED
                 lead.score = max(score, 50.0)
-                return {"status": "qualified", "lead_id": lead.lead_id, "score": lead.score, "name": lead.name}
+                return {"status": "qualified", "lead_id": lead.lead_id, "score": lead.score, "qualified": True, "name": lead.name}
         return {"error": f"Lead {lead_id} not found"}
 
     def create_opportunity(self, title: str = "", value: float = 0.0,
@@ -96,7 +96,7 @@ class SalesAgent(BaseAgent):
         opp_id = f"OPP-{len(self.opportunities)+1:04d}"
         opp = Opportunity(opp_id=opp_id, title=title, value=value, contact=contact, probability=min(value/100000, 0.5))
         self.opportunities.append(opp)
-        return {"status": "created", "opp_id": opp_id, "title": title, "value": value, "lead_id": lead_id}
+        return {"status": "created", "opp_id": opp_id, "title": title, "value": value, "lead_id": lead_id, "opportunity": {"opp_id": opp_id, "title": title, "value": value}}
 
     def generate_proposal(self, opp_id: str = "", template: str = "standard") -> Dict[str, Any]:
         for opp in self.opportunities:
@@ -111,7 +111,7 @@ class SalesAgent(BaseAgent):
                 return {"status": "updated", "opp_id": opp_id, "stage": stage}
         return {"error": f"Opportunity {opp_id} not found"}
 
-    def perform_task(self, task_type: str = "", **kwargs) -> Dict[str, Any]:
+    def perform_task(self, task_type: str = "", *args, **kwargs) -> Dict[str, Any]:
         """Perform a task by type."""
         if task_type == "create_lead":
             return self.create_lead(**kwargs)

@@ -65,10 +65,13 @@ class FinanceAgent(BaseAgent):
     permission = Permission.STANDARD
 
     def __init__(self, agent_id: str = None, name: str = None,
-                 inference_engine=None, state_store=None, message_bus=None):
+                 inference_engine=None, state_store=None, message_bus=None,
+                 permission: Permission = None):
         super().__init__(agent_id=agent_id, name=name,
                          inference_engine=inference_engine,
                          state_store=state_store, message_bus=message_bus)
+        if permission is not None:
+            self.permission = permission
         self.transactions: List[Transaction] = []
         self.budgets: List[Budget] = []
         self.invoices: List[Invoice] = []
@@ -102,7 +105,7 @@ class FinanceAgent(BaseAgent):
         budget = Budget(budget_id=budget_id, name=budget_label, total=total,
                         categories=categories or {})
         self.budgets.append(budget)
-        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": total, "categories": categories or {}}
+        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": total, "categories": categories or {}, "budget": {"budget_id": budget_id, "name": budget_label, "total": total, "categories": categories or {}}}
 
     def analyze_spending(self, period: str = "month", category: str = "") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
@@ -111,7 +114,7 @@ class FinanceAgent(BaseAgent):
         expense_transactions = [t for t in self.transactions if t.type == TransactionType.EXPENSE]
         for t in expense_transactions:
             by_category[t.category] = by_category.get(t.category, 0) + t.amount
-        return {"period": period, "total_income": income, "total_spent": expenses, "net": income - expenses, "transaction_count": len(expense_transactions), "by_category": by_category}
+        return {"period": period, "total_income": income, "total_expense": expenses, "total_spent": expenses, "net": income - expenses, "transaction_count": len(expense_transactions), "by_category": by_category}
 
     def create_invoice(self, customer: str = "", client: str = "", amount: float = 0.0,
                        items: List[Dict[str, Any]] = None) -> Dict[str, Any]:
@@ -119,7 +122,7 @@ class FinanceAgent(BaseAgent):
         invoice_id = f"INV-{len(self.invoices)+1:04d}"
         invoice = Invoice(invoice_id=invoice_id, customer=customer, amount=amount, items=items or [])
         self.invoices.append(invoice)
-        return {"status": "created", "invoice_id": invoice_id, "customer": customer, "amount": amount}
+        return {"status": "created", "invoice_id": invoice_id, "customer": customer, "amount": amount, "invoice": {"invoice_id": invoice_id, "customer": customer, "amount": amount, "subtotal": amount}}
 
     def generate_report(self, report_type: str = "summary", period: str = "month") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)

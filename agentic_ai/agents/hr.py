@@ -212,10 +212,17 @@ class HRAgent:
         employment_type: Optional[EmploymentType] = None,
     ) -> List[Employee]:
         """Get employees with filtering."""
+        # Department alias normalization
+        dept_aliases = {
+            "eng": "engineering", "dev": "engineering", "engineering": "engineering",
+            "sales": "sales", "marketing": "marketing", "hr": "human_resources",
+            "finance": "finance", "ops": "operations", "legal": "legal",
+        }
         employees = list(self.employees.values())
 
         if department:
-            employees = [e for e in employees if e.department == department]
+            target = dept_aliases.get(department.lower(), department.lower())
+            employees = [e for e in employees if dept_aliases.get(e.department.lower(), e.department.lower()) == target]
 
         if status:
             employees = [e for e in employees if e.status == status]

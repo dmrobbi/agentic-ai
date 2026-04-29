@@ -13,32 +13,53 @@ class TaskStatus(Enum):
     FAILED = "failed"
     CANCELLED = "cancelled"
 
+class TaskPriority(Enum):
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+class WorkflowStatus(Enum):
+    DRAFT = "draft"
+    ACTIVE = "active"
+    COMPLETED = "completed"
+    FAILED = "failed"
+
 @dataclass
 class Task:
-    task_id: str
-    title: str
+    task_id: str = ""
+    id: str = ""  # alias for task_id
+    title: str = ""
     description: str = ""
     status: TaskStatus = TaskStatus.PENDING
-    priority: str = "medium"
+    priority: TaskPriority = TaskPriority.MEDIUM
     assigned_to: str = ""
     dependencies: List[str] = field(default_factory=list)
     created_at: datetime = field(default_factory=datetime.now)
+
+    def __post_init__(self):
+        if not self.task_id and self.id:
+            self.task_id = self.id
+        elif not self.id and self.task_id:
+            self.id = self.task_id
 
 @dataclass
 class Workflow:
     workflow_id: str
     name: str
     tasks: List[Task] = field(default_factory=list)
-    status: str = "draft"
+    status: WorkflowStatus = WorkflowStatus.DRAFT
     created_at: datetime = field(default_factory=datetime.now)
 
 class LeadAgent(BaseAgent):
     agent_type = "lead"
     permission = Permission.ELEVATED
 
-    def __init__(self, agent_id=None, name=None, inference_engine=None, state_store=None, message_bus=None):
+    def __init__(self, agent_id=None, name=None, inference_engine=None, state_store=None, message_bus=None,
+                 project_path: str = ""):
         super().__init__(agent_id=agent_id, name=name, inference_engine=inference_engine,
                          state_store=state_store, message_bus=message_bus)
+        self.project_path = project_path
         self.tasks: List[Task] = []
         self.workflows: List[Workflow] = []
         self._tools = {
@@ -74,10 +95,14 @@ class LeadAgent(BaseAgent):
         return {"status": "created", "workflow_id": workflow_id, "name": name}
 
     def create_task(self, title: str = "", description: str = "", priority: str = "medium",
-                    dependencies: List[str] = None) -> Dict[str, Any]:
-        task_id = f"TASK-{len(self.tasks)+1:04d}"
-        task = Task(task_id=task_id, title=title, description=description,
-                    priority=priority, dependencies=dependencies or [])
+                    dependencies: List[str] = None, id: str = "") -> Dict[str, Any]:
+        task_id = id or f"TASK-{len(self.tasks)+1:04d}"
+        try:
+            prio = TaskPriority(priority.lower()) if isinstance(priority, str) else priority
+        except ValueError:
+            prio = TaskPriority.MEDIUM
+        task = Task(task_id=task_id, id=id or task_id, title=title, description=description,
+                    priority=prio, dependencies=dependencies or [])
         self.tasks.append(task)
         return {"status": "created", "task_id": task_id, "title": title, "priority": priority, "dependencies": dependencies or []}
 
