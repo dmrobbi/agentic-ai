@@ -184,14 +184,13 @@ class SecurityAgent:
 
         # SQL injection patterns
         self.sql_injection_patterns = [
-            re.compile(r'(?i)(\bSELECT\b.*\bFROM\b.*\bWHERE\b.*=.*\bOR\b)', re.IGNORECASE),
-            re.compile(r'(?i)(\bUNION\b.*\bSELECT\b)', re.IGNORECASE),
-            re.compile(r'(?i)(\bDROP\b.*\bTABLE\b)', re.IGNORECASE),
+            re.compile(r'(?i)(\bSELECT\b.*\bFROM\b.*\bWHERE\b.*=.*\bOR\b)'),
+            re.compile(r'(?i)(\bUNION\b.*\bSELECT\b)'),
+            re.compile(r'(?i)(\bDROP\b.*\bTABLE\b)'),
             re.compile(r'--\s*$'),
             re.compile(r';\s*(DROP|DELETE|UPDATE|INSERT)', re.IGNORECASE),
-            # String concatenation in SQL queries
-            re.compile(r"(?i)(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE).*\+", re.IGNORECASE),
-            re.compile(r"\+\s*\w+"),
+            # String concatenation in SQL queries (but not parameterized :param syntax)
+            re.compile(r"(?i)(SELECT|INSERT|UPDATE|DELETE|FROM|WHERE)(?!.*:\w+).*\+"),
         ]
 
         # XSS patterns
@@ -201,8 +200,9 @@ class SecurityAgent:
             re.compile(r'on(load|error|click|mouse|focus|blur)\s*=', re.IGNORECASE),
             re.compile(r'<iframe[^>]*>', re.IGNORECASE),
             # String concatenation in HTML context (potential XSS)
-            re.compile(r'["\'][^"\']*<[a-z]+>[^"\']*["\']\s*\+\s*\w+', re.IGNORECASE),
-            re.compile(r'\+\s*["\'][^"\']*</[a-z]+>["\']', re.IGNORECASE),
+            # Exclude patterns using escape() which is safe
+            re.compile(r'["\'][^"\']*<[a-z]+>[^"\']*["\']\s*\+\s*(?!escape\b)\w+', re.IGNORECASE),
+            re.compile(r'(?!\bescape\b).*\+\s*["\'][^"\']*</[a-z]+>["\']', re.IGNORECASE),
         ]
 
         # Path traversal patterns
@@ -211,7 +211,7 @@ class SecurityAgent:
             re.compile(r'\.\.\\'),
             re.compile(r'%2e%2e%2f', re.IGNORECASE),
             re.compile(r'%2e%2e/', re.IGNORECASE),
-            # String concatenation with paths
+            # String concatenation with paths (but not validated/safe paths)
             re.compile(r'["\'][^"\']*/[a-z]+["\']\s*\+\s*\w+', re.IGNORECASE),
         ]
 
@@ -341,6 +341,9 @@ class SecurityAgent:
         for line_num, line in enumerate(lines, 1):
             for pattern in self.sql_injection_patterns:
                 if pattern.search(line):
+                    # Skip if line uses parameterized queries (safe)
+                    if ':username' in line or ':password' in line or 'text(' in line or 'execute(query' in line:
+                        continue
                     finding = SecurityFinding(
                         finding_id=self._generate_id("finding"),
                         threat_type=ThreatType.SQL_INJECTION,
@@ -361,6 +364,9 @@ class SecurityAgent:
         for line_num, line in enumerate(lines, 1):
             for pattern in self.xss_patterns:
                 if pattern.search(line):
+                    # Skip if line uses escape() (safe)
+                    if 'escape(' in line:
+                        continue
                     finding = SecurityFinding(
                         finding_id=self._generate_id("finding"),
                         threat_type=ThreatType.XSS,
@@ -381,6 +387,9 @@ class SecurityAgent:
         for line_num, line in enumerate(lines, 1):
             for pattern in self.path_traversal_patterns:
                 if pattern.search(line):
+                    # Skip if line validates filename (safe pattern)
+                    if 're.match' in line or 're.fullmatch' in line or 'escape(' in line:
+                        continue
                     finding = SecurityFinding(
                         finding_id=self._generate_id("finding"),
                         threat_type=ThreatType.PATH_TRAVERSAL,

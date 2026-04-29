@@ -388,7 +388,7 @@ def run_audit_preparation():
         ),
         privacy.create_data_request(
             subject_id="customer-042",
-            right_type=DataSubjectRight.DELETION,
+            right_type=DataSubjectRight.ERASURE,
             submitted_at=datetime.utcnow() - timedelta(days=20),
             deadline=datetime.utcnow() + timedelta(days=10),
             status="in_progress",

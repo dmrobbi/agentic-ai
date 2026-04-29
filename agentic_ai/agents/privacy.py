@@ -221,7 +221,7 @@ class PrivacyAgent:
                 'response_days': 45,
                 'rights': [
                     DataSubjectRight.ACCESS,
-                    DataSubjectRight.DELETION,
+                    DataSubjectRight.ERASURE,
                     DataSubjectRight.PORTABILITY,
                     DataSubjectRight.OBJECTION,
                     DataSubjectRight.NON_DISCRIMINATION,
