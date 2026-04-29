@@ -176,3 +176,14 @@ class SysAdminAgent(BaseAgent):
             return {"service": service_name, "action": action, "active": result.returncode == 0, "output": result.stdout.strip()[:200]}
         except Exception:
             return {"service": service_name, "action": action, "active": "unknown", "simulated": True}
+
+    async def perform_task(self, task_type: str = "", **kwargs) -> Dict[str, Any]:
+        if task_type == "check_system":
+            return self.check_system(**kwargs)
+        elif task_type == "analyze_logs":
+            return self.analyze_logs(**kwargs)
+        elif task_type == "create_incident":
+            return self.create_incident(**kwargs)
+        elif task_type == "run_command":
+            return self.run_command(**kwargs)
+        return {"error": f"Unknown task type: {task_type}"}

@@ -131,3 +131,16 @@ class FinanceAgent(BaseAgent):
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
         expenses = sum(t.amount for t in self.transactions if t.type == TransactionType.EXPENSE)
         return {"report_type": report_type, "period": period, "income": income, "expenses": expenses, "net": income - expenses, "budget_count": len(self.budgets), "invoice_count": len(self.invoices)}
+
+    async def perform_task(self, task_type: str = "", **kwargs) -> Dict[str, Any]:
+        if task_type == "record_transaction":
+            return self.record_transaction(**kwargs)
+        elif task_type == "create_budget":
+            return self.create_budget(**kwargs)
+        elif task_type == "analyze_spending":
+            return self.analyze_spending(**kwargs)
+        elif task_type == "create_invoice":
+            return self.create_invoice(**kwargs)
+        elif task_type == "generate_report":
+            return self.generate_report(**kwargs)
+        return {"error": f"Unknown task type: {task_type}"}

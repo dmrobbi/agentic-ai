@@ -7,6 +7,10 @@ Unit tests for consensus-based decision making.
 
 import pytest
 from datetime import datetime, timedelta
+from agentic_ai.consensus.proposal import ProposalStatus as _ProposalStatus
+
+# Make ProposalStatus available at module level for tests that reference it directly
+ProposalStatus = _ProposalStatus
 
 
 @pytest.fixture

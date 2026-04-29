@@ -43,6 +43,7 @@ class EngagementStatus(Enum):
 class TargetType(Enum):
     """Target types."""
     NETWORK = "network"
+    SERVER = "server"
     WEB_APP = "web_application"
     MOBILE_APP = "mobile_application"
     SOCIAL = "social_engineering"
@@ -529,10 +530,10 @@ class RedTeamAgent:
         )
 
         # Determine severity based on end point
-        if 'domain_admin' in end_point.lower() or 'critical' in end_point.lower():
+        if 'domain_admin' in end_point.lower() or 'domain admin' in end_point.lower() or 'critical' in end_point.lower():
             path.severity = FindingSeverity.CRITICAL
         elif 'admin' in end_point.lower() or 'sensitive' in end_point.lower():
-            path.severity = FindingSeverity.HIGH
+            path.severity = FindingSeverity.CRITICAL
 
         self.attack_paths[path.path_id] = path
         return path

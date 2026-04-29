@@ -462,14 +462,14 @@ class RiskAgent:
         if kri.direction == "lower_is_better":
             if current_value <= kri.threshold_green:
                 kri.status = "green"
-            elif current_value <= kri.threshold_yellow:
+            elif current_value <= kri.threshold_red:
                 kri.status = "yellow"
             else:
                 kri.status = "red"
         else:  # higher_is_better
             if current_value >= kri.threshold_green:
                 kri.status = "green"
-            elif current_value >= kri.threshold_yellow:
+            elif current_value >= kri.threshold_red:
                 kri.status = "yellow"
             else:
                 kri.status = "red"

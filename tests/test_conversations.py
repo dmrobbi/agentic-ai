@@ -7,6 +7,10 @@ Unit tests for multi-agent conversation management.
 
 import pytest
 from datetime import datetime
+from agentic_ai.conversations.state import ConversationStatus as _ConversationStatus
+
+# Make ConversationStatus available at module level
+ConversationStatus = _ConversationStatus
 
 
 # Import fixtures

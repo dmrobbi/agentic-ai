@@ -523,11 +523,14 @@ class EthicsAgent:
 
         # Generate recommendations
         if disparities:
-            report.recommendations = [
-                f"Address {d['metric']} disparity ({d['disparity']:.2f} > {d['threshold']})",
+            recommendations = []
+            for disp in disparities:
+                recommendations.append(f"Address {disp['metric']} disparity ({disp['disparity']:.2f} > {disp['threshold']})")
+            recommendations.extend([
                 "Consider reweighting training data",
                 "Evaluate model performance across subgroups",
-            ]
+            ])
+            report.recommendations = recommendations
 
         self.fairness_reports[report.report_id] = report
         return report

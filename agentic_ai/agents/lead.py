@@ -104,6 +104,8 @@ class LeadAgent(BaseAgent):
             "generate_tests": "qa",
             "run_tests": "qa",
             "find_bugs": "qa",
+            "analyze_coverage": "qa",
+            "check_quality": "qa",
             "create_lead": "sales",
             "generate_proposal": "sales",
             "record_transaction": "finance",
