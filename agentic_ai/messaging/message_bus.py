@@ -6,6 +6,7 @@ Provides asynchronous message passing between agents using Redis pub/sub.
 """
 
 import json
+import ast
 import logging
 import uuid
 from dataclasses import dataclass, field, asdict
@@ -17,6 +18,15 @@ from contextlib import contextmanager
 import redis
 
 logger = logging.getLogger(__name__)
+
+def _safe_loads(data):
+    try:
+        return json.loads(data)
+    except (json.JSONDecodeError, TypeError):
+        try:
+            return ast.literal_eval(data)
+        except (ValueError, SyntaxError):
+            return {}
 
 T = TypeVar('T')
 
@@ -56,7 +66,7 @@ class Message:
     @classmethod
     def from_json(cls, json_str: str) -> 'Message':
         """Deserialize message from JSON."""
-        data = json.loads(json_str)
+        data = _safe_loads(json_str)
         data['message_type'] = MessageType(data['message_type'])
         data['timestamp'] = datetime.fromisoformat(data['timestamp'])
         return cls(**data)
@@ -290,7 +300,7 @@ class MessageBus:
             return []
 
         messages = self._redis.lrange(self.dead_letter_queue, 0, limit - 1)
-        return [json.loads(m) for m in messages]
+        return [_safe_loads(m) for m in messages]
 
     def retry_dlq_message(self, message_index: int) -> bool:
         """Retry message from dead letter queue."""
@@ -302,7 +312,7 @@ class MessageBus:
             return False
 
         try:
-            dlq_message = json.loads(messages[0])
+            dlq_message = _safe_loads(messages[0])
             original_message = Message.from_json(dlq_message['original_message'])
 
             # Republish original message

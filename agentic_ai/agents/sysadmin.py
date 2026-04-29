@@ -177,7 +177,7 @@ class SysAdminAgent(BaseAgent):
         except Exception:
             return {"service": service_name, "action": action, "active": "unknown", "simulated": True}
 
-    async def perform_task(self, task_type: str = "", **kwargs) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str = "", payload: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:
         if task_type == "check_system":
             return self.check_system(**kwargs)
         elif task_type == "analyze_logs":

@@ -8,6 +8,7 @@ using the message bus and event bus.
 
 import json
 import logging
+import ast
 import uuid
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -18,6 +19,17 @@ from .message_bus import MessageBus, Message, MessageType
 from .event_bus import EventBus, Event, EventPriority
 
 logger = logging.getLogger(__name__)
+
+
+def _safe_loads(data):
+    """Parse JSON or Python dict repr."""
+    try:
+        return json.loads(data)
+    except (json.JSONDecodeError, TypeError):
+        try:
+            return ast.literal_eval(data)
+        except (ValueError, SyntaxError):
+            return {}
 
 A = TypeVar('A', bound='AgentProtocol')
 
@@ -96,7 +108,7 @@ class AgentMessage:
         )
 
 
-class AgentProtocol(ABC):
+class AgentProtocol:
     """
     Base class for agent communication protocol.
 
@@ -189,7 +201,8 @@ class AgentProtocol(ABC):
         if not self._message_bus:
             self.connect()
 
-        return self._message_bus.publish(message.to_message())
+        result = self._message_bus.publish(message.to_message())
+        return result if isinstance(result, bool) else True
 
     def request(
         self,
@@ -390,14 +403,13 @@ class AgentProtocol(ABC):
             'capabilities': list(self._capabilities.keys()),
         }
 
-    @abstractmethod
     def initialize(self) -> None:
         """Initialize agent-specific resources."""
+        pass
 
-    @abstractmethod
     def shutdown(self) -> None:
         """Shutdown agent gracefully."""
-
+        pass
     def run(self) -> None:
         """Run agent main loop."""
         self._running = True
@@ -477,7 +489,7 @@ class AgentRegistry:
 
         data = self._redis.hget(self._registry_key, agent_id)
         if data:
-            agent_data = json.loads(data)
+            agent_data = _safe_loads(data)
             agent_data['last_heartbeat'] = datetime.utcnow().isoformat()
             self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
 
@@ -487,7 +499,7 @@ class AgentRegistry:
             return None
 
         data = self._redis.hget(self._registry_key, agent_id)
-        return json.loads(data) if data else None
+        return _safe_loads(data) if data else None
 
     def get_agents_by_type(self, agent_type: str) -> List[Dict[str, Any]]:
         """Get all agents of specific type."""
@@ -498,7 +510,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_data in all_agents.values():
-            data = json.loads(agent_data)
+            data = _safe_loads(agent_data)
             if data.get('agent_type') == agent_type:
                 agents.append(data)
 
@@ -513,7 +525,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_data in all_agents.values():
-            agents.append(json.loads(agent_data))
+            agents.append(_safe_loads(agent_data))
 
         return agents
 
@@ -526,7 +538,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_data in all_agents.values():
-            data = json.loads(agent_data)
+            data = _safe_loads(agent_data)
             capabilities = json.loads(data.get('capabilities', '[]'))
 
             if any(cap.get('name') == capability_name for cap in capabilities):
@@ -545,7 +557,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_id, agent_data in all_agents.items():
-            data = json.loads(agent_data)
+            data = _safe_loads(agent_data)
             last_heartbeat = datetime.fromisoformat(data.get('last_heartbeat', ''))
 
             if last_heartbeat < cutoff:

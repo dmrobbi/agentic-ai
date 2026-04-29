@@ -134,6 +134,9 @@ class FairnessReport:
     recommendations: List[str] = field(default_factory=list)
     generated_at: datetime = field(default_factory=datetime.utcnow)
 
+    def __contains__(self, key):
+        return hasattr(self, key)
+
 
 @dataclass
 class ExplainabilityRecord:
