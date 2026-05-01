@@ -503,7 +503,26 @@ These Terms are governed by applicable law.
             'compliance_checks_count': len(self.compliance_checks),
             'expiring_documents': len(self.get_expiring_documents(days_ahead=30)),
             'regulations_tracked': len(self.regulations),
+            'matters_count': len(getattr(self, '_matters', {})),
         }
+
+    def create_legal_matter(self, title: str, matter_type: str = "general",
+                              description: str = "", priority: str = "medium",
+                              **kwargs) -> Dict[str, Any]:
+        """Create a legal matter for tracking."""
+        if not hasattr(self, '_matters'):
+            self._matters = {}
+        matter_id = self._generate_id("legal")
+        matter = {
+            "matter_id": matter_id,
+            "title": title,
+            "matter_type": matter_type,
+            "description": description,
+            "priority": priority,
+            "status": "open",
+        }
+        self._matters[matter_id] = matter
+        return matter
 
 
 def get_capabilities() -> Dict[str, Any]:

@@ -256,7 +256,8 @@ class SecurityOperationsAgent:
         )
 
         self.alerts[alert.alert_id] = alert
-        logger.info(f"Created alert: {alert.title} ({alert.severity.value})")
+        sev_str = alert.severity.value if hasattr(alert.severity, 'value') else alert.severity
+        logger.info(f"Created alert: {alert.title} ({sev_str})")
         return alert
 
     def triage_alert(
@@ -345,6 +346,11 @@ class SecurityOperationsAgent:
         incident_type: str = "security",
     ) -> Incident:
         """Create a security incident."""
+        # Convert string severity to IncidentSeverity if needed
+        if isinstance(severity, str):
+            sev_map = {"low": IncidentSeverity.SEV4, "medium": IncidentSeverity.SEV3, "high": IncidentSeverity.SEV2, "critical": IncidentSeverity.SEV1}
+            severity = sev_map.get(severity.lower(), IncidentSeverity.SEV3)
+
         incident = Incident(
             incident_id=self._generate_id("inc"),
             title=title,
@@ -358,7 +364,8 @@ class SecurityOperationsAgent:
         )
 
         self.incidents[incident.incident_id] = incident
-        logger.info(f"Created incident: {incident.title} ({incident.severity.value})")
+        sev_str = incident.severity.value if hasattr(incident.severity, 'value') else incident.severity
+        logger.info(f"Created incident: {incident.title} ({sev_str})")
         return incident
 
     def report_security_incident(self, title: str, description: str, severity: str, incident_type: str = "security", affected_systems: Optional[List[str]] = None, source_ip: str = "", **kwargs) -> "Incident":
@@ -384,6 +391,11 @@ class SecurityOperationsAgent:
         """Update incident status."""
         if incident_id not in self.incidents:
             return False
+
+        # Convert string status to IncidentStatus if needed
+        if isinstance(status, str):
+            status_map = {s.value: s for s in IncidentStatus}
+            status = status_map.get(status.lower(), IncidentStatus.CLOSED)
 
         incident = self.incidents[incident_id]
         old_status = incident.status

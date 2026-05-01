@@ -599,6 +599,9 @@ class ComplianceAgent:
             "domain": domain,
             "status": "active",
         }
+        if not hasattr(self, '_certificates'):
+            self._certificates = {}
+        self._certificates[cert_id] = certificate
         return certificate
 
     def _calculate_risk_score(self, critical: int, high: int, compliance_rate: float) -> float:
@@ -650,6 +653,7 @@ class ComplianceAgent:
             'audits_count': len(self.audits),
             'policies_count': len(self.policies),
             'open_findings': len([f for f in self.findings.values() if f.status != 'resolved']),
+            'certificates_count': len(getattr(self, '_certificates', {})),
         }
 
 

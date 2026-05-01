@@ -224,7 +224,7 @@ class TestPrivacyAgent:
             name="AI System PIA",
             project_description="ML-based recommendations",
             data_categories=['purchase_history', 'browsing'],
-            processing_purposes=[ProcessingPurpose.PERSONALIZATION],
+            purposes=[ProcessingPurpose.PERSONALIZATION],
         )
         
         assert pia.pia_id.startswith("pia-")

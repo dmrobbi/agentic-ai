@@ -569,6 +569,7 @@ class DevOpsAgent:
             'pipelines_count': len(self.pipelines),
             'resources_count': len(self.infrastructure),
             'active_alerts': len(self.get_active_alerts()),
+            'tasks_count': len(getattr(self, '_tasks', {})),
             'critical_alerts': len([a for a in self.alerts.values() if a.severity == 'critical' and not a.resolved_at]),
         }
 

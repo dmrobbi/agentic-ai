@@ -324,6 +324,12 @@ class ChaosMonkeyAgent:
         created_by: str = "",
     ) -> Experiment:
         """Create chaos engineering experiment."""
+        # Convert string args to enums
+        if isinstance(severity, str):
+            severity = SeverityLevel(severity.lower())
+        if isinstance(blast_radius, str):
+            blast_radius = BlastRadius(blast_radius.lower())
+
         experiment = Experiment(
             experiment_id=self._generate_id("exp"),
             name=name,

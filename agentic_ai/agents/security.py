@@ -185,6 +185,7 @@ class SecurityAgent:
         self.secret_rotations: Dict[str, SecretRotation] = {}
         self.policies: Dict[str, SecurityPolicy] = {}
         self.access_logs: List[Dict[str, Any]] = []
+        self._assessments: Dict[str, Any] = {}
 
         # Security patterns for scanning
         self._init_security_patterns()
@@ -951,6 +952,7 @@ class SecurityAgent:
             'secrets_tracked': len(self.secret_rotations),
             'policies_count': len(self.policies),
             'access_logs_count': len(self.access_logs),
+            'assessments_count': len(self._assessments),
             'open_critical_incidents': len([
                 i for i in self.incidents.values()
                 if i.severity == SeverityLevel.CRITICAL and i.status != 'resolved'

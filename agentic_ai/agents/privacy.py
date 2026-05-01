@@ -539,8 +539,8 @@ class PrivacyAgent:
     def add_processing_activity(
         self,
         name: str,
-        description: str,
-        data_categories: List[str],
+        description: str = "",
+        data_categories: List[str] = None,
         purpose: "ProcessingPurpose | List[ProcessingPurpose]" = None,
         purposes: List[ProcessingPurpose] = None,
         legal_basis: str = "legitimate_interest",
@@ -600,13 +600,21 @@ class PrivacyAgent:
         purposes: List[ProcessingPurpose] = None,
     ) -> PrivacyImpactAssessment:
         """Create a Privacy Impact Assessment."""
+        # Normalize processing purposes
+        purposes_list = purposes or []
+        if processing_purpose:
+            if isinstance(processing_purpose, list):
+                purposes_list = processing_purpose
+            else:
+                purposes_list = [processing_purpose]
+
         pia = PrivacyImpactAssessment(
             pia_id=self._generate_id("pia"),
             name=name,
             project_description=project_description,
             status="draft",
             data_categories=data_categories,
-            processing_purposes=processing_purposes,
+            processing_purposes=purposes_list,
         )
 
         self.pias[pia.pia_id] = pia

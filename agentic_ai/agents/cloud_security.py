@@ -44,6 +44,9 @@ class ResourceType(Enum):
     GCS = "gcs"
     BIGQUERY = "bigquery"
     GKE = "gke"
+    K8S_POD = "k8s_pod"
+    K8S_DEPLOYMENT = "k8s_deployment"
+    K8S_SERVICE = "k8s_service"
     # Azure-prefixed aliases
     AZURE_VM = "vm"
     AZURE_STORAGE = "storage_account"
@@ -438,6 +441,10 @@ class CloudSecurityAgent:
             control_id=control_id,
             remediation=remediation,
         )
+
+        # Mark the resource as non-compliant if a finding is attached
+        if resource_id and resource_id in self.resources:
+            self.resources[resource_id].compliant = False
 
         self.findings[finding.finding_id] = finding
 
