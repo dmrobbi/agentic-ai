@@ -600,6 +600,7 @@ class PrivacyAgent:
         purposes: List[ProcessingPurpose] = None,
     ) -> PrivacyImpactAssessment:
         """Create a Privacy Impact Assessment."""
+<<<<<<< HEAD
         # Normalize processing purposes
         purposes_list = purposes or []
         if processing_purpose:
@@ -607,6 +608,17 @@ class PrivacyAgent:
                 purposes_list = processing_purpose
             else:
                 purposes_list = [processing_purpose]
+=======
+        # Merge processing_purpose and purposes into a list
+        merged_purposes = []
+        if processing_purpose is not None:
+            if isinstance(processing_purpose, list):
+                merged_purposes.extend(processing_purpose)
+            else:
+                merged_purposes.append(processing_purpose)
+        if purposes is not None:
+            merged_purposes.extend(purposes)
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
 
         pia = PrivacyImpactAssessment(
             pia_id=self._generate_id("pia"),
@@ -614,7 +626,11 @@ class PrivacyAgent:
             project_description=project_description,
             status="draft",
             data_categories=data_categories,
+<<<<<<< HEAD
             processing_purposes=purposes_list,
+=======
+            processing_purposes=merged_purposes,
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         )
 
         self.pias[pia.pia_id] = pia

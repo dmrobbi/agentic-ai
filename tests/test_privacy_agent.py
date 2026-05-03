@@ -224,7 +224,11 @@ class TestPrivacyAgent:
             name="AI System PIA",
             project_description="ML-based recommendations",
             data_categories=['purchase_history', 'browsing'],
+<<<<<<< HEAD
             purposes=[ProcessingPurpose.PERSONALIZATION],
+=======
+            processing_purpose=[ProcessingPurpose.PERSONALIZATION],
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         )
         
         assert pia.pia_id.startswith("pia-")

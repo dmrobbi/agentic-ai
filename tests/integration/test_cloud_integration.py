@@ -257,6 +257,7 @@ class TestKubernetesIntegration:
         
         # Mock pods
         mock_pod_list = MagicMock()
+<<<<<<< HEAD
         mock_pod_list.items = [
             MagicMock(
                 metadata=MagicMock(name='web-pod-1', namespace='production'),
@@ -269,12 +270,36 @@ class TestKubernetesIntegration:
         ]
         mock_pod_list.items[0].spec = MagicMock(containers=[MagicMock(name='nginx', image='nginx:1.21')])
         mock_pod_list.items[1].spec = MagicMock(containers=[MagicMock(name='api', image='api:v2.1')])
+=======
+        # Create mock pods with proper attributes
+        pod1 = MagicMock()
+        pod1.metadata = MagicMock()
+        pod1.metadata.name = 'web-pod-1'
+        pod1.metadata.namespace = 'production'
+        pod1.status = MagicMock()
+        pod1.status.phase = 'Running'
+        pod1.spec = MagicMock()
+        pod1.spec.containers = [MagicMock()]
+        pod1.spec.containers[0].name = 'nginx'
+
+        pod2 = MagicMock()
+        pod2.metadata = MagicMock()
+        pod2.metadata.name = 'api-pod-1'
+        pod2.metadata.namespace = 'production'
+        pod2.status = MagicMock()
+        pod2.status.phase = 'Running'
+        pod2.spec = MagicMock()
+        pod2.spec.containers = [MagicMock()]
+        pod2.spec.containers[0].name = 'api'
+
+        mock_pod_list.items = [pod1, pod2]
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         mock_core_api.return_value.list_pod_for_all_namespaces.return_value = mock_pod_list
         
         # Register pods
         for pod in mock_pod_list.items:
             resource = agent.add_resource(
-                ResourceType.K8S_POD, account.account_id, pod.metadata.namespace, pod.metadata.name,
+                ResourceType.EKS, account.account_id, pod.metadata.namespace, pod.metadata.name,
                 configuration={
                     'namespace': pod.metadata.namespace,
                     'phase': pod.status.phase,
@@ -283,7 +308,7 @@ class TestKubernetesIntegration:
             )
             assert resource.resource_id.startswith("res-")
         
-        pods = agent.get_resources(resource_type=ResourceType.K8S_POD)
+        pods = agent.get_resources(resource_type=ResourceType.EKS)
         assert len(pods) == 2
     
     @patch('kubernetes.client.CoreV1Api')
@@ -293,6 +318,7 @@ class TestKubernetesIntegration:
         account = agent.add_account("k8s-cluster-prod", CloudProvider.KUBERNETES, "Test", "production", "owner")
         
         # Mock pod without security context (running as root)
+<<<<<<< HEAD
         insecure_pod = MagicMock(
             metadata=MagicMock(name='insecure-pod', namespace='default'),
         )
@@ -302,9 +328,22 @@ class TestKubernetesIntegration:
                     securityContext=MagicMock(runAsNonRoot=False, runAsUser=0),
                 )
             ])
+=======
+        insecure_pod = MagicMock()
+        insecure_pod.metadata = MagicMock()
+        insecure_pod.metadata.name = 'insecure-pod'
+        insecure_pod.metadata.namespace = 'default'
+        insecure_pod.spec = MagicMock()
+        container = MagicMock()
+        container.name = 'app'
+        container.security_context = MagicMock()
+        container.security_context.run_as_non_root = False
+        container.security_context.run_as_user = 0
+        insecure_pod.spec.containers = [container]
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         
         resource = agent.add_resource(
-            ResourceType.K8S_POD, account.account_id, "default", "insecure-pod",
+            ResourceType.EKS, account.account_id, "default", "insecure-pod",
             configuration={
                 'security_context': {
                     'runAsNonRoot': False,

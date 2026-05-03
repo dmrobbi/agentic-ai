@@ -448,6 +448,10 @@ class CloudSecurityAgent:
 
         self.findings[finding.finding_id] = finding
 
+        # Mark the resource as non-compliant if it has a finding
+        if resource_id and resource_id in self.resources:
+            self.resources[resource_id].compliant = False
+
         # Update account findings count
         if account_id in self.accounts:
             self.accounts[account_id].findings_count += 1

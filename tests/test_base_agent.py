@@ -66,7 +66,11 @@ class TestBaseAgent:
             state_store=mock_state_store,
             message_bus=mock_bus,
         )
+<<<<<<< HEAD
 
+=======
+        
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         assert agent.agent_id == "test-001"
         assert agent.name == "TestAgent"
         assert agent.permission == Permission.STANDARD
@@ -76,6 +80,7 @@ class TestBaseAgent:
     def test_permission_levels(self, mock_inference, mock_state_store, mock_bus):
         """Test permission level checking."""
         from agentic_ai.agents.base import BaseAgent, Permission
+<<<<<<< HEAD
 
         # Permission is stored as an enum — check that the value is correct
         agent_readonly = BaseAgent.__new__(BaseAgent)
@@ -91,6 +96,30 @@ class TestBaseAgent:
         assert agent_admin.permission == Permission.ADMIN
         assert agent_admin.permission.value == "admin"
 
+=======
+        
+        class TestAgent(BaseAgent):
+            agent_type = "test"
+            
+            async def process_message(self, message):
+                return None
+            
+            async def perform_task(self, task_type, payload):
+                return {}
+        
+        # READ_ONLY agent
+        agent_readonly = TestAgent(permission=Permission.READ_ONLY)
+        assert agent_readonly.permission == Permission.READ_ONLY
+        
+        # STANDARD agent
+        agent_standard = TestAgent(permission=Permission.STANDARD)
+        assert agent_standard.permission == Permission.STANDARD
+        
+        # ADMIN agent
+        agent_admin = TestAgent(permission=Permission.ADMIN)
+        assert agent_admin.permission == Permission.ADMIN
+    
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
     def test_tool_registration(self, mock_inference, mock_state_store, mock_bus):
         """Test tool registration and calling."""
         from agentic_ai.agents.base import BaseAgent, Tool
@@ -105,6 +134,7 @@ class TestBaseAgent:
                 return {}
 
         agent = TestAgent()
+<<<<<<< HEAD
         agent.inference_engine = mock_inference
         agent.state_store = mock_state_store
         agent.bus = mock_bus
@@ -115,11 +145,19 @@ class TestBaseAgent:
         async def custom_tool(arg1: str) -> str:
             return f"Processed: {arg1}"
 
+=======
+        
+        # Register a custom tool
+        async def custom_tool(arg1: str) -> str:
+            return f"Processed: {arg1}"
+        
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         agent._tools["custom_tool"] = Tool(
             name="custom_tool",
             description="A custom test tool",
             func=custom_tool,
         )
+<<<<<<< HEAD
 
         # Tool should be registered
         assert "custom_tool" in agent._tools
@@ -127,9 +165,18 @@ class TestBaseAgent:
 
     def test_memory_operations(self):
         """Test agent memory store/retrieve/forget."""
+=======
+        
+        # Tool should be registered
+        assert "custom_tool" in agent._tools
+    
+    def test_memory_operations(self, mock_inference, mock_state_store, mock_bus):
+        """Test agent memory."""
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         from agentic_ai.agents.base import AgentMemory
 
         memory = AgentMemory(max_entries=5)
+<<<<<<< HEAD
 
         # Store entries
         memory.store("key1", "Hello")
@@ -155,6 +202,32 @@ class TestBaseAgent:
         memory.clear()
         assert len(memory) == 0
 
+=======
+        
+        # Store entries
+        memory.store("user", "Hello")
+        memory.store("assistant", "Hi there!")
+        
+        assert len(memory) == 2
+        
+        # Retrieve entries
+        assert memory.retrieve("user") == "Hello"
+        assert memory.retrieve("assistant") == "Hi there!"
+        assert memory.retrieve("nonexistent") is None
+        
+        # Keys
+        assert set(memory.keys()) == {"user", "assistant"}
+        
+        # Forget
+        assert memory.forget("user") is True
+        assert memory.retrieve("user") is None
+        assert len(memory) == 1
+        
+        # Clear
+        memory.clear()
+        assert len(memory) == 0
+    
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
     def test_transparency_log(self, mock_inference, mock_state_store, mock_bus):
         """Test transparency logging."""
         from agentic_ai.agents.base import BaseAgent
@@ -169,6 +242,7 @@ class TestBaseAgent:
                 return {}
 
         agent = TestAgent()
+<<<<<<< HEAD
         agent.inference_engine = mock_inference
         agent.state_store = mock_state_store
         agent.bus = mock_bus
@@ -180,13 +254,27 @@ class TestBaseAgent:
         log = agent._transparency_log
         assert len(log) == 2
 
+=======
+        
+        # Log some events
+        agent.log("event1", {"key": "value1"})
+        agent.log("event2", {"key": "value2"})
+        
+        log = agent._transparency_log
+        assert len(log) == 2
+        
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         # Each log should have timestamp, agent_id, action, details
         for entry in log:
             assert "timestamp" in entry
             assert "agent_id" in entry
             assert "action" in entry
             assert "details" in entry
+<<<<<<< HEAD
 
+=======
+    
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
     @pytest.mark.asyncio
     async def test_think_method(self, mock_inference, mock_state_store, mock_bus):
         """Test LLM inference through think method."""
@@ -200,6 +288,7 @@ class TestBaseAgent:
 
             async def perform_task(self, task_type, payload):
                 return {}
+<<<<<<< HEAD
 
         agent = TestAgent(
             inference_engine=mock_inference,
@@ -207,10 +296,34 @@ class TestBaseAgent:
             message_bus=mock_bus,
         )
 
+=======
+        
+        agent = TestAgent(inference_engine=mock_inference)
+        
+>>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         response = await agent.think("What is 2+2?")
 
         assert response == "Generated response"
         mock_inference.generate.assert_called_once()
+    
+    @pytest.mark.asyncio
+    async def test_think_method_no_engine(self):
+        """Test think method fallback without inference engine."""
+        from agentic_ai.agents.base import BaseAgent
+        
+        class TestAgent(BaseAgent):
+            agent_type = "test"
+            
+            async def process_message(self, message):
+                return None
+            
+            async def perform_task(self, task_type, payload):
+                return {}
+        
+        agent = TestAgent()
+        
+        response = await agent.think("What is 2+2?")
+        assert "What is 2+2?" in response
 
     @pytest.mark.asyncio
     async def test_think_method_no_inference(self):
