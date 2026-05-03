@@ -95,7 +95,11 @@ class TestSecurityOperationsAgent:
     
     def test_update_incident_status(self, soc):
         """Test incident status updates."""
-        incident = soc.create_incident("Test Incident", severity=IncidentSeverity.SEV2, category="unauthorized_access")
+        incident = soc.create_incident(
+            "Test Incident",
+            IncidentSeverity.SEV2,
+            "unauthorized_access",
+        )
         
         soc.update_incident_status(incident.incident_id, IncidentStatus.TRIAGE)
         soc.update_incident_status(incident.incident_id, IncidentStatus.INVESTIGATION)
@@ -106,15 +110,11 @@ class TestSecurityOperationsAgent:
     
     def test_add_ioc(self, soc):
         """Test adding IOC to incident."""
-<<<<<<< HEAD
         incident = soc.create_incident(
             "Test",
             severity=IncidentSeverity.SEV2,
             category="malware",
         )
-=======
-        incident = soc.create_incident("Test", severity=IncidentSeverity.SEV2, category="malware")
->>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         
         result = soc.add_ioc(
             incident.incident_id,
@@ -128,15 +128,11 @@ class TestSecurityOperationsAgent:
     
     def test_add_timeline_entry(self, soc):
         """Test adding timeline entries."""
-<<<<<<< HEAD
         incident = soc.create_incident(
             "Test",
             severity=IncidentSeverity.SEV2,
             category="malware",
         )
-=======
-        incident = soc.create_incident("Test", severity=IncidentSeverity.SEV2, category="malware")
->>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         
         result = soc.add_timeline_entry(
             incident.incident_id,
@@ -150,7 +146,11 @@ class TestSecurityOperationsAgent:
     
     def test_close_incident(self, soc):
         """Test closing incident with documentation."""
-        incident = soc.create_incident("Test", severity=IncidentSeverity.SEV3, category="phishing")
+        incident = soc.create_incident(
+            "Test",
+            IncidentSeverity.SEV3,
+            "phishing",
+        )
         
         result = soc.close_incident(
             incident.incident_id,
@@ -231,15 +231,11 @@ class TestSecurityOperationsAgent:
     
     def test_get_attack_mapping(self, soc):
         """Test MITRE ATT&CK mapping."""
-<<<<<<< HEAD
         incident = soc.create_incident(
             "Test",
             severity=IncidentSeverity.SEV2,
             category="malware",
         )
-=======
-        incident = soc.create_incident("Test", severity=IncidentSeverity.SEV2, category="malware")
->>>>>>> d04964d (fix: align all tests with refactored agent APIs)
         
         mapping = soc.get_attack_mapping(incident.incident_id)
         
