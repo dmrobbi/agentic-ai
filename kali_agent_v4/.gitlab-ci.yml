@@ -21,7 +21,7 @@ cache:
 # Linting
 lint:
   stage: lint
-  image: forge-container.wezzel.com:8443/library/python:3.11-slim
+  image: forge-container.wezzel.com/library/python:3.11-slim
   script:
     - pip install flake8 black mypy
     - flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
@@ -32,9 +32,9 @@ lint:
 # Unit Tests
 unit-tests:
   stage: test
-  image: forge-container.wezzel.com:8443/library/python:3.11-slim
+  image: forge-container.wezzel.com/library/python:3.11-slim
   services:
-    - forge-container.wezzel.com:8443/library/redis:alpine
+    - forge-container.wezzel.com/library/redis:alpine
   before_script:
     - pip install -r requirements.txt
     - pip install pytest pytest-cov
@@ -52,7 +52,7 @@ unit-tests:
 # End-to-End Tests
 e2e-tests:
   stage: test
-  image: forge-container.wezzel.com:8443/library/python:3.11-slim
+  image: forge-container.wezzel.com/library/python:3.11-slim
   services:
     - docker:dind
   before_script:
@@ -68,7 +68,7 @@ e2e-tests:
 # Build Docker Image
 build-docker:
   stage: build
-  image: forge-container.wezzel.com:8443/library/docker:24
+  image: forge-container.wezzel.com/library/docker:24
   services:
     - docker:dind
   before_script:
@@ -85,7 +85,7 @@ build-docker:
 # Security Scan
 security-scan:
   stage: security
-  image: forge-container.wezzel.com:8443/aquasec/trivy:latest
+  image: forge-container.wezzel.com/aquasec/trivy:latest
   script:
     - trivy fs --security-checks vuln,secret .
     - trivy image --severity HIGH,CRITICAL $CI_REGISTRY_IMAGE:latest
@@ -130,7 +130,7 @@ deploy-production:
 # Publish Test Report
 publish-report:
   stage: deploy
-  image: forge-container.wezzel.com:8443/library/python:3.11-slim
+  image: forge-container.wezzel.com/library/python:3.11-slim
   script:
     - pip install junit2html
     - junit2html report.xml report.html
