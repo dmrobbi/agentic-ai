@@ -18,7 +18,7 @@ Status: Alpha (0.1.0)
 import logging
 import random
 import math
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 import uuid
@@ -359,7 +359,7 @@ class IsolationForest:
         report.append("=" * 70)
         report.append(f"Date: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
         report.append("")
-        report.append(f"Model Configuration:")
+        report.append("Model Configuration:")
         report.append(f"  Trees: {self.n_trees}")
         report.append(f"  Max Samples: {self.max_samples}")
         report.append(f"  Contamination: {self.contamination}")
@@ -367,7 +367,7 @@ class IsolationForest:
         report.append("")
         report.append(f"Features: {', '.join(self.feature_names)}")
         report.append("")
-        report.append(f"Results:")
+        report.append("Results:")
         report.append(f"  Total Anomalies: {summary['total_anomalies']}")
         report.append(f"  Anomaly Rate: {summary['anomaly_rate']:.2%}")
         report.append(f"  Avg Anomaly Score: {summary['avg_score']:.4f}")
@@ -387,7 +387,7 @@ class IsolationForest:
                 if anomaly.feature_contributions:
                     top_features = sorted(anomaly.feature_contributions.items(),
                                         key=lambda x: x[1], reverse=True)[:3]
-                    report.append(f"     Top Features:")
+                    report.append("     Top Features:")
                     for feature, contribution in top_features:
                         report.append(f"       - {feature}: {contribution:.2f}σ")
         

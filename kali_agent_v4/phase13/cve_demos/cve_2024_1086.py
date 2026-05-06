@@ -31,15 +31,11 @@ Version: 1.0.0
 """
 
 import argparse
-import sys
 import os
 import logging
-import time
-import json
 import subprocess
-import struct
 from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 from pathlib import Path
 from enum import Enum
@@ -512,14 +508,14 @@ class UAFDetector:
             check_name="kernel_version",
             status=status.value,
             details=f"Kernel {kc.version} on {kc.arch}",
-            evidence=f"Version range 5.4-6.7 is vulnerable; 6.8+ is patched",
+            evidence="Version range 5.4-6.7 is vulnerable; 6.8+ is patched",
         )
         self.results.append(result)
         return result
 
     def check_nftables_config(self) -> UAFDetectionResult:
         """Check kernel config for nftables-related options"""
-        kc = KernelConfig()
+        KernelConfig()
         vulnerable_options = []
 
         config_path = f"/boot/config-{os.uname().release}"
@@ -1044,13 +1040,13 @@ Examples:
 
     if args.command == 'scan':
         report = demo.scan()
-        print(f"\n  🔍 Kernel Scan Results:")
+        print("\n  🔍 Kernel Scan Results:")
         for key, val in report.items():
             print(f"    {key}: {val}")
 
         if args.detect:
             results = demo.run_detection()
-            print(f"\n  🛡️  UAF Detection Results:")
+            print("\n  🛡️  UAF Detection Results:")
             for r in results:
                 emoji = "🔴" if r.status == "vulnerable" else "🟢" if r.status == "safe" else "⚪"
                 print(f"    {emoji} {r.check_name}: {r.status}")

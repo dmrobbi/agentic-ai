@@ -15,7 +15,7 @@ Status: Alpha (0.1.0)
 
 import logging
 import numpy as np
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Tuple
 from dataclasses import dataclass, field
 from datetime import datetime
 import json
@@ -129,7 +129,7 @@ class FederatedClient:
         for key, value in global_model_state.items():
             state_dict[key] = torch.FloatTensor(value).to(self.device)
         self.model.load_state_dict(state_dict)
-        logger.debug(f"   Received global model")
+        logger.debug("   Received global model")
     
     def train_local(self) -> ClientUpdate:
         """Train on local data and return model update"""
@@ -318,7 +318,7 @@ class FederatedCoordinator:
             new_weights = current_weights + aggregated_delta[name]
             new_state_dict[name] = new_weights
         
-        logger.info(f"✅ Aggregation complete")
+        logger.info("✅ Aggregation complete")
         
         return new_state_dict
     
@@ -395,7 +395,7 @@ class FederatedCoordinator:
             history.append(round_result)
         
         logger.info(f"\n{'='*70}")
-        logger.info(f"✅ Federated Learning Complete!")
+        logger.info("✅ Federated Learning Complete!")
         logger.info(f"   Total rounds: {len(history)}")
         logger.info(f"   Final accuracy: {history[-1].aggregation_metrics['avg_accuracy']:.4f}")
         logger.info(f"{'='*70}")

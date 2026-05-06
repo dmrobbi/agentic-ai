@@ -351,7 +351,7 @@ class TestPrivacyAgent:
     
     def test_get_regulation_compliance(self, privacy):
         """Test regulation-specific compliance."""
-        subject = privacy.register_data_subject(
+        privacy.register_data_subject(
             "EU User",
             "eu@example.com",
             "EU",

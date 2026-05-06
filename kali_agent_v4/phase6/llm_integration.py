@@ -6,8 +6,7 @@ AI-powered attack planning, natural language commands, and auto-reporting
 
 import requests
 import json
-from typing import Dict, List, Optional
-from datetime import datetime
+from typing import Dict
 
 class LLMIntegration:
     """Local LLM integration via Ollama for attack planning and reporting"""
@@ -72,7 +71,7 @@ Be concise and actionable. Format as JSON."""
             end = response.rfind('}') + 1
             if start >= 0 and end > start:
                 return json.loads(response[start:end])
-        except:
+        except Exception:
             pass
         
         return {"analysis": response, "format": "text"}
@@ -104,7 +103,7 @@ Generate a complete attack plan."""
             end = response.rfind('}') + 1
             if start >= 0 and end > start:
                 return json.loads(response[start:end])
-        except:
+        except Exception:
             pass
         
         return {"plan": response, "format": "text"}
@@ -184,7 +183,7 @@ Return ONLY valid JSON with no explanation."""
             end = response.rfind('}') + 1
             if start >= 0 and end > start:
                 return json.loads(response[start:end])
-        except:
+        except Exception:
             pass
         
         return {"error": "Could not parse command", "original": command}

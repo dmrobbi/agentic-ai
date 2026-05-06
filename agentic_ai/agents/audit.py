@@ -886,14 +886,14 @@ if __name__ == "__main__":
 
     # Generate report
     report = agent.generate_audit_report(audit.audit_id)
-    print(f"\nAudit Report:")
+    print("\nAudit Report:")
     print(f"  Controls: {report['controls']['total']}")
     print(f"  Effectiveness: {report['controls']['effectiveness_rate']:.1f}%")
     print(f"  Findings: {report['findings']['total']}")
 
     # Get dashboard
     dashboard = agent.get_audit_dashboard()
-    print(f"\nAudit Dashboard:")
+    print("\nAudit Dashboard:")
     print(f"  Total Audits: {dashboard['audits']['total']}")
     print(f"  In Progress: {dashboard['audits']['in_progress']}")
     print(f"  Open Findings: {dashboard['findings']['open']}")

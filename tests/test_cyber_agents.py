@@ -16,7 +16,6 @@ from agentic_ai.agents.cyber.soc import (
     IncidentStatus,
     ThreatActor,
 )
-from agentic_ai.agents.integration import WebhookEvent
 from agentic_ai.agents.cyber.vulnman import (
     VulnerabilityManagementAgent,
     Severity,

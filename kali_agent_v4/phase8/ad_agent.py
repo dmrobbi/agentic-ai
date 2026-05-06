@@ -4,8 +4,6 @@ KaliAgent v4 - Phase 8: Active Directory Exploitation Agent
 Automated AD security assessment and attack simulation
 """
 
-import json
-import time
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
@@ -105,7 +103,7 @@ class ADAgent:
     def authenticate(self, username: str, password: str = None, 
                     hash: str = None, kerberos: bool = False) -> bool:
         """Authenticate to Active Directory"""
-        print(f"\n🔐 Authenticating to AD...")
+        print("\n🔐 Authenticating to AD...")
         
         # Validate auth method
         if not password and not hash and not kerberos:
@@ -126,7 +124,7 @@ class ADAgent:
     
     def enumerate_domain(self) -> Dict:
         """Enumerate domain information"""
-        print(f"\n🔍 Enumerating domain...")
+        print("\n🔍 Enumerating domain...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -170,7 +168,7 @@ class ADAgent:
     
     def enumerate_users(self) -> List[ADUser]:
         """Enumerate domain users"""
-        print(f"\n👥 Enumerating users...")
+        print("\n👥 Enumerating users...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -256,7 +254,7 @@ class ADAgent:
     
     def enumerate_computers(self) -> List[ADComputer]:
         """Enumerate domain computers"""
-        print(f"\n💻 Enumerating computers...")
+        print("\n💻 Enumerating computers...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -293,7 +291,7 @@ class ADAgent:
     
     def kerberoast(self) -> List[Dict]:
         """Request TGS for SPN accounts (Kerberoasting)"""
-        print(f"\n🎯 Performing Kerberoasting...")
+        print("\n🎯 Performing Kerberoasting...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -332,13 +330,13 @@ class ADAgent:
         ))
         
         print(f"   Total tickets: {len(tickets)}")
-        print(f"   ⚠️  Hashes can be cracked offline with Hashcat")
+        print("   ⚠️  Hashes can be cracked offline with Hashcat")
         
         return tickets
     
     def asrep_roast(self) -> List[Dict]:
         """AS-REP Roasting for users without preauth"""
-        print(f"\n🎯 Performing AS-REP Roasting...")
+        print("\n🎯 Performing AS-REP Roasting...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -367,7 +365,7 @@ class ADAgent:
     
     def dcsync(self, target_user: str = "krbtgt") -> Dict:
         """Simulate DCSync attack"""
-        print(f"\n☠️  Performing DCSync attack...")
+        print("\n☠️  Performing DCSync attack...")
         print(f"   Target: {target_user}")
         
         if not self.session_data.get('authenticated'):
@@ -375,8 +373,6 @@ class ADAgent:
             return {}
         
         # DCSync requires specific permissions
-        required_perms = ["Replicating Directory Changes", 
-                         "Replicating Directory Changes All"]
         
         # Simulate successful DCSync
         result = {
@@ -401,15 +397,15 @@ class ADAgent:
             references=["https://attack.mitre.org/techniques/T1003/006/"]
         ))
         
-        print(f"   ✅ DCSync successful!")
+        print("   ✅ DCSync successful!")
         print(f"   Hash: {result['hash'][:50]}...")
-        print(f"   ⚠️  CRITICAL: This allows Golden Ticket creation!")
+        print("   ⚠️  CRITICAL: This allows Golden Ticket creation!")
         
         return result
     
     def check_acl_abuse(self) -> List[ADFinding]:
         """Check for ACL abuse opportunities"""
-        print(f"\n🔍 Checking for ACL abuse...")
+        print("\n🔍 Checking for ACL abuse...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -458,7 +454,7 @@ class ADAgent:
     
     def check_laps(self) -> Dict:
         """Check for LAPS (Local Administrator Password Solution)"""
-        print(f"\n🔐 Checking LAPS configuration...")
+        print("\n🔐 Checking LAPS configuration...")
         
         if not self.session_data.get('authenticated'):
             print("❌ Not authenticated!")
@@ -498,7 +494,7 @@ class ADAgent:
     
     def generate_bloodhound_data(self) -> Dict:
         """Generate BloodHound-compatible data"""
-        print(f"\n🐕 Generating BloodHound data...")
+        print("\n🐕 Generating BloodHound data...")
         
         # Simulate BloodHound output
         bloodhound_data = {
@@ -541,7 +537,7 @@ class ADAgent:
     
     def generate_report(self) -> Dict:
         """Generate AD assessment report"""
-        print(f"\n📄 Generating AD assessment report...")
+        print("\n📄 Generating AD assessment report...")
         
         # Count findings by severity
         severity_counts = {
@@ -658,7 +654,7 @@ if __name__ == "__main__":
     report = ad_agent.generate_report()
     
     print(f"\n{'='*60}")
-    print(f"🏢 ACTIVE DIRECTORY ASSESSMENT COMPLETE")
+    print("🏢 ACTIVE DIRECTORY ASSESSMENT COMPLETE")
     print(f"{'='*60}")
     print(f"Domain: {report['domain']}")
     print(f"Users: {report['summary']['users_enumerated']}")
@@ -668,9 +664,9 @@ if __name__ == "__main__":
     print(f"  High: {report['summary']['high']}")
     print(f"  Medium: {report['summary']['medium']}")
     print(f"  Low: {report['summary']['low']}")
-    print(f"\nAttack Techniques Used:")
+    print("\nAttack Techniques Used:")
     for technique in report['attack_techniques']:
         print(f"  • {technique}")
-    print(f"\nTop Recommendations:")
+    print("\nTop Recommendations:")
     for rec in report['recommendations'][:5]:
         print(f"  • {rec}")

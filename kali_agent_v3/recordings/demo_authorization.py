@@ -16,16 +16,16 @@ print()
 
 auth = AuthorizationManager()
 
-print(f"🔐 Authorization Levels:")
+print("🔐 Authorization Levels:")
 for level in [AuthorizationLevel.NONE, AuthorizationLevel.BASIC, AuthorizationLevel.ADVANCED, AuthorizationLevel.CRITICAL]:
     print(f"   • {level.name:12s} - Level {level.value}")
 print()
 
-print(f"📝 Requesting Authorizations:")
+print("📝 Requesting Authorizations:")
 print()
 
 # BASIC authorization
-print(f"   Request 1: nmap_scan (BASIC)")
+print("   Request 1: nmap_scan (BASIC)")
 success, msg, token = auth.request_authorization('nmap_scan', reason='Network reconnaissance')
 print(f"      Status: {'✅ APPROVED' if success else '⏳ PENDING'}")
 if token:
@@ -33,20 +33,20 @@ if token:
 print()
 
 # ADVANCED authorization
-print(f"   Request 2: sql_injection (ADVANCED)")
+print("   Request 2: sql_injection (ADVANCED)")
 success, msg, token = auth.request_authorization('sql_injection', reason='Web app testing')
 print(f"      Status: {'✅ APPROVED' if success else '⏳ PENDING'}")
 print(f"      Message: {msg}")
 print()
 
 # CRITICAL authorization
-print(f"   Request 3: kernel_exploit (CRITICAL)")
+print("   Request 3: kernel_exploit (CRITICAL)")
 success, msg, token = auth.request_authorization('kernel_exploit', reason='Privilege escalation testing')
 print(f"      Status: {'✅ APPROVED' if success else '🔒 REQUIRES PIN'}")
 print(f"      Message: {msg}")
 print()
 
-print(f"📋 Pending Authorizations:")
+print("📋 Pending Authorizations:")
 pending = auth.list_pending_authorizations()
 print(f"   {len(pending)} authorization(s) pending approval")
 print()

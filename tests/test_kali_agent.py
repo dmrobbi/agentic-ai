@@ -12,10 +12,7 @@ from pathlib import Path
 
 from agentic_ai.agents.cyber.kali import (
     KaliAgent,
-    ToolCategory,
     AuthorizationLevel,
-    ExecutionMode,
-    ToolDefinition,
 )
 
 

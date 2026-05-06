@@ -975,7 +975,7 @@ def get_capabilities() -> Dict[str, Any]:
         'risk_domains': [d.value for d in RiskDomain],
         'assessment_types': [t.value for t in AssessmentType],
         'questionnaire_types': [t.value for t in QuestionnaireType],
-        'residual_risk_levels': [l.value for l in ResidualRisk],
+        'residual_risk_levels': [level.value for level in ResidualRisk],
     }
 
 
@@ -1074,7 +1074,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_vendor_risk_dashboard()
-    print(f"\nVendor Risk Dashboard:")
+    print("\nVendor Risk Dashboard:")
     print(f"  Total Vendors: {dashboard['vendors']['total']}")
     print(f"  Tier 1: {dashboard['vendors']['by_tier']['tier_1']}")
     print(f"  Assessments Due: {dashboard['assessments']['due_soon']}")

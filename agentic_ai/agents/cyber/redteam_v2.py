@@ -12,12 +12,11 @@ Improvements over v1:
 - Enhanced reporting with executive summaries
 """
 
-import json
 import logging
+import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from datetime import datetime
+from typing import Any, Dict, List, Optional
 from collections import defaultdict
 
 
@@ -569,7 +568,7 @@ class RedTeamAgentV2:
 
         # Start node
         nodes.append({
-            "id": f"node_start",
+            "id": "node_start",
             "name": start_point,
             "type": "start",
             "mitre": [],
@@ -1061,9 +1060,6 @@ class RedTeamAgentV2:
 
 
 # Import secrets for ID generation
-import secrets
-
-
 # ============================================
 # Demo Script
 # ============================================
@@ -1132,7 +1128,7 @@ def demo_redteam_v2():
     risk = agent.calculate_engagement_risk("eng_test")
     print(f"  Overall Risk Score: {risk.overall_risk_score}/100")
     print(f"  Risk Level: {risk.risk_level.upper()}")
-    print(f"  Risk Factors:")
+    print("  Risk Factors:")
     for factor, score in risk.risk_factors.items():
         print(f"    - {factor}: {score}")
     print()
@@ -1155,7 +1151,7 @@ def demo_redteam_v2():
     print(f"    - Critical: {summary['key_findings']['critical']}")
     print(f"    - High: {summary['key_findings']['high']}")
     print(f"  MITRE Coverage: {summary['mitre_coverage']['techniques_mapped']} techniques")
-    print(f"  Recommendations:")
+    print("  Recommendations:")
     for rec in summary['recommendations'][:3]:
         print(f"    • {rec}")
     print()

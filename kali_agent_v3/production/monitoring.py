@@ -9,12 +9,11 @@ Tasks: 5.1.1, 5.1.2, 5.1.3
 Status: IMPLEMENTED
 """
 
-import os
 import json
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass, field
+from typing import Dict, List, Optional
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 from enum import Enum
 
@@ -573,7 +572,7 @@ def main():
         
         status_icon = "🟢" if health.status == 'healthy' else "🟡" if health.status == 'degraded' else "🔴"
         print(f"Status: {status_icon} {health.status.upper()}")
-        print(f"\nResources:")
+        print("\nResources:")
         print(f"  CPU:     {health.cpu_usage:.1f}%")
         print(f"  Memory:  {health.memory_usage:.1f}%")
         print(f"  Disk:    {health.disk_usage:.1f}%")

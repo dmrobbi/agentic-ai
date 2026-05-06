@@ -461,7 +461,7 @@ class TestResearchAgent:
             keywords=['ml', 'deep learning'],
         )
         
-        pub2 = research.add_publication(
+        research.add_publication(
             "Deep Learning Study",
             ["Author"],
             PublicationType.JOURNAL,

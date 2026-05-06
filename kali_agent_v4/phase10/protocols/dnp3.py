@@ -22,10 +22,9 @@ Status: Alpha (0.1.0)
 import logging
 import socket
 import struct
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
-import time
 
 # Configure logging
 logging.basicConfig(
@@ -226,7 +225,7 @@ class DNP3Client:
         
         logger.info(f"🏭 DNP3 Client v{self.VERSION}")
         logger.warning(f"⚠️  SAFETY MODE: {'ENABLED' if safety_mode else 'DISABLED'}")
-        logger.warning(f"⚠️  DNP3 controls CRITICAL INFRASTRUCTURE!")
+        logger.warning("⚠️  DNP3 controls CRITICAL INFRASTRUCTURE!")
         logger.info(f"🎯 Target: {ip_address}:{port} (local={local_address}, remote={remote_address})")
     
     def connect(self) -> bool:
@@ -244,7 +243,7 @@ class DNP3Client:
             self.socket.connect((self.ip_address, self.port))
             
             self.connected = True
-            logger.info(f"✅ Connected to DNP3 device")
+            logger.info("✅ Connected to DNP3 device")
             
             # Get device info
             self.device_info = self.get_device_info()
@@ -266,7 +265,7 @@ class DNP3Client:
         if self.socket:
             try:
                 self.socket.close()
-            except:
+            except Exception:
                 pass
         
         self.connected = False
@@ -778,7 +777,7 @@ class DNP3Client:
             logger.error("❌ Control relay blocked: Safety mode enabled")
             return False
         
-        logger.critical(f"🚨 CONTROL RELAY OPERATION!")
+        logger.critical("🚨 CONTROL RELAY OPERATION!")
         logger.critical(f"  Index: {index}")
         logger.critical(f"  Operation: {'TRIP' if trip_close else 'CLOSE'}")
         logger.critical(f"  Count: {count}")
@@ -1077,7 +1076,7 @@ def main():
         device_info = dnp3.get_device_info()
         
         if device_info:
-            print(f"\n📊 Device Information:")
+            print("\n📊 Device Information:")
             print(f"  Manufacturer: {device_info.manufacturer}")
             print(f"  Product: {device_info.product_name}")
             print(f"  DNP3 Version: {device_info.dnp3_version}")
@@ -1089,7 +1088,7 @@ def main():
         ao = dnp3.read_analog_outputs(0, 20)
         counters = dnp3.read_counters(0, 20)
         
-        print(f"\n📊 Points Discovered:")
+        print("\n📊 Points Discovered:")
         print(f"  Binary Inputs:  {len(bi)}")
         print(f"  Binary Outputs: {len(bo)}")
         print(f"  Analog Inputs:  {len(ai)}")

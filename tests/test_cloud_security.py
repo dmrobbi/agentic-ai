@@ -6,7 +6,6 @@ Unit tests for CloudSecurityAgent - CSPM and cloud compliance.
 """
 
 import pytest
-from datetime import datetime, timedelta
 
 from agentic_ai.agents.cloud_security import (
     CloudSecurityAgent,
@@ -173,8 +172,8 @@ class TestCloudSecurityAgent:
         """Test filtering findings by status."""
         account = cloud_sec.add_account("123", CloudProvider.AWS, "Test", "production", "owner")
         
-        f1 = cloud_sec.create_finding("Open", "Desc", Severity.MEDIUM, "res-1", account.account_id)
-        f2 = cloud_sec.create_finding("Open 2", "Desc", Severity.MEDIUM, "res-2", account.account_id)
+        cloud_sec.create_finding("Open", "Desc", Severity.MEDIUM, "res-1", account.account_id)
+        cloud_sec.create_finding("Open 2", "Desc", Severity.MEDIUM, "res-2", account.account_id)
         f3 = cloud_sec.create_finding("Resolved", "Desc", Severity.MEDIUM, "res-3", account.account_id)
         
         cloud_sec.update_finding_status(f3.finding_id, FindingStatus.RESOLVED)

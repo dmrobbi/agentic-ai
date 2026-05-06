@@ -30,16 +30,13 @@ Version: 1.0.0
 """
 
 import argparse
-import sys
 import os
 import logging
-import struct
-import hashlib
 import subprocess
 import re
 from datetime import datetime
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict
+from typing import List
 from pathlib import Path
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
@@ -515,11 +512,11 @@ class CVE2024_3094_Demo:
 🔄 ATTACK STEPS:""")
         for s in sc.attack_steps:
             print(f"  {s}")
-        print(f"""
+        print("""
 🔍 DETECTION:""")
         for d in sc.detection:
             print(f"  • {d}")
-        print(f"""
+        print("""
 🛡️  MITIGATION:""")
         for m in sc.mitigation:
             print(f"  • {m}")

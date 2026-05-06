@@ -4,8 +4,6 @@ KaliAgent v4 - Phase 8: Mobile Application Security Agent
 Android APK and iOS IPA analysis and exploitation
 """
 
-import json
-import time
 from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
@@ -104,7 +102,7 @@ class MobileAgent:
         self.findings: List[MobileFinding] = []
         self.apk_info: Optional[APKInfo] = None
         self.ipa_info: Optional[IPAInfo] = None
-        self Decompiled_code = []
+        self.decompiled_code = []
         self.secrets = []
         
         print(f"📱 Mobile Agent initialized: {self.agent_id}")
@@ -112,7 +110,7 @@ class MobileAgent:
     
     def analyze_apk(self, apk_path: str) -> APKInfo:
         """Analyze Android APK file"""
-        print(f"\n🤖 Analyzing Android APK...")
+        print("\n🤖 Analyzing Android APK...")
         print(f"   Path: {apk_path}")
         
         # Simulate APK analysis
@@ -201,7 +199,7 @@ class MobileAgent:
                     description=f"{len(exported)} {component_type} are exported and accessible by other apps",
                     affected_object=self.apk_info.package_name,
                     attack_type="intent_injection",
-                    remediation=f"Set android:exported='false' unless inter-app communication is required",
+                    remediation="Set android:exported='false' unless inter-app communication is required",
                     cvss_score=7.0 if severity == "high" else 5.5,
                     owasp_mobile="M1: Improper Platform Usage"
                 ))
@@ -222,7 +220,7 @@ class MobileAgent:
     
     def analyze_ipa(self, ipa_path: str) -> IPAInfo:
         """Analyze iOS IPA file"""
-        print(f"\n🍎 Analyzing iOS IPA...")
+        print("\n🍎 Analyzing iOS IPA...")
         print(f"   Path: {ipa_path}")
         
         # Simulate IPA analysis
@@ -277,7 +275,7 @@ class MobileAgent:
         # Check URL schemes
         if len(self.ipa_info.url_schemes) > 0:
             self.findings.append(MobileFinding(
-                finding_id=f"IOS-URLSCHEME-001",
+                finding_id="IOS-URLSCHEME-001",
                 title="Custom URL Schemes Defined",
                 severity="medium",
                 description=f"{len(self.ipa_info.url_schemes)} custom URL schemes may be vulnerable to injection",
@@ -303,7 +301,7 @@ class MobileAgent:
     
     def extract_hardcoded_secrets(self) -> List[Dict]:
         """Extract hardcoded secrets from app"""
-        print(f"\n🔍 Extracting hardcoded secrets...")
+        print("\n🔍 Extracting hardcoded secrets...")
         
         # Simulate secret extraction
         if self.platform == MobilePlatform.ANDROID:
@@ -379,7 +377,7 @@ class MobileAgent:
     
     def check_insecure_storage(self) -> List[MobileFinding]:
         """Check for insecure data storage"""
-        print(f"\n💾 Checking insecure storage...")
+        print("\n💾 Checking insecure storage...")
         
         storage_findings = []
         
@@ -461,7 +459,7 @@ class MobileAgent:
     
     def ssl_pinning_check(self) -> MobileFinding:
         """Check SSL pinning implementation"""
-        print(f"\n🔒 Checking SSL pinning...")
+        print("\n🔒 Checking SSL pinning...")
         
         # Simulate SSL pinning check
         pinning_status = {
@@ -484,14 +482,14 @@ class MobileAgent:
         )
         
         self.findings.append(finding)
-        print(f"   ⚠️  SSL Pinning: Not implemented")
-        print(f"   Vulnerable to MITM attacks")
+        print("   ⚠️  SSL Pinning: Not implemented")
+        print("   Vulnerable to MITM attacks")
         
         return finding
     
     def root_jailbreak_detection_check(self) -> MobileFinding:
         """Check root/jailbreak detection"""
-        print(f"\n🔍 Checking root/jailbreak detection...")
+        print("\n🔍 Checking root/jailbreak detection...")
         
         detection_status = {
             "implemented": False,
@@ -513,13 +511,13 @@ class MobileAgent:
         )
         
         self.findings.append(finding)
-        print(f"   ⚠️  Root/Jailbreak Detection: Not implemented")
+        print("   ⚠️  Root/Jailbreak Detection: Not implemented")
         
         return finding
     
     def bypass_ssl_pinning(self) -> Dict:
         """Simulate SSL pinning bypass"""
-        print(f"\n🔓 Attempting SSL pinning bypass...")
+        print("\n🔓 Attempting SSL pinning bypass...")
         
         if self.platform == MobilePlatform.ANDROID:
             bypass_method = "Frida script with okhttp3.CertificatePinner hook"
@@ -538,13 +536,13 @@ class MobileAgent:
         
         print(f"   ✅ Bypass successful using {bypass_method}")
         print(f"   Tools: {', '.join(tools)}")
-        print(f"   ⚠️  MITM attacks now possible")
+        print("   ⚠️  MITM attacks now possible")
         
         return result
     
     def bypass_root_jailbreak_detection(self) -> Dict:
         """Simulate root/jailbreak detection bypass"""
-        print(f"\n🔓 Attempting root/jailbreak detection bypass...")
+        print("\n🔓 Attempting root/jailbreak detection bypass...")
         
         if self.platform == MobilePlatform.ANDROID:
             bypass_method = "Frida script hiding root binaries and packages"
@@ -569,7 +567,7 @@ class MobileAgent:
             "tools": ["frida", "shadow", "iHide"]
         }
         
-        print(f"   ✅ Bypass successful")
+        print("   ✅ Bypass successful")
         print(f"   Method: {bypass_method}")
         print(f"   Techniques: {len(detection_evasion)}")
         
@@ -577,7 +575,7 @@ class MobileAgent:
     
     def generate_report(self) -> Dict:
         """Generate mobile security assessment report"""
-        print(f"\n📄 Generating mobile security report...")
+        print("\n📄 Generating mobile security report...")
         
         severity_counts = {
             'critical': sum(1 for f in self.findings if f.severity == 'critical'),
@@ -680,7 +678,7 @@ if __name__ == "__main__":
     report = android_agent.generate_report()
     
     print(f"\n{'='*60}")
-    print(f"📱 MOBILE SECURITY ASSESSMENT COMPLETE")
+    print("📱 MOBILE SECURITY ASSESSMENT COMPLETE")
     print(f"{'='*60}")
     print(f"Platform: {report['platform']}")
     print(f"App: {report['app_info']['package']}")
@@ -690,9 +688,9 @@ if __name__ == "__main__":
     print(f"  High: {report['summary']['high']}")
     print(f"  Medium: {report['summary']['medium']}")
     print(f"Secrets Found: {report['summary']['secrets_found']}")
-    print(f"\nOWASP Mobile Coverage:")
+    print("\nOWASP Mobile Coverage:")
     for owasp in report['owasp_mobile_coverage']:
         print(f"  • {owasp}")
-    print(f"\nTop Recommendations:")
+    print("\nTop Recommendations:")
     for rec in report['recommendations'][:5]:
         print(f"  • {rec}")

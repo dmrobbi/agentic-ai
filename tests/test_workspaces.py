@@ -90,7 +90,7 @@ class TestResourceLock:
     def test_lock_expiration(self, collaboration_imports):
         """Test lock expiration."""
         ResourceLock = collaboration_imports['ResourceLock']
-        LockType = collaboration_imports['LockType']
+        collaboration_imports['LockType']
         
         # Create expired lock
         lock = ResourceLock(
@@ -375,7 +375,7 @@ class TestWorkspace:
         )
         workspace.add_participant("agent-1")
         
-        lock = workspace.acquire_lock(
+        workspace.acquire_lock(
             resource.resource_id,
             holder_id="agent-1",
             lock_type=LockType.WRITE,
@@ -618,7 +618,7 @@ class TestCollaborationIntegration:
         perm_manager.grant_access("agent-2", Role.EDITOR)
         
         # Create resource
-        resource = workspace.create_resource(
+        workspace.create_resource(
             name="Shared Doc",
             resource_type="document",
             creator_id="agent-1",

@@ -25,7 +25,6 @@ import argparse
 import sys
 import importlib
 from pathlib import Path
-from datetime import datetime
 
 DEMO_REGISTRY = {
     "CVE-2024-6387": {

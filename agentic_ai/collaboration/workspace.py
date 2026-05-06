@@ -450,7 +450,7 @@ class Workspace:
                 "participant_count": len(self._participants),
                 "owner_count": len(self._owners),
                 "resource_count": len(self._resources),
-                "active_locks": sum(1 for l in self._locks.values() if not l.is_expired()),
+                "active_locks": sum(1 for level in self._locks.values() if not level.is_expired()),
                 "change_count": len(self._change_log),
             }
 
@@ -464,6 +464,6 @@ class Workspace:
                 "resources": [r.to_dict() for r in self._resources.values()],
                 "participants": list(self._participants),
                 "owners": list(self._owners),
-                "locks": [l.to_dict() for l in self._locks.values() if not l.is_expired()],
+                "locks": [level.to_dict() for level in self._locks.values() if not level.is_expired()],
                 "recent_changes": [c.to_dict() for c in self._change_log[-10:]],
             }

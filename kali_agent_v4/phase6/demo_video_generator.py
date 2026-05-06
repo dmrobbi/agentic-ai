@@ -7,7 +7,7 @@ Create a 3-minute professional demo reel showcasing all capabilities
 import subprocess
 import os
 from datetime import datetime
-from typing import List, Dict
+from typing import List
 
 class DemoVideoGenerator:
     """Generate professional demo video for KaliAgent v4"""
@@ -61,17 +61,6 @@ class DemoVideoGenerator:
         
         filter_complex = filter_complex.rstrip(',')
         
-        cmd = [
-            'ffmpeg',
-            '-y',
-            '-f', 'lavfi',
-            '-i', filter_complex,
-            '-t', '3',
-            '-c:v', 'libx264',
-            '-preset', 'fast',
-            '-crf', '18',
-            output_file
-        ]
         
         print(f"🎨 Creating title card: {title}")
         # subprocess.run(cmd)
@@ -202,7 +191,7 @@ class DemoVideoGenerator:
         print("\n" + "=" * 60)
         print(f"✅ Demo video created: {final_video}")
         print(f"📊 Total clips: {len(clips)}")
-        print(f"⏱️  Estimated duration: ~3 minutes")
+        print("⏱️  Estimated duration: ~3 minutes")
         
         return final_video
     

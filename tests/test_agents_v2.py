@@ -12,18 +12,13 @@ Tests cover:
 """
 
 import pytest
-from datetime import datetime
 from agentic_ai.agents.cyber.kali_v2 import (
     KaliAgentV2,
-    CVEMatchingEngine,
-    ToolRecommendationEngine,
-    RemediationEngine,
     ToolCategory,
     AuthorizationLevel,
 )
 from agentic_ai.agents.cyber.redteam_v2 import (
     RedTeamAgentV2,
-    MITRE_ATTACK_TECHNIQUES,
 )
 
 

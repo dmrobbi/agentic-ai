@@ -6,13 +6,11 @@ Unit tests for SupplyChainAgent - SBOM, dependencies & vendor risk.
 """
 
 import pytest
-from datetime import datetime, timedelta
 
 from agentic_ai.agents.supply_chain import (
     SupplyChainAgent,
     PackageType,
     VulnerabilitySeverity,
-    RiskLevel,
     SBOMFormat,
 )
 
@@ -70,8 +68,8 @@ class TestSupplyChainAgent:
     def test_get_dependency_tree(self, sc_agent):
         """Test dependency tree generation."""
         root = sc_agent.add_package("app", "1.0.0", PackageType.NPM)
-        child1 = sc_agent.add_package("dep1", "1.0.0", PackageType.NPM, parent_package=root.package_id)
-        child2 = sc_agent.add_package("dep2", "1.0.0", PackageType.NPM, parent_package=root.package_id)
+        sc_agent.add_package("dep1", "1.0.0", PackageType.NPM, parent_package=root.package_id)
+        sc_agent.add_package("dep2", "1.0.0", PackageType.NPM, parent_package=root.package_id)
         
         tree = sc_agent.get_dependency_tree(root.package_id)
         
@@ -261,7 +259,7 @@ class TestSupplyChainAgent:
         vendor = sc_agent.add_vendor("Test", "software", "high")
         
         a1 = sc_agent.create_assessment(vendor.vendor_id, "initial", "a1")
-        a2 = sc_agent.create_assessment(vendor.vendor_id, "annual", "a2")
+        sc_agent.create_assessment(vendor.vendor_id, "annual", "a2")
         
         sc_agent.complete_assessment(a1.assessment_id, 80, 80, 80)
         
@@ -308,8 +306,8 @@ class TestSupplyChainAgent:
     def test_get_incidents_by_status(self, sc_agent):
         """Test filtering incidents by status."""
         i1 = sc_agent.report_incident("Incident 1", "Desc", "critical")
-        i2 = sc_agent.report_incident("Incident 2", "Desc", "high")
-        i3 = sc_agent.report_incident("Incident 3", "Desc", "medium")
+        sc_agent.report_incident("Incident 2", "Desc", "high")
+        sc_agent.report_incident("Incident 3", "Desc", "medium")
         
         sc_agent.resolve_incident(i1.incident_id, "cause", ["fix"])
         

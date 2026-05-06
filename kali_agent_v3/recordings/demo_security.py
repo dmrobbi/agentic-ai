@@ -16,11 +16,11 @@ print("="*70)
 print()
 
 # Security Audit
-print(f"🛡️  Security Audit")
+print("🛡️  Security Audit")
 print()
 auditor = SecurityAuditor(config_dir=Path('/tmp/audit_demo'))
 
-print(f"   Running Security Checks...")
+print("   Running Security Checks...")
 findings = auditor.run_security_checks()
 print(f"   Findings: {len(findings)}")
 print()
@@ -35,13 +35,13 @@ for i, finding in enumerate(findings[:3], 1):
     print()
 
 score_data = auditor.get_security_score()
-print(f"   Security Score:")
+print("   Security Score:")
 print(f"      Score: {score_data['score']}/100")
 print(f"      Grade: {score_data['grade']}")
 print()
 
 # System Monitoring
-print(f"📊 System Monitoring")
+print("📊 System Monitoring")
 print()
 monitor = SystemMonitor(config_dir=Path('/tmp/monitor_demo'))
 
@@ -62,7 +62,7 @@ if alerts:
 print()
 
 # Audit Logging
-print(f"📝 Audit Logging")
+print("📝 Audit Logging")
 auditor.log_action('admin', 'security_scan', 'system', 'success')
 auditor.log_action('admin', 'view_findings', 'dashboard', 'success')
 log_entries = auditor.search_audit_log(user='admin')

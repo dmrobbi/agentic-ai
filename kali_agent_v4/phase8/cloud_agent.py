@@ -4,10 +4,8 @@ KaliAgent v4 - Phase 8: Cloud Exploitation Agent
 AWS, Azure, and GCP security assessment automation
 """
 
-import json
-import time
 from datetime import datetime
-from typing import Dict, List, Optional, Any
+from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -98,9 +96,9 @@ class CloudAgent:
             return False
         
         # Check required fields
-        for field in required:
-            if field not in credentials:
-                print(f"❌ Missing credential: {field}")
+        for fld in required:
+            if fld not in credentials:
+                print(f"❌ Missing credential: {fld}")
                 return False
         
         # In production, would actually authenticate
@@ -227,7 +225,7 @@ class CloudAgent:
     
     def scan_resources(self, resource_types: List[str] = None) -> List[CloudResource]:
         """Scan cloud resources"""
-        print(f"\n🔍 Scanning cloud resources...")
+        print("\n🔍 Scanning cloud resources...")
         
         if resource_types is None:
             resource_types = ['compute', 'storage', 'database', 'networking']
@@ -254,7 +252,7 @@ class CloudAgent:
     
     def detect_privilege_escalation(self) -> List[CloudFinding]:
         """Detect privilege escalation paths"""
-        print(f"\n🎯 Detecting privilege escalation paths...")
+        print("\n🎯 Detecting privilege escalation paths...")
         
         findings = []
         
@@ -330,7 +328,7 @@ class CloudAgent:
     
     def enumerate_storage(self) -> Dict:
         """Enumerate storage resources (S3, Blob, GCS)"""
-        print(f"\n📦 Enumerating storage...")
+        print("\n📦 Enumerating storage...")
         
         storage_data = {
             "buckets": [],
@@ -370,7 +368,7 @@ class CloudAgent:
     
     def generate_report(self) -> Dict:
         """Generate cloud assessment report"""
-        print(f"\n📄 Generating cloud assessment report...")
+        print("\n📄 Generating cloud assessment report...")
         
         report = {
             "agent_id": self.agent_id,
@@ -459,7 +457,7 @@ if __name__ == "__main__":
     report = aws_agent.generate_report()
     
     print(f"\n{'='*60}")
-    print(f"☁️  CLOUD ASSESSMENT COMPLETE")
+    print("☁️  CLOUD ASSESSMENT COMPLETE")
     print(f"{'='*60}")
     print(f"Provider: {report['provider']}")
     print(f"Resources: {report['summary']['resources_scanned']}")
@@ -468,6 +466,6 @@ if __name__ == "__main__":
     print(f"  High: {report['summary']['high']}")
     print(f"  Medium: {report['summary']['medium']}")
     print(f"  Low: {report['summary']['low']}")
-    print(f"\nRecommendations:")
+    print("\nRecommendations:")
     for rec in report['recommendations'][:3]:
         print(f"  • {rec}")

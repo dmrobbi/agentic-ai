@@ -18,7 +18,7 @@ Status: Alpha (0.1.0)
 import logging
 import socket
 import json
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -220,7 +220,7 @@ class MQTTClient:
             if result == 0:
                 self.client.loop_start()
                 self.connected = True
-                logger.info(f"✅ Connected to broker")
+                logger.info("✅ Connected to broker")
                 
                 if anonymous:
                     self.broker.anonymous_access = True
@@ -258,7 +258,7 @@ class MQTTClient:
             response = sock.recv(4)
             if len(response) >= 4 and response[0] == 0x20:
                 self.connected = True
-                logger.info(f"✅ Connected to broker (socket mode)")
+                logger.info("✅ Connected to broker (socket mode)")
                 self.broker.anonymous_access = True
                 logger.warning("⚠️  ANONYMOUS ACCESS ALLOWED!")
                 sock.close()
@@ -450,7 +450,7 @@ class MQTTClient:
                 result.wait_for_publish()
                 
                 if result.rc == 0:
-                    logger.warning(f"⚠️  UNAUTHORIZED PUBLISH SUCCESSFUL!")
+                    logger.warning("⚠️  UNAUTHORIZED PUBLISH SUCCESSFUL!")
                     self.broker.vulnerabilities.append({
                         'type': 'unauthorized_publish',
                         'topic': topic,
@@ -460,7 +460,7 @@ class MQTTClient:
                     })
                     return True
                 else:
-                    logger.info(f"ℹ️  Publish rejected")
+                    logger.info("ℹ️  Publish rejected")
                     return False
                     
             except Exception as e:
@@ -577,10 +577,10 @@ class MQTTClient:
             logger.info("✅ Anonymous access successful")
             
             # Step 2: List topics
-            topics = self.list_topics(timeout=5)
+            self.list_topics(timeout=5)
             
             # Step 3: Harvest credentials
-            creds = self.harvest_credentials()
+            self.harvest_credentials()
             
             # Step 4: Test publish
             self.test_publish()

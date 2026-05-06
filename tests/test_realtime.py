@@ -378,7 +378,7 @@ class TestRealTimeCollaboration:
     def test_disconnect_user(self, realtime_imports):
         """Test disconnecting a user."""
         RealTimeCollaboration = realtime_imports['RealTimeCollaboration']
-        ConnectionStatus = realtime_imports['ConnectionStatus']
+        realtime_imports['ConnectionStatus']
         
         rtc = RealTimeCollaboration()
         rtc.connect_user("user-1", name="Alice")
@@ -488,13 +488,12 @@ class TestRealTimeCollaboration:
     def test_cleanup_inactive(self, realtime_imports):
         """Test cleaning up inactive users."""
         RealTimeCollaboration = realtime_imports['RealTimeCollaboration']
-        ConnectionStatus = realtime_imports['ConnectionStatus']
+        realtime_imports['ConnectionStatus']
         
         rtc = RealTimeCollaboration()
         user = rtc.connect_user("user-1")
         
         # Manually set old activity time
-        from datetime import datetime, timedelta
         user.last_activity = (datetime.utcnow() - timedelta(minutes=60)).isoformat()
         
         removed = rtc.cleanup_inactive(inactive_minutes=30)

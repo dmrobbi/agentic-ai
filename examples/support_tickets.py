@@ -14,6 +14,8 @@ from agentic_ai.agents.support import (
     TicketCategory,
 )
 
+import random
+
 
 def example_ticket_creation():
     """Example: Ticket creation and auto-triage."""
@@ -151,7 +153,7 @@ def example_auto_responses():
             subject=subject,
             description=description,
             customer_id=f"cust-{len(agent.tickets)+1}",
-            customer_email=f"user@example.com",
+            customer_email="user@example.com",
         )
         
         response = agent.get_auto_response(ticket)
@@ -161,7 +163,7 @@ def example_auto_responses():
         if response:
             print(f"  Auto-response: {response[:80]}...")
         else:
-            print(f"  Auto-response: None (requires human agent)")
+            print("  Auto-response: None (requires human agent)")
         print()
 
 
@@ -237,7 +239,7 @@ def example_sla_tracking():
             subject=subject,
             description=desc,
             customer_id=f"cust-{len(agent.tickets)+1}",
-            customer_email=f"user@example.com",
+            customer_email="user@example.com",
             priority=priority,
         )
         print(f"  {ticket.subject} - {ticket.priority.value}")
@@ -284,7 +286,6 @@ def example_support_metrics():
             agent.resolve_ticket(ticket.ticket_id, f"Resolved ticket {i+1}", "agent-1")
             agent.record_satisfaction(ticket.ticket_id, random.randint(3, 5))
     
-    import random
     random.seed(42)
     
     # Get metrics
@@ -292,31 +293,30 @@ def example_support_metrics():
     metrics = agent.get_support_metrics(days=30)
     
     print(f"Period: {metrics['period_days']} days")
-    print(f"\nTicket Volume:")
+    print("\nTicket Volume:")
     print(f"  Total: {metrics['total_tickets']}")
     print(f"  Open: {metrics['open_count']}")
     print(f"  Resolved: {metrics['resolved_count']}")
     
-    print(f"\nBy Status:")
+    print("\nBy Status:")
     for status, count in metrics['by_status'].items():
         print(f"  {status}: {count}")
     
-    print(f"\nBy Priority:")
+    print("\nBy Priority:")
     for priority, count in metrics['by_priority'].items():
         print(f"  {priority}: {count}")
     
-    print(f"\nBy Category:")
+    print("\nBy Category:")
     for category, count in metrics['by_category'].items():
         print(f"  {category}: {count}")
     
-    print(f"\nPerformance:")
+    print("\nPerformance:")
     print(f"  Avg Resolution Time: {metrics['avg_resolution_time_minutes']:.1f} minutes")
     print(f"  Avg Satisfaction: {metrics['avg_satisfaction_score']:.1f}/5 ⭐")
     print(f"  SLA Breaches: {metrics['sla_breaches']}")
 
 
 def main():
-    """Run all Support examples."""
     import random
     random.seed(42)
     

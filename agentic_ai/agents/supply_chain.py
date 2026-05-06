@@ -9,7 +9,7 @@ vendor risk assessment, and supply chain security monitoring.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -743,7 +743,7 @@ def get_capabilities() -> Dict[str, Any]:
         'package_types': [t.value for t in PackageType],
         'vulnerability_severities': [s.value for s in VulnerabilitySeverity],
         'sbom_formats': [f.value for f in SBOMFormat],
-        'risk_levels': [l.value for l in RiskLevel],
+        'risk_levels': [level.value for level in RiskLevel],
     }
 
 
@@ -833,7 +833,7 @@ if __name__ == "__main__":
 
     # Get report
     report = agent.get_supply_chain_report()
-    print(f"\nSupply Chain Report:")
+    print("\nSupply Chain Report:")
     print(f"  Packages: {report['packages']['total']}")
     print(f"  Vulnerabilities: {report['vulnerabilities']['total']}")
     print(f"  Vendors: {report['vendors']['total']}")

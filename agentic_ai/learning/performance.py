@@ -8,6 +8,7 @@ Tracks agent performance metrics over time.
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass, field
 from datetime import datetime
+import json
 
 # Shared global corrections registry so FeedbackCollector can update PerformanceTracker
 global_corrections: Dict[str, int] = {}  # key="agent_id:task_type", value=count
@@ -15,7 +16,6 @@ global_corrections: Dict[str, int] = {}  # key="agent_id:task_type", value=count
 def reset_global_corrections():
     """Reset global corrections registry (for testing)."""
     global_corrections.clear()
-import json
 
 
 @dataclass

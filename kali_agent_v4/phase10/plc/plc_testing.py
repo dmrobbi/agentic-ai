@@ -20,7 +20,7 @@ Status: Alpha (0.1.0)
 """
 
 import logging
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -510,7 +510,7 @@ class PLCSecurityTester:
         vendor_vulns = self.KNOWN_VULNERABILITIES.get(vendor, [])
         
         model = plc_info.get('model', '').lower()
-        firmware = plc_info.get('firmware', '').lower()
+        plc_info.get('firmware', '').lower()
         
         for vuln in vendor_vulns:
             # Check if model is affected

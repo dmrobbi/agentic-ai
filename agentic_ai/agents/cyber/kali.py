@@ -10,18 +10,14 @@ Includes safety gates, authorization controls, and automated reporting.
 
 import json
 import logging
-import os
-import re
 import secrets
 import subprocess
-import tempfile
 import threading
-import time
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Callable
+from typing import Any, Dict, List, Optional, Tuple
 from xml.etree import ElementTree as ET
 
 
@@ -437,18 +433,6 @@ KALI_TOOLS_DB = {
     ),
 
     # Post Exploitation
-    "mimikatz": ToolDefinition(
-        name="mimikatz",
-        category=ToolCategory.POST_EXPLOITATION,
-        description="Credential extraction",
-        command="mimikatz",
-        args_schema={
-            "command": {"type": "string", "required": True},
-        },
-        authorization=AuthorizationLevel.CRITICAL,
-        timeout_seconds=300,
-    ),
-
     # Wireless
     "aircrack_ng": ToolDefinition(
         name="aircrack-ng",
@@ -972,7 +956,7 @@ class MetasploitRPC:
             return False
 
         try:
-            response = requests.post(
+            requests.post(
                 f"{self.url}/auth/logout",
                 json={"method": "auth.logout", "params": [self.token]},
                 timeout=10
@@ -1534,9 +1518,9 @@ class KaliAgent:
 
         # Validate target if present in arguments
         target_fields = ["target", "host", "url", "domain", "bssid"]
-        for field in target_fields:
-            if field in arguments:
-                valid, msg = self.validate_target(arguments[field])
+        for fld in target_fields:
+            if fld in arguments:
+                valid, msg = self.validate_target(arguments[fld])
                 if not valid:
                     logger.error(f"Target validation failed: {msg}")
                     return self._create_failed_execution(tool_name, arguments, msg)

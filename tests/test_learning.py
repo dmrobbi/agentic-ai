@@ -6,7 +6,6 @@ Unit tests for feedback collection and performance tracking.
 """
 
 import pytest
-from datetime import datetime, timedelta
 
 
 @pytest.fixture

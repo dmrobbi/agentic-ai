@@ -684,7 +684,7 @@ def get_capabilities() -> Dict[str, Any]:
             'get_framework_status',
         ],
         'compliance_statuses': [s.value for s in ComplianceStatus],
-        'risk_levels': [l.value for l in RiskLevel],
+        'risk_levels': [level.value for level in RiskLevel],
         'audit_statuses': [s.value for s in AuditStatus],
         'control_types': [t.value for t in ControlType],
         'framework_templates': list(ComplianceAgent(None).framework_templates.keys()),

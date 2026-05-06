@@ -8,8 +8,7 @@ Unit tests for the agent base class.
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
-import asyncio
+from unittest.mock import MagicMock, AsyncMock
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -97,7 +96,7 @@ class TestBaseAgent:
     
     def test_tool_registration(self, mock_inference, mock_state_store, mock_bus):
         """Test tool registration and calling."""
-        from agentic_ai.agents.base import BaseAgent, Tool, Permission
+        from agentic_ai.agents.base import BaseAgent, Tool
         
         class TestAgent(BaseAgent):
             agent_type = "test"
@@ -154,7 +153,7 @@ class TestBaseAgent:
     
     def test_transparency_log(self, mock_inference, mock_state_store, mock_bus):
         """Test transparency logging."""
-        from agentic_ai.agents.base import BaseAgent, Permission
+        from agentic_ai.agents.base import BaseAgent
         
         class TestAgent(BaseAgent):
             agent_type = "test"

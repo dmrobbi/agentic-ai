@@ -19,9 +19,8 @@ Status: Alpha (0.1.0)
 import logging
 import subprocess
 import socket
-import re
 import json
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -266,7 +265,7 @@ class DeviceDiscovery:
             result = subprocess.run(['which', 'nmap'], capture_output=True, text=True)
             if result.returncode == 0:
                 return result.stdout.strip()
-        except:
+        except Exception:
             pass
         
         common_paths = ['/usr/bin/nmap', '/usr/local/bin/nmap', '/opt/nmap/bin/nmap']
@@ -371,7 +370,7 @@ class DeviceDiscovery:
                 
                 sock.close()
                 
-            except Exception as e:
+            except Exception:
                 pass
         
         self.devices = devices
@@ -645,7 +644,7 @@ class DeviceDiscovery:
                 
                 sock.close()
                 
-            except Exception as e:
+            except Exception:
                 results['filtered'].append(port)
         
         logger.info(f"  Open: {len(results['open'])}, Closed: {len(results['closed'])}, Filtered: {len(results['filtered'])}")
@@ -737,7 +736,7 @@ class DeviceDiscovery:
                 report.append(f"   Protocols: {', '.join(device.protocols)}")
             
             if device.vulnerabilities:
-                report.append(f"   Vulnerabilities:")
+                report.append("   Vulnerabilities:")
                 for vuln in device.vulnerabilities[:5]:
                     report.append(f"     ⚠️  {vuln}")
         
@@ -797,7 +796,7 @@ def main():
     
     # Scan network
     print(f"\n🔍 Scanning: {target}")
-    devices = discovery.scan_network(target, quick=quick)
+    discovery.scan_network(target, quick=quick)
     
     # Generate report
     print("\n" + discovery.generate_report())
@@ -809,7 +808,7 @@ def main():
     
     # Statistics
     stats = discovery.get_statistics()
-    print(f"\n📊 STATISTICS:")
+    print("\n📊 STATISTICS:")
     print(f"  Total Devices: {stats['total_devices']}")
     print(f"  High Risk: {stats['high_risk_devices']}")
     print(f"  Avg Risk Score: {stats['avg_risk_score']:.1f}/10.0")

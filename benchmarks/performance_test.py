@@ -11,9 +11,8 @@ Measures performance across key operations:
 """
 
 import asyncio
-import time
 from datetime import datetime
-from typing import Dict, List
+from typing import List
 from dataclasses import dataclass
 
 
@@ -165,7 +164,7 @@ class PerformanceBenchmark:
     
     async def benchmark_presence_tracking(self, count: int = 100) -> BenchmarkResult:
         """Benchmark presence system performance."""
-        from agentic_ai.collaboration.presence import CollaborationHub, PresenceStatus
+        from agentic_ai.collaboration.presence import CollaborationHub
         
         print(f"\n📊 Benchmark: Presence Tracking ({count} users)")
         

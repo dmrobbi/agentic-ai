@@ -339,7 +339,7 @@ class DataGovernanceAgent:
     def get_assets_due_for_action(self, action: RetentionAction) -> List[Dict[str, Any]]:
         """Get assets due for retention action."""
         due = []
-        now = datetime.utcnow()
+        datetime.utcnow()
 
         for asset in self.assets.values():
             retention = self.get_retention_period(asset.asset_id)
@@ -404,13 +404,13 @@ class DataGovernanceAgent:
     def get_lineage(self, asset_id: str, direction: str = "both") -> Dict[str, Any]:
         """Get data lineage for an asset."""
         upstream = [
-            l for l in self.lineage.values()
-            if l.target_asset == asset_id
+            level for level in self.lineage.values()
+            if level.target_asset == asset_id
         ]
 
         downstream = [
-            l for l in self.lineage.values()
-            if l.source_asset == asset_id
+            level for level in self.lineage.values()
+            if level.source_asset == asset_id
         ]
 
         result = {'asset_id': asset_id}
@@ -418,23 +418,23 @@ class DataGovernanceAgent:
         if direction in ['upstream', 'both']:
             result['upstream'] = [
                 {
-                    'lineage_id': l.lineage_id,
-                    'source': l.source_asset,
-                    'transformation': l.transformation,
-                    'process': l.process_name,
+                    'lineage_id': level.lineage_id,
+                    'source': level.source_asset,
+                    'transformation': level.transformation,
+                    'process': level.process_name,
                 }
-                for l in upstream
+                for level in upstream
             ]
 
         if direction in ['downstream', 'both']:
             result['downstream'] = [
                 {
-                    'lineage_id': l.lineage_id,
-                    'target': l.target_asset,
-                    'transformation': l.transformation,
-                    'process': l.process_name,
+                    'lineage_id': level.lineage_id,
+                    'target': level.target_asset,
+                    'transformation': level.transformation,
+                    'process': level.process_name,
                 }
-                for l in downstream
+                for level in downstream
             ]
 
         return result
@@ -866,7 +866,7 @@ if __name__ == "__main__":
 
     # Get governance report
     report = agent.get_governance_report()
-    print(f"\nGovernance Report:")
+    print("\nGovernance Report:")
     print(f"  Total Assets: {report['assets']['total']}")
     print(f"  Open Issues: {report['quality']['open_issues']}")
     print(f"  Pending Access: {report['access']['pending']}")

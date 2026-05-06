@@ -9,7 +9,7 @@ detection, and remediation for AWS, Azure, and GCP environments.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -845,7 +845,7 @@ if __name__ == "__main__":
 
     # Get report
     report = agent.get_cloud_security_report()
-    print(f"\nCloud Security Report:")
+    print("\nCloud Security Report:")
     print(f"  Accounts: {report['accounts']['total']}")
     print(f"  Findings: {report['findings']['total']}")
     print(f"  Critical Open: {report['findings']['critical_open']}")

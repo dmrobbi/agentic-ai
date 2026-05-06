@@ -14,7 +14,7 @@ from agentic_ai.collaboration.presence import CollaborationHub
 
 
 async def agent_editor(agent_id: str, workspace: Workspace, rtc: RealTimeCollaboration,
-                       doc_id: str, content: str, delay: float = 1.0):
+                       hub: CollaborationHub, doc_id: str, content: str, delay: float = 1.0):
     """Simulate an agent editing a document."""
     print(f"[{agent_id}] Starting to edit document...")
     
@@ -83,7 +83,7 @@ async def main():
         agent_editor("tech-writer", workspace, rtc, doc.resource_id, "## Documentation\n\n", 0.6),
     ]
     
-    results = await asyncio.gather(*tasks)
+    await asyncio.gather(*tasks)
     
     print()
     print("=" * 60)

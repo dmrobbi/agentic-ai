@@ -18,7 +18,7 @@ Status: Alpha (0.1.0)
 
 import logging
 from typing import List, Dict
-from datetime import datetime, timedelta
+from datetime import datetime
 from dataclasses import dataclass, field
 
 logging.basicConfig(level=logging.INFO)
@@ -406,7 +406,7 @@ class DataExfiltrationHunter:
             try:
                 if 'MB' in f.data_volume:
                     total_volume += float(f.data_volume.replace('MB', ''))
-            except:
+            except Exception:
                 pass
         
         if total_volume > 0:
@@ -424,7 +424,7 @@ class DataExfiltrationHunter:
                 report.append(f"   Destination: {f.destination}")
                 report.append(f"   Confidence: {f.confidence:.0%}")
                 report.append(f"   Description: {f.description}")
-                report.append(f"   Recommended Actions:")
+                report.append("   Recommended Actions:")
                 for action in f.recommended_actions:
                     report.append(f"     • {action}")
         

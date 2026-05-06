@@ -332,7 +332,7 @@ class EmpireClient:
             else:
                 return False, f"Failed to create listener: {response.status_code}"
                 
-        except Exception as e:
+        except Exception:
             # Mock mode
             logger.warning("Mock mode - simulating listener creation")
             
@@ -471,7 +471,7 @@ class EmpireClient:
             else:
                 return False, f"Failed to generate stager: {response.status_code}"
                 
-        except Exception as e:
+        except Exception:
             # Mock mode
             logger.warning("Mock mode - generating mock stager")
             
@@ -656,7 +656,7 @@ if __name__ == '__main__':
             
             return False, "Command failed"
             
-        except Exception as e:
+        except Exception:
             # Mock mode
             return True, f"Mock output for: {command}"
     
@@ -737,7 +737,7 @@ if __name__ == '__main__':
             else:
                 return False, f"Module execution failed: {response.status_code}"
                 
-        except Exception as e:
+        except Exception:
             return True, f"Mock module execution: {module}"
     
     # =====================================================================
@@ -759,7 +759,7 @@ if __name__ == '__main__':
         """Export client configuration."""
         config = {
             'base_url': self.base_url,
-            'listeners': [l.to_dict() for l in self.listeners.values()],
+            'listeners': [level.to_dict() for level in self.listeners.values()],
             'stagers': [s.to_dict() for s in self.stagers.values()],
             'agents': [a.to_dict() for a in self.agents.values()]
         }
@@ -845,7 +845,7 @@ def main():
         
         status = "✅" if success else "❌"
         print(f"{status} Stager generated")
-        print(f"\nPayload:")
+        print("\nPayload:")
         print("=" * 60)
         print(payload[:500] + '...' if len(payload) > 500 else payload)
         print("=" * 60)
@@ -854,9 +854,9 @@ def main():
         listeners = client.list_listeners()
         print(f"\nListeners: {len(listeners)}")
         print("=" * 60)
-        for l in listeners:
-            status = "🟢" if l.enabled else "🔴"
-            print(f"{status} {l.name} ({l.listener_type.value}) - {l.host}:{l.port}")
+        for level in listeners:
+            status = "🟢" if level.enabled else "🔴"
+            print(f"{status} {level.name} ({level.listener_type.value}) - {level.host}:{level.port}")
         print("=" * 60)
     
     elif args.list_stagers:

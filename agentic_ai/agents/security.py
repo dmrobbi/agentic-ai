@@ -6,7 +6,6 @@ Provides security scanning, vulnerability assessment, incident response,
 secrets management, and security policy enforcement.
 """
 
-import hashlib
 import logging
 import os
 import re
@@ -707,7 +706,7 @@ class SecurityAgent:
 
             if len(recent_failures) >= 5:
                 self.create_incident(
-                    title=f"Brute force attempt detected",
+                    title="Brute force attempt detected",
                     description=f"Multiple failed login attempts for user {log_entry['user_id']}",
                     severity=SeverityLevel.HIGH,
                     threat_type=ThreatType.BRUTE_FORCE,

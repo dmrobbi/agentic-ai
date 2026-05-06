@@ -13,7 +13,7 @@ Status: Alpha (0.1.0)
 """
 
 import logging
-from typing import List, Dict, Tuple
+from typing import List, Dict
 from dataclasses import dataclass, field
 from datetime import datetime
 import json
@@ -23,7 +23,7 @@ logger = logging.getLogger('ThreatClassifier')
 
 try:
     import torch
-    from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification
+    from transformers import pipeline, AutoTokenizer, AutoModelForSequenceClassification  # noqa: F401
     TRANSFORMERS_AVAILABLE = True
 except ImportError:
     TRANSFORMERS_AVAILABLE = False
@@ -350,7 +350,7 @@ def main():
         
         result = classifier.classify(text)
         
-        print(f"\n✅ Classification:")
+        print("\n✅ Classification:")
         print(f"   Threat Type: {result.primary_threat} ({result.threat_types[0]['score']:.0%})" if result.threat_types else "")
         print(f"   Severity: {result.primary_severity} ({result.severity[0]['score']:.0%})" if result.severity else "")
         print(f"   Sector: {result.primary_sector} ({result.sectors[0]['score']:.0%})" if result.sectors else "")

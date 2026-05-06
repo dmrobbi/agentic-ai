@@ -975,7 +975,7 @@ def main():
         print("=" * 60)
     
     elif args.verify:
-        configurator = PostInstallConfigutor()
+        configurator = PostInstallConfigurator()
         result = configurator.verify_installation(args.verify)
         
         print("\nVerification Result:")

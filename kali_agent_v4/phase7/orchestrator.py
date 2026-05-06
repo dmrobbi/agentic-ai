@@ -12,7 +12,7 @@ from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field, asdict
 from enum import Enum
 
-from .agent_base import AgentBase, AgentRole, AgentStatus, Task, Intelligence, AgentState
+from .agent_base import AgentBase, AgentRole, AgentStatus, Task, Intelligence
 
 
 class OperationStatus(Enum):
@@ -399,5 +399,5 @@ if __name__ == "__main__":
     
     # Generate report
     report = lead.generate_report(op.operation_id)
-    print(f"\n📄 Operation Report:")
+    print("\n📄 Operation Report:")
     print(json.dumps(report, indent=2))

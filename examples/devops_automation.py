@@ -10,7 +10,6 @@ deployment orchestration, and monitoring.
 from agentic_ai.agents.devops import (
     DevOpsAgent,
     DeploymentStatus,
-    PipelineStatus,
     InfrastructureType,
     InfrastructureResource,
 )

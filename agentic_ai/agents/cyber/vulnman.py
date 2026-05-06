@@ -9,7 +9,7 @@ risk scoring, and remediation workflow automation.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -705,7 +705,7 @@ if __name__ == "__main__":
 
     # Get remediation priority
     priority = agent.get_remediation_priority()
-    print(f"\nTop Remediation Priorities:")
+    print("\nTop Remediation Priorities:")
     for p in priority[:3]:
         print(f"  - {p['title']} (Score: {p['priority_score']})")
 

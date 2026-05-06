@@ -213,7 +213,7 @@ def run_vendor_assessment():
         findings_low=5,
         all_remediated=True,
     )
-    print(f"  ✓ Penetration test reviewed")
+    print("  ✓ Penetration test reviewed")
     print(f"    - Critical: {pentest_report.findings_critical}")
     print(f"    - High: {pentest_report.findings_high}")
     print(f"    - Medium: {pentest_report.findings_medium} (remediated)")
@@ -308,11 +308,11 @@ def run_vendor_assessment():
     # Check HIPAA (if applicable)
     print("\n[Compliance Agent] Checking HIPAA compliance...")
     
-    hipaa_status = compliance.check_hipaa_compliance(
+    compliance.check_hipaa_compliance(
         phi_handled=False,  # This vendor doesn't handle PHI
         baa_required=False,
     )
-    print(f"  ✓ HIPAA: Not Applicable (no PHI)")
+    print("  ✓ HIPAA: Not Applicable (no PHI)")
     
     # Create compliance findings
     print("\n[Compliance Agent] Documenting compliance gaps...")
@@ -363,7 +363,7 @@ def run_vendor_assessment():
             "confidentiality",
         ],
     )
-    print(f"  ✓ MSA reviewed")
+    print("  ✓ MSA reviewed")
     print(f"    - Liability cap: ${msa_review.get('liability_cap', 'N/A'):,}")
     print(f"    - Termination for cause: {msa_review.get('termination_for_cause', 'N/A')}")
     print(f"    - Auto-renewal: {msa_review.get('auto_renewal', 'N/A')}")
@@ -383,7 +383,7 @@ def run_vendor_assessment():
             "audit_rights",
         ],
     )
-    print(f"  ✓ DPA reviewed")
+    print("  ✓ DPA reviewed")
     print(f"    - Data ownership: {dpa_review.get('data_ownership', 'Customer retains all rights')}")
     print(f"    - Breach notification: {dpa_review.get('breach_notification', '48 hours')}")
     print(f"    - Subprocessors allowed: {dpa_review.get('subprocessors', 'With notice')}")
@@ -391,7 +391,7 @@ def run_vendor_assessment():
     # Review SLA
     print("\n[Legal Agent] Reviewing Service Level Agreement...")
     
-    sla_terms = legal.create_contract_clause(
+    legal.create_contract_clause(
         matter_id=legal_matter.matter_id,
         clause_type="sla",
         title="Service Level Commitments",
@@ -403,10 +403,10 @@ def run_vendor_assessment():
         - Termination right: If uptime < 99.0% for 2 consecutive months
         """,
     )
-    print(f"  ✓ SLA terms documented")
-    print(f"    - Uptime guarantee: 99.9%")
-    print(f"    - Critical support response: 1 hour")
-    print(f"    - Service credits: 10% per 0.1% below SLA")
+    print("  ✓ SLA terms documented")
+    print("    - Uptime guarantee: 99.9%")
+    print("    - Critical support response: 1 hour")
+    print("    - Service credits: 10% per 0.1% below SLA")
     
     # Identify legal risks
     print("\n[Legal Agent] Identifying legal risks...")
@@ -507,7 +507,7 @@ def run_vendor_assessment():
         ],
         overall_opinion="APPROVED WITH CONDITIONS",
     )
-    print(f"  ✓ Assessment completed")
+    print("  ✓ Assessment completed")
     print(f"  ✓ Residual risk level: {assessment.residual_risk_level.value}")
     print(f"  ✓ Overall opinion: {assessment.overall_opinion}")
     

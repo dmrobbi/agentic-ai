@@ -6,7 +6,6 @@ Unit tests for MLOpsAgent - ML lifecycle, deployment & monitoring.
 """
 
 import pytest
-from datetime import datetime, timedelta
 
 from agentic_ai.agents.ml_ops import (
     MLOpsAgent,
@@ -104,7 +103,7 @@ class TestMLOpsAgent:
     
     def test_get_experiments_by_status(self, mlops):
         """Test filtering experiments by status."""
-        e1 = mlops.create_experiment("E1", "Desc", "xgboost", None, {}, "user")
+        mlops.create_experiment("E1", "Desc", "xgboost", None, {}, "user")
         e2 = mlops.create_experiment("E2", "Desc", "pytorch", None, {}, "user")
         e3 = mlops.create_experiment("E3", "Desc", "tensorflow", None, {}, "user")
         
@@ -158,7 +157,7 @@ class TestMLOpsAgent:
     
     def test_get_models_by_stage(self, mlops):
         """Test filtering models by stage."""
-        m1 = mlops.register_model("M1", "Desc", "xgboost", None, "1.0", "user")
+        mlops.register_model("M1", "Desc", "xgboost", None, "1.0", "user")
         m2 = mlops.register_model("M2", "Desc", "pytorch", None, "1.0", "user")
         m3 = mlops.register_model("M3", "Desc", "tensorflow", None, "1.0", "user")
         
@@ -209,8 +208,8 @@ class TestMLOpsAgent:
         """Test filtering deployments by environment."""
         model = mlops.register_model("Test", "Desc", "xgboost", None, "1.0", "user")
         
-        d1 = mlops.deploy_model(model.model_id, "staging", "staging-endpoint")
-        d2 = mlops.deploy_model(model.model_id, "production", "prod-endpoint")
+        mlops.deploy_model(model.model_id, "staging", "staging-endpoint")
+        mlops.deploy_model(model.model_id, "production", "prod-endpoint")
         
         prod = mlops.get_deployments(environment="production")
         staging = mlops.get_deployments(environment="staging")
@@ -303,8 +302,8 @@ class TestMLOpsAgent:
     def test_get_mlops_dashboard(self, mlops):
         """Test MLOps dashboard generation."""
         # Create models at different stages
-        m1 = mlops.register_model("M1", "Desc", "xgboost", None, "1.0", "user")
-        m2 = mlops.register_model("M2", "Desc", "pytorch", None, "1.0", "user")
+        mlops.register_model("M1", "Desc", "xgboost", None, "1.0", "user")
+        mlops.register_model("M2", "Desc", "pytorch", None, "1.0", "user")
         m3 = mlops.register_model("M3", "Desc", "tensorflow", None, "1.0", "user")
         
         mlops.update_model_stage(m3.model_id, ModelStage.PRODUCTION)

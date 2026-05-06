@@ -9,7 +9,7 @@ explainability tracking, and ethical impact assessments.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -837,7 +837,7 @@ def get_capabilities() -> Dict[str, Any]:
         'ethics_principles': [p.value for p in EthicsPrinciple],
         'bias_types': [t.value for t in BiasType],
         'fairness_metrics': [m.value for m in FairnessMetric],
-        'risk_levels': [l.value for l in RiskLevel],
+        'risk_levels': [level.value for level in RiskLevel],
         'assessment_statuses': [s.value for s in AssessmentStatus],
     }
 
@@ -931,7 +931,7 @@ if __name__ == "__main__":
 
     # Get ethics report
     report = agent.get_ethics_report()
-    print(f"\nEthics Report:")
+    print("\nEthics Report:")
     print(f"  Total Models: {report['models']['total']}")
     print(f"  High Risk: {report['models']['high_risk_count']}")
     print(f"  Bias Detected: {report['bias']['total_detected']}")

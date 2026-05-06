@@ -27,14 +27,12 @@ Version: 1.0.0
 """
 
 import argparse
-import sys
 import os
 import logging
-import time
 import json
 import subprocess
 from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import List, Optional, Dict, Any
 from pathlib import Path
 from enum import Enum
@@ -922,7 +920,7 @@ Examples:
 
     if args.command == 'scan':
         report = demo.scan()
-        print(f"\n  🔍 Scan Results:")
+        print("\n  🔍 Scan Results:")
         for key, val in report.items():
             if isinstance(val, (str, bool)):
                 print(f"    {key}: {val}")
@@ -938,7 +936,7 @@ Examples:
                 for f in findings:
                     print(f"    FD {f['fd']}: {f['target']} [{f['risk']}]")
             else:
-                print(f"\n  ✅ No leaked FDs detected")
+                print("\n  ✅ No leaked FDs detected")
 
     elif args.command == 'explain':
         demo.explain()

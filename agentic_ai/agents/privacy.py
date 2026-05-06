@@ -1022,7 +1022,7 @@ if __name__ == "__main__":
 
     # Get compliance report
     report = agent.get_compliance_report()
-    print(f"\nCompliance Report:")
+    print("\nCompliance Report:")
     print(f"  Data Subjects: {report['data_subjects']['total']}")
     print(f"  Requests (overdue): {report['requests']['overdue']}")
     print(f"  Active Consents: {report['consents']['active']}")

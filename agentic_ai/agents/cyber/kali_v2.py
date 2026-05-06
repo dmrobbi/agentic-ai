@@ -14,19 +14,13 @@ Improvements over v1:
 
 import json
 import logging
-import os
 import re
-import secrets
-import subprocess
-import tempfile
-import threading
-import time
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Callable
+from typing import Any, Dict, List, Optional, Tuple
 from xml.etree import ElementTree as ET
+from agentic_ai.agents.cyber.kali import ToolExecution
 
 
 logger = logging.getLogger(__name__)
@@ -791,7 +785,7 @@ class CVEMatchingEngine:
         matches = []
 
         for vuln in nmap_result.get("vulnerabilities", []):
-            vuln_id = vuln.get("id", "")
+            vuln.get("id", "")
 
             # Try to extract CVE from script ID or output
             cve_match = re.search(r"CVE-\d{4}-\d+", vuln.get("output", ""))
@@ -890,7 +884,7 @@ class ToolRecommendationEngine:
 
         target_type = target_info.get("type", "").lower()
         services = target_info.get("services", [])
-        os_type = target_info.get("os", "").lower()
+        target_info.get("os", "").lower()
 
         # Get base recommendations for target type
         base_tools = []

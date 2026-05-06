@@ -797,7 +797,7 @@ def get_capabilities() -> Dict[str, Any]:
             'get_risk_appetite_status',
         ],
         'risk_categories': [c.value for c in RiskCategory],
-        'risk_levels': [l.value for l in RiskLevel],
+        'risk_levels': [level.value for level in RiskLevel],
         'risk_statuses': [s.value for s in RiskStatus],
         'treatment_strategies': [s.value for s in TreatmentStrategy],
     }
@@ -898,14 +898,14 @@ if __name__ == "__main__":
 
     # Get risk dashboard
     dashboard = agent.get_risk_dashboard()
-    print(f"\nRisk Dashboard:")
+    print("\nRisk Dashboard:")
     print(f"  Total Risks: {dashboard['overview']['total_risks']}")
     print(f"  Critical: {dashboard['overview']['critical_risks']}")
     print(f"  KRIs at Risk: {dashboard['kris']['at_risk']}")
 
     # Get risk register
     register = agent.get_risk_register()
-    print(f"\nRisk Register:")
+    print("\nRisk Register:")
     print(f"  By Category: {register['by_category']}")
     print(f"  By Score: {register['by_score']}")
 

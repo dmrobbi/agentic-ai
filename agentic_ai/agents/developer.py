@@ -1,6 +1,6 @@
 """Developer agent for code review, implementation, and testing."""
 from agentic_ai.agents.base import BaseAgent, Permission
-from typing import Dict, Any, List
+from typing import Dict, Any
 from pathlib import Path
 
 class DeveloperAgent(BaseAgent):
@@ -70,8 +70,8 @@ class DeveloperAgent(BaseAgent):
             lines = content.splitlines()
             result["lines"] = len(lines)
             result["summary"] = f"{len(lines)} lines of {language} code"
-            result["functions"] = sum(1 for l in lines if l.strip().startswith("def "))
-            result["classes"] = sum(1 for l in lines if l.strip().startswith("class "))
+            result["functions"] = sum(1 for level in lines if level.strip().startswith("def "))
+            result["classes"] = sum(1 for level in lines if level.strip().startswith("class "))
         except Exception:
             result["summary"] = f"Could not analyze {path}"
         return result

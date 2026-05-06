@@ -368,20 +368,6 @@ class SecurityOperationsAgent:
         logger.info(f"Created incident: {incident.title} ({sev_str})")
         return incident
 
-    def report_security_incident(self, title: str, description: str, severity: str, incident_type: str = "security", affected_systems: Optional[List[str]] = None, source_ip: str = "", **kwargs) -> "Incident":
-        """Alias for create_incident with test-compatible signature."""
-        # Convert string severity to IncidentSeverity if needed
-        sev = severity
-        if isinstance(severity, str):
-            sev_map = {"low": IncidentSeverity.SEV4, "medium": IncidentSeverity.SEV3, "high": IncidentSeverity.SEV2, "critical": IncidentSeverity.SEV1}
-            sev = sev_map.get(severity.lower(), IncidentSeverity.MEDIUM)
-        return self.create_incident(
-            title=title,
-            description=description,
-            severity=sev,
-            category=incident_type,
-            affected_systems=affected_systems,
-        )
     def update_incident_status(
         self,
         incident_id: str,

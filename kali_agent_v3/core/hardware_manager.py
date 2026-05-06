@@ -17,7 +17,6 @@ import re
 import subprocess
 import logging
 from typing import Dict, List, Optional, Tuple
-from pathlib import Path
 from dataclasses import dataclass, field
 
 # Configure logging
@@ -160,7 +159,7 @@ class HardwareManager:
                     match = re.search(r'ID (\w+):(\w+) (.+)', line)
                     if match:
                         vendor_id = match.group(1)
-                        product_id = match.group(2)
+                        match.group(2)
                         chipset = match.group(3)
                         vendor = self._lookup_vendor(vendor_id)
                     break

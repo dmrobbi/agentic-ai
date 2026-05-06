@@ -6,13 +6,11 @@ Provides mock data API so the dashboard works standalone
 without requiring live agent connections.
 """
 
-import json
 import random
 from datetime import datetime, timedelta
 from typing import List, Dict, Any
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
 import uvicorn
 
 app = FastAPI(

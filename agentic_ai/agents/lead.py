@@ -245,7 +245,7 @@ class LeadAgent(BaseAgent):
                 break
         if not task:
             return {"error": f"Task {task_id} not found"}
-        agent = self._agents.get(agent_id)
+        self._agents.get(agent_id)
         task.assigned_to = agent_id
         task.status = TaskStatus.COMPLETED
         task.result = {"status": "completed", "agent_id": agent_id}

@@ -7,7 +7,7 @@ Demonstrates how multiple agents work together through the Lead Agent
 to accomplish complex tasks that span multiple domains.
 """
 
-from agentic_ai.agents.devops import DevOpsAgent, DeploymentStatus, PipelineStatus
+from agentic_ai.agents.devops import DevOpsAgent, DeploymentStatus
 from agentic_ai.agents.data_analyst import DataAnalystAgent
 from agentic_ai.agents.support import SupportAgent, TicketPriority, TicketCategory
 from agentic_ai.agents.security import SecurityAgent, SeverityLevel, ThreatType
@@ -71,9 +71,9 @@ def example_incident_response_workflow():
     
     # Generate incident report
     print("4. Incident Summary:")
-    print(f"   ✓ Security incident logged")
-    print(f"   ✓ Emergency patch deployed")
-    print(f"   ✓ Support ticket created")
+    print("   ✓ Security incident logged")
+    print("   ✓ Emergency patch deployed")
+    print("   ✓ Support ticket created")
     print()
 
 
@@ -148,7 +148,7 @@ def example_product_launch_workflow():
         category="product",
         tags=["v2.0", "release", "features"],
     )
-    print(f"   ✓ Knowledge base updated")
+    print("   ✓ Knowledge base updated")
     print(f"   ✓ Total articles: {len(support.knowledge_base)}")
     print()
     
@@ -218,12 +218,12 @@ def example_monthly_reporting_workflow():
     
     # Consolidated report
     print("5. Consolidated Monthly Report:")
-    print(f"   ┌─────────────────────────────────────┐")
+    print("   ┌─────────────────────────────────────┐")
     print(f"   │ Infrastructure: {infra_summary['total_resources']} resources, ${infra_summary['monthly_cost']:.2f}/mo │")
     print(f"   │ Business: {metrics.row_count} metrics tracked                  │")
     print(f"   │ Support: {support_metrics['total_tickets']} tickets, {support_metrics['avg_satisfaction_score']:.1f}⭐ satisfaction    │")
     print(f"   │ Security: {security_report['incidents']['total']} incidents, {security_report['findings']['total']} findings      │")
-    print(f"   └─────────────────────────────────────┘")
+    print("   └─────────────────────────────────────┘")
     print()
 
 
@@ -266,14 +266,14 @@ def example_cost_optimization_workflow():
     print(f"   Growth Rate: {trend['growth_rate_percent']:.1f}%")
     
     if trend['trend'] == 'increasing':
-        print(f"   ⚠️  Costs are increasing - action needed!")
+        print("   ⚠️  Costs are increasing - action needed!")
     print()
     
     # Recommendations
     print("3. Optimization Recommendations:")
-    print(f"   ✓ Right-size underutilized resources")
-    print(f"   ✓ Implement auto-scaling policies")
-    print(f"   ✓ Review reserved instance options")
+    print("   ✓ Right-size underutilized resources")
+    print("   ✓ Implement auto-scaling policies")
+    print("   ✓ Review reserved instance options")
     print(f"   ✓ Set up cost alerts at ${cost_report['current_costs']['monthly_cost'] * 1.1:.2f}")
     print()
     

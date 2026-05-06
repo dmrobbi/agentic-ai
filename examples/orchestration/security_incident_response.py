@@ -181,7 +181,7 @@ Respond to this email for updates.
     exec_summary = comms.send_email(
         to=["ceo@example.com", "cto@example.com"],
         subject="Security Incident - Executive Summary",
-        body=f"""
+        body="""
 EXECUTIVE SUMMARY - Security Incident
 
 INCIDENT: Unauthorized API Access
@@ -253,7 +253,7 @@ Sincerely,
     legal_matter = legal.create_legal_matter(
         title=f"Security Incident {incident.incident_id} - Regulatory Compliance",
         matter_type="data_breach",
-        description=f"Unauthorized access incident requiring regulatory notification assessment",
+        description="Unauthorized access incident requiring regulatory notification assessment",
         priority="urgent",
         related_matters=[],
     )

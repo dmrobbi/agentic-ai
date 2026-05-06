@@ -17,8 +17,7 @@ Status: Alpha (0.1.0)
 """
 
 import logging
-import json
-from typing import List, Dict, Optional, Set
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 from enum import Enum
@@ -491,7 +490,7 @@ class PurpleTeamAutomation:
                 report.append(f"    Gap Type: {gap.gap_type}")
                 report.append(f"    Detection Rate: {gap.detection_rate:.0%}")
                 report.append(f"    Findings: {gap.red_team_findings}")
-                report.append(f"    Recommendations:")
+                report.append("    Recommendations:")
                 for rec in gap.recommendations[:3]:
                     report.append(f"      • {rec}")
         

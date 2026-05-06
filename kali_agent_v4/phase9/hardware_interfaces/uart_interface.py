@@ -21,8 +21,7 @@ import serial
 import serial.tools.list_ports
 import time
 import re
-import json
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 import threading
@@ -336,7 +335,7 @@ class UARTInterface:
                         logger.info(f"✅ Likely baud rate: {baudrate}")
                         return baudrate
                         
-                except:
+                except Exception:
                     pass
                     
             except Exception as e:
@@ -426,7 +425,7 @@ class UARTInterface:
         
         try:
             return data.decode('utf-8', errors='ignore')
-        except:
+        except Exception:
             return data.decode('latin-1', errors='ignore')
     
     def write(self, data: str):
@@ -601,7 +600,7 @@ class UARTInterface:
                     # This is a simplified approach - real implementation
                     # would need to be device-specific
                     output = self.execute_command(
-                        f'xxd -p /dev/mtd0',
+                        'xxd -p /dev/mtd0',
                         timeout=30.0
                     )
                     
@@ -638,7 +637,7 @@ class UARTInterface:
                         for byte in hex_part:
                             if len(byte) == 2:
                                 data += bytes([int(byte, 16)])
-                    except:
+                    except Exception:
                         pass
         
         return data
@@ -809,11 +808,11 @@ def main():
             print("Try specifying manually: python uart_interface.py /dev/ttyUSB0 115200")
     else:
         print("\n💡 Usage:")
-        print(f"  python uart_interface.py <port>              # Auto-detect baud")
-        print(f"  python uart_interface.py <port> <baudrate>   # Specific baud")
-        print(f"\nExample:")
-        print(f"  python uart_interface.py /dev/ttyUSB0")
-        print(f"  python uart_interface.py /dev/ttyUSB0 115200")
+        print("  python uart_interface.py <port>              # Auto-detect baud")
+        print("  python uart_interface.py <port> <baudrate>   # Specific baud")
+        print("\nExample:")
+        print("  python uart_interface.py /dev/ttyUSB0")
+        print("  python uart_interface.py /dev/ttyUSB0 115200")
 
 
 if __name__ == "__main__":

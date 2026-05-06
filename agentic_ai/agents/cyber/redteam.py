@@ -9,7 +9,7 @@ adversary emulation, attack path discovery, and red team operations.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -982,7 +982,7 @@ if __name__ == "__main__":
 
     # Generate report
     report = agent.generate_engagement_report(engagement.engagement_id)
-    print(f"\nEngagement Report:")
+    print("\nEngagement Report:")
     print(f"  Targets: {report['summary']['total_targets']}")
     print(f"  Compromised: {report['summary']['compromised_targets']}")
     print(f"  Findings: {report['summary']['total_findings']}")

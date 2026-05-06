@@ -6,7 +6,6 @@ REST API for executing KaliAgent playbooks and managing engagements.
 """
 
 import logging
-import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -14,14 +13,14 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, FileResponse
-from pydantic import BaseModel, Field
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
-from agentic_ai.agents.cyber.kali import KaliAgent, AuthorizationLevel, ToolCategory
-from agentic_ai.agents.cyber.redteam import RedTeamAgent, EngagementType, EngagementStatus
+from agentic_ai.agents.cyber.kali import KaliAgent, AuthorizationLevel
+from agentic_ai.agents.cyber.redteam import RedTeamAgent, EngagementType
 
 
 logging.basicConfig(level=logging.INFO)

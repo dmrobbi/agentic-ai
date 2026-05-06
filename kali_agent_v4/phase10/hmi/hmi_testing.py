@@ -20,7 +20,7 @@ Status: Alpha (0.1.0)
 
 import logging
 import requests
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -228,7 +228,7 @@ class HMISecurityTester:
             result = sock.connect_ex((ip, port))
             sock.close()
             return result == 0
-        except:
+        except Exception:
             return False
     
     def _identify_vendor(self, ip: str, port: int) -> str:
@@ -252,7 +252,7 @@ class HMISecurityTester:
             
             return 'Unknown'
             
-        except:
+        except Exception:
             return 'Unknown'
     
     def test_default_credentials(self, ip: str, port: int, vendor: str) -> bool:
@@ -294,12 +294,12 @@ class HMISecurityTester:
                     
                     if response.status_code == 200 and 'welcome' in response.text.lower():
                         return True
-                except:
+                except Exception:
                     pass
             
             return False
             
-        except:
+        except Exception:
             return False
     
     def test_web_interface(self, ip: str, port: int) -> List[HMIVulnerability]:
@@ -345,7 +345,7 @@ class HMISecurityTester:
                             cwe_id='CWE-530',
                             remediation='Remove backup files from web-accessible directories'
                         ))
-                except:
+                except Exception:
                     pass
             
             # Check for sensitive file exposure
@@ -362,7 +362,7 @@ class HMISecurityTester:
                             cwe_id='CWE-200',
                             remediation='Restrict access to sensitive configuration files'
                         ))
-                except:
+                except Exception:
                     pass
             
         except Exception as e:

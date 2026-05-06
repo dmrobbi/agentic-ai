@@ -100,10 +100,9 @@ class PersistenceHunter:
         findings = []
         
         # Registry modification events
-        reg_events = [4657, 4658]  # Registry key/value modified
         
         for log in logs:
-            event_id = log.get('event_id')
+            log.get('event_id')
             key_name = log.get('registry_key', '').lower()
             value_name = log.get('registry_value', '').lower()
             data = log.get('registry_data', '').lower()
@@ -123,7 +122,7 @@ class PersistenceHunter:
                     technique='Registry Run Keys',
                     severity=severity,
                     confidence=confidence,
-                    description=f'Registry run key modification detected',
+                    description='Registry run key modification detected',
                     location=key_name,
                     payload=data[:200] if data else 'Unknown',
                     mitre_attack='T1547.001',
@@ -153,7 +152,6 @@ class PersistenceHunter:
         findings = []
         
         # Task creation events
-        task_events = [4698, 4700, 4701]  # Task created/enabled/disabled
         
         for log in logs:
             event_id = log.get('event_id')
@@ -452,7 +450,7 @@ class PersistenceHunter:
                 report.append(f"   Payload: {f.payload[:100]}")
                 report.append(f"   Confidence: {f.confidence:.0%}")
                 report.append(f"   Description: {f.description}")
-                report.append(f"   Recommended Actions:")
+                report.append("   Recommended Actions:")
                 for action in f.recommended_actions:
                     report.append(f"     • {action}")
         

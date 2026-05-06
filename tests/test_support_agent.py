@@ -7,7 +7,6 @@ knowledge base, SLA tracking, and customer satisfaction.
 """
 
 import pytest
-from datetime import datetime, timedelta
 
 from agentic_ai.agents.support import (
     SupportAgent,

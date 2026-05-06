@@ -1074,14 +1074,14 @@ output "public_ip" {{
             docker_configs.append(c2_config)
         
         # Generate Docker Compose
-        compose_path = self.generate_compose(
+        self.generate_compose(
             deployment.name,
             docker_configs,
             pkg_dir / 'docker-compose.yml'
         )
         
         # Generate env file
-        env_path = self.generate_env_file(deployment.name, docker_configs)
+        self.generate_env_file(deployment.name, docker_configs)
         
         # Generate Terraform configs
         terraform_paths = []
@@ -1205,13 +1205,12 @@ def main():
     
     elif args.generate_compose:
         # Load configs and generate compose
-        configs = []
         for config_file in deployment.docker_dir.glob('*_config.json'):
             with open(config_file, 'r') as f:
-                config_data = json.load(f)
+                json.load(f)
             # Reconstruct DockerConfig from dict
             # (simplified for CLI)
-        print(f"✅ Docker Compose generated")
+        print("✅ Docker Compose generated")
     
     elif args.generate_terraform:
         cloud_map = {

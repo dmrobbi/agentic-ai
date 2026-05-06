@@ -486,7 +486,7 @@ def main():
     # Register models
     print("\n📝 Registering models...")
     
-    v1 = registry.register(
+    registry.register(
         model_name="lstm_anomaly_detector",
         version="1.0.0",
         model_type="lstm",
@@ -497,7 +497,7 @@ def main():
         tags=["anomaly", "lstm", "production"]
     )
     
-    v2 = registry.register(
+    registry.register(
         model_name="lstm_anomaly_detector",
         version="1.1.0",
         model_type="lstm",

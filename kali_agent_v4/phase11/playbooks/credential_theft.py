@@ -112,7 +112,7 @@ class CredentialTheftHunter:
                         mitre_attack='T1558.003',
                         evidence=[
                             f"Service: {log.get('service_name')}",
-                            f"Encryption: RC4 (weak)"
+                            "Encryption: RC4 (weak)"
                         ],
                         recommended_actions=[
                             'Review service account permissions',
@@ -304,10 +304,10 @@ class CredentialTheftHunter:
                 report.append(f"   MITRE ATT&CK: {f.mitre_attack}")
                 report.append(f"   Confidence: {f.confidence:.0%}")
                 report.append(f"   Description: {f.description}")
-                report.append(f"   Evidence:")
+                report.append("   Evidence:")
                 for ev in f.evidence:
                     report.append(f"     - {ev}")
-                report.append(f"   Recommended Actions:")
+                report.append("   Recommended Actions:")
                 for action in f.recommended_actions:
                     report.append(f"     • {action}")
         

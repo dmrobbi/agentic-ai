@@ -229,14 +229,14 @@ def run_product_launch():
     print("\n[Sales Agent] Preparing sales enablement...")
     
     # Create sales playbook
-    sales_playbook = sales.create_proposal(
+    sales.create_proposal(
         opportunity_id="playbook-cloudsecure",
         customer_name="Sales Team",
         proposal_type="sales_playbook",
         value=0.0,
         products=[new_product.product_id],
     )
-    print(f"  ✓ Sales playbook created")
+    print("  ✓ Sales playbook created")
     
     # Define target accounts
     print("\n[Sales Agent] Identifying target accounts...")
@@ -301,7 +301,7 @@ def run_product_launch():
     # Prepare pricing proposals
     print("\n[Sales Agent] Preparing pricing proposals...")
     
-    enterprise_proposal = sales.create_proposal(
+    sales.create_proposal(
         opportunity_id="enterprise-template",
         customer_name="Enterprise Template",
         proposal_type="pricing",
@@ -313,7 +313,7 @@ def run_product_launch():
             "enterprise_addons": ["SSO", "Advanced Analytics", "Premium Support"],
         },
     )
-    print(f"  ✓ Enterprise pricing proposal created")
+    print("  ✓ Enterprise pricing proposal created")
     
     # ========================================================================
     # PHASE 4: SUPPORT READINESS
@@ -454,23 +454,23 @@ Contact:
 press@example.com
         """,
     )
-    print(f"  ✓ Press release template created")
+    print("  ✓ Press release template created")
     
     # Distribute press release
     print("\n[Communications Agent] Distributing press release...")
     
-    press_distribution = comms.send_email(
+    comms.send_email(
         to=["press@techcrunch.com", "press@reuters.com", "press@bloomberg.com"],
         subject="FOR IMMEDIATE RELEASE: Example Corp Launches CloudSecure Pro",
         body=press_release.get('body', ''),
         priority="high",
     )
-    print(f"  ✓ Press release distributed to media outlets")
+    print("  ✓ Press release distributed to media outlets")
     
     # Internal announcement
     print("\n[Communications Agent] Sending internal announcement...")
     
-    internal_announcement = comms.send_email(
+    comms.send_email(
         to=["all-company@example.com"],
         subject="🎉 Announcing CloudSecure Pro - Our Newest Product!",
         body=f"""
@@ -502,7 +502,7 @@ CEO
         """,
         priority="normal",
     )
-    print(f"  ✓ Internal announcement sent")
+    print("  ✓ Internal announcement sent")
     
     # ========================================================================
     # PHASE 6: ANALYTICS & METRICS

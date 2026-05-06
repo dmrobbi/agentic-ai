@@ -16,16 +16,16 @@ print("="*70)
 print()
 
 # Sliver Demo
-print(f"🎯 Sliver C2 Client")
+print("🎯 Sliver C2 Client")
 print()
 sliver = SliverClient(config_dir=Path('/tmp/sliver_demo'))
 
-print(f"   Connecting to Sliver...")
+print("   Connecting to Sliver...")
 success, msg = sliver.connect('grpc://localhost:31337')
 print(f"   Status: {'✅ Connected' if success else '🔌 Mock Mode (Server not running)'}")
 print()
 
-print(f"   Generating Implants:")
+print("   Generating Implants:")
 implants = [
     (ImplantType.REVERSE_HTTP, Protocol.HTTP, 80),
     (ImplantType.REVERSE_HTTPS, Protocol.HTTPS, 443),
@@ -50,16 +50,16 @@ print(f"   Total Implants: {len(implant_list)}")
 print()
 
 # Empire Demo
-print(f"🏰 Empire C2 Client")
+print("🏰 Empire C2 Client")
 print()
 empire = EmpireClient(config_dir=Path('/tmp/empire_demo'))
 
-print(f"   Connecting to Empire...")
+print("   Connecting to Empire...")
 success, msg = empire.connect('https://localhost:1337')
 print(f"   Status: {'✅ Connected' if success else '🔌 Mock Mode (Server not running)'}")
 print()
 
-print(f"   Creating Listeners:")
+print("   Creating Listeners:")
 listeners = [
     (ListenerType.HTTP, 8080),
     (ListenerType.HTTPS, 8443),

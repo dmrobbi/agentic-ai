@@ -8,11 +8,10 @@ integration monitoring, and cross-platform automation.
 
 import logging
 import secrets
-import hashlib
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Callable
+from typing import Any, Dict, List, Optional
 import json
 
 
@@ -459,10 +458,10 @@ class IntegrationAgent:
         logs = self.logs
 
         if integration_type:
-            logs = [l for l in logs if l.integration_type == integration_type]
+            logs = [level for level in logs if level.integration_type == integration_type]
 
         if status:
-            logs = [l for l in logs if l.status == status]
+            logs = [level for level in logs if level.status == status]
 
         return logs[-limit:]
 
@@ -480,7 +479,7 @@ class IntegrationAgent:
         active_webhooks = len([w for w in webhooks if w.status == 'active'])
         completed_syncs = len([j for j in sync_jobs if j.status == 'completed'])
 
-        recent_errors = len([l for l in self.logs[-100:] if l.status == 'error'])
+        recent_errors = len([level for level in self.logs[-100:] if level.status == 'error'])
 
         return {
             'connections': {

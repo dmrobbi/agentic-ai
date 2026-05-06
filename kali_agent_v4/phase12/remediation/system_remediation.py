@@ -19,7 +19,7 @@ Status: Alpha (0.1.0)
 import logging
 from typing import List, Dict, Optional
 from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 import uuid
 
 logging.basicConfig(level=logging.INFO)

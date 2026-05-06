@@ -18,7 +18,6 @@ Recording Tips:
 """
 
 import time
-import json
 from datetime import datetime
 
 # Color codes for terminal output
@@ -107,7 +106,7 @@ def main():
     print_agent_action(
         "✅",
         "Incident Created",
-        f"create_incident()",
+        "create_incident()",
         f"{incident['incident_id']} - Severity: {incident['severity'].upper()}"
     )
     
@@ -124,7 +123,7 @@ def main():
     print_agent_action(
         "✅",
         "Alert Triage",
-        f"triage_alert()",
+        "triage_alert()",
         f"Priority: {triage['priority']} → Assigned to: {triage['assigned_to']}"
     )
     
@@ -140,7 +139,7 @@ def main():
     print_agent_action(
         "✅",
         "Playbook Executed",
-        f"execute_playbook()",
+        "execute_playbook()",
         f"Steps completed: {playbook_result['steps_completed']}/3"
     )
     
@@ -170,7 +169,7 @@ def main():
     print_agent_action(
         "✅",
         "Scan Imported",
-        f"import_scan_results()",
+        "import_scan_results()",
         f"Vulnerabilities found: {scan_import['vulnerabilities_found']}"
     )
     
@@ -189,7 +188,7 @@ def main():
     print_agent_action(
         "✅",
         "Vulnerability Created",
-        f"create_vulnerability()",
+        "create_vulnerability()",
         f"{vuln['vulnerability_id']} - CVSS: {vuln['cvss_score']}"
     )
     
@@ -206,7 +205,7 @@ def main():
     print_agent_action(
         "✅",
         "Remediation Assigned",
-        f"assign_remediation()",
+        "assign_remediation()",
         f"Team: {assignment['assigned_to']} - Due: {assignment['due_date']}"
     )
     
@@ -239,7 +238,7 @@ def main():
     print_agent_action(
         "✅",
         "Engagement Created",
-        f"create_engagement()",
+        "create_engagement()",
         f"{engagement['engagement_id']} - Duration: {engagement['duration_days']} days"
     )
     
@@ -258,7 +257,7 @@ def main():
     print_agent_action(
         "✅",
         "Technique Executed",
-        f"execute_technique()",
+        "execute_technique()",
         f"Success rate: {phishing['success_rate']*100:.0f}% clicked"
     )
     
@@ -276,7 +275,7 @@ def main():
     print_agent_action(
         "✅",
         "Finding Documented",
-        f"document_finding()",
+        "document_finding()",
         f"{finding['finding_id']} - Severity: {finding['severity'].upper()}"
     )
     
@@ -307,7 +306,7 @@ def main():
     print_agent_action(
         "✅",
         "Sample Submitted",
-        f"submit_sample()",
+        "submit_sample()",
         f"{analysis['analysis_id']} - Campaign: {analysis['campaign']}"
     )
     
@@ -321,7 +320,7 @@ def main():
     print_agent_action(
         "✅",
         "Analysis Complete",
-        f"get_analysis_report()",
+        "get_analysis_report()",
         f"Family: {report.get('family', 'Unknown')} - Threat Level: {report.get('threat_level', 'High')}"
     )
     
@@ -350,7 +349,7 @@ def main():
     print_agent_action(
         "✅",
         "YARA Rule Generated",
-        f"generate_yara_rule()",
+        "generate_yara_rule()",
         f"Rule: {yara['rule_name']} - Patterns: {yara['pattern_count']}"
     )
     
@@ -380,7 +379,7 @@ def main():
     print_agent_action(
         "✅",
         "Code Scan Complete",
-        f"scan_code()",
+        "scan_code()",
         f"Files scanned: {scan.get('files_scanned', 0)} - Findings: {scan.get('total_findings', 0)}"
     )
     
@@ -395,7 +394,7 @@ def main():
     print_agent_action(
         "✅",
         "Secrets Scan",
-        f"detect_secrets()",
+        "detect_secrets()",
         f"Potential secrets found: {secrets.get('total_secrets', 0)}"
     )
     
@@ -447,7 +446,7 @@ def main():
     print_agent_action(
         "✅",
         "Cloud Scan Complete",
-        f"scan_account()",
+        "scan_account()",
         f"Controls checked: {scan.get('controls_checked', 0)} - Findings: {scan.get('total_findings', 0)}"
     )
     
@@ -476,7 +475,7 @@ def main():
         print_agent_action(
             "✅",
             "Remediation Applied",
-            f"remediate_finding()",
+            "remediate_finding()",
             f"Action: {remediation.get('action', 'N/A')} - Status: {remediation.get('status', 'N/A')}"
         )
     
@@ -491,7 +490,7 @@ def main():
     print_agent_action(
         "✅",
         "Compliance Score",
-        f"get_compliance_score()",
+        "get_compliance_score()",
         f"CIS AWS: {score.get('score', 0)}% - Passed: {score.get('controls_passed', 0)}/{score.get('total_controls', 0)}"
     )
     

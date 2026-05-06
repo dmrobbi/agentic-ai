@@ -226,7 +226,7 @@ class ElasticConnector(SIEMConnector):
             url = f"http://{self.host}:{self.port}"
             
             if self.api_key:
-                headers = {'Authorization': f'ApiKey {self.api_key}'}
+                pass
             elif self.username and self.password:
                 from requests.auth import HTTPBasicAuth
                 response = requests.get(url, auth=HTTPBasicAuth(self.username, self.password))

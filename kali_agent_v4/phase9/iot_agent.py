@@ -11,7 +11,7 @@ Status: Alpha (0.1.0)
 """
 
 import logging
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -280,7 +280,7 @@ class IoTAgent:
                 'credentials_harvested': 2
             }
         
-        logger.info(f"✅ Protocol testing complete")
+        logger.info("✅ Protocol testing complete")
         return results
     
     def analyze_firmware(self, device: IoTDevice, firmware_url: str = None) -> Dict:
@@ -315,7 +315,7 @@ class IoTAgent:
             ]
         }
         
-        logger.info(f"✅ Firmware analysis complete")
+        logger.info("✅ Firmware analysis complete")
         return results
     
     def generate_report(self, output_format: str = 'text') -> str:

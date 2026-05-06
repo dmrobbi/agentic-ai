@@ -124,7 +124,7 @@ class LateralMovementHunter:
         
         for source, logons in rdp_logons.items():
             if len(logons) >= 3:  # Multiple RDP sessions
-                targets = set(l.get('dest_ip') for l in logons)
+                targets = set(level.get('dest_ip') for level in logons)
                 finding = LateralMovementFinding(
                     technique='RDP Hopping',
                     severity='high',
@@ -181,7 +181,7 @@ class LateralMovementHunter:
                         evidence=[
                             f"Command: {command[:100]}",
                             f"Process: {process}",
-                            f"Remote: True"
+                            "Remote: True"
                         ],
                         recommended_actions=[
                             'Review source system',
@@ -298,7 +298,7 @@ class LateralMovementHunter:
         
         for source, logons in ssh_logons.items():
             if len(logons) >= 5:  # Multiple SSH sessions
-                targets = set(l.get('dest_ip') for l in logons)
+                targets = set(level.get('dest_ip') for level in logons)
                 finding = LateralMovementFinding(
                     technique='SSH Abuse',
                     severity='medium',
@@ -363,7 +363,7 @@ class LateralMovementHunter:
                 report.append(f"   Target: {f.target_system}")
                 report.append(f"   Confidence: {f.confidence:.0%}")
                 report.append(f"   Description: {f.description}")
-                report.append(f"   Recommended Actions:")
+                report.append("   Recommended Actions:")
                 for action in f.recommended_actions:
                     report.append(f"     • {action}")
         

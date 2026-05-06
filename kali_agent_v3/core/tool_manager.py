@@ -10,15 +10,13 @@ Tasks: 1.2.1, 1.2.2, 1.2.3, 1.3.1, 1.3.2, 1.3.3
 Status: IMPLEMENTED
 """
 
-import os
 import re
 import json
 import subprocess
 import logging
-from typing import Dict, List, Optional, Tuple, Any
+from typing import Dict, List, Optional, Tuple
 from pathlib import Path
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -207,16 +205,6 @@ class ToolManager:
             priority=9,
             tags=['vulnerability', 'scanner', 'network', 'compliance']
         ),
-        'wpscan': ToolInfo(
-            name='wpscan',
-            category='vulnerability-analysis',
-            description='WordPress security scanner',
-            package_name='wpscan',
-            dependencies=['ruby', 'curl'],
-            size_mb=12.0,
-            priority=8,
-            tags=['web', 'wordpress', 'cms', 'scanner']
-        ),
         'sslscan': ToolInfo(
             name='sslscan',
             category='vulnerability-analysis',
@@ -270,16 +258,6 @@ class ToolManager:
             size_mb=120.0,
             priority=9,
             tags=['web', 'proxy', 'scanner', 'owasp']
-        ),
-        'sqlmap': ToolInfo(
-            name='sqlmap',
-            category='web-application',
-            description='Automatic SQL injection tool',
-            package_name='sqlmap',
-            dependencies=['python3', 'python3-requests'],
-            size_mb=3.2,
-            priority=10,
-            tags=['web', 'sqli', 'injection', 'database']
         ),
         'gobuster': ToolInfo(
             name='gobuster',
@@ -355,16 +333,6 @@ class ToolManager:
         # =====================================================================
         # Database Assessment (10 tools)
         # =====================================================================
-        'sqlmap': ToolInfo(
-            name='sqlmap',
-            category='database',
-            description='Automatic SQL injection and database takeover tool',
-            package_name='sqlmap',
-            dependencies=['python3', 'python3-requests'],
-            size_mb=3.2,
-            priority=10,
-            tags=['database', 'sqli', 'injection', 'automation']
-        ),
         'sqlninja': ToolInfo(
             name='sqlninja',
             category='database',

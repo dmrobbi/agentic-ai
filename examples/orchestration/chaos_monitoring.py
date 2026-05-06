@@ -19,7 +19,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
 
 from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, SeverityLevel, BlastRadius, TargetType
-from agentic_ai.agents.ml_ops import MLOpsAgent, ModelStage, DeploymentStrategy
+from agentic_ai.agents.ml_ops import MLOpsAgent, DeploymentStrategy
 from agentic_ai.agents.cloud_security import CloudSecurityAgent, CloudProvider, Severity
 from agentic_ai.agents.devops import DevOpsAgent
 
@@ -69,7 +69,7 @@ def run_chaos_with_monitoring():
     print(f"  ✓ Registered {len(web_targets)} web server targets")
     
     # Database (critical - should NOT be selected for random chaos)
-    db_target = chaos.register_target(
+    chaos.register_target(
         target_type=TargetType.DATABASE,
         name="postgres-primary",
         cloud_provider="aws",
@@ -83,10 +83,10 @@ def run_chaos_with_monitoring():
         tags=['database', 'production', 'stateful'],
         critical=True,  # Critical - excluded from random selection
     )
-    print(f"  ✓ Registered 1 database target (CRITICAL - protected)")
+    print("  ✓ Registered 1 database target (CRITICAL - protected)")
     
     # ML inference service
-    ml_target = chaos.register_target(
+    chaos.register_target(
         target_type=TargetType.SERVICE,
         name="ml-inference-service",
         cloud_provider="kubernetes",
@@ -101,7 +101,7 @@ def run_chaos_with_monitoring():
         tags=['ml', 'inference', 'production'],
         critical=False,
     )
-    print(f"  ✓ Registered 1 ML service target")
+    print("  ✓ Registered 1 ML service target")
     
     # ========================================================================
     # PHASE 2: MODEL REGISTRY & BASELINE
@@ -134,7 +134,7 @@ def run_chaos_with_monitoring():
         created_by="ml-ops@example.com",
     )
     mlops.start_experiment(baseline_exp.experiment_id)
-    print(f"  ✓ Baseline experiment started")
+    print("  ✓ Baseline experiment started")
     
     # Complete baseline with metrics
     baseline_metrics = {
@@ -153,7 +153,7 @@ def run_chaos_with_monitoring():
         metrics=baseline_metrics,
         artifacts=['baseline_metrics.json', 'confusion_matrix.png'],
     )
-    print(f"  ✓ Baseline metrics recorded")
+    print("  ✓ Baseline metrics recorded")
     print(f"    - Accuracy: {baseline_metrics['accuracy']:.2%}")
     print(f"    - P99 Latency: {baseline_metrics['latency_p99']}ms")
     print(f"    - Throughput: {baseline_metrics['throughput']} req/s")
@@ -183,7 +183,7 @@ def run_chaos_with_monitoring():
             'memory_threshold': 80,
         },
     )
-    print(f"  ✓ Model deployed to production")
+    print("  ✓ Model deployed to production")
     print(f"    - Endpoint: {deployment.endpoint}")
     print(f"    - Instances: {deployment.instances}")
     
@@ -344,7 +344,7 @@ def run_chaos_with_monitoring():
         operator="gt",
         threshold_value=500,
     )
-    print(f"  ✓ Abort thresholds configured")
+    print("  ✓ Abort thresholds configured")
     
     # Start experiment
     print("\n[ChaosMonkey Agent] 🚀 STARTING CHAOS EXPERIMENT...")
@@ -386,7 +386,7 @@ def run_chaos_with_monitoring():
     
     # Check for alerts
     alerts = mlops.check_model_metrics(model.model_id, metrics_t1)
-    print(f"\n  T+1min metrics:")
+    print("\n  T+1min metrics:")
     print(f"    - Accuracy: {metrics_t1['accuracy']:.2%} (baseline: 92%)")
     print(f"    - P99 Latency: {metrics_t1['latency_p99']}ms (baseline: 120ms)")
     print(f"    - Error Rate: {metrics_t1['error_rate']:.2%} (threshold: 2%)")
@@ -408,8 +408,8 @@ def run_chaos_with_monitoring():
         print(f"  ⚠️  THRESHOLDS BREACHED: {', '.join(breached)}")
         print("  ⚠️  Experiment would be aborted!")
     else:
-        print(f"  ✓ All thresholds within limits")
-        print(f"  ✓ Experiment continues...")
+        print("  ✓ All thresholds within limits")
+        print("  ✓ Experiment continues...")
     
     # Simulate T+3min (auto-scaling kicked in)
     print("\n  [Auto-scaling] New instances launched to replace terminated...")
@@ -421,7 +421,7 @@ def run_chaos_with_monitoring():
         'throughput': 1000,  # Fully recovered
     }
     
-    print(f"\n  T+3min metrics (recovery):")
+    print("\n  T+3min metrics (recovery):")
     print(f"    - Accuracy: {metrics_t3['accuracy']:.2%} ✓")
     print(f"    - P99 Latency: {metrics_t3['latency_p99']}ms ✓")
     print(f"    - Error Rate: {metrics_t3['error_rate']:.2%} ✓")
@@ -445,9 +445,9 @@ def run_chaos_with_monitoring():
     print(f"  ✓ Post-chaos CIS Compliance: {post_chaos_compliance.get('score', 0):.1f}%")
     
     if post_chaos_compliance.get('score', 0) >= baseline_compliance.get('score', 0):
-        print(f"  ✓ Security posture maintained during chaos")
+        print("  ✓ Security posture maintained during chaos")
     else:
-        print(f"  ⚠️  Security posture degraded - investigation required")
+        print("  ⚠️  Security posture degraded - investigation required")
     
     # ========================================================================
     # PHASE 7: COMPLETION & ANALYSIS
@@ -474,7 +474,7 @@ def run_chaos_with_monitoring():
     print(f"  ✓ Duration: {(experiment.completed_at - experiment.started_at).total_seconds():.0f} seconds")
     
     # Get experiment report
-    report = chaos.get_experiment_report(experiment.experiment_id)
+    chaos.get_experiment_report(experiment.experiment_id)
     
     # Calculate resiliency score
     print("\n[MLOps Agent] Calculating resiliency score...")

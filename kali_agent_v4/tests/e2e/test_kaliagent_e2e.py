@@ -7,7 +7,6 @@ Tests complete workflows from scan to report generation
 import pytest
 import time
 import requests
-from typing import Dict, List
 
 
 class TestKaliAgentE2E:

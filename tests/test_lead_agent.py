@@ -8,7 +8,7 @@ Unit tests for the lead agent implementation.
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
+from unittest.mock import MagicMock
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -214,7 +214,6 @@ class TestLeadAgent:
     async def test_agent_creation(self, mock_inference, mock_state_store, mock_bus, temp_project):
         """Test creating agents dynamically."""
         from agentic_ai.agents.lead import LeadAgent
-        from agentic_ai.agents.base import AgentStatus
         
         agent = LeadAgent(project_path=str(temp_project))
         agent.inference = mock_inference

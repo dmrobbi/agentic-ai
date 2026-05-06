@@ -11,9 +11,13 @@ import logging
 import ast
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, List, Optional, TypeVar
-from abc import ABC, abstractmethod
+
+try:
+    import redis as redis_module
+except ImportError:
+    redis_module = None
 
 from .message_bus import MessageBus, Message, MessageType
 from .event_bus import EventBus, Event, EventPriority
@@ -454,13 +458,14 @@ class AgentRegistry:
 
     def __init__(self, redis_url: str = "redis://localhost:6379"):
         self.redis_url = redis_url
-        self._redis: Optional[redis.Redis] = None
+        self._redis: Optional[Any] = None
         self._registry_key = "agent_registry"
 
     def connect(self) -> None:
         """Connect to Redis."""
-        import redis
-        self._redis = redis.from_url(self.redis_url, decode_responses=True)
+        if redis_module is None:
+            raise ImportError("redis package is required for AgentRegistry")
+        self._redis = redis_module.from_url(self.redis_url, decode_responses=True)
 
     def register_agent(self, agent_id: str, agent_type: str, capabilities: List[Dict[str, Any]]) -> None:
         """Register agent in registry."""
@@ -570,5 +575,3 @@ class AgentRegistry:
         return removed
 
 
-# Import timedelta
-from datetime import timedelta

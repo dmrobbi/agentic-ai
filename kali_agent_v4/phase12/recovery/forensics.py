@@ -18,7 +18,7 @@ Status: Alpha (0.1.0)
 
 import logging
 import hashlib
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 import uuid
@@ -474,7 +474,7 @@ Capabilities:
     forensics = DigitalForensics()
     
     # Create case
-    case = forensics.create_case('INC-001', 'Malware Investigation')
+    forensics.create_case('INC-001', 'Malware Investigation')
     
     # Collect evidence
     forensics.collect_memory('WS-001', method='dump')

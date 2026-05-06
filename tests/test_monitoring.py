@@ -7,7 +7,6 @@ Unit tests for metrics, dashboard, and alerting systems.
 
 import pytest
 import time
-from datetime import datetime, timedelta
 
 
 @pytest.fixture

@@ -30,18 +30,15 @@ Version: 1.0.0
 """
 
 import argparse
-import sys
 import os
 import logging
 import time
 import socket
 import struct
-import threading
 import json
-import hashlib
 from datetime import datetime
 from dataclasses import dataclass, field
-from typing import List, Optional, Tuple, Dict
+from typing import List, Optional, Dict
 from pathlib import Path
 from enum import Enum
 
@@ -402,19 +399,19 @@ class TimingAnalyzer:
             sock.settimeout(target.timeout)
             sock.connect((target.host, target.port))
             state = SSHState.TCP_CONNECTED
-            connect_time = time.monotonic() - start
+            time.monotonic() - start
 
             # Receive banner
             phase = "banner"
             banner_start = time.monotonic()
             data = sock.recv(4096)
-            banner_time = time.monotonic() - banner_start
+            time.monotonic() - banner_start
             bytes_received += len(data)
             state = SSHState.BANNER_RECEIVED
 
             # Send KEXINIT
             phase = "kex_init"
-            kex_start = time.monotonic()
+            time.monotonic()
             kex_payload = SSHProtocolHelper.build_kexinit()
             kex_packet = SSHProtocolHelper.build_packet(kex_payload)
             sock.send(kex_packet)
@@ -927,7 +924,7 @@ Examples:
             config = FuzzerConfig(target=SSHServerConfig(
                 host=args.target[0], port=args.port, timeout=args.timeout))
             analysis = demo.generate_timing_report(config, args.probes)
-            print(f"\n  Timing Analysis Results:")
+            print("\n  Timing Analysis Results:")
             print(f"    Probes:        {analysis['successful_probes']}/{analysis['total_probes']}")
             print(f"    Min latency:   {analysis['min_ms']:.1f}ms")
             print(f"    Max latency:   {analysis['max_ms']:.1f}ms")

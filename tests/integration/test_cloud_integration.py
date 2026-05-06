@@ -7,8 +7,7 @@ Tests cover AWS, GCP, Azure, and Kubernetes interactions.
 """
 
 import pytest
-from datetime import datetime
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 from moto import mock_aws
 
 from agentic_ai.agents.cloud_security import CloudSecurityAgent, CloudProvider, Severity, ResourceType
@@ -106,7 +105,7 @@ class TestAWSIntegration:
             ResourceType.S3, account.account_id, "us-east-1", "test-public-bucket",
             configuration={'public_access': True, 'policy': public_policy},
         )
-        private_bucket = agent.add_resource(
+        agent.add_resource(
             ResourceType.S3, account.account_id, "us-east-1", "test-private-bucket",
             configuration={'public_access': False},
         )

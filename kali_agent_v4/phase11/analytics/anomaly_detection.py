@@ -206,7 +206,7 @@ class AnomalyDetector:
                 id=str(uuid.uuid4()),
                 type='iqr_outlier',
                 severity=severity,
-                description=f'IQR outlier: value outside normal range',
+                description='IQR outlier: value outside normal range',
                 confidence=min(1.0, 0.5 + deviation * 0.2),
                 baseline_value=baseline['median'],
                 observed_value=value,

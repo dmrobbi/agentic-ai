@@ -183,7 +183,7 @@ class TestVendorAssessment:
         assert security_control.control_id.startswith("ctrl-")
         
         # Phase 3: Compliance Verification
-        compliance_assessment = compliance.create_assessment(
+        compliance.create_assessment(
             name=f"Compliance Review - {vendor.name}",
             assessment_type="vendor_compliance",
             scope="SOC2, ISO27001",
@@ -315,19 +315,19 @@ class TestAuditPreparation:
             email="john@example.com",
             jurisdiction="US",
         )
-        processing_activity = privacy.register_processing_activity(
+        privacy.register_processing_activity(
             name="Customer Account Management",
             purpose=privacy.ProcessingPurpose.SERVICE_DELIVERY,
             data_categories=[DataType.PII],
             legal_basis="contract",
         )
         
-        dsar = privacy.create_request(
+        privacy.create_request(
             subject_id=data_subject.subject_id,
             right_type=DataSubjectRight.ACCESS,
         )
         
-        evidence_2 = audit.collect_evidence(
+        audit.collect_evidence(
             audit_id=soc2_audit.audit_id,
             title="DSAR Log",
             description="Data subject request log",
@@ -337,14 +337,14 @@ class TestAuditPreparation:
         )
         
         # Phase 5: Security Evidence
-        security_assessment = security.create_assessment(
+        security.create_assessment(
             title="Access Review Q4 2025",
             assessment_type="access_review",
             scope="Production access",
             assessor="security-team@example.com",
         )
         
-        evidence_3 = audit.collect_evidence(
+        audit.collect_evidence(
             audit_id=soc2_audit.audit_id,
             title="Access Review Report",
             description="Q4 access review",
@@ -418,13 +418,13 @@ class TestChaosMonitoring:
             experiment_id=experiment.experiment_id,
         )
         
-        deployment = mlops.deploy_model(
+        mlops.deploy_model(
             model_id=model.model_id,
             environment="production",
             endpoint="https://api.example.com/predict",
         )
         
-        monitor = mlops.create_monitor(
+        mlops.create_monitor(
             model_id=model.model_id,
             metrics_to_track=['accuracy', 'latency_p99'],
             baseline_metrics={'accuracy': 0.92, 'latency_p99': 120},

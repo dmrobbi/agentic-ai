@@ -22,7 +22,7 @@ Status: Alpha (0.1.0)
 import logging
 import socket
 import struct
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -255,7 +255,7 @@ class BACnetClient:
         
         logger.info(f"🏭 BACnet Client v{self.VERSION}")
         logger.warning(f"⚠️  SAFETY MODE: {'ENABLED' if safety_mode else 'DISABLED'}")
-        logger.warning(f"⚠️  BACnet controls BUILDING SYSTEMS!")
+        logger.warning("⚠️  BACnet controls BUILDING SYSTEMS!")
         logger.info(f"🎯 Target: {ip_address or 'Broadcast'}:{port}")
     
     def connect(self) -> bool:
@@ -265,7 +265,7 @@ class BACnetClient:
         Returns:
             True if connection successful
         """
-        logger.info(f"🔌 Connecting to BACnet network...")
+        logger.info("🔌 Connecting to BACnet network...")
         
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
@@ -275,7 +275,7 @@ class BACnetClient:
             self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_BROADCAST, 1)
             
             self.connected = True
-            logger.info(f"✅ Connected to BACnet network")
+            logger.info("✅ Connected to BACnet network")
             
             return True
             
@@ -291,7 +291,7 @@ class BACnetClient:
         if self.socket:
             try:
                 self.socket.close()
-            except:
+            except Exception:
                 pass
         
         self.connected = False
@@ -701,7 +701,6 @@ class BACnetClient:
             return []
         
         # Build get alarm summary request
-        alarms = []
         
         # Simulated alarms
         simulated_alarms = [
@@ -943,14 +942,14 @@ def main():
             # Read objects from first device
             device_id = devices[0].object_id
             
-            ai = bacnet.read_analog_inputs(device_id, 50)
-            ao = bacnet.read_analog_outputs(device_id, 30)
-            bi = bacnet.read_binary_inputs(device_id, 100)
-            bo = bacnet.read_binary_outputs(device_id, 50)
-            schedules = bacnet.read_schedules(device_id, 20)
+            bacnet.read_analog_inputs(device_id, 50)
+            bacnet.read_analog_outputs(device_id, 30)
+            bacnet.read_binary_inputs(device_id, 100)
+            bacnet.read_binary_outputs(device_id, 50)
+            bacnet.read_schedules(device_id, 20)
             
             # Get alarms
-            alarms = bacnet.get_alarms(device_id)
+            bacnet.get_alarms(device_id)
         
         # Generate report
         print("\n" + bacnet.generate_report())

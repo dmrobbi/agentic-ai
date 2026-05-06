@@ -18,7 +18,7 @@ Hardware: Optimized for RTX 5060 Ti 16GB (darth/10.0.0.117)
 
 import logging
 import numpy as np
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple
 from datetime import datetime
 from dataclasses import dataclass, field
 import uuid
@@ -210,7 +210,7 @@ class LSTMSecurityDetector:
         epochs = epochs or self.config.epochs
         batch_size = batch_size or self.config.batch_size
         
-        logger.info(f"📚 Training LSTM model...")
+        logger.info("📚 Training LSTM model...")
         logger.info(f"   Training samples: {len(X_train)}")
         logger.info(f"   Epochs: {epochs}")
         
@@ -350,7 +350,7 @@ class LSTMSecurityDetector:
 
 def generate_sample_data(num_samples: int = 1000, seq_length: int = 100,
                         num_features: int = 5, anomaly_ratio: float = 0.1) -> Tuple:
-    logger.info(f"📊 Generating synthetic data...")
+    logger.info("📊 Generating synthetic data...")
     
     X_normal = np.zeros((num_samples, seq_length, num_features))
     for i in range(num_samples):
@@ -417,7 +417,7 @@ Hardware: RTX 5060 Ti 16GB (darth/10.0.0.117)
     
     # Train
     print("\n📚 Training LSTM model on GPU...")
-    history = detector.fit(X_train, y_train, X_val=X_test, y_val=y_test)
+    detector.fit(X_train, y_train, X_val=X_test, y_val=y_test)
     
     # Evaluate
     print("\n📊 Evaluating model...")
@@ -428,7 +428,7 @@ Hardware: RTX 5060 Ti 16GB (darth/10.0.0.117)
     recall = np.sum((predictions == 1) & (y_test == 1)) / max(np.sum(y_test == 1), 1)
     f1 = 2 * precision * recall / max(precision + recall, 1e-8)
     
-    print(f"\n✅ Test Results:")
+    print("\n✅ Test Results:")
     print(f"   Accuracy: {accuracy:.4f}")
     print(f"   Precision: {precision:.4f}")
     print(f"   Recall: {recall:.4f}")

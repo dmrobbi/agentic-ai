@@ -543,7 +543,7 @@ def get_capabilities() -> Dict[str, Any]:
             'generate_terms_template',
         ],
         'document_types': [t.value for t in DocumentType],
-        'risk_levels': [l.value for l in RiskLevel],
+        'risk_levels': [level.value for level in RiskLevel],
         'compliance_statuses': [s.value for s in ComplianceStatus],
         'regulations': [r.value for r in Regulation],
     }
@@ -570,7 +570,7 @@ if __name__ == "__main__":
     contract_text = "This agreement has unlimited liability and auto-renewal clauses."
     review = agent.review_contract(nda.document_id, contract_text)
 
-    print(f"\nReview Results:")
+    print("\nReview Results:")
     print(f"  Risks Found: {review['risks_found']}")
     print(f"  Overall Risk: {review['overall_risk'].value}")
 

@@ -6,8 +6,7 @@ Integration tests for complete collaboration workflows.
 """
 
 import pytest
-import time
-from datetime import datetime, timedelta
+from datetime import datetime
 
 
 @pytest.fixture
@@ -109,7 +108,7 @@ class TestEndToEndCollaboration:
     
     def test_session_with_realtime_collaboration(self, collaboration_imports):
         """Test collaboration session with real-time features."""
-        CollaborationSession = collaboration_imports['CollaborationSession']
+        collaboration_imports['CollaborationSession']
         SessionManager = collaboration_imports['SessionManager']
         RealTimeCollaboration = collaboration_imports['RealTimeCollaboration']
         CollaborationHub = collaboration_imports['CollaborationHub']
@@ -117,7 +116,7 @@ class TestEndToEndCollaboration:
         
         # Create session manager
         manager = SessionManager()
-        rtc = RealTimeCollaboration()
+        RealTimeCollaboration()
         hub = CollaborationHub()
         
         # Create collaboration session
@@ -132,8 +131,8 @@ class TestEndToEndCollaboration:
         session.set_metadata("workspace_id", workspace.workspace_id)
         
         # Participants join
-        alice = session.join(user_id="alice", name="Alice")
-        bob = session.join(user_id="bob", name="Bob")
+        session.join(user_id="alice", name="Alice")
+        session.join(user_id="bob", name="Bob")
         
         # Join workspace
         workspace.add_participant("alice", is_owner=True)
@@ -248,7 +247,7 @@ class TestEndToEndCollaboration:
         workspace.add_participant("viewer")
         
         # Create resource
-        resource = workspace.create_resource(
+        workspace.create_resource(
             name="Protected Doc",
             resource_type="document",
             content="Secret content",
@@ -344,9 +343,9 @@ class TestEndToEndCollaboration:
         session3.start()
         
         # Create workspaces for each
-        ws1 = Workspace(name="Standup Workspace")
-        ws2 = Workspace(name="Design Workspace")
-        ws3 = Workspace(name="Planning Workspace")
+        Workspace(name="Standup Workspace")
+        Workspace(name="Design Workspace")
+        Workspace(name="Planning Workspace")
         
         # Users join multiple sessions
         session1.join(user_id="alice", name="Alice")
@@ -404,9 +403,9 @@ class TestEndToEndCollaboration:
         perm_manager = PermissionManager()
         
         # Phase 2: Participants join
-        project_lead = session.join(user_id="project-lead", name="Project Lead")
-        developer1 = session.join(user_id="dev-1", name="Developer 1")
-        developer2 = session.join(user_id="dev-2", name="Developer 2")
+        session.join(user_id="project-lead", name="Project Lead")
+        session.join(user_id="dev-1", name="Developer 1")
+        session.join(user_id="dev-2", name="Developer 2")
         
         # Add to workspace
         workspace.add_participant("project-lead", is_owner=True)

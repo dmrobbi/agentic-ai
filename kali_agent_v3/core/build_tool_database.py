@@ -69,7 +69,6 @@ COMPLETE_TOOL_DATABASE = {
     'wpscan': {'package': 'wpscan', 'category': 'vulnerability-analysis', 'desc': 'WordPress scanner', 'mb': 12.0, 'priority': 8, 'tags': ['wordpress', 'cms']},
     'sslscan': {'package': 'sslscan', 'category': 'vulnerability-analysis', 'desc': 'SSL scanner', 'mb': 0.3, 'priority': 8, 'tags': ['ssl', 'tls']},
     'sslyze': {'package': 'sslyze', 'category': 'vulnerability-analysis', 'desc': 'SSL analyzer', 'mb': 1.5, 'priority': 8, 'tags': ['ssl', 'tls']},
-    'nuclei': {'package': 'nuclei', 'category': 'vulnerability-analysis', 'desc': 'Fast vuln scanner', 'mb': 25.0, 'priority': 9, 'tags': ['web', 'templates']},
     'skipfish': {'package': 'skipfish', 'category': 'vulnerability-analysis', 'desc': 'Web scanner', 'mb': 1.0, 'priority': 7, 'tags': ['web']},
     'w3af': {'package': 'w3af', 'category': 'vulnerability-analysis', 'desc': 'Web attack framework', 'mb': 25.0, 'priority': 8, 'tags': ['web', 'framework']},
     'arachni': {'package': 'arachni', 'category': 'vulnerability-analysis', 'desc': 'Web scanner', 'mb': 15.0, 'priority': 8, 'tags': ['web']},
@@ -314,7 +313,7 @@ def save_database():
         cat = info['category']
         categories[cat] = categories.get(cat, 0) + 1
     
-    print(f"\n📊 Tools by category:")
+    print("\n📊 Tools by category:")
     for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
         print(f"  {cat}: {count} tools")
     

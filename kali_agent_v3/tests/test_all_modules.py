@@ -13,11 +13,9 @@ Usage:
     python3 tests/test_all_modules.py --verbose
 """
 
-import os
 import sys
 import json
 import unittest
-import subprocess
 import tempfile
 import shutil
 from pathlib import Path
@@ -72,7 +70,7 @@ def cleanup_test_files(paths: list):
                     path.unlink()
                 elif path.is_dir():
                     shutil.rmtree(path)
-        except Exception as e:
+        except Exception:
             pass
 
 
@@ -142,7 +140,7 @@ class TestCoreModules(unittest.TestCase):
             hw = HardwareManager()
             
             # Detect WiFi adapters
-            adapters = hw.detect_wifi_adapters()
+            hw.detect_wifi_adapters()
             
             # Get hardware status
             status = hw.get_hardware_status()
@@ -285,7 +283,7 @@ class TestWeaponizationModules(unittest.TestCase):
         test_name = "Payload Encoding"
         
         try:
-            from weaponization.encoder import PayloadEncoder, EncoderType
+            from weaponization.encoder import PayloadEncoder
             
             # Create test file
             test_file = self.test_dir / 'test_payload.bin'
@@ -535,7 +533,7 @@ class TestC2Modules(unittest.TestCase):
         test_name = "Docker Deployment"
         
         try:
-            from c2.docker_deploy import DockerDeployment, C2Framework, CloudProvider
+            from c2.docker_deploy import DockerDeployment
             
             deploy = DockerDeployment(deploy_dir=self.test_dir / 'deploy')
             
@@ -566,7 +564,7 @@ class TestC2Modules(unittest.TestCase):
         test_name = "Terraform Templates"
         
         try:
-            from c2.docker_deploy import DockerDeployment, DeploymentConfig, C2Framework, CloudProvider, DockerConfig
+            from c2.docker_deploy import DockerDeployment, DeploymentConfig, CloudProvider
             
             deploy = DockerDeployment(deploy_dir=self.test_dir / 'deploy')
             
@@ -622,7 +620,7 @@ class TestC2Modules(unittest.TestCase):
             success, message = orch.connect_to_server('test_sliver')
             
             # Sync agents
-            count = orch.sync_agents()
+            orch.sync_agents()
             
             # Get statistics
             stats = orch.get_statistics()
@@ -655,18 +653,18 @@ class TestProductionModules(unittest.TestCase):
         test_name = "System Monitoring"
         
         try:
-            from production.monitoring import SystemMonitor, ResourceType, AlertLevel
+            from production.monitoring import SystemMonitor
             
             monitor = SystemMonitor(config_dir=self.test_dir)
             
             # Check resources
-            metrics = monitor.check_resources()
+            monitor.check_resources()
             
             # Get health status
             health = monitor.get_health_status()
             
             # Get alerts
-            alerts = monitor.get_alerts()
+            monitor.get_alerts()
             
             log_test(test_name, 'PASS', 
                     f"Status: {health.status}, CPU: {health.cpu_usage:.1f}%, Memory: {health.memory_usage:.1f}%")
@@ -680,7 +678,7 @@ class TestProductionModules(unittest.TestCase):
         test_name = "Security Audit"
         
         try:
-            from production.security_audit import SecurityAuditor, SecurityLevel
+            from production.security_audit import SecurityAuditor
             
             auditor = SecurityAuditor(config_dir=self.test_dir)
             
@@ -913,7 +911,7 @@ class TestIntegration(unittest.TestCase):
         test_name = "Authorization Critical Action"
         
         try:
-            from core.authorization import AuthorizationManager, AuthorizationLevel
+            from core.authorization import AuthorizationManager
             
             auth = AuthorizationManager()
             
@@ -936,7 +934,6 @@ class TestIntegration(unittest.TestCase):
         
         try:
             from weaponization.encoder import PayloadEncoder
-            from pathlib import Path
             
             # Create test file
             test_file = self.test_dir / 'test_obfusc.bin'
@@ -1078,7 +1075,7 @@ class TestIntegration(unittest.TestCase):
         test_name = "Monitoring Alerts"
         
         try:
-            from production.monitoring import SystemMonitor, AlertLevel, ResourceType
+            from production.monitoring import SystemMonitor, ResourceType
             
             monitor = SystemMonitor(config_dir=self.test_dir)
             

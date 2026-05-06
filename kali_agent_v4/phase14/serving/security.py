@@ -18,12 +18,10 @@ import logging
 import time
 import hashlib
 import hmac
-import base64
 import json
-from typing import Dict, List, Optional, Callable
+from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
-from pathlib import Path
 from collections import defaultdict
 import threading
 
@@ -183,7 +181,7 @@ class JWTAuthenticator:
         """Revoke token (add to blacklist)"""
         with self.token_blacklist_lock:
             self.revoked_tokens.add(token)
-        logger.info(f"🚫 Token revoked")
+        logger.info("🚫 Token revoked")
     
     def cleanup_blacklist(self, max_age_hours: int = 48):
         """Clean up old revoked tokens"""

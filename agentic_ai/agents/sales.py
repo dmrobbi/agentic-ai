@@ -9,13 +9,13 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from typing import List, Optional, Dict, Any
 import logging
+from enum import Enum
 
 from agentic_ai.agents.base import BaseAgent, Permission
 
 logger = logging.getLogger(__name__)
 
 
-from enum import Enum
 
 class LeadStatus(Enum):
     NEW = "new"

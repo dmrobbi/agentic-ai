@@ -107,7 +107,7 @@ def example_incident_response():
             print(f"  Threat Type: {incident.threat_type.value}")
             print(f"  Source IP: {incident.source_ip}")
             print(f"  Target: {incident.target_resource}")
-            print(f"  Auto-Response Actions:")
+            print("  Auto-Response Actions:")
             for action in incident.response_actions:
                 print(f"    - {action}")
             print()
@@ -120,7 +120,7 @@ def example_incident_response():
             "contained",
             response_actions=["Blocked IP at firewall", "Notified security team"],
         )
-        print(f"  Incident status updated to 'contained'")
+        print("  Incident status updated to 'contained'")
 
 
 def example_secrets_management():

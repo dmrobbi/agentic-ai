@@ -411,7 +411,7 @@ class ChaosMonkeyAgent:
 
     def _create_experiment_run(self, experiment_id: str, target_id: str) -> ExperimentRun:
         """Create individual experiment run."""
-        experiment = self.experiments[experiment_id]
+        self.experiments[experiment_id]
 
         run = ExperimentRun(
             run_id=self._generate_id("run"),
@@ -618,7 +618,7 @@ class ChaosMonkeyAgent:
                 continue
 
             if constraint.constraint_type == "max_percentage":
-                max_pct = constraint.parameters.get('max_percentage', 10)
+                constraint.parameters.get('max_percentage', 10)
                 # Would check actual percentage here
                 pass
 
@@ -887,7 +887,7 @@ def get_capabilities() -> Dict[str, Any]:
         ],
         'experiment_types': [t.value for t in ExperimentType],
         'target_types': [t.value for t in TargetType],
-        'severity_levels': [l.value for l in SeverityLevel],
+        'severity_levels': [level.value for level in SeverityLevel],
         'blast_radius_levels': [r.value for r in BlastRadius],
         'abort_conditions': [c.value for c in AbortCondition],
         'supported_clouds': ['aws', 'gcp', 'azure', 'kubernetes'],
@@ -1011,7 +1011,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_chaos_dashboard()
-    print(f"\nChaos Dashboard:")
+    print("\nChaos Dashboard:")
     print(f"  Experiments: {dashboard['experiments']['total']}")
     print(f"  Success Rate: {dashboard['runs']['success_rate']:.1f}%")
     print(f"  In Blackout: {dashboard['safety']['in_blackout']}")

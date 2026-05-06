@@ -9,14 +9,13 @@ Tasks: 3.2.2, 3.2.3
 Status: IMPLEMENTED
 """
 
-import os
 import base64
 import hashlib
 import subprocess
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 
 # Configure logging
@@ -323,7 +322,7 @@ class PayloadEncoder:
                 decoder_stub=f'# Use msfdecode -i {output_path} to decode'
             )
             
-        except Exception as e:
+        except Exception:
             return self._encode_with_fallback(input_path, open(input_path, 'rb').read(), output_name)
     
     def _encode_with_fallback(self, input_path: Path, data: bytes,
@@ -428,7 +427,7 @@ $addr = [System.Runtime.InteropServices.Marshal]::StringToHGlobalAnsi($bytes)
         
         # Generate output path
         if not output_name:
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            datetime.now().strftime('%Y%m%d_%H%M%S')
             output_name = f"{input_path.stem}_amsi_patched{input_path.suffix}"
         
         output_path = self.output_dir / output_name
@@ -473,7 +472,7 @@ if ($etw) {
         
         # Generate output path
         if not output_name:
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            datetime.now().strftime('%Y%m%d_%H%M%S')
             output_name = f"{input_path.stem}_etw_patched{input_path.suffix}"
         
         output_path = self.output_dir / output_name
@@ -523,7 +522,7 @@ if ($etw) {
         
         # Generate output path
         if not output_name:
-            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            datetime.now().strftime('%Y%m%d_%H%M%S')
             output_name = f"{input_path.stem}_obfuscated{input_path.suffix}"
         
         output_path = self.output_dir / output_name
@@ -721,7 +720,7 @@ def main():
             print(f"Original: {result.original_size} bytes")
             print(f"Encoded: {result.encoded_size} bytes")
             print(f"Expansion: {result.expansion_ratio:.2f}x")
-            print(f"\nDecoder Stub:")
+            print("\nDecoder Stub:")
             print(result.decoder_stub)
         else:
             print(f"Error: {result.error}")

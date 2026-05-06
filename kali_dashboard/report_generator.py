@@ -6,38 +6,36 @@ High-fidelity professional security reports with charts, graphics,
 and executive summaries.
 """
 
-import os
-import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
 try:
-    from reportlab.lib import colors
-    from reportlab.lib.pagesizes import letter, A4
-    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
-    from reportlab.lib.units import inch, cm
-    from reportlab.platypus import (
+    from reportlab.lib import colors  # noqa: F401
+    from reportlab.lib.pagesizes import letter, A4  # noqa: F401
+    from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle  # noqa: F401
+    from reportlab.lib.units import inch, cm  # noqa: F401
+    from reportlab.platypus import (  # noqa: F401
         SimpleDocTemplate, Paragraph, Spacer, Image, Table, TableStyle,
         PageBreak, KeepTogether, Image as PlatypusImage
     )
-    from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY
-    from reportlab.pdfgen import canvas
-    from reportlab.graphics.shapes import Drawing, Rect
-    from reportlab.graphics.charts.piecharts import Pie
-    from reportlab.graphics.charts.barcharts import VerticalBarChart
-    from reportlab.graphics.charts.linecharts import HorizontalLineChart
+    from reportlab.lib.enums import TA_CENTER, TA_LEFT, TA_JUSTIFY  # noqa: F401
+    from reportlab.pdfgen import canvas  # noqa: F401
+    from reportlab.graphics.shapes import Drawing, Rect  # noqa: F401
+    from reportlab.graphics.charts.piecharts import Pie  # noqa: F401
+    from reportlab.graphics.charts.barcharts import VerticalBarChart  # noqa: F401
+    from reportlab.graphics.charts.linecharts import HorizontalLineChart  # noqa: F401
     REPORTLAB_AVAILABLE = True
 except ImportError:
     REPORTLAB_AVAILABLE = False
     print("Warning: reportlab not installed. Install with: pip install reportlab")
 
 try:
-    import matplotlib
+    import matplotlib  # noqa: F401
     matplotlib.use('Agg')
-    import matplotlib.pyplot as plt
-    import matplotlib.patches as mpatches
-    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    import matplotlib.pyplot as plt  # noqa: F401
+    import matplotlib.patches as mpatches  # noqa: F401
+    from matplotlib.backends.backend_agg import FigureCanvasAgg  # noqa: F401
     MATPLOTLIB_AVAILABLE = True
 except ImportError:
     MATPLOTLIB_AVAILABLE = False
@@ -139,7 +137,7 @@ class KaliReportGenerator:
             fontName='Helvetica-Bold',
         )
         
-        subheading_style = ParagraphStyle(
+        ParagraphStyle(
             'SubHeading',
             parent=styles['Heading3'],
             fontSize=14,

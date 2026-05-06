@@ -22,7 +22,7 @@ Status: Alpha (0.1.0)
 import logging
 import socket
 import struct
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -235,7 +235,7 @@ class OPCUAClient:
         Returns:
             True if connection successful
         """
-        logger.info(f"🔌 Connecting to OPC UA server...")
+        logger.info("🔌 Connecting to OPC UA server...")
         
         try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -258,7 +258,7 @@ class OPCUAClient:
                 return False
             
             self.connected = True
-            logger.info(f"✅ Connected to OPC UA server")
+            logger.info("✅ Connected to OPC UA server")
             
             # Get server information
             self.server = self.get_server_info()
@@ -283,7 +283,7 @@ class OPCUAClient:
                 if self.session_id:
                     self._send_secure_close()
                 self.socket.close()
-            except:
+            except Exception:
                 pass
         
         self.connected = False
@@ -787,7 +787,7 @@ def main():
         server = opcua.get_server_info()
         
         if server:
-            print(f"\n📊 Server Information:")
+            print("\n📊 Server Information:")
             print(f"  Name: {server.application_name}")
             print(f"  Type: {server.application_type}")
             print(f"  Manufacturer: {server.manufacturer_name}")

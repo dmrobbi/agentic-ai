@@ -7,7 +7,7 @@ invoice creation, and financial reporting.
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import List, Optional, Dict, Any
+from typing import List, Dict, Any
 from enum import Enum
 import logging
 
