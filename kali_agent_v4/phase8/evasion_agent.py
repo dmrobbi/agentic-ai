@@ -4,7 +4,7 @@ KaliAgent v4 - Phase 8: Evasion & Persistence Agent
 AMSI bypass, AV evasion, persistence mechanisms, and rootkit detection
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from enum import Enum
@@ -509,7 +509,7 @@ class EvasionAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "target_os": self.target_os,
             "summary": {
                 "total_findings": len(self.findings),

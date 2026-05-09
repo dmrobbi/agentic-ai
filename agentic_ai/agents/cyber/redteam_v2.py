@@ -15,7 +15,7 @@ Improvements over v1:
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Any, Dict, List, Optional
 from collections import defaultdict
 
@@ -404,7 +404,7 @@ class NetworkTopology:
     edges: List[Dict[str, Any]] = field(default_factory=list)
     subnets: List[str] = field(default_factory=list)
     critical_assets: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -446,7 +446,7 @@ class EngagementRisk:
     risk_factors: Dict[str, float] = field(default_factory=dict)
     findings_by_severity: Dict[str, int] = field(default_factory=dict)
     mitre_coverage: Dict[str, int] = field(default_factory=dict)
-    calculated_at: datetime = field(default_factory=datetime.utcnow)
+    calculated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 # ============================================
@@ -863,7 +863,7 @@ class RedTeamAgentV2:
 
         test = self.detection_tests[test_id]
         test.status = "executed" if detected else "failed"
-        test.executed_at = datetime.utcnow()
+        test.executed_at = datetime.now(timezone.utc)
         test.detected = detected
         test.detection_time_seconds = detection_time_seconds
         test.detection_source = detection_source

@@ -9,7 +9,7 @@ vendor risk assessment, and supply chain security monitoring.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -67,7 +67,7 @@ class Package:
     direct_dependency: bool = True
     parent_package: Optional[str] = None
     vulnerabilities: List[str] = field(default_factory=list)
-    added_at: datetime = field(default_factory=datetime.utcnow)
+    added_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -81,7 +81,7 @@ class SBOM:
     packages_count: int = 0
     vulnerabilities_count: int = 0
     critical_vulns: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     packages: List[str] = field(default_factory=list)
 
 
@@ -98,7 +98,7 @@ class Vulnerability:
     cvss_score: float
     description: str
     references: List[str] = field(default_factory=list)
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = "open"  # open, in_progress, patched, accepted
 
 
@@ -132,7 +132,7 @@ class VendorAssessment:
     overall_score: float = 0.0
     findings: List[Dict[str, Any]] = field(default_factory=list)
     recommendations: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
 
@@ -148,7 +148,7 @@ class SecurityIncident:
     status: str = "reported"  # reported, investigating, contained, resolved
     root_cause: str = ""
     remediation: List[str] = field(default_factory=list)
-    reported_at: datetime = field(default_factory=datetime.utcnow)
+    reported_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     resolved_at: Optional[datetime] = None
 
 
@@ -369,7 +369,7 @@ class SupplyChainAgent:
         self.vulnerabilities[vuln_id].status = status
 
         if status == "patched":
-            self.vulnerabilities[vuln_id].resolved_at = datetime.utcnow()
+            self.vulnerabilities[vuln_id].resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -504,7 +504,7 @@ class SupplyChainAgent:
 
         assessment = self.assessments[assessment_id]
         assessment.status = "completed"
-        assessment.completed_at = datetime.utcnow()
+        assessment.completed_at = datetime.now(timezone.utc)
         assessment.security_score = security_score
         assessment.privacy_score = privacy_score
         assessment.compliance_score = compliance_score
@@ -521,7 +521,7 @@ class SupplyChainAgent:
 
         # Update vendor
         vendor = self.vendors[assessment.vendor_id]
-        vendor.last_assessment = datetime.utcnow()
+        vendor.last_assessment = datetime.now(timezone.utc)
         vendor.risk_score = 1.0 - (assessment.overall_score / 100)
 
         return True
@@ -587,7 +587,7 @@ class SupplyChainAgent:
         incident.status = "resolved"
         incident.root_cause = root_cause
         incident.remediation = remediation
-        incident.resolved_at = datetime.utcnow()
+        incident.resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -694,7 +694,7 @@ class SupplyChainAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

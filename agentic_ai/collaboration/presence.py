@@ -7,7 +7,7 @@ Track user presence, activity, and generate activity feeds.
 
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 import uuid
 import threading

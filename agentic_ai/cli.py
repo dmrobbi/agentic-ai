@@ -6,7 +6,7 @@ Interactive CLI for managing Agentic AI agents and operations.
 """
 
 import sys
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Optional
 
 try:

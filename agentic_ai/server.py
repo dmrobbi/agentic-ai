@@ -8,7 +8,7 @@ Simple demo server for testing deployment.
 
 import os
 import logging
-from datetime import datetime
+from datetime import datetime, timezone
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware

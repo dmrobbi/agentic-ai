@@ -1,7 +1,7 @@
 """Inference server for agent communication and model serving."""
 
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, Any, List, Optional
 from enum import Enum
 import logging

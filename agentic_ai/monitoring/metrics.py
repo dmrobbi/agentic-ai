@@ -7,7 +7,7 @@ Collects and aggregates performance metrics from agents and workflows.
 
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 import threading
 from collections import defaultdict

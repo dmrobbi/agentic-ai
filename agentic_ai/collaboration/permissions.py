@@ -7,7 +7,7 @@ Role-based access control for workspaces and resources.
 
 from typing import Dict, Any, List, Optional, Set
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import uuid
 

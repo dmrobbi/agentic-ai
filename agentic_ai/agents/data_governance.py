@@ -9,7 +9,7 @@ data quality monitoring, and governance workflow automation.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -71,8 +71,8 @@ class DataAsset:
     steward: Optional[str] = None
     location: str = ""  # Database, bucket, etc.
     system: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    last_modified: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    last_modified: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     record_count: int = 0
     size_bytes: int = 0
     tags: List[str] = field(default_factory=list)
@@ -90,7 +90,7 @@ class RetentionPolicy:
     legal_hold: bool = False
     regulatory_requirement: str = ""
     exceptions: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -105,7 +105,7 @@ class DataLineage:
     last_run: Optional[datetime] = None
     status: str = "unknown"  # success, failed, warning, unknown
     records_processed: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -121,7 +121,7 @@ class DataQualityRule:
     enabled: bool = True
     last_check: Optional[datetime] = None
     last_result: Optional[float] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -134,7 +134,7 @@ class QualityIssue:
     description: str
     affected_records: int = 0
     status: str = "open"  # open, investigating, resolved, accepted
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     resolved_at: Optional[datetime] = None
     assigned_to: Optional[str] = None
     remediation: str = ""
@@ -234,7 +234,7 @@ class DataGovernanceAgent:
             return False
 
         asset = self.assets[asset_id]
-        asset.last_modified = datetime.utcnow()
+        asset.last_modified = datetime.now(timezone.utc)
 
         if record_count is not None:
             asset.record_count = record_count
@@ -339,7 +339,7 @@ class DataGovernanceAgent:
     def get_assets_due_for_action(self, action: RetentionAction) -> List[Dict[str, Any]]:
         """Get assets due for retention action."""
         due = []
-        datetime.utcnow()
+        datetime.now(timezone.utc)
 
         for asset in self.assets.values():
             retention = self.get_retention_period(asset.asset_id)
@@ -396,7 +396,7 @@ class DataGovernanceAgent:
 
         lineage = self.lineage[lineage_id]
         lineage.status = status
-        lineage.last_run = datetime.utcnow()
+        lineage.last_run = datetime.now(timezone.utc)
         lineage.records_processed = records_processed
 
         return True
@@ -472,7 +472,7 @@ class DataGovernanceAgent:
             return False
 
         rule = self.quality_rules[rule_id]
-        rule.last_check = datetime.utcnow()
+        rule.last_check = datetime.now(timezone.utc)
         rule.last_result = result
 
         # Create issue if below threshold
@@ -506,7 +506,7 @@ class DataGovernanceAgent:
 
         issue = self.quality_issues[issue_id]
         issue.status = "resolved"
-        issue.resolved_at = datetime.utcnow()
+        issue.resolved_at = datetime.now(timezone.utc)
         issue.remediation = remediation
 
         return True
@@ -607,8 +607,8 @@ class DataGovernanceAgent:
         request = self.access_requests[request_id]
         request.status = "approved"
         request.approved_by = approved_by
-        request.approved_at = datetime.utcnow()
-        request.expires_at = datetime.utcnow() + timedelta(days=expires_in_days)
+        request.approved_at = datetime.now(timezone.utc)
+        request.expires_at = datetime.now(timezone.utc) + timedelta(days=expires_in_days)
 
         return True
 
@@ -620,7 +620,7 @@ class DataGovernanceAgent:
         request = self.access_requests[request_id]
         request.status = "denied"
         request.approved_by = denied_by
-        request.approved_at = datetime.utcnow()
+        request.approved_at = datetime.now(timezone.utc)
 
         if reason:
             request.justification += f" (Denied: {reason})"
@@ -742,7 +742,7 @@ class DataGovernanceAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

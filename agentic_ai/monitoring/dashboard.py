@@ -7,7 +7,7 @@ Real-time dashboard for visualizing agent and workflow metrics.
 
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import json
 

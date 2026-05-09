@@ -4,7 +4,7 @@ KaliAgent v4 - Phase 8: Cloud Exploitation Agent
 AWS, Azure, and GCP security assessment automation
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from enum import Enum
@@ -104,7 +104,7 @@ class CloudAgent:
         # In production, would actually authenticate
         # For now, simulate success
         self.session_data['authenticated'] = True
-        self.session_data['timestamp'] = datetime.utcnow().isoformat()
+        self.session_data['timestamp'] = datetime.now(timezone.utc).isoformat()
         
         print(f"✅ Successfully authenticated to {self.provider.value}")
         return True
@@ -373,7 +373,7 @@ class CloudAgent:
         report = {
             "agent_id": self.agent_id,
             "provider": self.provider.value,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "summary": {
                 "resources_scanned": len(self.resources),
                 "findings_count": len(self.findings),

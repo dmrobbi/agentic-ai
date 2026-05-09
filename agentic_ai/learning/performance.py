@@ -7,7 +7,7 @@ Tracks agent performance metrics over time.
 
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 # Shared global corrections registry so FeedbackCollector can update PerformanceTracker

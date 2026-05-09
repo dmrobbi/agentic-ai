@@ -9,7 +9,7 @@ trend analysis, and knowledge discovery.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set
 
@@ -53,7 +53,7 @@ class Publication:
     url: str = ""
     pdf_url: str = ""
     doi: str = ""
-    added_at: datetime = field(default_factory=datetime.utcnow)
+    added_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     notes: str = ""
 
 
@@ -69,7 +69,7 @@ class ResearchProject:
     methodology: str = ""
     publications: List[str] = field(default_factory=list)
     findings: List[str] = field(default_factory=list)
-    start_date: datetime = field(default_factory=datetime.utcnow)
+    start_date: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     target_completion: Optional[datetime] = None
     completed_at: Optional[datetime] = None
 
@@ -81,7 +81,7 @@ class Citation:
     source_publication_id: str
     target_publication_id: str
     citation_context: str = ""
-    cited_at: datetime = field(default_factory=datetime.utcnow)
+    cited_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ResearchAgent:
@@ -321,7 +321,7 @@ class ResearchAgent:
         project.status = status
 
         if status == ResearchStatus.COMPLETED:
-            project.completed_at = datetime.utcnow()
+            project.completed_at = datetime.now(timezone.utc)
 
         return project
 
@@ -472,7 +472,7 @@ class ResearchAgent:
             'description': description,
             'parent': parent_topic,
             'publication_count': 0,
-            'created_at': datetime.utcnow().isoformat(),
+            'created_at': datetime.now(timezone.utc).isoformat(),
         }
 
         self.topics[name] = topic
@@ -510,7 +510,7 @@ class ResearchAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

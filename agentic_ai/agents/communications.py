@@ -9,7 +9,7 @@ message templates, delivery tracking, and communication analytics.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -56,7 +56,7 @@ class Contact:
     phone: Optional[str] = None
     preferences: Dict[str, bool] = field(default_factory=dict)
     tags: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -73,7 +73,7 @@ class Message:
     priority: Priority = Priority.NORMAL
     template_id: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -87,7 +87,7 @@ class Template:
     variables: List[str] = field(default_factory=list)
     category: str = "general"
     version: str = "1.0"
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -105,7 +105,7 @@ class Campaign:
     failed_count: int = 0
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class CommunicationsAgent:
@@ -246,7 +246,7 @@ class CommunicationsAgent:
             content=content,
             status=MessageStatus.SENT,
             recipients=recipients,
-            sent_at=datetime.utcnow(),
+            sent_at=datetime.now(timezone.utc),
             priority=priority,
             template_id=template_id,
         )
@@ -348,7 +348,7 @@ class CommunicationsAgent:
 
         campaign = self.campaigns[campaign_id]
         campaign.status = "active"
-        campaign.start_date = datetime.utcnow()
+        campaign.start_date = datetime.now(timezone.utc)
 
         return True
 
@@ -381,7 +381,7 @@ class CommunicationsAgent:
 
         campaign = self.campaigns[campaign_id]
         campaign.status = "completed"
-        campaign.end_date = datetime.utcnow()
+        campaign.end_date = datetime.now(timezone.utc)
 
         return True
 
@@ -471,7 +471,7 @@ class CommunicationsAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

@@ -9,7 +9,7 @@ integration monitoring, and cross-platform automation.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 import json
@@ -62,7 +62,7 @@ class APIConnection:
     rate_limit_remaining: int = 1000
     rate_limit_reset: Optional[datetime] = None
     last_used: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     config: Dict[str, Any] = field(default_factory=dict)
 
 
@@ -79,7 +79,7 @@ class Webhook:
     last_triggered: Optional[datetime] = None
     success_count: int = 0
     failure_count: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -96,7 +96,7 @@ class SyncJob:
     next_run: Optional[datetime] = None
     records_synced: int = 0
     errors: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -109,7 +109,7 @@ class IntegrationLog:
     status: str
     details: Dict[str, Any] = field(default_factory=dict)
     error: Optional[str] = None
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class IntegrationAgent:
@@ -234,7 +234,7 @@ class IntegrationAgent:
             'rate_limit': conn.rate_limit,
         }
 
-        conn.last_used = datetime.utcnow()
+        conn.last_used = datetime.now(timezone.utc)
         self._log('connection', connection_id, 'test', 'success', result)
 
         return result
@@ -324,7 +324,7 @@ class IntegrationAgent:
             return {'success': False, 'error': f'Event {event} not subscribed'}
 
         # Simulate webhook delivery
-        webhook.last_triggered = datetime.utcnow()
+        webhook.last_triggered = datetime.now(timezone.utc)
         webhook.success_count += 1
 
         result = {
@@ -391,7 +391,7 @@ class IntegrationAgent:
 
         job = self.sync_jobs[job_id]
         job.status = 'running'
-        job.last_run = datetime.utcnow()
+        job.last_run = datetime.now(timezone.utc)
 
         # Simulate sync
         record_count = len(records) if records else 100
@@ -517,7 +517,7 @@ class IntegrationAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

@@ -4,7 +4,7 @@ KaliAgent v4 - Phase 8: Container & Kubernetes Exploitation Agent
 Docker daemon exploits, container escapes, and K8s attacks
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from enum import Enum
@@ -630,7 +630,7 @@ class ContainerAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "target": self.target,
             "k8s_context": self.k8s_context,
             "summary": {

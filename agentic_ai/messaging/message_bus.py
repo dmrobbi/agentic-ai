@@ -10,7 +10,7 @@ import ast
 import logging
 import uuid
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, TypeVar
 from contextlib import contextmanager

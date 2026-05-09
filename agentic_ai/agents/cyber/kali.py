@@ -14,7 +14,7 @@ import secrets
 import subprocess
 import threading
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
@@ -1030,7 +1030,7 @@ class MetasploitRPC:
                     target=target,
                     payload=payload,
                     status="running",
-                    started_at=datetime.utcnow(),
+                    started_at=datetime.now(timezone.utc),
                     completed_at=None,
                 )
             return None
@@ -1061,8 +1061,8 @@ class MetasploitRPC:
                     target_port=info.get("target_port", 0),
                     exploit_used=info.get("exploit", ""),
                     payload=info.get("payload", ""),
-                    opened_at=datetime.utcnow(),
-                    last_activity=datetime.utcnow(),
+                    opened_at=datetime.now(timezone.utc),
+                    last_activity=datetime.now(timezone.utc),
                     user_context=info.get("username"),
                 ))
 
@@ -1360,7 +1360,7 @@ class KaliAgent:
         expires_at: Optional[datetime] = None
     ) -> bool:
         """Set authorization level for tool execution."""
-        if expires_at and expires_at < datetime.utcnow():
+        if expires_at and expires_at < datetime.now(timezone.utc):
             logger.warning("Authorization expiry is in the past")
             return False
 
@@ -1486,7 +1486,7 @@ class KaliAgent:
             return
 
         try:
-            event["timestamp"] = datetime.utcnow().isoformat()
+            event["timestamp"] = datetime.now(timezone.utc).isoformat()
             with open(self.audit_log_file, "a") as f:
                 f.write(json.dumps(event) + "\n")
         except Exception as e:
@@ -1544,7 +1544,7 @@ class KaliAgent:
             stdout="",
             stderr="",
             output_file=None,
-            started_at=datetime.utcnow(),
+            started_at=datetime.now(timezone.utc),
             completed_at=None,
             duration_seconds=0,
             authorization_level=tool.authorization,
@@ -1556,7 +1556,7 @@ class KaliAgent:
             if self.current_jobs >= self.max_concurrent_jobs:
                 execution.status = "failed"
                 execution.stderr = "Maximum concurrent jobs reached"
-                execution.completed_at = datetime.utcnow()
+                execution.completed_at = datetime.now(timezone.utc)
                 execution.duration_seconds = 0
                 self.executions[execution.execution_id] = execution
                 return execution
@@ -1612,7 +1612,7 @@ class KaliAgent:
             execution.stderr = str(e)
             execution.exit_code = -1
 
-        execution.completed_at = datetime.utcnow()
+        execution.completed_at = datetime.now(timezone.utc)
         execution.duration_seconds = (execution.completed_at - execution.started_at).total_seconds()
 
         # Save output to file
@@ -1656,8 +1656,8 @@ class KaliAgent:
             stdout="",
             stderr=error,
             output_file=None,
-            started_at=datetime.utcnow(),
-            completed_at=datetime.utcnow(),
+            started_at=datetime.now(timezone.utc),
+            completed_at=datetime.now(timezone.utc),
             duration_seconds=0,
             authorization_level=AuthorizationLevel.NONE,
         )
@@ -1748,7 +1748,7 @@ class KaliAgent:
 
                 hosts.append(host_info)
 
-            return {"hosts": hosts, "scan_time": datetime.utcnow().isoformat()}
+            return {"hosts": hosts, "scan_time": datetime.now(timezone.utc).isoformat()}
         except Exception as e:
             logger.error(f"Nmap XML parse failed: {e}")
             return None
@@ -1800,7 +1800,7 @@ class KaliAgent:
             return {
                 "vulnerabilities": vulnerabilities,
                 "total": len(vulnerabilities),
-                "scan_time": datetime.utcnow().isoformat(),
+                "scan_time": datetime.now(timezone.utc).isoformat(),
             }
         except Exception as e:
             logger.error(f"Nikto parse failed: {e}")
@@ -1866,7 +1866,7 @@ class KaliAgent:
             return {
                 "paths": found_paths,
                 "total_found": len(found_paths),
-                "scan_time": datetime.utcnow().isoformat(),
+                "scan_time": datetime.now(timezone.utc).isoformat(),
             }
         except Exception as e:
             logger.error(f"Gobuster parse failed: {e}")
@@ -2462,7 +2462,7 @@ class KaliAgent:
         """Generate playbook execution report."""
         lines = [
             f"# Playbook Report: {playbook_name}",
-            f"\nGenerated: {datetime.utcnow().isoformat()}",
+            f"\nGenerated: {datetime.now(timezone.utc).isoformat()}",
             f"\nTools Executed: {len(results)}",
             "",
             "## Execution Summary",
@@ -2545,7 +2545,7 @@ class KaliAgent:
         """Generate markdown report."""
         lines = [
             "# Kali Agent Execution Report",
-            f"\nGenerated: {datetime.utcnow().isoformat()}",
+            f"\nGenerated: {datetime.now(timezone.utc).isoformat()}",
             f"\nTotal Executions: {len(executions)}",
             "",
             "## Summary",

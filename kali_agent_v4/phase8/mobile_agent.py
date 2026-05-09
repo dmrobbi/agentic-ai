@@ -4,7 +4,7 @@ KaliAgent v4 - Phase 8: Mobile Application Security Agent
 Android APK and iOS IPA analysis and exploitation
 """
 
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
@@ -586,7 +586,7 @@ class MobileAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "platform": self.platform.value,
             "app_info": {
                 "package": self.apk_info.package_name if self.apk_info else self.ipa_info.bundle_id,

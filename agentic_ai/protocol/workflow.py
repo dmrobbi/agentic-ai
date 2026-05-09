@@ -8,7 +8,7 @@ retry logic, and rollback mechanisms.
 
 from typing import Optional, Dict, Any, List, Callable, TYPE_CHECKING
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import uuid
 

@@ -21,7 +21,7 @@ import hmac
 import json
 from typing import Dict, List, Optional
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from collections import defaultdict
 import threading
 
@@ -97,7 +97,7 @@ class JWTAuthenticator:
         if not JWT_AVAILABLE:
             return {"error": "JWT not available"}
         
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         
         # Access token
         access_payload = {
@@ -445,7 +445,7 @@ class APIKeyManager:
         key_secret = secrets.token_urlsafe(32)
         key_hash = hashlib.sha256(key_secret.encode()).hexdigest()
         
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         expires_at = None
         if expires_in_days:
             expires_at = (now + timedelta(days=expires_in_days)).isoformat()
@@ -495,7 +495,7 @@ class APIKeyManager:
                 return {"valid": False, "error": "Key deactivated"}
             
             if api_key.expires_at:
-                if datetime.utcnow() > datetime.fromisoformat(api_key.expires_at):
+                if datetime.now(timezone.utc) > datetime.fromisoformat(api_key.expires_at):
                     return {"valid": False, "error": "Key expired"}
             
             return {

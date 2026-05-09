@@ -6,7 +6,7 @@ Manages consensus-based decision making across multiple agents.
 """
 
 from typing import Optional, Dict, Any, List, Callable
-from datetime import datetime
+from datetime import datetime, timezone
 from .proposal import (
     Proposal, Vote, VoteOption, ConsensusType,
     ProposalStatus, ConsensusResult
