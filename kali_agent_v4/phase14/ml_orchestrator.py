@@ -16,7 +16,7 @@ Status: Alpha (0.1.0)
 import logging
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import sys
 from pathlib import Path

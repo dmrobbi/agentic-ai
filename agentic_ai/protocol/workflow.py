@@ -121,7 +121,7 @@ class Task:
     retry_count: int = 0
     last_error: Optional[str] = None
 
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
     timeout_ms: Optional[int] = None
@@ -195,7 +195,7 @@ class Workflow:
     enable_rollback: bool = True
     rollback_tasks: List[Task] = field(default_factory=list)
 
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
     timeout_ms: Optional[int] = None

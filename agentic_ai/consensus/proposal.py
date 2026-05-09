@@ -51,7 +51,7 @@ class Vote:
     weight: float = 1.0  # For weighted voting
     rationale: str = ""
     amendments: Optional[Dict[str, Any]] = None  # If AMEND, proposed changes
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -77,7 +77,7 @@ class Vote:
             weight=data.get("weight", 1.0),
             rationale=data.get("rationale", ""),
             amendments=data.get("amendments"),
-            created_at=data.get("created_at", datetime.utcnow().isoformat()),
+            created_at=data.get("created_at", datetime.now(timezone.utc).isoformat()),
         )
 
 
@@ -95,7 +95,7 @@ class Proposal:
     eligible_voters: List[str] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
     quorum_requirement: float = 0.5  # Minimum participation (50% default)
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     voting_started_at: Optional[str] = None
     voting_ends_at: Optional[str] = None
     completed_at: Optional[str] = None
@@ -138,15 +138,15 @@ class Proposal:
     def start_voting(self, duration_minutes: int = 60):
         """Start the voting period."""
         self.status = ProposalStatus.VOTING
-        self.voting_started_at = datetime.utcnow().isoformat()
+        self.voting_started_at = datetime.now(timezone.utc).isoformat()
         from datetime import timedelta
-        end_time = datetime.utcnow() + timedelta(minutes=duration_minutes)
+        end_time = datetime.now(timezone.utc) + timedelta(minutes=duration_minutes)
         self.voting_ends_at = end_time.isoformat()
 
     def withdraw(self):
         """Withdraw the proposal."""
         self.status = ProposalStatus.WITHDRAWN
-        self.completed_at = datetime.utcnow().isoformat()
+        self.completed_at = datetime.now(timezone.utc).isoformat()
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -181,7 +181,7 @@ class ConsensusResult:
     approval_rate: float
     weighted_approval_rate: Optional[float] = None
     rationale: str = ""
-    completed_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    completed_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""

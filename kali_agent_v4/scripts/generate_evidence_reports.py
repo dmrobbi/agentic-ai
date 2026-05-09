@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from phase6.report_generator import ReportGenerator
-from datetime import datetime
+from datetime import datetime, timezone
 
 def generate_evidence_reports():
     """Generate all report formats as evidence"""

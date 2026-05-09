@@ -7,7 +7,7 @@ Coordinates multiple agents for large-scale operations
 import json
 import time
 import uuid
-from datetime import datetime
+from datetime import datetime, timezone
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field, asdict
 from enum import Enum
@@ -36,7 +36,7 @@ class Operation:
     team_agents: List[str] = field(default_factory=list)
     tasks: List[Task] = field(default_factory=list)
     intelligence: List[Intelligence] = field(default_factory=list)
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
     progress: float = 0.0
@@ -179,7 +179,7 @@ class LeadAgent:
         
         operation = self.active_operations[operation_id]
         operation.status = "running"
-        operation.started_at = datetime.utcnow().isoformat()
+        operation.started_at = datetime.now(timezone.utc).isoformat()
         
         print(f"🚀 Starting operation: {operation.name}")
         
@@ -231,7 +231,7 @@ class LeadAgent:
         # Check if complete
         if completed_tasks == total_tasks:
             operation.status = "completed"
-            operation.completed_at = datetime.utcnow().isoformat()
+            operation.completed_at = datetime.now(timezone.utc).isoformat()
         
         return {
             "operation_id": operation.operation_id,
@@ -316,7 +316,7 @@ class LeadAgent:
         
         operation = self.active_operations[operation_id]
         operation.status = "failed"
-        operation.completed_at = datetime.utcnow().isoformat()
+        operation.completed_at = datetime.now(timezone.utc).isoformat()
         
         # Stop all agent tasks
         for agent_id in operation.team_agents:

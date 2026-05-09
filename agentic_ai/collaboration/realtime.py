@@ -47,7 +47,7 @@ class Operation:
     path: List[str] = field(default_factory=list)  # For nested structures
 
     # Metadata
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     version: int = 0
     parent_operation: Optional[str] = None
 
@@ -94,7 +94,7 @@ class CursorPosition:
     position: int = 0
     selection_start: Optional[int] = None
     selection_end: Optional[int] = None
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -116,7 +116,7 @@ class ActiveUser:
     name: str = ""
     status: ConnectionStatus = ConnectionStatus.CONNECTED
     cursors: Dict[str, CursorPosition] = field(default_factory=dict)  # document_id -> cursor
-    last_activity: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    last_activity: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     metadata: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -372,7 +372,7 @@ class RealTimeCollaboration:
                 selection_end=selection_end,
             )
             user.cursors[document_id] = cursor
-            user.last_activity = datetime.utcnow().isoformat()
+            user.last_activity = datetime.now(timezone.utc).isoformat()
 
         # Broadcast cursor update
         channel = self._get_or_create_channel(document_id)
@@ -448,7 +448,7 @@ class RealTimeCollaboration:
 
     def cleanup_inactive(self, inactive_minutes: int = 30):
         """Clean up inactive users and operations."""
-        cutoff = datetime.utcnow() - timedelta(minutes=inactive_minutes)
+        cutoff = datetime.now(timezone.utc) - timedelta(minutes=inactive_minutes)
 
         with self._lock:
             # Remove inactive users

@@ -80,7 +80,7 @@ async def health_check():
         status="healthy",
         version="1.0.0",
         environment=ENV,
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         agents_loaded=33,
     )
 

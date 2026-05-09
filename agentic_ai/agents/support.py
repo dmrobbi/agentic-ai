@@ -9,7 +9,7 @@ escalation handling, and customer satisfaction tracking.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -56,8 +56,8 @@ class Ticket:
     status: TicketStatus
     priority: TicketPriority
     category: TicketCategory
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     assigned_to: Optional[str] = None
     tags: List[str] = field(default_factory=list)
     messages: List[Dict[str, Any]] = field(default_factory=list)
@@ -80,8 +80,8 @@ class KnowledgeArticle:
     views: int = 0
     helpful_count: int = 0
     not_helpful_count: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -248,7 +248,7 @@ class SupportAgent:
         ticket.messages.append({
             'type': 'system',
             'content': f'Ticket auto-triaged: Category={ticket.category.value}, Priority={ticket.priority.value}',
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
         })
 
     def update_ticket_status(
@@ -263,13 +263,13 @@ class SupportAgent:
 
         ticket = self.tickets[ticket_id]
         ticket.status = status
-        ticket.updated_at = datetime.utcnow()
+        ticket.updated_at = datetime.now(timezone.utc)
 
         if assigned_to:
             ticket.assigned_to = assigned_to
 
         if status == TicketStatus.RESOLVED:
-            ticket.resolved_at = datetime.utcnow()
+            ticket.resolved_at = datetime.now(timezone.utc)
             # Calculate resolution time
             ticket.resolution_time = (ticket.resolved_at - ticket.created_at).total_seconds() / 60
 
@@ -293,11 +293,11 @@ class SupportAgent:
             'type': 'internal' if is_internal else 'message',
             'sender': sender,
             'content': content,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
         }
 
         ticket.messages.append(message)
-        ticket.updated_at = datetime.utcnow()
+        ticket.updated_at = datetime.now(timezone.utc)
 
         # If customer replies, change status to open
         if sender == 'customer' and ticket.status == TicketStatus.WAITING_CUSTOMER:
@@ -305,7 +305,7 @@ class SupportAgent:
 
         # Track first response time
         if ticket.first_response_time is None and sender != 'customer':
-            ticket.first_response_time = (datetime.utcnow() - ticket.created_at).total_seconds() / 60
+            ticket.first_response_time = (datetime.now(timezone.utc) - ticket.created_at).total_seconds() / 60
 
         return True
 
@@ -350,7 +350,7 @@ class SupportAgent:
         ticket = self.tickets[ticket_id]
         ticket.status = TicketStatus.RESOLVED
         ticket.resolution = resolution
-        ticket.resolved_at = datetime.utcnow()
+        ticket.resolved_at = datetime.now(timezone.utc)
         ticket.resolved_by = resolved_by
         ticket.resolution_time = (ticket.resolved_at - ticket.created_at).total_seconds() / 60
 
@@ -358,7 +358,7 @@ class SupportAgent:
             'type': 'resolution',
             'content': resolution,
             'sender': resolved_by,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
         })
 
         logger.info(f"Ticket {ticket_id} resolved by {resolved_by}")
@@ -467,7 +467,7 @@ class SupportAgent:
     def check_sla_breaches(self) -> List[Ticket]:
         """Check for SLA breaches."""
         breaches = []
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         for ticket in self.tickets.values():
             if ticket.status in [TicketStatus.RESOLVED, TicketStatus.CLOSED]:
@@ -499,7 +499,7 @@ class SupportAgent:
 
     def get_support_metrics(self, days: int = 30) -> Dict[str, Any]:
         """Get support metrics report."""
-        cutoff = datetime.utcnow() - timedelta(days=days)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=days)
 
         # Filter tickets by date
         recent_tickets = [t for t in self.tickets.values() if t.created_at > cutoff]
@@ -552,7 +552,7 @@ class SupportAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

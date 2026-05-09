@@ -69,7 +69,7 @@ class InferenceServer:
         self.status = InferenceStatus.LOADING
         self._models[model] = {
             "name": model,
-            "loaded_at": datetime.utcnow().isoformat(),
+            "loaded_at": datetime.now(timezone.utc).isoformat(),
             "config": config or {},
             "status": "ready",
         }
@@ -95,7 +95,7 @@ class InferenceServer:
         self._request_history.append({
             "prompt": prompt[:100],
             "model": model,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
         })
         return {
             "status": "completed",

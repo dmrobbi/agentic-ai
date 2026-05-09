@@ -9,7 +9,7 @@ data subject rights management, consent tracking, and privacy impact assessments
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.agents.data_governance import DataClassification
@@ -80,7 +80,7 @@ class DataSubject:
     email: str
     jurisdiction: str  # EU, California, Brazil, etc.
     applicable_regulations: List[PrivacyRegulation]
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     verified: bool = False
     data_categories: List[str] = field(default_factory=list)
     consent_records: List[str] = field(default_factory=list)
@@ -102,7 +102,7 @@ class DataProcessingActivity:
     cross_border_transfer: bool = False
     transfer_mechanisms: List[str] = field(default_factory=list)  # SCCs, adequacy, etc.
     risk_level: str = "low"  # low, medium, high
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -152,7 +152,7 @@ class PrivacyImpactAssessment:
     mitigations: List[str] = field(default_factory=list)
     dpo_review: bool = False
     approved_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -331,8 +331,8 @@ class PrivacyAgent:
             subject_id=subject_id,
             right_type=right_type,
             status=RequestStatus.SUBMITTED,
-            submitted_at=datetime.utcnow(),
-            deadline=datetime.utcnow() + timedelta(days=deadline_days),
+            submitted_at=datetime.now(timezone.utc),
+            deadline=datetime.now(timezone.utc) + timedelta(days=deadline_days),
             assigned_to=assigned_to,
         )
 
@@ -349,7 +349,7 @@ class PrivacyAgent:
 
         request = self.requests[request_id]
         request.status = RequestStatus.VERIFIED
-        request.verified_at = datetime.utcnow()
+        request.verified_at = datetime.now(timezone.utc)
 
         return True
 
@@ -374,7 +374,7 @@ class PrivacyAgent:
             request.denial_reason = denial_reason
 
         if status == RequestStatus.COMPLETED:
-            request.completed_at = datetime.utcnow()
+            request.completed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -398,7 +398,7 @@ class PrivacyAgent:
             requests = [r for r in requests if r.right_type == right_type]
 
         if overdue_only:
-            now = datetime.utcnow()
+            now = datetime.now(timezone.utc)
             requests = [r for r in requests if r.deadline < now and r.status != RequestStatus.COMPLETED]
 
         return requests
@@ -419,7 +419,7 @@ class PrivacyAgent:
             response_data={
                 'export_format': 'json',
                 'data_categories': list(data.keys()),
-                'export_timestamp': datetime.utcnow().isoformat(),
+                'export_timestamp': datetime.now(timezone.utc).isoformat(),
                 'data': data,
             },
         )
@@ -439,7 +439,7 @@ class PrivacyAgent:
             RequestStatus.COMPLETED,
             response_data={
                 'systems_cleared': systems_cleared,
-                'deletion_timestamp': datetime.utcnow().isoformat(),
+                'deletion_timestamp': datetime.now(timezone.utc).isoformat(),
             },
         )
 
@@ -462,7 +462,7 @@ class PrivacyAgent:
             subject_id=subject_id,
             purpose=purpose,
             status=ConsentStatus.GIVEN,
-            given_at=datetime.utcnow(),
+            given_at=datetime.now(timezone.utc),
             method=method,
             ip_address=ip_address,
             user_agent=user_agent,
@@ -470,7 +470,7 @@ class PrivacyAgent:
         )
 
         if expires_in_days:
-            consent.expires_at = datetime.utcnow() + timedelta(days=expires_in_days)
+            consent.expires_at = datetime.now(timezone.utc) + timedelta(days=expires_in_days)
 
         self.consent_records[consent.consent_id] = consent
 
@@ -486,7 +486,7 @@ class PrivacyAgent:
 
         consent = self.consent_records[consent_id]
         consent.status = ConsentStatus.WITHDRAWN
-        consent.withdrawn_at = datetime.utcnow()
+        consent.withdrawn_at = datetime.now(timezone.utc)
 
         return True
 
@@ -518,7 +518,7 @@ class PrivacyAgent:
             status=ConsentStatus.GIVEN,
         )
 
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         for consent in consents:
             # Check if not expired
@@ -643,7 +643,7 @@ processing_purposes=purposes_list,
             'impact': impact,
             'risk_score': overall_score,
             'mitigations': mitigations or [],
-            'identified_at': datetime.utcnow().isoformat(),
+            'identified_at': datetime.now(timezone.utc).isoformat(),
         })
 
         # Update overall risk level
@@ -665,7 +665,7 @@ processing_purposes=purposes_list,
         pia = self.pias[pia_id]
         pia.status = "approved"
         pia.dpo_review = dpo_reviewed
-        pia.approved_at = datetime.utcnow()
+        pia.approved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -697,7 +697,7 @@ processing_purposes=purposes_list,
             description=description,
             severity=severity,
             status="detected",
-            detected_at=datetime.utcnow(),
+            detected_at=datetime.now(timezone.utc),
             affected_subjects=affected_subjects,
             data_categories=data_categories,
         )
@@ -718,7 +718,7 @@ processing_purposes=purposes_list,
 
         breach = self.breaches[breach_id]
         breach.status = "contained"
-        breach.contained_at = datetime.utcnow()
+        breach.contained_at = datetime.now(timezone.utc)
 
         return True
 
@@ -728,7 +728,7 @@ processing_purposes=purposes_list,
             return False
 
         breach = self.breaches[breach_id]
-        breach.notified_authority = datetime.utcnow()
+        breach.notified_authority = datetime.now(timezone.utc)
 
         if breach.status == "contained":
             breach.status = "notified"
@@ -785,7 +785,7 @@ processing_purposes=purposes_list,
         for status in RequestStatus:
             by_status[status.value] = len([r for r in requests if r.status == status])
 
-        overdue = len([r for r in requests if r.deadline < datetime.utcnow() and r.status != RequestStatus.COMPLETED])
+        overdue = len([r for r in requests if r.deadline < datetime.now(timezone.utc) and r.status != RequestStatus.COMPLETED])
 
         # Consent metrics
         active_consents = len([c for c in consents if c.status == ConsentStatus.GIVEN])
@@ -794,7 +794,7 @@ processing_purposes=purposes_list,
         # Breach metrics
         breaches_this_year = len([
             b for b in breaches
-            if b.detected_at.year == datetime.utcnow().year
+            if b.detected_at.year == datetime.now(timezone.utc).year
         ])
 
         return {
@@ -854,7 +854,7 @@ processing_purposes=purposes_list,
             )
         ]
 
-        overdue = len([r for r in requests if r.deadline < datetime.utcnow() and r.status != RequestStatus.COMPLETED])
+        overdue = len([r for r in requests if r.deadline < datetime.now(timezone.utc) and r.status != RequestStatus.COMPLETED])
 
         return {
             'regulation': regulation.value,
@@ -875,7 +875,7 @@ processing_purposes=purposes_list,
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

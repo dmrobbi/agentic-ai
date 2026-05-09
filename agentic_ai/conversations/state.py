@@ -29,14 +29,14 @@ class ConversationState:
     participants: List[str] = field(default_factory=list)
     messages: List[Dict[str, Any]] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     updated_at: Optional[str] = None
     completed_at: Optional[str] = None
 
     def add_message(self, message: Dict[str, Any]):
         """Add a message to the conversation."""
         self.messages.append(message)
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = datetime.now(timezone.utc).isoformat()
 
     def get_message_count(self) -> int:
         """Get total message count."""
@@ -50,18 +50,18 @@ class ConversationState:
         """Add a participant to the conversation."""
         if agent_id not in self.participants:
             self.participants.append(agent_id)
-            self.updated_at = datetime.utcnow().isoformat()
+            self.updated_at = datetime.now(timezone.utc).isoformat()
 
     def complete(self):
         """Mark conversation as completed."""
         self.status = ConversationStatus.COMPLETED
-        self.completed_at = datetime.utcnow().isoformat()
-        self.updated_at = datetime.utcnow().isoformat()
+        self.completed_at = datetime.now(timezone.utc).isoformat()
+        self.updated_at = datetime.now(timezone.utc).isoformat()
 
     def archive(self):
         """Archive the conversation."""
         self.status = ConversationStatus.ARCHIVED
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = datetime.now(timezone.utc).isoformat()
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""

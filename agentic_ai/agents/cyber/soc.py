@@ -9,7 +9,7 @@ threat hunting, and security operations center automation.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -85,7 +85,7 @@ class SecurityAlert:
     source_ip: Optional[str] = None
     dest_ip: Optional[str] = None
     user: Optional[str] = None
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     assigned_to: Optional[str] = None
     investigation_notes: List[str] = field(default_factory=list)
     related_alerts: List[str] = field(default_factory=list)
@@ -101,7 +101,7 @@ class Incident:
     description: str = ""  # Incident description
     category: str = "security"  # malware, phishing, data_breach, unauthorized_access, etc.
     threat_actor: Optional[ThreatActor] = None
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     contained_at: Optional[datetime] = None
     resolved_at: Optional[datetime] = None
     assigned_to: Optional[str] = None
@@ -141,7 +141,7 @@ class HuntQuery:
     status: str  # planned, running, completed
     findings: List[Dict[str, Any]] = field(default_factory=list)
     created_by: Optional[str] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
 
@@ -278,7 +278,7 @@ class SecurityOperationsAgent:
             alert.assigned_to = assigned_to
 
         if notes:
-            alert.investigation_notes.append(f"[{datetime.utcnow().isoformat()}] {notes}")
+            alert.investigation_notes.append(f"[{datetime.now(timezone.utc).isoformat()}] {notes}")
 
         return True
 
@@ -389,7 +389,7 @@ class SecurityOperationsAgent:
 
         # Track timeline
         incident.timeline.append({
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'action': 'status_change',
             'from': old_status.value,
             'to': status.value,
@@ -398,9 +398,9 @@ class SecurityOperationsAgent:
 
         # Set timestamps for key milestones
         if status == IncidentStatus.CONTAINMENT and old_status != IncidentStatus.CONTAINMENT:
-            incident.contained_at = datetime.utcnow()
+            incident.contained_at = datetime.now(timezone.utc)
         elif status == IncidentStatus.CLOSED:
-            incident.resolved_at = datetime.utcnow()
+            incident.resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -423,7 +423,7 @@ class SecurityOperationsAgent:
         incident.ioc[ioc_type].append({
             'value': ioc_value,
             'context': context,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': datetime.now(timezone.utc).isoformat(),
         })
 
         return True
@@ -441,7 +441,7 @@ class SecurityOperationsAgent:
 
         incident = self.incidents[incident_id]
         incident.timeline.append({
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'action': action,
             'details': details,
             'actor': actor,
@@ -462,7 +462,7 @@ class SecurityOperationsAgent:
 
         incident = self.incidents[incident_id]
         incident.status = IncidentStatus.CLOSED
-        incident.resolved_at = datetime.utcnow()
+        incident.resolved_at = datetime.now(timezone.utc)
         incident.root_cause = root_cause
         incident.remediation_steps = remediation_steps
         incident.lessons_learned = lessons_learned
@@ -503,7 +503,7 @@ class SecurityOperationsAgent:
         tags: Optional[List[str]] = None,
     ) -> ThreatIntel:
         """Add threat intelligence indicator."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         intel = ThreatIntel(
             indicator_id=self._generate_id("intel"),
@@ -577,7 +577,7 @@ class SecurityOperationsAgent:
         hunt = self.hunts[hunt_id]
         hunt.status = "completed"
         hunt.findings = findings
-        hunt.completed_at = datetime.utcnow()
+        hunt.completed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -596,7 +596,7 @@ class SecurityOperationsAgent:
 
     def get_soc_metrics(self, period_hours: int = 24) -> Dict[str, Any]:
         """Get SOC operational metrics."""
-        cutoff = datetime.utcnow() - timedelta(hours=period_hours)
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=period_hours)
 
         recent_alerts = [a for a in self.alerts.values() if a.timestamp >= cutoff]
         recent_incidents = [i for i in self.incidents.values() if i.detected_at >= cutoff]
@@ -681,7 +681,7 @@ class SecurityOperationsAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

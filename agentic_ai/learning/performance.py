@@ -52,7 +52,7 @@ class AgentMetrics:
     # Time tracking
     first_task_at: Optional[str] = None
     last_task_at: Optional[str] = None
-    updated_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    updated_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def record_task(
         self,
@@ -62,7 +62,7 @@ class AgentMetrics:
     ):
         """Record a task execution."""
         self.total_tasks += 1
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = datetime.now(timezone.utc).isoformat()
 
         if success:
             self.successful_tasks += 1
@@ -81,7 +81,7 @@ class AgentMetrics:
             self.max_time_ms = duration_ms
 
         # Update timestamps
-        now = datetime.utcnow().isoformat()
+        now = datetime.now(timezone.utc).isoformat()
         if not self.first_task_at:
             self.first_task_at = now
         self.last_task_at = now
@@ -230,7 +230,7 @@ class PerformanceTracker:
 
         # Record in history
         self.history.append({
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "agent_id": agent_id,
             "task_type": task_type,
             "success": success,

@@ -12,7 +12,7 @@ import logging
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, TypeVar
 
@@ -51,7 +51,7 @@ class Task:
     payload: Dict[str, Any]
     status: TaskStatus = TaskStatus.PENDING
     priority: int = 5  # 1-10
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     scheduled_at: Optional[datetime] = None
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
@@ -215,7 +215,7 @@ class TaskQueue:
             task_type=task_type,
             payload=payload,
             priority=priority,
-            scheduled_at=datetime.utcnow() + timedelta(seconds=delay_seconds) if delay_seconds > 0 else None,
+            scheduled_at=datetime.now(timezone.utc) + timedelta(seconds=delay_seconds) if delay_seconds > 0 else None,
             timeout_seconds=timeout_seconds,
             max_retries=max_retries,
             queue_name=queue_name,
@@ -301,7 +301,7 @@ class TaskQueue:
         if not self._redis:
             return
 
-        now = datetime.utcnow().timestamp()
+        now = datetime.now(timezone.utc).timestamp()
         scheduled_key = self._get_scheduled_key()
 
         # Get due tasks
@@ -337,7 +337,7 @@ class TaskQueue:
 
         handler = self._handlers[task.task_type]
         task.status = TaskStatus.RUNNING
-        task.started_at = datetime.utcnow()
+        task.started_at = datetime.now(timezone.utc)
 
         try:
             # Execute with timeout
@@ -364,7 +364,7 @@ class TaskQueue:
 
             task.status = TaskStatus.COMPLETED
             task.result = result
-            task.completed_at = datetime.utcnow()
+            task.completed_at = datetime.now(timezone.utc)
 
             # Store result
             self._store_result(task)
@@ -375,7 +375,7 @@ class TaskQueue:
         except Exception as e:
             task.status = TaskStatus.FAILED
             task.error = str(e)
-            task.completed_at = datetime.utcnow()
+            task.completed_at = datetime.now(timezone.utc)
 
             logger.error(f"Task {task.task_id} failed: {e}")
 
@@ -414,7 +414,7 @@ class TaskQueue:
         # Exponential backoff: 2^retry_count seconds
         delay = 2 ** task.retry_count
 
-        task.scheduled_at = datetime.utcnow() + timedelta(seconds=delay)
+        task.scheduled_at = datetime.now(timezone.utc) + timedelta(seconds=delay)
 
         # Re-add to scheduled queue
         if self._redis:
@@ -433,7 +433,7 @@ class TaskQueue:
         dlq_key = f"{self.queue_prefix}:dlq"
         dlq_data = {
             'task': task.to_json(),
-            'failed_at': datetime.utcnow().isoformat(),
+            'failed_at': datetime.now(timezone.utc).isoformat(),
         }
 
         self._redis.lpush(dlq_key, json.dumps(dlq_data))

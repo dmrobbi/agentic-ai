@@ -16,7 +16,7 @@ import logging
 import re
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

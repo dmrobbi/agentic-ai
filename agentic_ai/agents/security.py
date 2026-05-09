@@ -12,7 +12,7 @@ import re
 import secrets
 import string
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -82,7 +82,7 @@ class SecurityFinding:
     recommendation: str = ""
     cwe_id: Optional[str] = None  # Common Weakness Enumeration
     cvss_score: Optional[float] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = "open"  # open, investigating, mitigated, false_positive
     assigned_to: Optional[str] = None
 
@@ -98,7 +98,7 @@ class SecurityIncident:
     source_ip: Optional[str] = None
     target_resource: Optional[str] = None
     user_id: Optional[str] = None
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = "detected"  # detected, investigating, contained, resolved
     response_actions: List[str] = field(default_factory=list)
     evidence: List[str] = field(default_factory=list)
@@ -318,7 +318,7 @@ class SecurityAgent:
             state = {
                 'findings_count': len(self.findings),
                 'incidents_count': len(self.incidents),
-                'last_scan': datetime.utcnow().isoformat(),
+                'last_scan': datetime.now(timezone.utc).isoformat(),
             }
             self.state_store.set(f"agent:{self.agent_id}:state", state)
         except Exception as e:
@@ -554,7 +554,7 @@ class SecurityAgent:
             incident.response_actions.extend(response_actions)
 
         if status == "resolved":
-            incident.resolved_at = datetime.utcnow()
+            incident.resolved_at = datetime.now(timezone.utc)
             incident.resolved_by = resolved_by
 
         self._save_state()
@@ -595,7 +595,7 @@ class SecurityAgent:
         rotation_days: int = 90,
     ) -> SecretRotation:
         """Register a secret for rotation tracking."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         rotation = SecretRotation(
             rotation_id=self._generate_id("rotation"),
             secret_name=secret_name,
@@ -623,7 +623,7 @@ class SecurityAgent:
             return False
 
         rotation = self.secret_rotations[rotation_id]
-        rotation.last_rotated = datetime.utcnow()
+        rotation.last_rotated = datetime.now(timezone.utc)
         rotation.next_rotation = rotation.last_rotated + timedelta(days=90)
         rotation.rotation_count += 1
 
@@ -635,7 +635,7 @@ class SecurityAgent:
 
     def get_secrets_due_for_rotation(self, days_ahead: int = 7) -> List[SecretRotation]:
         """Get secrets due for rotation within specified days."""
-        threshold = datetime.utcnow() + timedelta(days=days_ahead)
+        threshold = datetime.now(timezone.utc) + timedelta(days=days_ahead)
         due = []
 
         for rotation in self.secret_rotations.values():
@@ -675,7 +675,7 @@ class SecurityAgent:
     ):
         """Log an access event for security analysis."""
         log_entry = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'user_id': user_id,
             'resource': resource,
             'action': action,
@@ -717,7 +717,7 @@ class SecurityAgent:
     def detect_anomalies(self, window_hours: int = 24) -> List[Dict[str, Any]]:
         """Detect anomalies in access logs."""
         anomalies = []
-        cutoff = datetime.utcnow() - timedelta(hours=window_hours)
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=window_hours)
 
         # Filter recent logs
         recent_logs = [
@@ -817,7 +817,7 @@ class SecurityAgent:
         max_attempts = rules.get('max_attempts', 5)
 
         # Count recent attempts
-        cutoff = datetime.utcnow() - timedelta(minutes=window_minutes)
+        cutoff = datetime.now(timezone.utc) - timedelta(minutes=window_minutes)
         recent_logs = [
             log for log in self.access_logs
             if datetime.fromisoformat(log['timestamp']) > cutoff
@@ -854,7 +854,7 @@ class SecurityAgent:
 
     def generate_security_report(self, period_days: int = 30) -> Dict[str, Any]:
         """Generate a security status report."""
-        cutoff = datetime.utcnow() - timedelta(days=period_days)
+        cutoff = datetime.now(timezone.utc) - timedelta(days=period_days)
 
         # Count findings by severity
         findings_by_severity = {}
@@ -877,7 +877,7 @@ class SecurityAgent:
         anomalies = self.detect_anomalies()
 
         report = {
-            'generated_at': datetime.utcnow().isoformat(),
+            'generated_at': datetime.now(timezone.utc).isoformat(),
             'period_days': period_days,
             'findings': {
                 'total': len([f for f in self.findings.values() if f.created_at > cutoff]),
@@ -938,7 +938,7 @@ class SecurityAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

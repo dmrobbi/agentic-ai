@@ -18,7 +18,8 @@ Status: Alpha (0.1.0)
 
 import logging
 from typing import List, Dict, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
+UTC = timezone.utc, timedelta
 from dataclasses import dataclass, field
 from enum import Enum
 

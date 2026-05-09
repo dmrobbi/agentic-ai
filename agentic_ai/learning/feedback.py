@@ -37,7 +37,7 @@ class Feedback:
     corrected_output: Optional[str] = None  # For corrections
     source: str = "user"  # user, system, agent
     weight: float = 1.0  # Feedback importance
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -71,7 +71,7 @@ class Feedback:
             corrected_output=data.get("corrected_output"),
             source=data.get("source", "user"),
             weight=data.get("weight", 1.0),
-            created_at=data.get("created_at", datetime.utcnow().isoformat()),
+            created_at=data.get("created_at", datetime.now(timezone.utc).isoformat()),
         )
 
     def get_score(self) -> float:

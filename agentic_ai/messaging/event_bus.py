@@ -37,7 +37,7 @@ class Event:
     event_type: str
     source: str
     data: Dict[str, Any]
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     priority: EventPriority = EventPriority.NORMAL
     correlation_id: Optional[str] = None
     causation_id: Optional[str] = None  # ID of event that caused this one
@@ -327,7 +327,7 @@ class EventBus:
             self.connect()
 
         events = []
-        start_time = datetime.utcnow() - timedelta(days=7)  # Last 7 days
+        start_time = datetime.now(timezone.utc) - timedelta(days=7)  # Last 7 days
 
         stream_messages = self._redis.xrange(
             self.event_log_key,

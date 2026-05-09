@@ -20,7 +20,8 @@ import logging
 import json
 import requests
 from typing import List, Dict, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
+UTC = timezone.utc, timedelta
 from abc import ABC, abstractmethod
 
 logging.basicConfig(level=logging.INFO)

@@ -162,7 +162,7 @@ class StateStore:
                     "INSERT OR REPLACE INTO tasks (task_id, task_type, agent_id, status, priority, payload, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     (tid, task_type or title, agent_id, status, priority,
                      json.dumps(payload) if payload else None,
-                     datetime.utcnow().isoformat(), datetime.utcnow().isoformat())
+                     datetime.now(timezone.utc).isoformat(), datetime.now(timezone.utc).isoformat())
                 )
                 self._conn.commit()
             except Exception:
@@ -201,7 +201,7 @@ class StateStore:
                 self._conn.execute(
                     "UPDATE tasks SET status=?, result=?, updated_at=? WHERE task_id=?",
                     (status, json.dumps(result) if result else None,
-                     datetime.utcnow().isoformat(), task_id)
+                     datetime.now(timezone.utc).isoformat(), task_id)
                 )
                 self._conn.commit()
             except Exception:
@@ -257,7 +257,7 @@ class StateStore:
             try:
                 self._conn.execute(
                     "INSERT OR REPLACE INTO agent_state (agent_id, agent_type, state, updated_at) VALUES (?, ?, ?, ?)",
-                    (agent_id, agent_type, json.dumps(state), datetime.utcnow().isoformat())
+                    (agent_id, agent_type, json.dumps(state), datetime.now(timezone.utc).isoformat())
                 )
                 self._conn.commit()
             except Exception:

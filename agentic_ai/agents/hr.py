@@ -9,7 +9,7 @@ time-off tracking, and HR analytics.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -66,7 +66,7 @@ class Employee:
     location: str = ""
     status: str = "active"  # active, on_leave, terminated
     skills: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -96,7 +96,7 @@ class PerformanceReview:
     areas_for_improvement: List[str] = field(default_factory=list)
     rating: Optional[int] = None  # 1-5
     feedback: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -111,7 +111,7 @@ class TimeOffRequest:
     reason: str = ""
     approved_by: Optional[str] = None
     approved_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class HRAgent:
@@ -166,7 +166,7 @@ class HRAgent:
             position=position,
             manager_id=manager_id,
             employment_type=employment_type,
-            hire_date=datetime.utcnow(),
+            hire_date=datetime.now(timezone.utc),
             salary=salary,
             location=location,
             skills=skills or [],
@@ -306,7 +306,7 @@ class HRAgent:
         # Check if all tasks complete
         if onboarding.progress == 100:
             onboarding.status = "completed"
-            onboarding.completed_at = datetime.utcnow()
+            onboarding.completed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -426,7 +426,7 @@ class HRAgent:
         request = self.time_off_requests[request_id]
         request.status = TimeOffStatus.APPROVED
         request.approved_by = approved_by
-        request.approved_at = datetime.utcnow()
+        request.approved_at = datetime.now(timezone.utc)
 
         # Update employee status if long leave
         days = (request.end_date - request.start_date).days
@@ -450,7 +450,7 @@ class HRAgent:
         request = self.time_off_requests[request_id]
         request.status = TimeOffStatus.REJECTED
         request.approved_by = approved_by
-        request.approved_at = datetime.utcnow()
+        request.approved_at = datetime.now(timezone.utc)
 
         if reason:
             request.reason = f"{request.reason} (Rejected: {reason})"
@@ -524,7 +524,7 @@ class HRAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -591,7 +591,7 @@ if __name__ == "__main__":
     print(f"Position: {emp.position}")
 
     # Create onboarding
-    onboarding = agent.create_onboarding(emp.employee_id, datetime.utcnow())
+    onboarding = agent.create_onboarding(emp.employee_id, datetime.now(timezone.utc))
     print(f"\nOnboarding created: {onboarding.progress}% complete")
 
     # Complete a task

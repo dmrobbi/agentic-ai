@@ -20,7 +20,7 @@ import shutil
 from pathlib import Path
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timezone
 import uuid
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

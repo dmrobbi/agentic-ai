@@ -171,7 +171,7 @@ class ConsensusEngine:
 
         # Update proposal
         proposal.status = result.status
-        proposal.completed_at = datetime.utcnow().isoformat()
+        proposal.completed_at = datetime.now(timezone.utc).isoformat()
         proposal.result = result.to_dict()
 
         # Notify callbacks

@@ -28,7 +28,7 @@ class MetricPoint:
     metric_name: str
     metric_type: MetricType
     value: float
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     labels: Dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -54,7 +54,7 @@ class MetricSeries:
     def add_point(self, value: float, timestamp: Optional[str] = None):
         """Add a data point."""
         if timestamp is None:
-            timestamp = datetime.utcnow().isoformat()
+            timestamp = datetime.now(timezone.utc).isoformat()
 
         point = MetricPoint(
             metric_name=self.metric_name,
@@ -76,7 +76,7 @@ class MetricSeries:
         if not self.points:
             return None
 
-        cutoff = datetime.utcnow() - timedelta(seconds=window_seconds)
+        cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
         recent = [
             p for p in self.points
             if datetime.fromisoformat(p.timestamp) > cutoff
@@ -92,7 +92,7 @@ class MetricSeries:
         if not self.points:
             return 0
 
-        cutoff = datetime.utcnow() - timedelta(seconds=window_seconds)
+        cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
         return sum(
             1 for p in self.points
             if datetime.fromisoformat(p.timestamp) > cutoff
@@ -115,7 +115,7 @@ class MetricsCollector:
 
     def _cleanup_old_points(self):
         """Remove points older than retention period."""
-        cutoff = datetime.utcnow() - timedelta(seconds=self._retention_seconds)
+        cutoff = datetime.now(timezone.utc) - timedelta(seconds=self._retention_seconds)
 
         for metric_dict in self._metrics.values():
             for series in metric_dict.values():
@@ -193,7 +193,7 @@ class MetricsCollector:
     def get_all_metrics(self, window_seconds: int = 60) -> Dict[str, Any]:
         """Get all metrics with recent data."""
         result = {}
-        cutoff = datetime.utcnow() - timedelta(seconds=window_seconds)
+        cutoff = datetime.now(timezone.utc) - timedelta(seconds=window_seconds)
 
         with self._lock:
             for metric_name, series_dict in self._metrics.items():
@@ -239,12 +239,12 @@ class TimerContext:
         self.start_time: Optional[datetime] = None
 
     def __enter__(self):
-        self.start_time = datetime.utcnow()
+        self.start_time = datetime.now(timezone.utc)
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         if self.start_time:
-            duration = (datetime.utcnow() - self.start_time).total_seconds()
+            duration = (datetime.now(timezone.utc) - self.start_time).total_seconds()
             self.collector.record(
                 self.metric_name,
                 duration * 1000,  # Convert to milliseconds

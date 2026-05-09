@@ -17,7 +17,7 @@ import logging
 import numpy as np
 from typing import List, Dict, Tuple
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import copy
 

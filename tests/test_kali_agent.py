@@ -7,7 +7,7 @@ and Metasploit integration.
 """
 
 import pytest
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from agentic_ai.agents.cyber.kali import (
@@ -91,7 +91,7 @@ class TestAuthorization:
         agent = KaliAgent()
         
         # Expired authorization
-        expired = datetime.utcnow() - timedelta(hours=1)
+        expired = datetime.now(timezone.utc) - timedelta(hours=1)
         result = agent.set_authorization(AuthorizationLevel.BASIC, expires_at=expired)
         assert result is False
     
@@ -547,7 +547,7 @@ class TestRedTeamIntegration:
         engagement = agent.create_engagement(
             name="Test Engagement",
             engagement_type=EngagementType.PENETRATION_TEST,
-            start_date=datetime.utcnow(),
+            start_date=datetime.now(timezone.utc),
             scope=["192.168.1.0/24"],
             objectives=["Find vulns"],
         )

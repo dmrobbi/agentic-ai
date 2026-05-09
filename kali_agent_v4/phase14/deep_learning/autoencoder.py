@@ -11,7 +11,7 @@ Status: Alpha (0.1.0)
 import logging
 import numpy as np
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 from dataclasses import dataclass, field
 import uuid
 

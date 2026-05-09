@@ -15,7 +15,7 @@ Status: Alpha (0.1.0)
 import logging
 from typing import List, Dict
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')

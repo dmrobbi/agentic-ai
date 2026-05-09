@@ -18,7 +18,7 @@ Status: Alpha (0.1.0)
 
 import logging
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 from dataclasses import dataclass, field
 
 logging.basicConfig(level=logging.INFO)

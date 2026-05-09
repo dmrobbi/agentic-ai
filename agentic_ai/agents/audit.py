@@ -9,7 +9,7 @@ finding management, and audit reporting for internal audits.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -93,7 +93,7 @@ class Audit:
     planned_hours: float = 0.0
     actual_hours: float = 0.0
     findings_count: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -134,7 +134,7 @@ class Finding:
     responsible_party: str = ""
     due_date: Optional[datetime] = None
     closed_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -149,7 +149,7 @@ class Evidence:
     evidence_type: str  # document, screenshot, log, interview, observation
     location: str  # file path, URL, etc.
     collected_by: str
-    collected_at: datetime = field(default_factory=datetime.utcnow)
+    collected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     reviewed: bool = False
     reviewed_by: str = ""
 
@@ -165,8 +165,8 @@ class AuditWorkpaper:
     reviewer: str = ""
     reviewed: bool = False
     created_by: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
-    updated_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
+    updated_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class AuditAgent:
@@ -228,7 +228,7 @@ class AuditAgent:
             return False
 
         self.audits[audit_id].status = AuditStatus.IN_PROGRESS
-        self.audits[audit_id].start_date = datetime.utcnow()
+        self.audits[audit_id].start_date = datetime.now(timezone.utc)
         return True
 
     def update_audit_status(
@@ -243,7 +243,7 @@ class AuditAgent:
         self.audits[audit_id].status = status
 
         if status == AuditStatus.COMPLETE:
-            self.audits[audit_id].end_date = datetime.utcnow()
+            self.audits[audit_id].end_date = datetime.now(timezone.utc)
 
         return True
 
@@ -254,7 +254,7 @@ class AuditAgent:
 
         audit = self.audits[audit_id]
         audit.status = AuditStatus.COMPLETE
-        audit.end_date = datetime.utcnow()
+        audit.end_date = datetime.now(timezone.utc)
         audit.actual_hours = actual_hours
 
         return True
@@ -320,7 +320,7 @@ class AuditAgent:
 
         control = self.controls[control_id]
         control.tested_by = tested_by
-        control.tested_at = datetime.utcnow()
+        control.tested_at = datetime.now(timezone.utc)
         control.test_results = test_results
         control.evidence = evidence or []
 
@@ -437,7 +437,7 @@ class AuditAgent:
         finding.status = status
 
         if status == FindingStatus.CLOSED:
-            finding.closed_at = datetime.utcnow()
+            finding.closed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -651,7 +651,7 @@ class AuditAgent:
             by_severity[sev.value] = len([f for f in findings if f.severity == sev])
 
         # Overdue findings
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         overdue = len([
             f for f in findings
             if f.due_date and f.due_date < now and f.status != FindingStatus.CLOSED
@@ -722,7 +722,7 @@ class AuditAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -870,7 +870,7 @@ if __name__ == "__main__":
         management_response="Will implement automated workflow",
         action_plan="Deploy HR-IT integration by Q2",
         responsible_party="it-director@example.com",
-        due_date=datetime.utcnow() + timedelta(days=90),
+        due_date=datetime.now(timezone.utc) + timedelta(days=90),
     )
 
     # Collect evidence

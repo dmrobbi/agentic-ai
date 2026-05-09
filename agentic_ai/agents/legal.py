@@ -10,7 +10,7 @@ import logging
 import secrets
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -69,7 +69,7 @@ class LegalDocument:
     value: float = 0.0
     clauses: List[Dict[str, Any]] = field(default_factory=list)
     risks: List[Dict[str, Any]] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -80,7 +80,7 @@ class ComplianceCheck:
     status: ComplianceStatus
     findings: List[str]
     recommendations: List[str]
-    checked_at: datetime = field(default_factory=datetime.utcnow)
+    checked_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     next_review: Optional[datetime] = None
 
 
@@ -233,7 +233,7 @@ class LegalAgent:
 
     def get_expiring_documents(self, days_ahead: int = 30) -> List[LegalDocument]:
         """Get documents expiring within specified days."""
-        threshold = datetime.utcnow() + timedelta(days=days_ahead)
+        threshold = datetime.now(timezone.utc) + timedelta(days=days_ahead)
         expiring = []
 
         for doc in self.documents.values():
@@ -326,7 +326,7 @@ class LegalAgent:
         doc.clauses.append({
             'type': clause_type,
             'text': clause_text,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': datetime.now(timezone.utc).isoformat(),
         })
 
         return True
@@ -366,7 +366,7 @@ class LegalAgent:
             status=status,
             findings=findings,
             recommendations=recommendations,
-            next_review=datetime.utcnow() + timedelta(days=90),
+            next_review=datetime.now(timezone.utc) + timedelta(days=90),
         )
 
         self.compliance_checks[check.check_id] = check
@@ -374,7 +374,7 @@ class LegalAgent:
         # Update regulation status
         if regulation in self.regulations:
             self.regulations[regulation]['status'] = status
-            self.regulations[regulation]['last_audit'] = datetime.utcnow()
+            self.regulations[regulation]['last_audit'] = datetime.now(timezone.utc)
 
         logger.info(f"Compliance check {regulation.value}: {status.value}")
         return check
@@ -491,7 +491,7 @@ These Terms are governed by applicable law.
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -558,8 +558,8 @@ if __name__ == "__main__":
         title="Mutual NDA - Acme Corp",
         document_type=DocumentType.NDA,
         parties=["Our Company", "Acme Corp"],
-        effective_date=datetime.utcnow(),
-        expiration_date=datetime.utcnow() + timedelta(days=730),
+        effective_date=datetime.now(timezone.utc),
+        expiration_date=datetime.now(timezone.utc) + timedelta(days=730),
     )
 
     print(f"Created: {nda.title}")
