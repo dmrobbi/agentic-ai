@@ -19,7 +19,8 @@ Status: Alpha (0.1.0)
 import logging
 import statistics
 from typing import List, Dict, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
+UTC = timezone.utc, timedelta
 from dataclasses import dataclass, field
 from collections import defaultdict
 
@@ -206,7 +207,7 @@ class AnomalyDetector:
                 id=str(uuid.uuid4()),
                 type='iqr_outlier',
                 severity=severity,
-                description=f'IQR outlier: value outside normal range',
+                description='IQR outlier: value outside normal range',
                 confidence=min(1.0, 0.5 + deviation * 0.2),
                 baseline_value=baseline['median'],
                 observed_value=value,

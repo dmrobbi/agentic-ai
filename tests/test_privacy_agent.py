@@ -224,7 +224,7 @@ class TestPrivacyAgent:
             name="AI System PIA",
             project_description="ML-based recommendations",
             data_categories=['purchase_history', 'browsing'],
-            processing_purposes=[ProcessingPurpose.PERSONALIZATION],
+            purposes=[ProcessingPurpose.PERSONALIZATION],
         )
         
         assert pia.pia_id.startswith("pia-")
@@ -351,7 +351,7 @@ class TestPrivacyAgent:
     
     def test_get_regulation_compliance(self, privacy):
         """Test regulation-specific compliance."""
-        subject = privacy.register_data_subject(
+        privacy.register_data_subject(
             "EU User",
             "eu@example.com",
             "EU",

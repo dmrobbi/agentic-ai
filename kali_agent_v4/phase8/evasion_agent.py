@@ -4,10 +4,8 @@ KaliAgent v4 - Phase 8: Evasion & Persistence Agent
 AMSI bypass, AV evasion, persistence mechanisms, and rootkit detection
 """
 
-import json
-import time
-from datetime import datetime
-from typing import Dict, List, Optional, Any
+from datetime import datetime, timezone
+from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -86,7 +84,7 @@ class EvasionAgent:
     
     def check_amsi(self) -> Dict:
         """Check AMSI (Antimalware Scan Interface) status"""
-        print(f"\n🔍 Checking AMSI status...")
+        print("\n🔍 Checking AMSI status...")
         
         # Simulate AMSI check
         amsi_info = {
@@ -124,7 +122,7 @@ class EvasionAgent:
     
     def bypass_amsi(self) -> Dict:
         """Simulate AMSI bypass"""
-        print(f"\n🔓 Attempting AMSI bypass...")
+        print("\n🔓 Attempting AMSI bypass...")
         
         bypass_methods = [
             {
@@ -157,14 +155,14 @@ class EvasionAgent:
             "detection_risk": "Low-Medium"
         }
         
-        print(f"   ✅ AMSI bypass successful")
+        print("   ✅ AMSI bypass successful")
         print(f"   Methods: {len(bypass_methods)}")
         
         return result
     
     def check_av_evasion(self) -> Dict:
         """Check antivirus evasion techniques"""
-        print(f"\n🔍 Checking AV evasion...")
+        print("\n🔍 Checking AV evasion...")
         
         # Simulate AV check
         av_info = {
@@ -211,7 +209,7 @@ class EvasionAgent:
     
     def check_edr_evasion(self) -> Dict:
         """Check EDR evasion techniques"""
-        print(f"\n🔍 Checking EDR evasion...")
+        print("\n🔍 Checking EDR evasion...")
         
         # Simulate EDR check
         edr_info = {
@@ -260,7 +258,7 @@ class EvasionAgent:
     
     def check_sandbox_evasion(self) -> Dict:
         """Check sandbox detection/evasion"""
-        print(f"\n🔍 Checking sandbox evasion...")
+        print("\n🔍 Checking sandbox evasion...")
         
         sandbox_checks = [
             {
@@ -292,7 +290,7 @@ class EvasionAgent:
     
     def check_vm_detection(self) -> Dict:
         """Check VM detection techniques"""
-        print(f"\n🔍 Checking VM detection...")
+        print("\n🔍 Checking VM detection...")
         
         vm_checks = [
             {
@@ -324,7 +322,7 @@ class EvasionAgent:
     
     def enumerate_persistence(self) -> List[Dict]:
         """Enumerate persistence mechanisms"""
-        print(f"\n🔍 Enumerating persistence mechanisms...")
+        print("\n🔍 Enumerating persistence mechanisms...")
         
         # Simulate persistence enumeration
         self.persistence_mechanisms = [
@@ -413,7 +411,7 @@ class EvasionAgent:
     
     def check_dll_hijacking(self) -> List[EvasionFinding]:
         """Check for DLL hijacking opportunities"""
-        print(f"\n🔍 Checking DLL hijacking opportunities...")
+        print("\n🔍 Checking DLL hijacking opportunities...")
         
         dll_findings = []
         
@@ -463,7 +461,7 @@ class EvasionAgent:
     
     def check_process_injection(self) -> Dict:
         """Check process injection techniques"""
-        print(f"\n🔍 Checking process injection...")
+        print("\n🔍 Checking process injection...")
         
         injection_techniques = [
             {
@@ -500,7 +498,7 @@ class EvasionAgent:
     
     def generate_report(self) -> Dict:
         """Generate evasion & persistence assessment report"""
-        print(f"\n📄 Generating evasion & persistence report...")
+        print("\n📄 Generating evasion & persistence report...")
         
         severity_counts = {
             'critical': sum(1 for f in self.findings if f.severity == 'critical'),
@@ -511,7 +509,7 @@ class EvasionAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "target_os": self.target_os,
             "summary": {
                 "total_findings": len(self.findings),
@@ -604,7 +602,7 @@ if __name__ == "__main__":
     report = agent.generate_report()
     
     print(f"\n{'='*60}")
-    print(f"🎭 EVASION & PERSISTENCE ASSESSMENT COMPLETE")
+    print("🎭 EVASION & PERSISTENCE ASSESSMENT COMPLETE")
     print(f"{'='*60}")
     print(f"Target OS: {report['target_os']}")
     print(f"Total Findings: {report['summary']['total_findings']}")
@@ -613,9 +611,9 @@ if __name__ == "__main__":
     print(f"  Medium: {report['summary']['medium']}")
     print(f"Evasion Techniques: {report['summary']['evasion_techniques']}")
     print(f"Persistence Mechanisms: {report['summary']['persistence_mechanisms']}")
-    print(f"\nMITRE ATT&CK Coverage:")
+    print("\nMITRE ATT&CK Coverage:")
     for mitre in report['mitre_coverage'][:10]:
         print(f"  • {mitre}")
-    print(f"\nTop Recommendations:")
+    print("\nTop Recommendations:")
     for rec in report['recommendations'][:5]:
         print(f"  • {rec}")

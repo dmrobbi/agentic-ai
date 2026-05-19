@@ -8,10 +8,9 @@ Simple demo server for testing deployment.
 
 import os
 import logging
-from datetime import datetime
-from typing import Optional
+from datetime import datetime, timezone
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -81,7 +80,7 @@ async def health_check():
         status="healthy",
         version="1.0.0",
         environment=ENV,
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=datetime.now(timezone.utc).isoformat(),
         agents_loaded=33,
     )
 
@@ -193,8 +192,10 @@ async def get_demo_chaos():
         ],
         "resiliencyScores": [
             {"service": "web-api", "score": 87, "availability": 92, "recovery": 85, "degradation": 80, "monitoring": 90},
-            {"service": "ml-inference", "score": 92, "availability": 95, "recovery": 90, "degradation": 88, "monitoring": 95},
-            {"service": "payment-service", "score": 78, "availability": 80, "recovery": 75, "degradation": 70, "monitoring": 85},
+            {"service": "ml-inference", "score": 92, "availability": 95,
+                "recovery": 90, "degradation": 88, "monitoring": 95},
+            {"service": "payment-service", "score": 78, "availability": 80,
+                "recovery": 75, "degradation": 70, "monitoring": 85},
             {"service": "user-auth", "score": 95, "availability": 98, "recovery": 93, "degradation": 92, "monitoring": 97},
         ],
         "resiliency_score": 87.5,

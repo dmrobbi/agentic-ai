@@ -14,8 +14,7 @@ import os
 import re
 import subprocess
 import json
-from typing import Dict, List, Optional, Tuple
-from pathlib import Path
+from typing import Dict, List, Tuple
 from dataclasses import dataclass
 
 
@@ -108,7 +107,7 @@ class KaliIntegration:
         try:
             with open(self.kali_version_file, 'r') as f:
                 version_content = f.read().strip()
-        except Exception as e:
+        except Exception:
             return False, KaliVersion(
                 version='unknown',
                 edition='unknown',
@@ -467,11 +466,11 @@ def main():
             print(f"Kernel: {result['version']['kernel']}")
             print(f"Architecture: {result['version']['architecture']}")
             print(f"Rolling: {'Yes' if result['version']['rolling'] else 'No'}")
-            print(f"\nRepositories:")
+            print("\nRepositories:")
             print(f"  Enabled: {'Yes' if result['repositories']['enabled'] else 'No'}")
             print(f"  Configured: {'Yes' if result['repositories']['configured'] else 'No'}")
             print(f"  Kali-rolling: {'Yes' if result['repositories']['kali_rolling'] else 'No'}")
-            print(f"\nTool Categories:")
+            print("\nTool Categories:")
             print(f"  Installed: {len(result['tool_categories']['installed'])}/{result['tool_categories']['total_categories']}")
             print(f"  Coverage: {result['tool_categories']['coverage_pct']}%")
     

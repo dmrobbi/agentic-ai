@@ -9,17 +9,16 @@ Tasks: 3.4.1, 3.4.2, 3.4.3
 Status: IMPLEMENTED
 """
 
-import os
 import json
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 
 from weaponization.payload_generator import PayloadGenerator, PayloadConfig, PayloadResult, PayloadType, PayloadFormat, Architecture, Platform
 from weaponization.encoder import PayloadEncoder, EncoderType, ObfuscationTechnique, EncodeResult
-from weaponization.testing_framework import PayloadTester, TestType, PayloadTestReport
+from weaponization.testing_framework import PayloadTester, PayloadTestReport
 
 # Configure logging
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
@@ -426,7 +425,7 @@ class WeaponizationEngine:
                         start = datetime.fromisoformat(j.created_at)
                         end = datetime.fromisoformat(j.completed_at)
                         times.append((end - start).total_seconds())
-                    except:
+                    except Exception:
                         pass
             avg_time = sum(times) / len(times) if times else 0
         
@@ -492,7 +491,7 @@ def main():
             'android': Platform.ANDROID
         }
         
-        print(f"\n🚀 Starting Weaponization...")
+        print("\n🚀 Starting Weaponization...")
         print("=" * 60)
         print(f"Name: {args.name}")
         print(f"Target: {args.platform} ({platform_map[args.platform].value})")
@@ -521,7 +520,7 @@ def main():
                 for w in report.warnings:
                     print(f"  • {w}")
             
-            print(f"\n💡 Recommendations:")
+            print("\n💡 Recommendations:")
             for r in report.recommendations:
                 print(f"  • {r}")
         else:

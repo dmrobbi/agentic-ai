@@ -14,7 +14,6 @@ from agentic_ai.agents.vendor_risk import (
     RiskDomain,
     AssessmentType,
     QuestionnaireType,
-    ControlMaturity,
     ResidualRisk,
 )
 
@@ -151,7 +150,7 @@ class TestVendorRiskAgent:
         vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
         
         q1 = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_LITE)
-        q2 = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_CORE)
+        vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_CORE)
         
         vr_agent.send_questionnaire(q1.questionnaire_id)
         
@@ -412,7 +411,7 @@ class TestVendorRiskAgent:
         
         a1 = vr_agent.create_alert(vendor.vendor_id, "type", "high", "T1", "D", "s")
         a2 = vr_agent.create_alert(vendor.vendor_id, "type", "medium", "T2", "D", "s")
-        a3 = vr_agent.create_alert(vendor.vendor_id, "type", "low", "T3", "D", "s")
+        vr_agent.create_alert(vendor.vendor_id, "type", "low", "T3", "D", "s")
         
         vr_agent.acknowledge_alert(a1.alert_id)
         vr_agent.resolve_alert(a2.alert_id)

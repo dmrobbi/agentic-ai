@@ -9,7 +9,6 @@ Status: IMPLEMENTED
 import pytest
 import os
 import sys
-import tempfile
 from unittest.mock import patch, MagicMock
 
 # Add core to path
@@ -47,7 +46,7 @@ class TestKaliDetection:
         kali = KaliIntegration()
         
         with patch('os.path.exists', return_value=False):
-            with patch('builtins.open', MagicMock(return_value=MagicMock(read=MagicMock(return_value='PRETTY_NAME="Ubuntu 22.04"'))))):
+            with patch('builtins.open', MagicMock(return_value=MagicMock(read=MagicMock(return_value='PRETTY_NAME="Ubuntu 22.04"')))):
                 with patch('os.uname') as mock_uname:
                     mock_uname.return_value.release = '5.15.0-generic'
                     mock_uname.return_value.machine = 'x86_64'

@@ -673,6 +673,6 @@ def count_tools():
     return total
 
 if __name__ == '__main__':
-    print(f"Expanded tool database loaded")
+    print("Expanded tool database loaded")
     print(f"Total categories: {len(EXPANDED_TOOL_DATABASE)}")
     print(f"Total tools: {count_tools()}")

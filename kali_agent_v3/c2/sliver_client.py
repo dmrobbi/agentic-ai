@@ -14,7 +14,7 @@ import json
 import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 
@@ -720,9 +720,9 @@ def main():
         listeners = client.list_listeners()
         print(f"\nListeners: {len(listeners)}")
         print("=" * 60)
-        for l in listeners:
-            status = "🟢" if l.get('active') else "🔴"
-            print(f"{status} {l['name']} ({l['protocol']}) - {l['host']}:{l['port']}")
+        for level in listeners:
+            status = "🟢" if level.get('active') else "🔴"
+            print(f"{status} {level['name']} ({level['protocol']}) - {level['host']}:{level['port']}")
         print("=" * 60)
     
     elif args.start_listener:

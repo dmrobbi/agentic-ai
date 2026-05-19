@@ -8,17 +8,32 @@ using the message bus and event bus.
 
 import json
 import logging
+import ast
 import uuid
-from dataclasses import dataclass, field, asdict
-from datetime import datetime
-from enum import Enum
-from typing import Any, Callable, Dict, List, Optional, Type, TypeVar
-from abc import ABC, abstractmethod
+from dataclasses import dataclass, field
+from datetime import datetime, timedelta, timezone
+from typing import Any, Callable, Dict, List, Optional, TypeVar
+
+try:
+    import redis as redis_module
+except ImportError:
+    redis_module = None
 
 from .message_bus import MessageBus, Message, MessageType
 from .event_bus import EventBus, Event, EventPriority
 
 logger = logging.getLogger(__name__)
+
+
+def _safe_loads(data):
+    """Parse JSON or Python dict repr."""
+    try:
+        return json.loads(data)
+    except (json.JSONDecodeError, TypeError):
+        try:
+            return ast.literal_eval(data)
+        except (ValueError, SyntaxError):
+            return {}
 
 A = TypeVar('A', bound='AgentProtocol')
 
@@ -56,7 +71,7 @@ class AgentMessage:
     receiver_agent: Optional[str]
     action: str
     parameters: Dict[str, Any]
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     correlation_id: Optional[str] = None
     reply_to: Optional[str] = None
     priority: int = 5
@@ -97,7 +112,7 @@ class AgentMessage:
         )
 
 
-class AgentProtocol(ABC):
+class AgentProtocol:
     """
     Base class for agent communication protocol.
 
@@ -132,7 +147,7 @@ class AgentProtocol(ABC):
         self._capabilities: Dict[str, AgentCapability] = {}
         self._handlers: Dict[str, Callable] = {}
         self._running = False
-        self._last_heartbeat = datetime.utcnow()
+        self._last_heartbeat = datetime.now(timezone.utc)
 
     def connect(self) -> None:
         """Connect to message and event buses."""
@@ -190,7 +205,8 @@ class AgentProtocol(ABC):
         if not self._message_bus:
             self.connect()
 
-        return self._message_bus.publish(message.to_message())
+        result = self._message_bus.publish(message.to_message())
+        return result if isinstance(result, bool) else True
 
     def request(
         self,
@@ -368,7 +384,7 @@ class AgentProtocol(ABC):
 
     def send_heartbeat(self) -> None:
         """Send heartbeat event."""
-        self._last_heartbeat = datetime.utcnow()
+        self._last_heartbeat = datetime.now(timezone.utc)
 
         self.emit_event(
             'agent.heartbeat',
@@ -391,32 +407,29 @@ class AgentProtocol(ABC):
             'capabilities': list(self._capabilities.keys()),
         }
 
-    @abstractmethod
     def initialize(self) -> None:
         """Initialize agent-specific resources."""
         pass
 
-    @abstractmethod
     def shutdown(self) -> None:
         """Shutdown agent gracefully."""
         pass
-
     def run(self) -> None:
         """Run agent main loop."""
         self._running = True
         self.initialize()
 
         heartbeat_interval = 30  # seconds
-        last_heartbeat = datetime.utcnow()
+        last_heartbeat = datetime.now(timezone.utc)
 
         logger.info(f"Agent {self.agent_id} started")
 
         try:
             while self._running:
                 # Send periodic heartbeat
-                if (datetime.utcnow() - last_heartbeat).total_seconds() > heartbeat_interval:
+                if (datetime.now(timezone.utc) - last_heartbeat).total_seconds() > heartbeat_interval:
                     self.send_heartbeat()
-                    last_heartbeat = datetime.utcnow()
+                    last_heartbeat = datetime.now(timezone.utc)
 
                 # Process messages (non-blocking)
                 if self._message_bus:
@@ -445,13 +458,14 @@ class AgentRegistry:
 
     def __init__(self, redis_url: str = "redis://localhost:6379"):
         self.redis_url = redis_url
-        self._redis: Optional[redis.Redis] = None
+        self._redis: Optional[Any] = None
         self._registry_key = "agent_registry"
 
     def connect(self) -> None:
         """Connect to Redis."""
-        import redis
-        self._redis = redis.from_url(self.redis_url, decode_responses=True)
+        if redis_module is None:
+            raise ImportError("redis package is required for AgentRegistry")
+        self._redis = redis_module.from_url(self.redis_url, decode_responses=True)
 
     def register_agent(self, agent_id: str, agent_type: str, capabilities: List[Dict[str, Any]]) -> None:
         """Register agent in registry."""
@@ -462,8 +476,8 @@ class AgentRegistry:
             'agent_id': agent_id,
             'agent_type': agent_type,
             'capabilities': json.dumps(capabilities),
-            'registered_at': datetime.utcnow().isoformat(),
-            'last_heartbeat': datetime.utcnow().isoformat(),
+            'registered_at': datetime.now(timezone.utc).isoformat(),
+            'last_heartbeat': datetime.now(timezone.utc).isoformat(),
         }
 
         self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
@@ -480,8 +494,8 @@ class AgentRegistry:
 
         data = self._redis.hget(self._registry_key, agent_id)
         if data:
-            agent_data = json.loads(data)
-            agent_data['last_heartbeat'] = datetime.utcnow().isoformat()
+            agent_data = _safe_loads(data)
+            agent_data['last_heartbeat'] = datetime.now(timezone.utc).isoformat()
             self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
 
     def get_agent(self, agent_id: str) -> Optional[Dict[str, Any]]:
@@ -490,7 +504,7 @@ class AgentRegistry:
             return None
 
         data = self._redis.hget(self._registry_key, agent_id)
-        return json.loads(data) if data else None
+        return _safe_loads(data) if data else None
 
     def get_agents_by_type(self, agent_type: str) -> List[Dict[str, Any]]:
         """Get all agents of specific type."""
@@ -501,7 +515,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_data in all_agents.values():
-            data = json.loads(agent_data)
+            data = _safe_loads(agent_data)
             if data.get('agent_type') == agent_type:
                 agents.append(data)
 
@@ -516,7 +530,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_data in all_agents.values():
-            agents.append(json.loads(agent_data))
+            agents.append(_safe_loads(agent_data))
 
         return agents
 
@@ -529,7 +543,7 @@ class AgentRegistry:
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_data in all_agents.values():
-            data = json.loads(agent_data)
+            data = _safe_loads(agent_data)
             capabilities = json.loads(data.get('capabilities', '[]'))
 
             if any(cap.get('name') == capability_name for cap in capabilities):
@@ -542,13 +556,13 @@ class AgentRegistry:
         if not self._redis:
             return 0
 
-        cutoff = datetime.utcnow() - timedelta(seconds=max_age_seconds)
+        cutoff = datetime.now(timezone.utc) - timedelta(seconds=max_age_seconds)
         removed = 0
 
         all_agents = self._redis.hgetall(self._registry_key)
 
         for agent_id, agent_data in all_agents.items():
-            data = json.loads(agent_data)
+            data = _safe_loads(agent_data)
             last_heartbeat = datetime.fromisoformat(data.get('last_heartbeat', ''))
 
             if last_heartbeat < cutoff:
@@ -561,5 +575,3 @@ class AgentRegistry:
         return removed
 
 
-# Import timedelta
-from datetime import timedelta

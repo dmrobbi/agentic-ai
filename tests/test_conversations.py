@@ -6,7 +6,10 @@ Unit tests for multi-agent conversation management.
 """
 
 import pytest
-from datetime import datetime
+from agentic_ai.conversations.state import ConversationStatus as _ConversationStatus
+
+# Make ConversationStatus available at module level
+ConversationStatus = _ConversationStatus
 
 
 # Import fixtures
@@ -302,7 +305,7 @@ class TestConversationManager:
         thread2 = manager.create_thread("Thread 2", "agent-001", ["agent-002"])
         
         # Create 1 thread for agent-002
-        thread3 = manager.create_thread("Thread 3", "agent-002")
+        manager.create_thread("Thread 3", "agent-002")
         
         # Get agent-001's threads
         threads = manager.get_agent_threads("agent-001")

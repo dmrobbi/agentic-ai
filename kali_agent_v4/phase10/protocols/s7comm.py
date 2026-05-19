@@ -21,9 +21,9 @@ Status: Alpha (0.1.0)
 import logging
 import socket
 import struct
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 # Configure logging
 logging.basicConfig(
@@ -222,7 +222,7 @@ class S7CommClient:
                 return False
             
             self.connected = True
-            logger.info(f"✅ Connected to S7 PLC")
+            logger.info("✅ Connected to S7 PLC")
             
             # Get CPU info
             self.cpu_info = self.get_cpu_info()
@@ -244,7 +244,7 @@ class S7CommClient:
         if self.socket:
             try:
                 self.socket.close()
-            except:
+            except Exception:
                 pass
         
         self.connected = False
@@ -804,7 +804,7 @@ def main():
         cpu_info = s7.get_cpu_info()
         
         if cpu_info:
-            print(f"\n📊 CPU Information:")
+            print("\n📊 CPU Information:")
             print(f"  Vendor: {cpu_info.vendor}")
             print(f"  Model: {cpu_info.model}")
             print(f"  CPU Type: {cpu_info.cpu_type}")

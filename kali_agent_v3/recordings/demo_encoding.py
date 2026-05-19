@@ -21,14 +21,14 @@ test_dir = Path(tempfile.mkdtemp(prefix='kali_demo_'))
 test_file = test_dir / 'payload.exe'
 test_file.write_bytes(b'MZ' + b'\x90' * 1000)  # Fake EXE
 
-print(f"📦 Original Payload:")
+print("📦 Original Payload:")
 print(f"   File: {test_file.name}")
 print(f"   Size: {test_file.stat().st_size} bytes")
 print()
 
 enc = PayloadEncoder(output_dir=test_dir / 'encoded')
 
-print(f"🔧 Encoding Tests:")
+print("🔧 Encoding Tests:")
 print()
 
 encoders = ['base64', 'hex', 'xor', 'xor_dynamic']
@@ -40,7 +40,7 @@ for encoder_name in encoders:
         print(f"   ✗ {encoder_name:15s} - Failed: {result.error}")
 print()
 
-print(f"🎭 Obfuscation Tests:")
+print("🎭 Obfuscation Tests:")
 print()
 
 obfuscation_tests = [
@@ -54,7 +54,7 @@ for tech_name, tech_desc in obfuscation_tests:
     print(f"   {status} {tech_desc:25s} - {msg}")
 print()
 
-print(f"🛡️  AMSI/ETW Patching:")
+print("🛡️  AMSI/ETW Patching:")
 ps_file = test_dir / 'script.ps1'
 ps_file.write_text('Write-Host "Test"')
 

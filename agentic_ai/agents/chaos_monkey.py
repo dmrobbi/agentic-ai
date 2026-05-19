@@ -12,7 +12,7 @@ import logging
 import random
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -64,6 +64,7 @@ class TargetType(Enum):
     CACHE = "cache"
     QUEUE = "queue"
     API = "api"
+    SERVER = "server"
 
 
 class SeverityLevel(Enum):
@@ -104,7 +105,7 @@ class Target:
     metadata: Dict[str, Any] = field(default_factory=dict)
     tags: List[str] = field(default_factory=list)
     critical: bool = False
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -159,7 +160,7 @@ class SafetyConstraint:
     constraint_type: str  # blackout_window, max_percentage, exclude_critical, require_approval
     enabled: bool = True
     parameters: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -186,7 +187,7 @@ class MetricThreshold:
     current_value: float = 0.0
     breached: bool = False
     breach_count: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -202,7 +203,7 @@ class ResiliencyScore:
     experiments_run: int = 0
     experiments_passed: int = 0
     mttr_minutes: float = 0.0  # Mean time to recovery
-    last_assessed: datetime = field(default_factory=datetime.utcnow)
+    last_assessed: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class ChaosMonkeyAgent:
@@ -323,6 +324,12 @@ class ChaosMonkeyAgent:
         created_by: str = "",
     ) -> Experiment:
         """Create chaos engineering experiment."""
+        # Convert string args to enums
+        if isinstance(severity, str):
+            severity = SeverityLevel(severity.lower())
+        if isinstance(blast_radius, str):
+            blast_radius = BlastRadius(blast_radius.lower())
+
         experiment = Experiment(
             experiment_id=self._generate_id("exp"),
             name=name,
@@ -394,7 +401,7 @@ class ChaosMonkeyAgent:
 
         experiment = self.experiments[experiment_id]
         experiment.status = ExperimentStatus.RUNNING
-        experiment.started_at = datetime.utcnow()
+        experiment.started_at = datetime.now(timezone.utc)
 
         # Create experiment runs for each target
         for target_id in experiment.targets:
@@ -404,7 +411,7 @@ class ChaosMonkeyAgent:
 
     def _create_experiment_run(self, experiment_id: str, target_id: str) -> ExperimentRun:
         """Create individual experiment run."""
-        experiment = self.experiments[experiment_id]
+        self.experiments[experiment_id]
 
         run = ExperimentRun(
             run_id=self._generate_id("run"),
@@ -423,7 +430,7 @@ class ChaosMonkeyAgent:
 
         run = self.runs[run_id]
         run.status = "running"
-        run.started_at = datetime.utcnow()
+        run.started_at = datetime.now(timezone.utc)
 
         # Simulate termination (in real implementation, would call cloud API)
         target = self.targets.get(run.target_id)
@@ -437,7 +444,7 @@ class ChaosMonkeyAgent:
             }
 
         # Simulate completion
-        run.completed_at = datetime.utcnow()
+        run.completed_at = datetime.now(timezone.utc)
         run.duration_seconds = (run.completed_at - run.started_at).total_seconds()
         run.status = "completed"
 
@@ -455,7 +462,7 @@ class ChaosMonkeyAgent:
 
         run = self.runs[run_id]
         run.status = "running"
-        run.started_at = datetime.utcnow()
+        run.started_at = datetime.now(timezone.utc)
 
         actual_latency = latency_ms * (1 + random.uniform(-jitter_percent/100, jitter_percent/100))
 
@@ -466,7 +473,7 @@ class ChaosMonkeyAgent:
             'jitter_percent': jitter_percent,
         }
 
-        run.completed_at = datetime.utcnow()
+        run.completed_at = datetime.now(timezone.utc)
         run.duration_seconds = (run.completed_at - run.started_at).total_seconds()
         run.status = "completed"
 
@@ -484,7 +491,7 @@ class ChaosMonkeyAgent:
 
         experiment = self.experiments[experiment_id]
         experiment.status = ExperimentStatus.COMPLETED
-        experiment.completed_at = datetime.utcnow()
+        experiment.completed_at = datetime.now(timezone.utc)
         experiment.actual_outcome = actual_outcome
         experiment.lessons_learned = lessons_learned or []
 
@@ -497,14 +504,14 @@ class ChaosMonkeyAgent:
 
         experiment = self.experiments[experiment_id]
         experiment.status = ExperimentStatus.ABORTED
-        experiment.completed_at = datetime.utcnow()
+        experiment.completed_at = datetime.now(timezone.utc)
         experiment.lessons_learned.append(f"Aborted: {reason}")
 
         # Abort all running runs
         for run in self.runs.values():
-            if run.experiment_id == experiment_id and run.status == "running":
+            if run.experiment_id == experiment_id and run.status in ("running", "pending"):
                 run.status = "aborted"
-                run.completed_at = datetime.utcnow()
+                run.completed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -576,7 +583,7 @@ class ChaosMonkeyAgent:
 
     def _is_in_blackout(self) -> bool:
         """Check if current time is in blackout window."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         current_time = now.strftime("%H:%M")
         current_day = now.strftime("%A").lower()
 
@@ -611,7 +618,7 @@ class ChaosMonkeyAgent:
                 continue
 
             if constraint.constraint_type == "max_percentage":
-                max_pct = constraint.parameters.get('max_percentage', 10)
+                constraint.parameters.get('max_percentage', 10)
                 # Would check actual percentage here
                 pass
 
@@ -833,7 +840,7 @@ class ChaosMonkeyAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -880,7 +887,7 @@ def get_capabilities() -> Dict[str, Any]:
         ],
         'experiment_types': [t.value for t in ExperimentType],
         'target_types': [t.value for t in TargetType],
-        'severity_levels': [l.value for l in SeverityLevel],
+        'severity_levels': [level.value for level in SeverityLevel],
         'blast_radius_levels': [r.value for r in BlastRadius],
         'abort_conditions': [c.value for c in AbortCondition],
         'supported_clouds': ['aws', 'gcp', 'azure', 'kubernetes'],
@@ -969,7 +976,7 @@ if __name__ == "__main__":
     agent.assign_targets(experiment.experiment_id, target_ids)
 
     # Schedule experiment
-    start_time = datetime.utcnow() + timedelta(hours=1)
+    start_time = datetime.now(timezone.utc) + timedelta(hours=1)
     agent.schedule_experiment(experiment.experiment_id, start_time)
 
     print(f"Created experiment: {experiment.name}")
@@ -1004,7 +1011,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_chaos_dashboard()
-    print(f"\nChaos Dashboard:")
+    print("\nChaos Dashboard:")
     print(f"  Experiments: {dashboard['experiments']['total']}")
     print(f"  Success Rate: {dashboard['runs']['success_rate']:.1f}%")
     print(f"  In Blackout: {dashboard['safety']['in_blackout']}")

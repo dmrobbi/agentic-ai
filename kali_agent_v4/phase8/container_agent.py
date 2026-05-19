@@ -4,10 +4,8 @@ KaliAgent v4 - Phase 8: Container & Kubernetes Exploitation Agent
 Docker daemon exploits, container escapes, and K8s attacks
 """
 
-import json
-import time
-from datetime import datetime
-from typing import Dict, List, Optional, Any
+from datetime import datetime, timezone
+from typing import Dict, List, Any
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -82,7 +80,7 @@ class ContainerAgent:
     
     def check_docker_daemon(self) -> Dict:
         """Check Docker daemon accessibility and configuration"""
-        print(f"\n🔍 Checking Docker daemon...")
+        print("\n🔍 Checking Docker daemon...")
         
         # Simulate daemon check
         daemon_info = {
@@ -135,7 +133,7 @@ class ContainerAgent:
     
     def enumerate_containers(self) -> List[Dict]:
         """Enumerate running containers"""
-        print(f"\n🔍 Enumerating containers...")
+        print("\n🔍 Enumerating containers...")
         
         # Simulate container enumeration
         self.containers = [
@@ -232,7 +230,7 @@ class ContainerAgent:
     
     def enumerate_images(self) -> List[Dict]:
         """Enumerate Docker images"""
-        print(f"\n🔍 Enumerating images...")
+        print("\n🔍 Enumerating images...")
         
         # Simulate image enumeration
         self.images = [
@@ -299,7 +297,7 @@ class ContainerAgent:
     
     def container_escape_check(self) -> List[ContainerFinding]:
         """Check for container escape vulnerabilities"""
-        print(f"\n🔍 Checking for container escape vectors...")
+        print("\n🔍 Checking for container escape vectors...")
         
         escape_vectors = []
         
@@ -376,7 +374,7 @@ class ContainerAgent:
     
     def extract_secrets(self) -> Dict:
         """Extract secrets from containers"""
-        print(f"\n🔐 Extracting secrets from containers...")
+        print("\n🔐 Extracting secrets from containers...")
         
         secrets_found = {
             "env_vars": [],
@@ -432,7 +430,7 @@ class ContainerAgent:
     
     def k8s_recon(self) -> Dict:
         """Kubernetes reconnaissance"""
-        print(f"\n🔍 Kubernetes reconnaissance...")
+        print("\n🔍 Kubernetes reconnaissance...")
         
         if not self.k8s_context:
             print("   ⚠️  No K8s context configured")
@@ -473,7 +471,7 @@ class ContainerAgent:
     
     def k8s_rbac_check(self) -> List[ContainerFinding]:
         """Check Kubernetes RBAC for abuse opportunities"""
-        print(f"\n🔍 Checking K8s RBAC...")
+        print("\n🔍 Checking K8s RBAC...")
         
         if not self.k8s_context:
             print("   ⚠️  No K8s context configured")
@@ -525,7 +523,7 @@ class ContainerAgent:
     
     def k8s_pod_security_check(self) -> List[ContainerFinding]:
         """Check Pod Security Standards/Contexts"""
-        print(f"\n🔍 Checking K8s Pod Security...")
+        print("\n🔍 Checking K8s Pod Security...")
         
         if not self.k8s_context:
             print("   ⚠️  No K8s context configured")
@@ -575,7 +573,7 @@ class ContainerAgent:
     
     def supply_chain_check(self) -> List[ContainerFinding]:
         """Check for supply chain vulnerabilities"""
-        print(f"\n🔍 Checking container supply chain...")
+        print("\n🔍 Checking container supply chain...")
         
         supply_chain_findings = []
         
@@ -621,7 +619,7 @@ class ContainerAgent:
     
     def generate_report(self) -> Dict:
         """Generate container security assessment report"""
-        print(f"\n📄 Generating container security report...")
+        print("\n📄 Generating container security report...")
         
         severity_counts = {
             'critical': sum(1 for f in self.findings if f.severity == 'critical'),
@@ -632,7 +630,7 @@ class ContainerAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(timezone.utc).isoformat(),
             "target": self.target,
             "k8s_context": self.k8s_context,
             "summary": {
@@ -730,7 +728,7 @@ if __name__ == "__main__":
     report = agent.generate_report()
     
     print(f"\n{'='*60}")
-    print(f"🐳 CONTAINER SECURITY ASSESSMENT COMPLETE")
+    print("🐳 CONTAINER SECURITY ASSESSMENT COMPLETE")
     print(f"{'='*60}")
     print(f"Target: {report['target']}")
     print(f"Containers: {report['summary']['containers']}")
@@ -740,9 +738,9 @@ if __name__ == "__main__":
     print(f"  High: {report['summary']['high']}")
     print(f"  Medium: {report['summary']['medium']}")
     print(f"  Low: {report['summary']['low']}")
-    print(f"\nAttack Vectors:")
+    print("\nAttack Vectors:")
     for vector in report['attack_vectors']:
         print(f"  • {vector}")
-    print(f"\nTop Recommendations:")
+    print("\nTop Recommendations:")
     for rec in report['recommendations'][:5]:
         print(f"  • {rec}")

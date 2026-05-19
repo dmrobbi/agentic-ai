@@ -303,7 +303,7 @@ class TestChaosMonkeyAgent:
     
     def test_get_experiments_by_status(self, chaos):
         """Test filtering experiments by status."""
-        e1 = chaos.create_experiment("E1", "D", ExperimentType.INSTANCE_TERMINATION, SeverityLevel.LOW, BlastRadius.SINGLE, 15)
+        chaos.create_experiment("E1", "D", ExperimentType.INSTANCE_TERMINATION, SeverityLevel.LOW, BlastRadius.SINGLE, 15)
         e2 = chaos.create_experiment("E2", "D", ExperimentType.INSTANCE_TERMINATION, SeverityLevel.LOW, BlastRadius.SINGLE, 15)
         e3 = chaos.create_experiment("E3", "D", ExperimentType.INSTANCE_TERMINATION, SeverityLevel.LOW, BlastRadius.SINGLE, 15)
         

@@ -18,11 +18,9 @@ Status: Alpha (0.1.0)
 
 import logging
 import subprocess
-import json
 import os
 import struct
-from typing import List, Dict, Optional, Tuple
-from datetime import datetime
+from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 
 # Configure logging
@@ -200,7 +198,6 @@ class SWDInterface:
         0xC66: {'name': 'Cortex-M55', 'manufacturer': 'ARM'},
         0xC68: {'name': 'Cortex-M85', 'manufacturer': 'ARM'},
         0xC0D: {'name': 'Cortex-R4', 'manufacturer': 'ARM'},
-        0xC0F: {'name': 'Cortex-R5', 'manufacturer': 'ARM'},
         0xC14: {'name': 'Cortex-R7', 'manufacturer': 'ARM'},
         0xC15: {'name': 'Cortex-R8', 'manufacturer': 'ARM'},
         0xC08: {'name': 'Cortex-A8', 'manufacturer': 'ARM'},
@@ -245,7 +242,7 @@ class SWDInterface:
             result = subprocess.run(['which', 'openocd'], capture_output=True, text=True)
             if result.returncode == 0:
                 return result.stdout.strip()
-        except:
+        except Exception:
             pass
         
         common_paths = [
@@ -280,7 +277,7 @@ class SWDInterface:
                     result = subprocess.run(['lsusb'], capture_output=True, text=True)
                     if config.vid_pid in result.stdout:
                         adapter_info['available'] = True
-                except:
+                except Exception:
                     pass
             
             adapters.append(adapter_info)
@@ -557,7 +554,7 @@ class SWDInterface:
         Returns:
             True if successful
         """
-        logger.info(f"💾 Dumping flash via SWD...")
+        logger.info("💾 Dumping flash via SWD...")
         logger.info(f"  Start: 0x{start_addr:08X}")
         logger.info(f"  Length: {length:,} bytes ({length/1024:.1f} KB)")
         
@@ -614,7 +611,7 @@ class SWDInterface:
         Returns:
             True if successful
         """
-        logger.info(f"💾 Dumping SRAM...")
+        logger.info("💾 Dumping SRAM...")
         logger.info(f"  Start: 0x{start_addr:08X}")
         logger.info(f"  Length: {length:,} bytes ({length/1024:.1f} KB)")
         
@@ -791,11 +788,11 @@ SWD Pinout (2-pin + power):
         print(f"  {status} {a['name']}: {a['description']} ({a['voltage']})")
     
     print("\n💡 Usage:")
-    print(f"  python swd_interface.py <adapter>              # Connect with adapter")
-    print(f"\nExamples:")
-    print(f"  python swd_interface.py stlink-v2")
-    print(f"  python swd_interface.py jlink")
-    print(f"  python swd_interface.py cmsis-dap")
+    print("  python swd_interface.py <adapter>              # Connect with adapter")
+    print("\nExamples:")
+    print("  python swd_interface.py stlink-v2")
+    print("  python swd_interface.py jlink")
+    print("  python swd_interface.py cmsis-dap")
     
     # Demo connection
     if len(sys.argv) > 1:

@@ -18,7 +18,7 @@ Hardware: Optimized for RTX 5060 Ti 16GB (darth/10.0.0.117)
 
 import logging
 import numpy as np
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple
 from datetime import datetime
 from dataclasses import dataclass, field
 import uuid
@@ -283,7 +283,7 @@ class LSTMSecurityDetector:
         epochs = epochs or self.config.epochs
         batch_size = batch_size or self.config.batch_size
         
-        logger.info(f"📚 Training LSTM model...")
+        logger.info("📚 Training LSTM model...")
         logger.info(f"   Training samples: {len(X_train)}")
         logger.info(f"   Epochs: {epochs}")
         logger.info(f"   Batch size: {batch_size}")
@@ -395,7 +395,7 @@ class LSTMSecurityDetector:
         # Auto-calculate anomaly threshold from training data
         self._calculate_threshold(X_train_norm)
         
-        logger.info(f"✅ Training complete!")
+        logger.info("✅ Training complete!")
         logger.info(f"   Final loss: {history['loss'][-1]:.4f}")
         logger.info(f"   Final accuracy: {history['accuracy'][-1]:.4f}")
         
@@ -600,7 +600,7 @@ def generate_sample_data(num_samples: int = 1000, seq_length: int = 100,
     Returns:
         X (sequences), y (labels)
     """
-    logger.info(f"📊 Generating synthetic data...")
+    logger.info("📊 Generating synthetic data...")
     logger.info(f"   Samples: {num_samples}")
     logger.info(f"   Sequence length: {seq_length}")
     logger.info(f"   Features: {num_features}")
@@ -698,7 +698,7 @@ Hardware: Optimized for RTX 5060 Ti 16GB (darth/10.0.0.117)
     if TORCH_AVAILABLE:
         # Train model
         print("\n📚 Training LSTM model...")
-        history = detector.fit(X_train, y_train, X_val=X_test, y_val=y_test)
+        detector.fit(X_train, y_train, X_val=X_test, y_val=y_test)
         
         # Evaluate
         print("\n📊 Evaluating model...")
@@ -709,7 +709,7 @@ Hardware: Optimized for RTX 5060 Ti 16GB (darth/10.0.0.117)
         recall = np.sum((predictions == 1) & (y_test == 1)) / max(np.sum(y_test == 1), 1)
         f1 = 2 * precision * recall / max(precision + recall, 1e-8)
         
-        print(f"\n✅ Test Results:")
+        print("\n✅ Test Results:")
         print(f"   Accuracy: {accuracy:.4f}")
         print(f"   Precision: {precision:.4f}")
         print(f"   Recall: {recall:.4f}")

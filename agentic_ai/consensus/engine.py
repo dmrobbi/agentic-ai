@@ -6,12 +6,11 @@ Manages consensus-based decision making across multiple agents.
 """
 
 from typing import Optional, Dict, Any, List, Callable
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from .proposal import (
     Proposal, Vote, VoteOption, ConsensusType,
     ProposalStatus, ConsensusResult
 )
-import uuid
 
 
 class ConsensusEngine:
@@ -172,7 +171,7 @@ class ConsensusEngine:
 
         # Update proposal
         proposal.status = result.status
-        proposal.completed_at = datetime.utcnow().isoformat()
+        proposal.completed_at = datetime.now(timezone.utc).isoformat()
         proposal.result = result.to_dict()
 
         # Notify callbacks

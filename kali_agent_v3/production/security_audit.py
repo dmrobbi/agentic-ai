@@ -9,12 +9,10 @@ Tasks: 5.2.1, 5.2.2, 5.2.3
 Status: IMPLEMENTED
 """
 
-import os
 import json
-import hashlib
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -125,7 +123,7 @@ class SecurityAuditor:
         
         if config_file.exists():
             with open(config_file, 'r') as f:
-                config = json.load(f)
+                json.load(f)
             logger.info("Security configuration loaded")
     
     # =====================================================================
@@ -539,7 +537,7 @@ class SecurityAuditor:
             try:
                 with open(audit_file, 'r') as f:
                     existing = json.load(f)
-            except:
+            except Exception:
                 existing = []
         
         # Add new entries

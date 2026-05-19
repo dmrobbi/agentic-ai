@@ -7,18 +7,27 @@ Supports delayed tasks, retries, and priority queues.
 """
 
 import json
+import ast
 import logging
 import time
 import uuid
 from dataclasses import dataclass, field, asdict
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, TypeVar
-from functools import wraps
 
 import redis
 
 logger = logging.getLogger(__name__)
+
+def _safe_loads(data):
+    try:
+        return json.loads(data)
+    except (json.JSONDecodeError, TypeError):
+        try:
+            return ast.literal_eval(data)
+        except (ValueError, SyntaxError):
+            return {}
 
 R = TypeVar('R')
 
@@ -42,7 +51,7 @@ class Task:
     payload: Dict[str, Any]
     status: TaskStatus = TaskStatus.PENDING
     priority: int = 5  # 1-10
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     scheduled_at: Optional[datetime] = None
     started_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
@@ -150,6 +159,13 @@ class TaskQueue:
         """Get result key for task."""
         return f"{self.queue_prefix}:result:{task_id}"
 
+    def task(self, task_type: str, **kwargs) -> Callable:
+        """Decorator to register and enqueue task."""
+        def decorator(func: Callable) -> Callable:
+            self._handlers[task_type] = func
+            return func
+        return decorator
+
     def register_handler(self, task_type: str) -> Callable:
         """
         Decorator to register task handler.
@@ -195,11 +211,11 @@ class TaskQueue:
             self.connect()
 
         task = Task(
-            task_id=str(uuid.uuid4()),
+            task_id=f"task-{uuid.uuid4().hex[:12]}",
             task_type=task_type,
             payload=payload,
             priority=priority,
-            scheduled_at=datetime.utcnow() + timedelta(seconds=delay_seconds) if delay_seconds > 0 else None,
+            scheduled_at=datetime.now(timezone.utc) + timedelta(seconds=delay_seconds) if delay_seconds > 0 else None,
             timeout_seconds=timeout_seconds,
             max_retries=max_retries,
             queue_name=queue_name,
@@ -285,7 +301,7 @@ class TaskQueue:
         if not self._redis:
             return
 
-        now = datetime.utcnow().timestamp()
+        now = datetime.now(timezone.utc).timestamp()
         scheduled_key = self._get_scheduled_key()
 
         # Get due tasks
@@ -321,7 +337,7 @@ class TaskQueue:
 
         handler = self._handlers[task.task_type]
         task.status = TaskStatus.RUNNING
-        task.started_at = datetime.utcnow()
+        task.started_at = datetime.now(timezone.utc)
 
         try:
             # Execute with timeout
@@ -348,7 +364,7 @@ class TaskQueue:
 
             task.status = TaskStatus.COMPLETED
             task.result = result
-            task.completed_at = datetime.utcnow()
+            task.completed_at = datetime.now(timezone.utc)
 
             # Store result
             self._store_result(task)
@@ -359,7 +375,7 @@ class TaskQueue:
         except Exception as e:
             task.status = TaskStatus.FAILED
             task.error = str(e)
-            task.completed_at = datetime.utcnow()
+            task.completed_at = datetime.now(timezone.utc)
 
             logger.error(f"Task {task.task_id} failed: {e}")
 
@@ -398,7 +414,7 @@ class TaskQueue:
         # Exponential backoff: 2^retry_count seconds
         delay = 2 ** task.retry_count
 
-        task.scheduled_at = datetime.utcnow() + timedelta(seconds=delay)
+        task.scheduled_at = datetime.now(timezone.utc) + timedelta(seconds=delay)
 
         # Re-add to scheduled queue
         if self._redis:
@@ -417,7 +433,7 @@ class TaskQueue:
         dlq_key = f"{self.queue_prefix}:dlq"
         dlq_data = {
             'task': task.to_json(),
-            'failed_at': datetime.utcnow().isoformat(),
+            'failed_at': datetime.now(timezone.utc).isoformat(),
         }
 
         self._redis.lpush(dlq_key, json.dumps(dlq_data))
@@ -446,7 +462,7 @@ class TaskQueue:
         while wait_seconds > 0:
             result = self._redis.get(result_key)
             if result:
-                return json.loads(result)
+                return _safe_loads(result)
 
             if time.time() - start_time >= wait_seconds:
                 break
@@ -455,7 +471,7 @@ class TaskQueue:
 
         # Final check
         result = self._redis.get(result_key)
-        return json.loads(result) if result else None
+        return _safe_loads(result) if result else None
 
     def get_queue_length(self, queue_name: str = "default") -> int:
         """Get number of tasks in queue."""
@@ -483,7 +499,7 @@ class TaskQueue:
         if not task_json:
             return False
 
-        dlq_data = json.loads(task_json)
+        dlq_data = _safe_loads(task_json)
         task = Task.from_json(dlq_data['task'])
 
         # Reset task state

@@ -1,5 +1,5 @@
 # Dashboard Dockerfile
-FROM node:18-alpine AS builder
+FROM forge-container.wezzel.com/library/node:18-alpine AS builder
 
 WORKDIR /app
 
@@ -16,7 +16,7 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine
+FROM forge-container.wezzel.com/library/nginx:alpine
 
 # Copy built assets
 COPY --from=builder /app/dist /usr/share/nginx/html

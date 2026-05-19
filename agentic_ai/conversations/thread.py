@@ -7,7 +7,7 @@ Manages a single conversation thread between agents.
 
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import uuid
 
@@ -35,7 +35,7 @@ class ConversationMessage:
     content: str = ""
     metadata: Dict[str, Any] = field(default_factory=dict)
     in_reply_to: Optional[str] = None  # ID of parent message
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -63,7 +63,7 @@ class ConversationMessage:
             content=data.get("content", ""),
             metadata=data.get("metadata", {}),
             in_reply_to=data.get("in_reply_to"),
-            created_at=data.get("created_at", datetime.utcnow().isoformat()),
+            created_at=data.get("created_at", datetime.now(timezone.utc).isoformat()),
         )
 
 
@@ -76,7 +76,7 @@ class MessageThread:
         self.creator = creator
         self.messages: List[ConversationMessage] = []
         self.participants: set = {creator}
-        self.created_at = datetime.utcnow().isoformat()
+        self.created_at = datetime.now(timezone.utc).isoformat()
         self.updated_at = self.created_at
         self.is_active = True
 
@@ -105,7 +105,7 @@ class MessageThread:
         if recipient:
             self.participants.add(recipient)
 
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = datetime.now(timezone.utc).isoformat()
 
         return message
 
@@ -133,7 +133,7 @@ class MessageThread:
     def close(self):
         """Close the thread."""
         self.is_active = False
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = datetime.now(timezone.utc).isoformat()
 
     def get_summary(self) -> Dict[str, Any]:
         """Get thread summary."""

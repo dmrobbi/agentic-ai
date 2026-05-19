@@ -7,8 +7,8 @@ Demonstrates creating and managing collaboration sessions
 with multiple participants, roles, and real-time features.
 """
 
-from agentic_ai.collaboration.sessions import SessionManager, ParticipantRole, SessionStatus
-from agentic_ai.collaboration.presence import CollaborationHub, PresenceStatus
+from agentic_ai.collaboration.sessions import SessionManager, ParticipantRole
+from agentic_ai.collaboration.presence import CollaborationHub
 from agentic_ai.collaboration.workspace import Workspace
 
 
@@ -64,7 +64,7 @@ def main():
     
     # Role changes
     print("4. Changing roles...")
-    scrum_master = participants[0]
+    participants[0]
     dev1 = participants[1]
     
     # Promote dev-1 to cohost

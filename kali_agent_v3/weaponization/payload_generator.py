@@ -9,7 +9,6 @@ Tasks: 3.2.1, 3.3.1, 3.3.2
 Status: IMPLEMENTED
 """
 
-import os
 import json
 import subprocess
 import hashlib
@@ -389,37 +388,37 @@ class PayloadGenerator:
         
         # Payload
         payload = config._build_payload_string()
-        cmd.append(f'-p')
+        cmd.append('-p')
         cmd.append(payload)
         
         # Format
-        cmd.append(f'-f')
+        cmd.append('-f')
         cmd.append(config.format.value)
         
         # Architecture
-        cmd.append(f'-a')
+        cmd.append('-a')
         cmd.append(config.architecture.value)
         
         # Platform
         if config.platform != Platform.MULTI:
-            cmd.append(f'--platform')
+            cmd.append('--platform')
             cmd.append(config.platform.value)
         
         # Encoder
         if config.encoder:
-            cmd.append(f'-e')
+            cmd.append('-e')
             cmd.append(config.encoder)
-            cmd.append(f'-i')
+            cmd.append('-i')
             cmd.append(str(config.iterations))
         
         # Bad characters
         if config.bad_chars:
-            cmd.append(f'-b')
+            cmd.append('-b')
             cmd.append(config.bad_chars)
         
         # Template
         if config.template:
-            cmd.append(f'-x')
+            cmd.append('-x')
             cmd.append(config.template)
         
         # Options
@@ -431,7 +430,7 @@ class PayloadGenerator:
             cmd.append(f'{key}={value}')
         
         # Output
-        cmd.append(f'-o')
+        cmd.append('-o')
         cmd.append(str(output_path))
         
         return cmd
@@ -826,7 +825,7 @@ def main():
             print(f"Error: {result.error}")
         
         if result.warnings:
-            print(f"\nWarnings:")
+            print("\nWarnings:")
             for w in result.warnings:
                 print(f"  ⚠️  {w}")
         

@@ -136,7 +136,6 @@ API_KEY = os.getenv("API_KEY")
     
     def test_scan_code_finds_path_traversal(self, security_agent, sample_code_vulnerable):
         """Test path traversal detection."""
-        from agentic_ai.agents.security import ThreatType
         
         findings = security_agent.scan_code(sample_code_vulnerable, "test.py")
         

@@ -22,9 +22,9 @@ import logging
 import serial
 import serial.tools.list_ports
 import struct
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 
 # Configure logging
 logging.basicConfig(
@@ -275,7 +275,7 @@ class ModbusRTUClient:
                 if received_crc == calculated_crc:
                     return response[:-2]
                 else:
-                    logger.debug(f"  CRC mismatch")
+                    logger.debug("  CRC mismatch")
             
         except Exception as e:
             logger.error(f"  ❌ Request failed: {e}")
@@ -718,7 +718,7 @@ def main():
     modbus = ModbusRTUClient(port=port, baudrate=baudrate, safety_mode=True, verbose=True)
     
     # List ports
-    ports = modbus.list_ports()
+    modbus.list_ports()
     
     # Connect
     if modbus.connect():

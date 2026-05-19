@@ -9,7 +9,7 @@ detection, and remediation for AWS, Azure, and GCP environments.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -23,6 +23,7 @@ class CloudProvider(Enum):
     AZURE = "azure"
     GCP = "gcp"
     MULTI = "multi_cloud"
+    KUBERNETES = "kubernetes"
 
 
 class ResourceType(Enum):
@@ -43,6 +44,19 @@ class ResourceType(Enum):
     GCS = "gcs"
     BIGQUERY = "bigquery"
     GKE = "gke"
+    K8S_POD = "k8s_pod"
+    K8S_DEPLOYMENT = "k8s_deployment"
+    K8S_SERVICE = "k8s_service"
+    # Azure-prefixed aliases
+    AZURE_VM = "vm"
+    AZURE_STORAGE = "storage_account"
+    AZURE_SQL = "sql_database"
+    AZURE_FUNCTION = "function"
+    # GCP-prefixed aliases
+    GCP_VM = "gce"
+    GCP_STORAGE = "gcs"
+    GCP_BIGQUERY = "bigquery"
+    GCP_GKE = "gke"
 
 
 class ComplianceFramework(Enum):
@@ -84,7 +98,7 @@ class CloudAccount:
     name: str
     environment: str  # production, staging, development
     owner: str
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     last_scanned: Optional[datetime] = None
     resource_count: int = 0
     findings_count: int = 0
@@ -101,7 +115,7 @@ class CloudResource:
     tags: Dict[str, str] = field(default_factory=dict)
     configuration: Dict[str, Any] = field(default_factory=dict)
     compliant: bool = True
-    last_checked: datetime = field(default_factory=datetime.utcnow)
+    last_checked: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -117,7 +131,7 @@ class SecurityFinding:
     compliance_framework: Optional[ComplianceFramework] = None
     control_id: Optional[str] = None
     remediation: str = ""
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     resolved_at: Optional[datetime] = None
     assigned_to: Optional[str] = None
 
@@ -134,7 +148,7 @@ class Policy:
     severity: Severity
     compliance_frameworks: List[ComplianceFramework] = field(default_factory=list)
     enabled: bool = True
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -280,7 +294,7 @@ class CloudSecurityAgent:
             return False
 
         account = self.accounts[account_id]
-        account.last_scanned = datetime.utcnow()
+        account.last_scanned = datetime.now(timezone.utc)
         account.resource_count = resource_count
         account.findings_count = findings_count
 
@@ -428,7 +442,15 @@ class CloudSecurityAgent:
             remediation=remediation,
         )
 
+        # Mark the resource as non-compliant if a finding is attached
+        if resource_id and resource_id in self.resources:
+            self.resources[resource_id].compliant = False
+
         self.findings[finding.finding_id] = finding
+
+        # Mark the resource as non-compliant if it has a finding
+        if resource_id and resource_id in self.resources:
+            self.resources[resource_id].compliant = False
 
         # Update account findings count
         if account_id in self.accounts:
@@ -453,7 +475,7 @@ class CloudSecurityAgent:
             finding.assigned_to = assigned_to
 
         if status == FindingStatus.RESOLVED:
-            finding.resolved_at = datetime.utcnow()
+            finding.resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -561,13 +583,13 @@ class CloudSecurityAgent:
         remediation = self.remediations[remediation_id]
         remediation.status = "completed"
         remediation.executed_by = executed_by
-        remediation.executed_at = datetime.utcnow()
+        remediation.executed_at = datetime.now(timezone.utc)
         remediation.result = result
 
         # Update finding status
         if remediation.finding_id in self.findings:
             self.findings[remediation.finding_id].status = FindingStatus.RESOLVED
-            self.findings[remediation.finding_id].resolved_at = datetime.utcnow()
+            self.findings[remediation.finding_id].resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -695,7 +717,7 @@ class CloudSecurityAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -823,7 +845,7 @@ if __name__ == "__main__":
 
     # Get report
     report = agent.get_cloud_security_report()
-    print(f"\nCloud Security Report:")
+    print("\nCloud Security Report:")
     print(f"  Accounts: {report['accounts']['total']}")
     print(f"  Findings: {report['findings']['total']}")
     print(f"  Critical Open: {report['findings']['critical_open']}")

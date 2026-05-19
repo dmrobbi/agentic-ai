@@ -5,9 +5,7 @@ Showcases all 6 security agents with live simulations
 """
 
 import asyncio
-import random
 from datetime import datetime
-from typing import Dict, List
 
 
 class CyberDivisionDemo:
@@ -67,16 +65,16 @@ class CyberDivisionDemo:
             
             # Simulate triage
             await asyncio.sleep(1)
-            print(f"  ⚡ Auto-triaging...")
+            print("  ⚡ Auto-triaging...")
             
             if alert['severity'] == 'CRITICAL':
-                print(f"  🚨 ESCALATING to incident response team")
-                print(f"  📧 Sending PagerDuty notification")
+                print("  🚨 ESCALATING to incident response team")
+                print("  📧 Sending PagerDuty notification")
             elif alert['severity'] == 'HIGH':
-                print(f"  ✅ Creating high-priority ticket")
-                print(f"  🔔 Notifying on-call analyst")
+                print("  ✅ Creating high-priority ticket")
+                print("  🔔 Notifying on-call analyst")
             else:
-                print(f"  ✅ Auto-resolving with playbook")
+                print("  ✅ Auto-resolving with playbook")
             
             await asyncio.sleep(0.5)
     
@@ -139,7 +137,7 @@ class CyberDivisionDemo:
             for activity in activities:
                 print(f"  ⚡ Executing: {activity}")
                 await asyncio.sleep(0.8)
-                print(f"  ✅ Success")
+                print("  ✅ Success")
         
         print("\n📊 Engagement Summary:")
         print("  🔓 Compromised hosts: 3")
@@ -220,11 +218,11 @@ class CyberDivisionDemo:
             print(f"     Confidence: {pattern['confidence']}%")
             
             if pattern['confidence'] > 90:
-                print(f"     ⚡ Auto-blocking...")
+                print("     ⚡ Auto-blocking...")
                 await asyncio.sleep(0.5)
-                print(f"     ✅ Blocked at firewall")
+                print("     ✅ Blocked at firewall")
             else:
-                print(f"     📧 Alert sent to SOC")
+                print("     📧 Alert sent to SOC")
             
             await asyncio.sleep(0.5)
     
@@ -283,8 +281,8 @@ class CyberDivisionDemo:
         print("🚀 Interactive Demonstration")
         print("=" * 60)
         print(f"\n⏰ Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"🌐 Dashboard: https://agents.bedimsecurity.com")
-        print(f"📚 Docs: https://agents.bedimsecurity.com/docs")
+        print("🌐 Dashboard: https://agents.bedimsecurity.com")
+        print("📚 Docs: https://agents.bedimsecurity.com/docs")
         
         demos = [
             self.simulate_soc_monitoring,
@@ -303,13 +301,13 @@ class CyberDivisionDemo:
         print("✅ DEMONSTRATION COMPLETE")
         print("=" * 60)
         print(f"\n⏰ Ended: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"\n📊 Summary:")
-        print(f"  • 6 Security Agents Demonstrated")
-        print(f"  • 52 Kali Tools Available")
-        print(f"  • 92% Test Coverage")
-        print(f"  • Quality Score: 9.0/10")
-        print(f"\n🎯 Try it yourself: https://agents.bedimsecurity.com")
-        print(f"📖 Documentation: https://agents.bedimsecurity.com/docs")
+        print("\n📊 Summary:")
+        print("  • 6 Security Agents Demonstrated")
+        print("  • 52 Kali Tools Available")
+        print("  • 92% Test Coverage")
+        print("  • Quality Score: 9.0/10")
+        print("\n🎯 Try it yourself: https://agents.bedimsecurity.com")
+        print("📖 Documentation: https://agents.bedimsecurity.com/docs")
         print()
 
 

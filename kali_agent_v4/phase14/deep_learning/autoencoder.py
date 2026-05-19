@@ -11,7 +11,7 @@ Status: Alpha (0.1.0)
 import logging
 import numpy as np
 from typing import List, Dict
-from datetime import datetime
+from datetime import datetime, timezone
 from dataclasses import dataclass, field
 import uuid
 
@@ -144,7 +144,7 @@ class AutoencoderDetector:
         epochs = epochs or self.config.epochs
         batch_size = batch_size or self.config.batch_size
         
-        logger.info(f"📚 Training on NORMAL data only...")
+        logger.info("📚 Training on NORMAL data only...")
         X_norm = self._normalize(X_normal, fit=True)
         
         train_loader = DataLoader(TensorDataset(torch.FloatTensor(X_norm)),
@@ -280,7 +280,7 @@ Key: Trains on NORMAL data only - detects ANY deviation!
     
     # Train
     print("📚 Training autoencoder on NORMAL data only...")
-    history = detector.fit(X_normal, X_val=X_normal[500:1000])
+    detector.fit(X_normal, X_val=X_normal[500:1000])
     
     # Evaluate
     print("\n📊 Evaluating...")
@@ -291,7 +291,7 @@ Key: Trains on NORMAL data only - detects ANY deviation!
     recall = np.sum((predictions == 1) & (y_test == 1)) / max(np.sum(y_test == 1), 1)
     f1 = 2 * precision * recall / max(precision + recall, 1e-8)
     
-    print(f"\n✅ Test Results:")
+    print("\n✅ Test Results:")
     print(f"   Accuracy: {accuracy:.4f}")
     print(f"   Precision: {precision:.4f}")
     print(f"   Recall: {recall:.4f}")

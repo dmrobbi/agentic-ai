@@ -25,12 +25,10 @@ import hashlib
 import subprocess
 import tempfile
 import shutil
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
-from pathlib import Path
 import requests
-import binascii
 
 # Configure logging
 logging.basicConfig(
@@ -480,7 +478,7 @@ class FirmwareAnalyzer:
                     return 'squashfs'
                 elif 'JFFS2' in result.stdout:
                     return 'jffs2'
-            except:
+            except Exception:
                 pass
         
         return 'unknown'
@@ -505,7 +503,7 @@ class FirmwareAnalyzer:
                 )
                 logger.info(f"  ✅ Extracted to {extraction_path}")
                 return extraction_path
-            except:
+            except Exception:
                 pass
         
         if self.binwalk_available:
@@ -613,7 +611,7 @@ class FirmwareAnalyzer:
                 else:
                     return 'Unknown'
                     
-        except:
+        except Exception:
             return 'Unknown'
     
     def _find_credentials(self, extraction_path: str) -> List[Credential]:
@@ -640,7 +638,7 @@ class FirmwareAnalyzer:
                     # Decode content
                     try:
                         text = content.decode('utf-8', errors='ignore')
-                    except:
+                    except Exception:
                         continue
                     
                     # Search for credentials
@@ -701,7 +699,7 @@ class FirmwareAnalyzer:
                     
                     try:
                         text = content.decode('utf-8', errors='ignore')
-                    except:
+                    except Exception:
                         continue
                     
                     # Search for backdoor signatures
@@ -747,7 +745,7 @@ class FirmwareAnalyzer:
                     
                     try:
                         text = content.decode('utf-8', errors='ignore')
-                    except:
+                    except Exception:
                         continue
                     
                     # Check for CVE patterns
@@ -905,7 +903,7 @@ class FirmwareAnalyzer:
         try:
             shutil.rmtree(self.temp_dir)
             logger.info("🧹 Cleaned up temporary files")
-        except:
+        except Exception:
             pass
 
 

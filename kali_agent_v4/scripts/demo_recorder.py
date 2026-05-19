@@ -7,7 +7,6 @@ Can be converted to GIFs later or embedded as code blocks
 
 import os
 import time
-from datetime import datetime
 
 OUTPUT_DIR = "./recordings/demos"
 os.makedirs(OUTPUT_DIR, exist_ok=True)

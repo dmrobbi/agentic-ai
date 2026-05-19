@@ -9,7 +9,6 @@ retry logic, and rollback mechanisms.
 import pytest
 import sys
 from pathlib import Path
-from datetime import datetime
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -185,7 +184,6 @@ class TestTask:
         )
         
         completed_tasks = {}
-        context = {"status": "pending"}
         assert task.can_start(completed_tasks) is False
     
     def test_task_retry_logic(self, workflow_imports):
@@ -253,7 +251,7 @@ class TestWorkflow:
         Workflow = workflow_imports['Workflow']
         Task = workflow_imports['Task']
         ExecutionMode = workflow_imports['ExecutionMode']
-        TaskStatus = workflow_imports['TaskStatus']
+        workflow_imports['TaskStatus']
         
         workflow = Workflow(
             name="Parallel Tests",
@@ -302,7 +300,7 @@ class TestWorkflow:
         """Test workflow rollback."""
         Workflow = workflow_imports['Workflow']
         Task = workflow_imports['Task']
-        TaskStatus = workflow_imports['TaskStatus']
+        workflow_imports['TaskStatus']
         
         workflow = Workflow(
             name="With Rollback",
@@ -424,7 +422,7 @@ class TestAdvancedWorkflowIntegration:
         """Test workflow with retry logic."""
         Workflow = workflow_imports['Workflow']
         Task = workflow_imports['Task']
-        TaskStatus = workflow_imports['TaskStatus']
+        workflow_imports['TaskStatus']
         RetryConfig = workflow_imports['RetryConfig']
         RetryStrategy = workflow_imports['RetryStrategy']
         
@@ -444,7 +442,7 @@ class TestAdvancedWorkflowIntegration:
         
         for attempt in range(3):
             if flaky_task.should_retry():
-                delay = flaky_task.get_retry_delay()
+                flaky_task.get_retry_delay()
                 flaky_task.retry_count += 1
         
         assert flaky_task.should_retry() is False

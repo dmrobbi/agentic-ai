@@ -15,8 +15,8 @@ Status: Alpha (0.1.0)
 
 import logging
 import numpy as np
-from typing import List, Dict, Optional, Callable, Any
-from dataclasses import dataclass, field
+from typing import List, Dict, Callable, Any
+from dataclasses import dataclass
 from datetime import datetime
 from collections import deque
 import time

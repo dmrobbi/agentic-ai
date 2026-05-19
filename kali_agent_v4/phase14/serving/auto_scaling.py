@@ -16,8 +16,8 @@ Status: Alpha (0.1.0)
 import logging
 import json
 import time
-from typing import Dict, List, Optional
-from dataclasses import dataclass, field
+from typing import Dict, List
+from dataclasses import dataclass
 from datetime import datetime
 from pathlib import Path
 
@@ -396,8 +396,8 @@ data:
         with open(output_path / "kustomization.yaml", 'w') as f:
             json.dump(kustomization, f, indent=2)
         
-        logger.info(f"💾 Exported kustomization.yaml")
-        logger.info(f"\n🚀 Deploy with:")
+        logger.info("💾 Exported kustomization.yaml")
+        logger.info("\n🚀 Deploy with:")
         logger.info(f"   kubectl apply -k {output_dir}/")
 
 

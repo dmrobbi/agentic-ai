@@ -1,7 +1,7 @@
 # KaliAgent v4 - Production Docker Image
 # Multi-stage build for minimal attack surface
 
-FROM python:3.11-slim as builder
+FROM forge-container.wezzel.com/library/python:3.11-slim as builder
 
 WORKDIR /build
 
@@ -17,7 +17,7 @@ COPY requirements.txt .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /build/wheels -r requirements.txt
 
 # Production image
-FROM python:3.11-slim
+FROM forge-container.wezzel.com/library/python:3.11-slim
 
 LABEL maintainer="KaliAgent Team"
 LABEL version="4.0.0"

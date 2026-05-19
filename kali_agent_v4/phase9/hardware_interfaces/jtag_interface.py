@@ -18,11 +18,8 @@ Status: Alpha (0.1.0)
 
 import logging
 import subprocess
-import json
 import os
-import re
-from typing import List, Dict, Optional, Tuple
-from datetime import datetime
+from typing import List, Dict, Optional
 from dataclasses import dataclass, field
 
 # Configure logging
@@ -258,7 +255,7 @@ class JTAGInterface:
             result = subprocess.run(['which', 'openocd'], capture_output=True, text=True)
             if result.returncode == 0:
                 return result.stdout.strip()
-        except:
+        except Exception:
             pass
         
         # Common installation paths
@@ -301,7 +298,7 @@ class JTAGInterface:
                     )
                     if config['vid_pid'] in result.stdout:
                         adapter_info['available'] = True
-                except:
+                except Exception:
                     pass
             
             adapters.append(adapter_info)
@@ -550,7 +547,7 @@ class JTAGInterface:
         Returns:
             True if dump successful
         """
-        logger.info(f"💾 Dumping firmware via JTAG...")
+        logger.info("💾 Dumping firmware via JTAG...")
         logger.info(f"  Start: 0x{start_addr:08X}")
         logger.info(f"  Length: {length:,} bytes ({length/1024/1024:.1f} MB)")
         
@@ -698,11 +695,11 @@ Requirements:
         print(f"  • {model}")
     
     print("\n💡 Usage:")
-    print(f"  python jtag_interface.py <adapter>              # Connect with adapter")
-    print(f"\nExamples:")
-    print(f"  python jtag_interface.py ftdi2232")
-    print(f"  python jtag_interface.py jlink")
-    print(f"  python jtag_interface.py stlink")
+    print("  python jtag_interface.py <adapter>              # Connect with adapter")
+    print("\nExamples:")
+    print("  python jtag_interface.py ftdi2232")
+    print("  python jtag_interface.py jlink")
+    print("  python jtag_interface.py stlink")
     
     # Demo connection
     if len(sys.argv) > 1:

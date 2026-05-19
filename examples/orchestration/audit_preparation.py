@@ -388,7 +388,7 @@ def run_audit_preparation():
         ),
         privacy.create_data_request(
             subject_id="customer-042",
-            right_type=DataSubjectRight.DELETION,
+            right_type=DataSubjectRight.ERASURE,
             submitted_at=datetime.utcnow() - timedelta(days=20),
             deadline=datetime.utcnow() + timedelta(days=10),
             status="in_progress",
@@ -503,7 +503,7 @@ def run_audit_preparation():
     # Document penetration tests
     print("\n  [Penetration Tests]")
     
-    pentest = security.create_finding(
+    security.create_finding(
         assessment_id=access_review.assessment_id,
         title="Annual Penetration Test 2025",
         description="Third-party penetration test of production environment",
@@ -518,7 +518,7 @@ def run_audit_preparation():
         findings_low=5,
         all_remediated=True,
     )
-    print(f"    ✓ Penetration test documented")
+    print("    ✓ Penetration test documented")
     
     # Collect security evidence
     print("\n  [Collecting Evidence]")
@@ -717,7 +717,7 @@ def run_audit_preparation():
     partially = len([c for c in controls if c.status.value == 'partially_effective'])
     ineffective = len([c for c in controls if c.status.value == 'ineffective'])
     
-    print(f"\n  ✓ Control testing complete:")
+    print("\n  ✓ Control testing complete:")
     print(f"    - Effective: {effective} ({effective/len(controls)*100:.0f}%)")
     print(f"    - Partially Effective: {partially} ({partially/len(controls)*100:.0f}%)")
     print(f"    - Ineffective: {ineffective} ({ineffective/len(controls)*100:.0f}%)")

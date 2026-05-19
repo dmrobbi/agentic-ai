@@ -9,7 +9,7 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from phase6.report_generator import ReportGenerator
-from datetime import datetime
+from datetime import datetime, timezone
 
 def generate_evidence_reports():
     """Generate all report formats as evidence"""
@@ -158,20 +158,20 @@ def generate_evidence_reports():
     print("\n" + "=" * 60)
     print("REPORT GENERATION COMPLETE!")
     print("=" * 60)
-    print(f"\nFiles created:")
+    print("\nFiles created:")
     for filepath in [pdf_file, html_file, json_file]:
         if os.path.exists(filepath):
             size = os.path.getsize(filepath)
             size_mb = size / (1024 * 1024)
             print(f"  📄 {filepath} ({size_mb:.2f} MB)")
     
-    print(f"\n✅ Report generation functionality VERIFIED")
-    print(f"   - PDF format: Working")
-    print(f"   - HTML format: Working")
-    print(f"   - JSON format: Working")
-    print(f"   - Professional formatting: Confirmed")
-    print(f"   - CVSS scoring: Included")
-    print(f"   - Remediation recommendations: Included")
+    print("\n✅ Report generation functionality VERIFIED")
+    print("   - PDF format: Working")
+    print("   - HTML format: Working")
+    print("   - JSON format: Working")
+    print("   - Professional formatting: Confirmed")
+    print("   - CVSS scoring: Included")
+    print("   - Remediation recommendations: Included")
     
     return {
         'pdf': pdf_file,

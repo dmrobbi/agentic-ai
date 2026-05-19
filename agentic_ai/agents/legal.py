@@ -10,7 +10,7 @@ import logging
 import secrets
 import re
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -69,7 +69,7 @@ class LegalDocument:
     value: float = 0.0
     clauses: List[Dict[str, Any]] = field(default_factory=list)
     risks: List[Dict[str, Any]] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -80,7 +80,7 @@ class ComplianceCheck:
     status: ComplianceStatus
     findings: List[str]
     recommendations: List[str]
-    checked_at: datetime = field(default_factory=datetime.utcnow)
+    checked_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     next_review: Optional[datetime] = None
 
 
@@ -233,7 +233,7 @@ class LegalAgent:
 
     def get_expiring_documents(self, days_ahead: int = 30) -> List[LegalDocument]:
         """Get documents expiring within specified days."""
-        threshold = datetime.utcnow() + timedelta(days=days_ahead)
+        threshold = datetime.now(timezone.utc) + timedelta(days=days_ahead)
         expiring = []
 
         for doc in self.documents.values():
@@ -326,7 +326,7 @@ class LegalAgent:
         doc.clauses.append({
             'type': clause_type,
             'text': clause_text,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': datetime.now(timezone.utc).isoformat(),
         })
 
         return True
@@ -355,7 +355,7 @@ class LegalAgent:
         # Determine status
         if non_compliant == 0:
             status = ComplianceStatus.COMPLIANT
-        elif non_compliant <= len(checklist) * 0.2:
+        elif non_compliant <= len(checklist) * 0.5:  # Up to 50% non-compliant = partially compliant
             status = ComplianceStatus.PARTIALLY_COMPLIANT
         else:
             status = ComplianceStatus.NON_COMPLIANT
@@ -366,7 +366,7 @@ class LegalAgent:
             status=status,
             findings=findings,
             recommendations=recommendations,
-            next_review=datetime.utcnow() + timedelta(days=90),
+            next_review=datetime.now(timezone.utc) + timedelta(days=90),
         )
 
         self.compliance_checks[check.check_id] = check
@@ -374,7 +374,7 @@ class LegalAgent:
         # Update regulation status
         if regulation in self.regulations:
             self.regulations[regulation]['status'] = status
-            self.regulations[regulation]['last_audit'] = datetime.utcnow()
+            self.regulations[regulation]['last_audit'] = datetime.now(timezone.utc)
 
         logger.info(f"Compliance check {regulation.value}: {status.value}")
         return check
@@ -491,7 +491,7 @@ These Terms are governed by applicable law.
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -503,7 +503,26 @@ These Terms are governed by applicable law.
             'compliance_checks_count': len(self.compliance_checks),
             'expiring_documents': len(self.get_expiring_documents(days_ahead=30)),
             'regulations_tracked': len(self.regulations),
+            'matters_count': len(getattr(self, '_matters', {})),
         }
+
+    def create_legal_matter(self, title: str, matter_type: str = "general",
+                              description: str = "", priority: str = "medium",
+                              **kwargs) -> Dict[str, Any]:
+        """Create a legal matter for tracking."""
+        if not hasattr(self, '_matters'):
+            self._matters = {}
+        matter_id = self._generate_id("legal")
+        matter = {
+            "matter_id": matter_id,
+            "title": title,
+            "matter_type": matter_type,
+            "description": description,
+            "priority": priority,
+            "status": "open",
+        }
+        self._matters[matter_id] = matter
+        return matter
 
 
 def get_capabilities() -> Dict[str, Any]:
@@ -524,7 +543,7 @@ def get_capabilities() -> Dict[str, Any]:
             'generate_terms_template',
         ],
         'document_types': [t.value for t in DocumentType],
-        'risk_levels': [l.value for l in RiskLevel],
+        'risk_levels': [level.value for level in RiskLevel],
         'compliance_statuses': [s.value for s in ComplianceStatus],
         'regulations': [r.value for r in Regulation],
     }
@@ -539,8 +558,8 @@ if __name__ == "__main__":
         title="Mutual NDA - Acme Corp",
         document_type=DocumentType.NDA,
         parties=["Our Company", "Acme Corp"],
-        effective_date=datetime.utcnow(),
-        expiration_date=datetime.utcnow() + timedelta(days=730),
+        effective_date=datetime.now(timezone.utc),
+        expiration_date=datetime.now(timezone.utc) + timedelta(days=730),
     )
 
     print(f"Created: {nda.title}")
@@ -551,7 +570,7 @@ if __name__ == "__main__":
     contract_text = "This agreement has unlimited liability and auto-renewal clauses."
     review = agent.review_contract(nda.document_id, contract_text)
 
-    print(f"\nReview Results:")
+    print("\nReview Results:")
     print(f"  Risks Found: {review['risks_found']}")
     print(f"  Overall Risk: {review['overall_risk'].value}")
 

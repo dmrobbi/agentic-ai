@@ -9,7 +9,7 @@ experiment tracking, deployment automation, and model monitoring.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -71,7 +71,7 @@ class Dataset:
     location: str  # S3, GCS, etc.
     record_count: int
     feature_count: int
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     owner: str = ""
     tags: List[str] = field(default_factory=list)
 
@@ -108,7 +108,7 @@ class Model:
     location: str = ""  # Model registry path
     input_schema: Dict[str, Any] = field(default_factory=dict)
     output_schema: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     deployed_at: Optional[datetime] = None
     owner: str = ""
 
@@ -140,7 +140,7 @@ class ModelMonitor:
     check_frequency: str  # hourly, daily, weekly
     alert_channels: List[str] = field(default_factory=list)
     enabled: bool = True
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -156,7 +156,7 @@ class Alert:
     current_value: float
     threshold: float
     status: str  # open, investigating, resolved
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     resolved_at: Optional[datetime] = None
 
 
@@ -252,7 +252,7 @@ class MLOpsAgent:
             return False
 
         self.experiments[experiment_id].status = ExperimentStatus.RUNNING
-        self.experiments[experiment_id].started_at = datetime.utcnow()
+        self.experiments[experiment_id].started_at = datetime.now(timezone.utc)
         return True
 
     def complete_experiment(
@@ -267,7 +267,7 @@ class MLOpsAgent:
 
         experiment = self.experiments[experiment_id]
         experiment.status = ExperimentStatus.COMPLETED
-        experiment.completed_at = datetime.utcnow()
+        experiment.completed_at = datetime.now(timezone.utc)
         experiment.metrics = metrics
         experiment.artifacts = artifacts or []
 
@@ -335,7 +335,7 @@ class MLOpsAgent:
         self.models[model_id].stage = stage
 
         if stage == ModelStage.PRODUCTION:
-            self.models[model_id].deployed_at = datetime.utcnow()
+            self.models[model_id].deployed_at = datetime.now(timezone.utc)
             self.models[model_id].status = ModelStatus.DEPLOYED
 
         return True
@@ -409,7 +409,7 @@ class MLOpsAgent:
             deployment.health_status = health_status
 
         if status == "running":
-            deployment.deployed_at = datetime.utcnow()
+            deployment.deployed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -525,7 +525,7 @@ class MLOpsAgent:
             return False
 
         self.alerts[alert_id].status = "resolved"
-        self.alerts[alert_id].resolved_at = datetime.utcnow()
+        self.alerts[alert_id].resolved_at = datetime.now(timezone.utc)
         return True
 
     def get_alerts(
@@ -642,7 +642,7 @@ class MLOpsAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -782,7 +782,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_mlops_dashboard()
-    print(f"\nMLOps Dashboard:")
+    print("\nMLOps Dashboard:")
     print(f"  Models: {dashboard['models']['total']}")
     print(f"  Production: {dashboard['models']['production']}")
     print(f"  Open Alerts: {dashboard['monitoring']['alerts']['open']}")

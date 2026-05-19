@@ -17,7 +17,6 @@ import logging
 import json
 import time
 from typing import Dict, List, Optional, Any
-from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
 import sys
@@ -39,7 +38,7 @@ except ImportError:
 # Try to import ML modules
 try:
     sys.path.insert(0, str(Path(__file__).parent.parent))
-    from ml_orchestrator import MLOrchestrator, MLAnalysisResult
+    from ml_orchestrator import MLOrchestrator, MLAnalysisResult  # noqa: F401
     ML_AVAILABLE = True
 except ImportError:
     ML_AVAILABLE = False

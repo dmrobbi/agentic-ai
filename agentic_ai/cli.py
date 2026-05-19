@@ -5,10 +5,9 @@ Agentic AI CLI - Command Line Interface
 Interactive CLI for managing Agentic AI agents and operations.
 """
 
-import json
 import sys
-from datetime import datetime
-from typing import Optional, List
+from datetime import datetime, timezone
+from typing import Optional
 
 try:
     import typer
@@ -26,13 +25,11 @@ except ImportError:
     from rich.panel import Panel
     from rich import box
 
-from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, SeverityLevel, BlastRadius, TargetType
+from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, SeverityLevel, BlastRadius
 from agentic_ai.agents.vendor_risk import VendorRiskAgent, VendorTier, AssessmentType
 from agentic_ai.agents.audit import AuditAgent, AuditType
-from agentic_ai.agents.cloud_security import CloudSecurityAgent, CloudProvider
+from agentic_ai.agents.cloud_security import CloudSecurityAgent
 from agentic_ai.agents.ml_ops import MLOpsAgent
-from agentic_ai.messaging.message_bus import MessageBus
-from agentic_ai.messaging.task_queue import TaskQueue
 
 # Initialize
 app = typer.Typer(help="Agentic AI CLI - Manage agents and operations")
@@ -117,7 +114,7 @@ def status():
         table.add_row(name, "✅ Healthy", str(active))
 
     console.print(table)
-    console.print(f"\n[green]✓[/green] All systems operational - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    console.print(f"\n[green]✓[/green] All systems operational - {datetime.now(timezone.utc).strftime('%Y-%m-%d %H:%M:%S')} UTC")
 
 
 @app.command()
@@ -367,7 +364,8 @@ def chaos_status():
     console.print(run_table)
 
     # Resiliency
-    console.print(f"\n[bold]Average Resiliency Score:[/bold] [green]{dashboard['resiliency']['average_score']:.1f}/100[/green]")
+    console.print(
+        f"\n[bold]Average Resiliency Score:[/bold] [green]{dashboard['resiliency']['average_score']:.1f}/100[/green]")
 
 
 # ============================================================================
@@ -445,7 +443,7 @@ def vendor_add(
         tier=tier_map.get(tier, VendorTier.TIER_2),
         category=category,
         relationship_type="vendor",
-        contract_start=datetime.utcnow(),
+        contract_start=datetime.now(timezone.utc),
     )
 
     console.print(f"[green]✓[/green] Vendor added: [bold]{vendor.vendor_id}[/bold]")
@@ -770,7 +768,7 @@ def ml_drift_check(
     model_id: str = typer.Option(..., "--model-id", "-m", help="Model ID"),
 ):
     """Check for model drift."""
-    agent = get_mlops_agent()
+    get_mlops_agent()
 
     # Simulate drift check
     console.print(f"Checking drift for model: {model_id}")

@@ -16,11 +16,9 @@ Status: Alpha (0.1.0)
 import logging
 import time
 import json
-from typing import Dict, List, Optional
-from dataclasses import dataclass, field
+from typing import Dict, List
+from dataclasses import dataclass
 from datetime import datetime
-from pathlib import Path
-import threading
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 logger = logging.getLogger('Monitoring')

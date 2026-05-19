@@ -20,13 +20,13 @@ from enum import Enum
 
 # Import C2 clients
 try:
-    from sliver_client import SliverClient, ImplantType, Protocol
+    from sliver_client import SliverClient, ImplantType, Protocol  # noqa: F401
     SLIVER_AVAILABLE = True
 except ImportError:
     SLIVER_AVAILABLE = False
 
 try:
-    from empire_client import EmpireClient, ListenerType, StagerType
+    from empire_client import EmpireClient, ListenerType, StagerType  # noqa: F401
     EMPIRE_AVAILABLE = True
 except ImportError:
     EMPIRE_AVAILABLE = False
@@ -756,10 +756,10 @@ def main():
         print(f"Total Servers: {stats['total_servers']}")
         print(f"Connected: {stats['connected_servers']}")
         print(f"Total Agents: {stats['total_agents']}")
-        print(f"\nAgents by Framework:")
+        print("\nAgents by Framework:")
         for fw, count in stats['agents_by_framework'].items():
             print(f"  {fw}: {count}")
-        print(f"\nHealth:")
+        print("\nHealth:")
         print(f"  Healthy: {stats['health']['healthy']}")
         print(f"  Degraded: {stats['health']['degraded']}")
         print(f"  Offline: {stats['health']['offline']}")

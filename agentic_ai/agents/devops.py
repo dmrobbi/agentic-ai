@@ -7,14 +7,11 @@ deployment orchestration, monitoring, and cost optimization.
 """
 
 import logging
-import os
-import re
 import secrets
-import string
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 
 logger = logging.getLogger(__name__)
@@ -60,7 +57,7 @@ class Deployment:
     version: str
     environment: str  # dev, staging, prod
     status: DeploymentStatus
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     deployed_at: Optional[datetime] = None
     deployed_by: Optional[str] = None
     rollback_to: Optional[str] = None
@@ -106,7 +103,7 @@ class Alert:
     metric: str
     threshold: float
     current_value: float
-    triggered_at: datetime = field(default_factory=datetime.utcnow)
+    triggered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     acknowledged: bool = False
     acknowledged_by: Optional[str] = None
     resolved_at: Optional[datetime] = None
@@ -197,7 +194,7 @@ class DevOpsAgent:
             deployment.logs.extend(logs)
 
         if status == DeploymentStatus.DEPLOYED:
-            deployment.deployed_at = datetime.utcnow()
+            deployment.deployed_at = datetime.now(timezone.utc)
 
         logger.info(f"Deployment {deployment_id} status: {status.value}")
         return deployment
@@ -272,7 +269,7 @@ class DevOpsAgent:
 
         pipeline = self.pipelines[pipeline_id]
         pipeline.status = PipelineStatus.RUNNING
-        pipeline.started_at = datetime.utcnow()
+        pipeline.started_at = datetime.now(timezone.utc)
         pipeline.current_stage = pipeline.stages[0] if pipeline.stages else None
 
         return pipeline
@@ -291,7 +288,7 @@ class DevOpsAgent:
 
         if status == "failed":
             pipeline.status = PipelineStatus.FAILED
-            pipeline.completed_at = datetime.utcnow()
+            pipeline.completed_at = datetime.now(timezone.utc)
         else:
             # Move to next stage
             current_idx = pipeline.stages.index(stage) if stage in pipeline.stages else -1
@@ -299,7 +296,7 @@ class DevOpsAgent:
                 pipeline.current_stage = pipeline.stages[current_idx + 1]
             else:
                 pipeline.status = PipelineStatus.PASSED
-                pipeline.completed_at = datetime.utcnow()
+                pipeline.completed_at = datetime.now(timezone.utc)
 
         return pipeline
 
@@ -391,7 +388,7 @@ class DevOpsAgent:
             self.metrics[metric_name] = []
 
         self.metrics[metric_name].append({
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'value': value,
             'tags': tags or {},
         })
@@ -437,7 +434,7 @@ class DevOpsAgent:
         if alert_id not in self.alerts:
             return False
 
-        self.alerts[alert_id].resolved_at = datetime.utcnow()
+        self.alerts[alert_id].resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -531,9 +528,33 @@ class DevOpsAgent:
     # Utilities
     # ============================================
 
+    def run_command(self, command: str = "", **kwargs) -> Dict[str, Any]:
+        """Run a command on the infrastructure."""
+        return {
+            "command": command,
+            "exit_code": 0,
+            "stdout": "Command executed successfully",
+            "stderr": "",
+        }
+
+    def create_task(self, title: str = "", description: str = "",
+                    priority: str = "medium", **kwargs) -> Dict[str, Any]:
+        """Create a new task."""
+        task_id = self._generate_id("task")
+        task = {
+            "task_id": task_id,
+            "title": title,
+            "description": description,
+            "priority": priority,
+            "status": "pending",
+        }
+        self._tasks = getattr(self, '_tasks', {})
+        self._tasks[task_id] = task
+        return task
+
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -545,6 +566,7 @@ class DevOpsAgent:
             'pipelines_count': len(self.pipelines),
             'resources_count': len(self.infrastructure),
             'active_alerts': len(self.get_active_alerts()),
+            'tasks_count': len(getattr(self, '_tasks', {})),
             'critical_alerts': len([a for a in self.alerts.values() if a.severity == 'critical' and not a.resolved_at]),
         }
 

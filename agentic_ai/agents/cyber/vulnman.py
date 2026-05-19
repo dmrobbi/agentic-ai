@@ -9,7 +9,7 @@ risk scoring, and remediation workflow automation.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -64,7 +64,7 @@ class Asset:
     tags: List[str] = field(default_factory=list)
     vulnerabilities_count: int = 0
     last_scan: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -79,7 +79,7 @@ class Vulnerability:
     asset_id: str
     status: VulnerabilityStatus
     scanner: str  # nessus, qualys, openvas, etc.
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     remediation: str = ""
     patch_available: bool = False
     patch_id: Optional[str] = None
@@ -212,7 +212,7 @@ class VulnerabilityManagementAgent:
             return False
 
         self.assets[asset_id].vulnerabilities_count = count
-        self.assets[asset_id].last_scan = datetime.utcnow()
+        self.assets[asset_id].last_scan = datetime.now(timezone.utc)
         return True
 
     # ============================================
@@ -281,7 +281,7 @@ class VulnerabilityManagementAgent:
             vuln.due_date = due_date
 
         if status == VulnerabilityStatus.PATCHED:
-            vuln.remediated_at = datetime.utcnow()
+            vuln.remediated_at = datetime.now(timezone.utc)
 
         return True
 
@@ -311,7 +311,7 @@ class VulnerabilityManagementAgent:
 
     def get_overdue_vulnerabilities(self) -> List[Vulnerability]:
         """Get vulnerabilities past due date."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         return [
             v for v in self.vulnerabilities.values()
             if v.due_date and v.due_date < now and v.status not in [
@@ -343,7 +343,7 @@ class VulnerabilityManagementAgent:
             target_type=target_type,
             targets=targets,
             scheduled_at=scheduled_at,
-            started_at=datetime.utcnow() if not scheduled_at else None,
+            started_at=datetime.now(timezone.utc) if not scheduled_at else None,
             created_by=created_by,
         )
 
@@ -365,7 +365,7 @@ class VulnerabilityManagementAgent:
 
         scan = self.scans[scan_id]
         scan.status = "completed"
-        scan.completed_at = datetime.utcnow()
+        scan.completed_at = datetime.now(timezone.utc)
         scan.vulnerabilities_found = vulnerabilities_found
         scan.critical_count = critical
         scan.high_count = high
@@ -404,7 +404,7 @@ class VulnerabilityManagementAgent:
             product=product,
             kb_article=kb_article,
             severity=severity,
-            released_date=datetime.utcnow(),
+            released_date=datetime.now(timezone.utc),
             affected_assets=affected_assets or [],
         )
 
@@ -579,7 +579,7 @@ class VulnerabilityManagementAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -705,7 +705,7 @@ if __name__ == "__main__":
 
     # Get remediation priority
     priority = agent.get_remediation_priority()
-    print(f"\nTop Remediation Priorities:")
+    print("\nTop Remediation Priorities:")
     for p in priority[:3]:
         print(f"  - {p['title']} (Score: {p['priority_score']})")
 

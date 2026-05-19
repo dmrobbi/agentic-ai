@@ -15,7 +15,6 @@ from agentic_ai.agents.cyber.soc import (
     IncidentSeverity,
     IncidentStatus,
     ThreatActor,
-    WebhookEvent,
 )
 from agentic_ai.agents.cyber.vulnman import (
     VulnerabilityManagementAgent,
@@ -112,8 +111,8 @@ class TestSecurityOperationsAgent:
         """Test adding IOC to incident."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV2,
-            "malware",
+            severity=IncidentSeverity.SEV2,
+            category="malware",
         )
         
         result = soc.add_ioc(
@@ -130,8 +129,8 @@ class TestSecurityOperationsAgent:
         """Test adding timeline entries."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV2,
-            "malware",
+            severity=IncidentSeverity.SEV2,
+            category="malware",
         )
         
         result = soc.add_timeline_entry(
@@ -233,8 +232,8 @@ class TestSecurityOperationsAgent:
         """Test MITRE ATT&CK mapping."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV2,
-            "malware",
+            severity=IncidentSeverity.SEV2,
+            category="malware",
         )
         
         mapping = soc.get_attack_mapping(incident.incident_id)

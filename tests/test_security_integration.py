@@ -14,7 +14,7 @@ class TestSecurityAgentCapabilities:
     
     def test_get_capabilities(self):
         """Test capabilities export for Lead Agent."""
-        from agentic_ai.agents.security import get_capabilities, ThreatType, SeverityLevel
+        from agentic_ai.agents.security import get_capabilities
         
         caps = get_capabilities()
         
@@ -156,7 +156,7 @@ class TestSecurityScanWorkflows:
     
     def test_full_codebase_scan(self):
         """Test scanning entire codebase."""
-        from agentic_ai.agents.security import SecurityAgent, SeverityLevel
+        from agentic_ai.agents.security import SecurityAgent
         
         agent = SecurityAgent()
         

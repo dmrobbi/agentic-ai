@@ -9,7 +9,7 @@ Tests verify agents can collaborate and share context effectively.
 import pytest
 from datetime import datetime, timedelta
 
-from agentic_ai.agents.cyber.soc import SOCAgent
+from agentic_ai.agents.cyber.soc import SecurityOperationsAgent as SOCAgent, IncidentSeverity
 from agentic_ai.agents.devops import DevOpsAgent
 from agentic_ai.agents.communications import CommunicationsAgent
 from agentic_ai.agents.legal import LegalAgent
@@ -20,7 +20,7 @@ from agentic_ai.agents.data_governance import DataGovernanceAgent, DataType, Dat
 from agentic_ai.agents.privacy import PrivacyAgent, DataSubjectRight
 from agentic_ai.agents.security import SecurityAgent
 from agentic_ai.agents.compliance import ComplianceAgent
-from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, TargetType
+from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, TargetType, AbortCondition
 from agentic_ai.agents.ml_ops import MLOpsAgent
 
 
@@ -50,7 +50,7 @@ class TestSecurityIncidentResponse:
         )
         
         assert incident.incident_id.startswith("inc-")
-        assert incident.severity == "high"
+        assert incident.severity.value in ("high", "sev2", IncidentSeverity.SEV2.value) if hasattr(incident.severity, 'value') else incident.severity == "high"
         
         # Phase 2: Containment (DevOps)
         containment_task = devops.create_task(
@@ -60,8 +60,8 @@ class TestSecurityIncidentResponse:
             assignee="security-team@example.com",
         )
         
-        assert containment_task.task_id.startswith("task-")
-        assert containment_task.priority == "critical"
+        assert containment_task["task_id"].startswith("task-")
+        assert containment_task["priority"] == "critical"
         
         # Phase 3: Communication (Comms)
         notification = comms.send_email(
@@ -81,7 +81,7 @@ class TestSecurityIncidentResponse:
             priority="urgent",
         )
         
-        assert legal_matter.matter_id.startswith("legal-")
+        assert legal_matter["matter_id"].startswith("legal-")
         
         # Phase 5: Cloud Security Review
         aws_account = cloud_sec.add_account(
@@ -122,7 +122,7 @@ class TestSecurityIncidentResponse:
         )
         
         # Verify escalation triggers
-        assert incident.severity == "critical"
+        assert incident.severity.value in ("critical", "sev1", IncidentSeverity.SEV1.value) if hasattr(incident.severity, 'value') else incident.severity == "critical"
         
         # Critical incidents should trigger executive notification
         exec_notification = comms.send_email(
@@ -183,7 +183,7 @@ class TestVendorAssessment:
         assert security_control.control_id.startswith("ctrl-")
         
         # Phase 3: Compliance Verification
-        compliance_assessment = compliance.create_assessment(
+        compliance.create_assessment(
             name=f"Compliance Review - {vendor.name}",
             assessment_type="vendor_compliance",
             scope="SOC2, ISO27001",
@@ -192,13 +192,13 @@ class TestVendorAssessment:
         
         soc2_cert = compliance.add_certificate(
             certificate_type="soc2_type2",
-            issuer=vendor.name,
+            authority=vendor.name,
             issued_date=datetime.utcnow() - timedelta(days=90),
             expiry_date=datetime.utcnow() + timedelta(days=275),
             status="valid",
         )
         
-        assert soc2_cert.certificate_id.startswith("cert-")
+        assert soc2_cert["certificate_id"].startswith("cert-")
         
         # Phase 4: Legal Review
         legal_matter = legal.create_legal_matter(
@@ -208,7 +208,7 @@ class TestVendorAssessment:
             priority="high",
         )
         
-        assert legal_matter.matter_id.startswith("legal-")
+        assert legal_matter["matter_id"].startswith("legal-")
         
         # Phase 5: Risk Scoring
         assessment = vendor_risk.create_assessment(
@@ -309,22 +309,25 @@ class TestAuditPreparation:
         assert evidence_1.evidence_id.startswith("evid-")
         
         # Phase 4: Privacy Evidence
-        processing_activity = privacy.register_processing_activity(
+        # Register data subject first
+        data_subject = privacy.register_data_subject(
+            name="John Doe",
+            email="john@example.com",
+            jurisdiction="US",
+        )
+        privacy.register_processing_activity(
             name="Customer Account Management",
             purpose=privacy.ProcessingPurpose.SERVICE_DELIVERY,
             data_categories=[DataType.PII],
             legal_basis="contract",
         )
         
-        dsar = privacy.create_data_request(
-            subject_id="customer-001",
+        privacy.create_request(
+            subject_id=data_subject.subject_id,
             right_type=DataSubjectRight.ACCESS,
-            submitted_at=datetime.utcnow() - timedelta(days=30),
-            deadline=datetime.utcnow() - timedelta(days=5),
-            status="completed",
         )
         
-        evidence_2 = audit.collect_evidence(
+        audit.collect_evidence(
             audit_id=soc2_audit.audit_id,
             title="DSAR Log",
             description="Data subject request log",
@@ -334,14 +337,14 @@ class TestAuditPreparation:
         )
         
         # Phase 5: Security Evidence
-        security_assessment = security.create_assessment(
+        security.create_assessment(
             title="Access Review Q4 2025",
             assessment_type="access_review",
             scope="Production access",
             assessor="security-team@example.com",
         )
         
-        evidence_3 = audit.collect_evidence(
+        audit.collect_evidence(
             audit_id=soc2_audit.audit_id,
             title="Access Review Report",
             description="Q4 access review",
@@ -415,13 +418,13 @@ class TestChaosMonitoring:
             experiment_id=experiment.experiment_id,
         )
         
-        deployment = mlops.deploy_model(
+        mlops.deploy_model(
             model_id=model.model_id,
             environment="production",
             endpoint="https://api.example.com/predict",
         )
         
-        monitor = mlops.create_monitor(
+        mlops.create_monitor(
             model_id=model.model_id,
             metrics_to_track=['accuracy', 'latency_p99'],
             baseline_metrics={'accuracy': 0.92, 'latency_p99': 120},
@@ -445,7 +448,7 @@ class TestChaosMonitoring:
             severity="medium",
             blast_radius="limited",
             duration_minutes=15,
-            abort_conditions=[chaos.AbortCondition.LATENCY_THRESHOLD],
+            abort_conditions=[AbortCondition.LATENCY_THRESHOLD],
             abort_thresholds={'latency_p99': 500},
         )
         
@@ -517,10 +520,10 @@ class TestCrossAgentContextSharing:
         )
         
         # Verify context is preserved
-        assert incident.incident_id in task.title
-        assert incident.incident_id in matter.title
-        assert task.priority == "critical"
-        assert matter.priority == "high"
+        assert incident.incident_id in task["title"]
+        assert incident.incident_id in matter["title"]
+        assert task["priority"] == "critical"
+        assert matter["priority"] == "high"
     
     def test_vendor_context_propagation(self):
         """Test vendor context propagation across agents."""
@@ -550,7 +553,7 @@ class TestCrossAgentContextSharing:
         # Compliance cert references vendor
         cert = compliance.add_certificate(
             certificate_type="soc2_type2",
-            issuer=vendor.name,
+            authority=vendor.name,
             issued_date=datetime.utcnow(),
             expiry_date=datetime.utcnow() + timedelta(days=365),
             status="valid",
@@ -558,7 +561,7 @@ class TestCrossAgentContextSharing:
         
         # Verify vendor context preserved
         assert vendor.name in security_assessment.title
-        assert vendor.name in cert.issuer
+        assert vendor.name in cert["authority"]
 
 
 if __name__ == "__main__":

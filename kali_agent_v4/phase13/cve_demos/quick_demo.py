@@ -22,7 +22,6 @@ sys.path.insert(0, os.path.dirname(__file__))
 from cve_2026_32202 import CVE2026_32202_Demo, SCENARIOS
 import argparse
 import time
-import threading
 
 
 def main():
@@ -49,7 +48,7 @@ def main():
 
     if args.capture:
         print(f"\n🔓 Starting NTLM capture server on 0.0.0.0:{args.port}")
-        print(f"   Copy .lnk files to a Windows system and observe hashes\n")
+        print("   Copy .lnk files to a Windows system and observe hashes\n")
         server = d.start_capture_server('0.0.0.0', args.port)
         try:
             while True:

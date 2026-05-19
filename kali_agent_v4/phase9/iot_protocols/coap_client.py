@@ -20,10 +20,9 @@ import socket
 import struct
 import json
 import random
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Tuple
 from datetime import datetime
 from dataclasses import dataclass, field
-from urllib.parse import urlparse
 
 # Configure logging
 logging.basicConfig(
@@ -34,9 +33,9 @@ logger = logging.getLogger('CoAPClient')
 
 # Try to import aiocoap, fall back to socket-based implementation
 try:
-    import asyncio
+    import asyncio  # noqa: F401
     import aiocoap
-    import aiocoap.resource
+    import aiocoap.resource  # noqa: F401
     AIOCOAP_AVAILABLE = True
 except ImportError:
     AIOCOAP_AVAILABLE = False
@@ -290,7 +289,6 @@ class CoAPClient:
         
         # Parse options and payload
         offset = 4 + token_len
-        options = []
         payload = b''
         
         if offset < len(response):
@@ -669,7 +667,7 @@ class CoAPClient:
         self.test_ddos_amplification()
         
         # Step 4: Test DTLS
-        dtls_results = self.test_dtls()
+        self.test_dtls()
         
         # Generate report
         report = self.generate_report()

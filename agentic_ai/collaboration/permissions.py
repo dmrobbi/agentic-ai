@@ -7,7 +7,7 @@ Role-based access control for workspaces and resources.
 
 from typing import Dict, Any, List, Optional, Set
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import uuid
 
@@ -47,7 +47,7 @@ class AccessGrant:
     resource_id: str = ""  # Empty for workspace-level
     role: Role = Role.VIEWER
     granted_by: str = ""
-    granted_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    granted_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     expires_at: Optional[str] = None
 
     def has_permission(self, permission: Permission) -> bool:
@@ -59,7 +59,7 @@ class AccessGrant:
         """Check if grant has expired."""
         if not self.expires_at:
             return False
-        return datetime.fromisoformat(self.expires_at) < datetime.utcnow()
+        return datetime.fromisoformat(self.expires_at) < datetime.now(timezone.utc)
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -93,7 +93,7 @@ class PermissionManager:
         expires_at = None
         if duration_minutes:
             from datetime import timedelta
-            expires_at = (datetime.utcnow() + timedelta(minutes=duration_minutes)).isoformat()
+            expires_at = (datetime.now(timezone.utc) + timedelta(minutes=duration_minutes)).isoformat()
 
         grant = AccessGrant(
             participant_id=participant_id,

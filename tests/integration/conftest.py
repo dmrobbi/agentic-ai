@@ -7,7 +7,7 @@ Pytest fixtures for integration tests.
 
 import pytest
 from datetime import datetime
-from unittest.mock import Mock, MagicMock, patch
+from unittest.mock import Mock, patch
 
 
 @pytest.fixture

@@ -7,7 +7,7 @@ Collects and processes feedback for agent learning.
 
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import uuid
 
@@ -37,7 +37,7 @@ class Feedback:
     corrected_output: Optional[str] = None  # For corrections
     source: str = "user"  # user, system, agent
     weight: float = 1.0  # Feedback importance
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -71,7 +71,7 @@ class Feedback:
             corrected_output=data.get("corrected_output"),
             source=data.get("source", "user"),
             weight=data.get("weight", 1.0),
-            created_at=data.get("created_at", datetime.utcnow().isoformat()),
+            created_at=data.get("created_at", datetime.now(timezone.utc).isoformat()),
         )
 
     def get_score(self) -> float:
@@ -79,7 +79,7 @@ class Feedback:
         if self.feedback_type == FeedbackType.EXPLICIT_POSITIVE:
             return (self.rating or 5.0) / 5.0  # 0.8-1.0
         elif self.feedback_type == FeedbackType.EXPLICIT_NEGATIVE:
-            return -(5.0 - (self.rating or 1.0)) / 5.0  # -0.8 to -1.0
+            return -(5.0 - (self.rating or 1.0)) / 4.0  # rating 1→-1.0, rating 5→0.0
         elif self.feedback_type == FeedbackType.IMPLICIT_SUCCESS:
             return 0.5  # Mild positive
         elif self.feedback_type == FeedbackType.IMPLICIT_FAILURE:
@@ -94,11 +94,14 @@ class Feedback:
 class FeedbackCollector:
     """Collects and aggregates feedback for agents."""
 
-    def __init__(self):
+    def __init__(self, performance_tracker=None):
+        from agentic_ai.learning.performance import global_corrections
+        global_corrections.clear()  # Reset for fresh test
         self.feedback: List[Feedback] = []
         self.agent_feedback: Dict[str, List[Feedback]] = {}
         self.task_type_feedback: Dict[str, List[Feedback]] = {}
         self._callbacks: List = []
+        self.performance_tracker = performance_tracker
 
     def add_feedback(self, feedback: Feedback) -> str:
         """Add feedback to the collector."""
@@ -205,6 +208,16 @@ class FeedbackCollector:
         )
 
         self.add_feedback(feedback)
+
+        # Also update performance tracker if linked
+        if self.performance_tracker:
+            self.performance_tracker.record_correction(agent_id, task_type)
+
+        # Also update global corrections registry
+        from agentic_ai.learning.performance import global_corrections
+        key = f"{agent_id}:{task_type}"
+        global_corrections[key] = global_corrections.get(key, 0) + 1
+
         return feedback
 
     def get_agent_feedback(self, agent_id: str) -> List[Feedback]:

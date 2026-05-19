@@ -18,7 +18,6 @@ import sys
 import unittest
 import numpy as np
 from pathlib import Path
-from datetime import datetime
 
 # Add phase14 to path
 sys.path.insert(0, str(Path(__file__).parent.parent))

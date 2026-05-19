@@ -9,7 +9,7 @@ monitoring, risk scoring, and third-party risk management workflows.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -106,7 +106,7 @@ class Questionnaire:
     status: str  # draft, sent, in_progress, completed, reviewed
     total_questions: int = 0
     answered_questions: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     sent_at: Optional[datetime] = None
     completed_at: Optional[datetime] = None
     reviewed_at: Optional[datetime] = None
@@ -147,7 +147,7 @@ class Finding:
     remediation_plan: str = ""
     due_date: Optional[datetime] = None
     status: str = "open"  # open, in_progress, remediated, accepted, closed
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -167,7 +167,7 @@ class Assessment:
     critical_findings: int = 0
     recommendations: List[str] = field(default_factory=list)
     overall_opinion: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
     reviewed_at: Optional[datetime] = None
 
@@ -196,7 +196,7 @@ class Alert:
     description: str
     source: str
     status: str = "new"  # new, acknowledged, investigating, resolved
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     acknowledged_at: Optional[datetime] = None
     resolved_at: Optional[datetime] = None
 
@@ -312,7 +312,7 @@ class VendorRiskAgent:
 
     def get_vendors_due_for_assessment(self, days: int = 30) -> List[Vendor]:
         """Get vendors due for assessment within specified days."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
         threshold = now + timedelta(days=days)
 
         return [
@@ -370,7 +370,7 @@ class VendorRiskAgent:
                     question_id=self._generate_id("q"),
                     questionnaire_id=questionnaire.questionnaire_id,
                     domain=domain,
-                    question_text=f"Sample {domain.value} question {i+1}",
+                    question_text=f"Sample {domain.value} question {i + 1}",
                     control_objective=f"Ensure {domain.value} controls",
                     response_type="yes_no",
                     response_options=["Yes", "No", "Partial", "N/A"],
@@ -383,7 +383,7 @@ class VendorRiskAgent:
             return False
 
         self.questionnaires[questionnaire_id].status = "sent"
-        self.questionnaires[questionnaire_id].sent_at = datetime.utcnow()
+        self.questionnaires[questionnaire_id].sent_at = datetime.now(timezone.utc)
         return True
 
     def respond_to_question(
@@ -421,7 +421,7 @@ class VendorRiskAgent:
 
             if answered == questionnaire.total_questions:
                 questionnaire.status = "completed"
-                questionnaire.completed_at = datetime.utcnow()
+                questionnaire.completed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -496,7 +496,7 @@ class VendorRiskAgent:
 
         assessment = self.assessments[assessment_id]
         assessment.status = "completed"
-        assessment.completed_at = datetime.utcnow()
+        assessment.completed_at = datetime.now(timezone.utc)
         assessment.inherent_risk_score = inherent_risk_score
         assessment.control_effectiveness = control_effectiveness
         assessment.residual_risk_score = residual_risk_score
@@ -519,8 +519,8 @@ class VendorRiskAgent:
         # Update vendor
         vendor = self.vendors[assessment.vendor_id]
         vendor.residual_risk = residual_risk_score
-        vendor.last_assessment = datetime.utcnow()
-        vendor.next_assessment = datetime.utcnow() + timedelta(days=365)
+        vendor.last_assessment = datetime.now(timezone.utc)
+        vendor.next_assessment = datetime.now(timezone.utc) + timedelta(days=365)
 
         # Create findings
         if findings:
@@ -637,7 +637,7 @@ class VendorRiskAgent:
         self.findings[finding_id].status = status
 
         if status == "closed":
-            self.findings[finding_id].closed_at = datetime.utcnow()
+            self.findings[finding_id].closed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -697,7 +697,7 @@ class VendorRiskAgent:
             return False
 
         monitor = self.monitors[monitor_id]
-        monitor.last_check = datetime.utcnow()
+        monitor.last_check = datetime.now(timezone.utc)
         monitor.risk_trend = risk_trend
         monitor.alerts = alerts or []
 
@@ -748,7 +748,7 @@ class VendorRiskAgent:
             return False
 
         self.alerts[alert_id].status = "acknowledged"
-        self.alerts[alert_id].acknowledged_at = datetime.utcnow()
+        self.alerts[alert_id].acknowledged_at = datetime.now(timezone.utc)
         return True
 
     def resolve_alert(self, alert_id: str) -> bool:
@@ -757,7 +757,7 @@ class VendorRiskAgent:
             return False
 
         self.alerts[alert_id].status = "resolved"
-        self.alerts[alert_id].resolved_at = datetime.utcnow()
+        self.alerts[alert_id].resolved_at = datetime.now(timezone.utc)
         return True
 
     def get_alerts(
@@ -916,7 +916,7 @@ class VendorRiskAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -975,7 +975,7 @@ def get_capabilities() -> Dict[str, Any]:
         'risk_domains': [d.value for d in RiskDomain],
         'assessment_types': [t.value for t in AssessmentType],
         'questionnaire_types': [t.value for t in QuestionnaireType],
-        'residual_risk_levels': [l.value for l in ResidualRisk],
+        'residual_risk_levels': [level.value for level in ResidualRisk],
     }
 
 
@@ -989,8 +989,8 @@ if __name__ == "__main__":
         tier=VendorTier.TIER_1,
         category="cloud",
         relationship_type="vendor",
-        contract_start=datetime.utcnow() - timedelta(days=365),
-        contract_end=datetime.utcnow() + timedelta(days=365),
+        contract_start=datetime.now(timezone.utc) - timedelta(days=365),
+        contract_end=datetime.now(timezone.utc) + timedelta(days=365),
         contract_value=500000.0,
         primary_contact="contact@cloudprovider.com",
         security_contact="security@cloudprovider.com",
@@ -1003,7 +1003,7 @@ if __name__ == "__main__":
         tier=VendorTier.TIER_2,
         category="software",
         relationship_type="vendor",
-        contract_start=datetime.utcnow() - timedelta(days=180),
+        contract_start=datetime.now(timezone.utc) - timedelta(days=180),
         contract_value=100000.0,
     )
 
@@ -1074,7 +1074,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_vendor_risk_dashboard()
-    print(f"\nVendor Risk Dashboard:")
+    print("\nVendor Risk Dashboard:")
     print(f"  Total Vendors: {dashboard['vendors']['total']}")
     print(f"  Tier 1: {dashboard['vendors']['by_tier']['tier_1']}")
     print(f"  Assessments Due: {dashboard['assessments']['due_soon']}")

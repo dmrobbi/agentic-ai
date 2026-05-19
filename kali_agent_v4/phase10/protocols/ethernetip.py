@@ -21,10 +21,9 @@ Status: Alpha (0.1.0)
 import logging
 import socket
 import struct
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Optional
 from datetime import datetime
 from dataclasses import dataclass, field
-import random
 
 # Configure logging
 logging.basicConfig(
@@ -271,7 +270,7 @@ class EtherNetIPClient:
                 return False
             
             self.connected = True
-            logger.info(f"✅ Connected to EtherNet/IP device")
+            logger.info("✅ Connected to EtherNet/IP device")
             
             # Get identity information
             self.identity = self.get_identity()
@@ -296,7 +295,7 @@ class EtherNetIPClient:
                 if self.session_handle:
                     self._unregister_session()
                 self.socket.close()
-            except:
+            except Exception:
                 pass
         
         self.connected = False
@@ -360,7 +359,7 @@ class EtherNetIPClient:
         
         try:
             self.socket.send(request)
-        except:
+        except Exception:
             pass
     
     def _send_encapsulated_command(self, command: int, data: bytes = b'') -> Optional[bytes]:
@@ -580,7 +579,6 @@ class EtherNetIPClient:
     
     def _parse_tag_list(self, response: bytes) -> List[CIPTag]:
         """Parse tag list from response"""
-        tags = []
         
         # Simplified parsing
         # Real implementation needs full CIP parsing
@@ -850,7 +848,7 @@ def main():
         identity = enip.get_identity()
         
         if identity:
-            print(f"\n📊 Device Identity:")
+            print("\n📊 Device Identity:")
             print(f"  Vendor: {identity.vendor_name}")
             print(f"  Product: {identity.product_name}")
             print(f"  Device Type: {identity.device_type_name}")

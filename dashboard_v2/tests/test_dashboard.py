@@ -254,7 +254,6 @@ class TestWebSocket:
 
     def test_websocket_metrics(self):
         """Test WebSocket metrics endpoint"""
-        from starlette.websockets import WebSocketDisconnect
         
         with client.websocket_connect("/ws/metrics") as websocket:
             data = websocket.receive_json()

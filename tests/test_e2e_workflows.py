@@ -9,8 +9,7 @@ These tests simulate real-world scenarios where agents collaborate.
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock, AsyncMock
-import asyncio
+from unittest.mock import patch, MagicMock
 
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
@@ -79,7 +78,7 @@ class TestCodeDevelopmentWorkflow:
             # Step 2: Developer implements feature
             impl_result = await developer.perform_task(
                 "implement",
-                {"specs": "Stripe integration", "module": "payment"}
+                {"feature": "Stripe integration", "description": "Payment module"}
             )
             
             assert impl_result is not None
@@ -103,7 +102,7 @@ class TestCodeDevelopmentWorkflow:
             # Step 5: Developer reviews code
             review_result = await developer.perform_task(
                 "review",
-                {"pr": "payment_pr"}
+                {"code": "payment module code", "path": "payment/"}
             )
             
             assert review_result is not None
@@ -149,7 +148,7 @@ class TestCodeDevelopmentWorkflow:
             # Developer fixes bug
             fix_result = await developer.perform_task(
                 "fix_bug",
-                {"issue_id": "LOGIN-42", "context": "Session timeout too short"}
+                {"bug_id": "LOGIN-42", "description": "Session timeout too short"}
             )
             
             assert fix_result is not None

@@ -18,7 +18,7 @@ Status: Alpha (0.1.0)
 
 import logging
 from typing import List, Dict, Optional, Callable
-from datetime import datetime, timedelta
+from datetime import datetime
 from dataclasses import dataclass, field
 from enum import Enum
 import uuid
@@ -151,7 +151,7 @@ class AutomatedResponseEngine:
         Returns:
             Response decision
         """
-        logger.info(f"🤖 Evaluating threat for automated response...")
+        logger.info("🤖 Evaluating threat for automated response...")
         
         # Calculate risk score from threat intel
         risk_score = self._calculate_threat_risk(threat_intel)
@@ -220,7 +220,7 @@ class AutomatedResponseEngine:
         Returns:
             Response decision
         """
-        logger.info(f"🤖 Evaluating anomaly for automated response...")
+        logger.info("🤖 Evaluating anomaly for automated response...")
         
         # Calculate risk score from anomaly
         risk_score = anomaly.get('anomaly_score', 0.5)
@@ -302,7 +302,7 @@ class AutomatedResponseEngine:
         Returns:
             Response decision
         """
-        logger.info(f"🤖 Evaluating risk assessment for automated response...")
+        logger.info("🤖 Evaluating risk assessment for automated response...")
         
         risk_score = risk_assessment.get('overall_risk', 0.5) / 10.0  # Normalize to 0-1
         risk_level = risk_assessment.get('risk_level', 'medium')

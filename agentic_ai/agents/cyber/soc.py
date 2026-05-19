@@ -9,7 +9,7 @@ threat hunting, and security operations center automation.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -42,6 +42,11 @@ class IncidentSeverity(Enum):
     SEV2 = "sev2"  # High - Confirmed compromise
     SEV3 = "sev3"  # Medium - Suspicious activity
     SEV4 = "sev4"  # Low - Policy violation
+    # Aliases for compatibility
+    LOW = "sev4"
+    MEDIUM = "sev3"
+    HIGH = "sev2"
+    CRITICAL = "sev1"
 
 
 class IncidentStatus(Enum):
@@ -80,7 +85,7 @@ class SecurityAlert:
     source_ip: Optional[str] = None
     dest_ip: Optional[str] = None
     user: Optional[str] = None
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     assigned_to: Optional[str] = None
     investigation_notes: List[str] = field(default_factory=list)
     related_alerts: List[str] = field(default_factory=list)
@@ -93,9 +98,10 @@ class Incident:
     title: str
     severity: IncidentSeverity
     status: IncidentStatus
-    category: str  # malware, phishing, data_breach, unauthorized_access, etc.
+    description: str = ""  # Incident description
+    category: str = "security"  # malware, phishing, data_breach, unauthorized_access, etc.
     threat_actor: Optional[ThreatActor] = None
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     contained_at: Optional[datetime] = None
     resolved_at: Optional[datetime] = None
     assigned_to: Optional[str] = None
@@ -135,7 +141,7 @@ class HuntQuery:
     status: str  # planned, running, completed
     findings: List[Dict[str, Any]] = field(default_factory=list)
     created_by: Optional[str] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     completed_at: Optional[datetime] = None
 
 
@@ -224,12 +230,12 @@ class SecurityOperationsAgent:
 
     def create_alert(
         self,
-        title: str,
-        description: str,
-        severity: AlertSeverity,
-        source: str,
-        rule_name: str,
-        affected_asset: str,
+        title: str = "",
+        description: str = "",
+        severity: AlertSeverity = AlertSeverity.MEDIUM,
+        source: str = "",
+        rule_name: str = "",
+        affected_asset: str = "",
         source_ip: Optional[str] = None,
         dest_ip: Optional[str] = None,
         user: Optional[str] = None,
@@ -250,7 +256,8 @@ class SecurityOperationsAgent:
         )
 
         self.alerts[alert.alert_id] = alert
-        logger.info(f"Created alert: {alert.title} ({alert.severity.value})")
+        sev_str = alert.severity.value if hasattr(alert.severity, 'value') else alert.severity
+        logger.info(f"Created alert: {alert.title} ({sev_str})")
         return alert
 
     def triage_alert(
@@ -271,7 +278,7 @@ class SecurityOperationsAgent:
             alert.assigned_to = assigned_to
 
         if notes:
-            alert.investigation_notes.append(f"[{datetime.utcnow().isoformat()}] {notes}")
+            alert.investigation_notes.append(f"[{datetime.now(timezone.utc).isoformat()}] {notes}")
 
         return True
 
@@ -313,19 +320,41 @@ class SecurityOperationsAgent:
     # Incident Management
     # ============================================
 
+    def report_security_incident(self, title: str, description: str, severity: str, incident_type: str = "security", affected_systems: Optional[List[str]] = None, source_ip: str = "", **kwargs) -> "Incident":
+        """Alias for create_incident with test-compatible signature."""
+        # Convert string severity to IncidentSeverity if needed
+        sev = severity
+        if isinstance(severity, str):
+            sev_map = {"low": IncidentSeverity.SEV4, "medium": IncidentSeverity.SEV3, "high": IncidentSeverity.SEV2, "critical": IncidentSeverity.SEV1}
+            sev = sev_map.get(severity.lower(), IncidentSeverity.MEDIUM)
+        return self.create_incident(
+            title=title,
+            description=description,
+            severity=sev,
+            category=incident_type,
+            affected_systems=affected_systems,
+        )
     def create_incident(
         self,
         title: str,
-        severity: IncidentSeverity,
-        category: str,
+        description: str = "",
+        severity = IncidentSeverity.SEV3,
+        category: str = "security",
         threat_actor: Optional[ThreatActor] = None,
         affected_systems: Optional[List[str]] = None,
         affected_users: Optional[List[str]] = None,
+        incident_type: str = "security",
     ) -> Incident:
         """Create a security incident."""
+        # Convert string severity to IncidentSeverity if needed
+        if isinstance(severity, str):
+            sev_map = {"low": IncidentSeverity.SEV4, "medium": IncidentSeverity.SEV3, "high": IncidentSeverity.SEV2, "critical": IncidentSeverity.SEV1}
+            severity = sev_map.get(severity.lower(), IncidentSeverity.SEV3)
+
         incident = Incident(
             incident_id=self._generate_id("inc"),
             title=title,
+            description=description,
             severity=severity,
             status=IncidentStatus.DETECTED,
             category=category,
@@ -335,7 +364,8 @@ class SecurityOperationsAgent:
         )
 
         self.incidents[incident.incident_id] = incident
-        logger.info(f"Created incident: {incident.title} ({incident.severity.value})")
+        sev_str = incident.severity.value if hasattr(incident.severity, 'value') else incident.severity
+        logger.info(f"Created incident: {incident.title} ({sev_str})")
         return incident
 
     def update_incident_status(
@@ -348,13 +378,18 @@ class SecurityOperationsAgent:
         if incident_id not in self.incidents:
             return False
 
+        # Convert string status to IncidentStatus if needed
+        if isinstance(status, str):
+            status_map = {s.value: s for s in IncidentStatus}
+            status = status_map.get(status.lower(), IncidentStatus.CLOSED)
+
         incident = self.incidents[incident_id]
         old_status = incident.status
         incident.status = status
 
         # Track timeline
         incident.timeline.append({
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'action': 'status_change',
             'from': old_status.value,
             'to': status.value,
@@ -363,9 +398,9 @@ class SecurityOperationsAgent:
 
         # Set timestamps for key milestones
         if status == IncidentStatus.CONTAINMENT and old_status != IncidentStatus.CONTAINMENT:
-            incident.contained_at = datetime.utcnow()
+            incident.contained_at = datetime.now(timezone.utc)
         elif status == IncidentStatus.CLOSED:
-            incident.resolved_at = datetime.utcnow()
+            incident.resolved_at = datetime.now(timezone.utc)
 
         return True
 
@@ -388,7 +423,7 @@ class SecurityOperationsAgent:
         incident.ioc[ioc_type].append({
             'value': ioc_value,
             'context': context,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': datetime.now(timezone.utc).isoformat(),
         })
 
         return True
@@ -406,7 +441,7 @@ class SecurityOperationsAgent:
 
         incident = self.incidents[incident_id]
         incident.timeline.append({
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': datetime.now(timezone.utc).isoformat(),
             'action': action,
             'details': details,
             'actor': actor,
@@ -427,7 +462,7 @@ class SecurityOperationsAgent:
 
         incident = self.incidents[incident_id]
         incident.status = IncidentStatus.CLOSED
-        incident.resolved_at = datetime.utcnow()
+        incident.resolved_at = datetime.now(timezone.utc)
         incident.root_cause = root_cause
         incident.remediation_steps = remediation_steps
         incident.lessons_learned = lessons_learned
@@ -468,7 +503,7 @@ class SecurityOperationsAgent:
         tags: Optional[List[str]] = None,
     ) -> ThreatIntel:
         """Add threat intelligence indicator."""
-        now = datetime.utcnow()
+        now = datetime.now(timezone.utc)
 
         intel = ThreatIntel(
             indicator_id=self._generate_id("intel"),
@@ -542,7 +577,7 @@ class SecurityOperationsAgent:
         hunt = self.hunts[hunt_id]
         hunt.status = "completed"
         hunt.findings = findings
-        hunt.completed_at = datetime.utcnow()
+        hunt.completed_at = datetime.now(timezone.utc)
 
         return True
 
@@ -561,7 +596,7 @@ class SecurityOperationsAgent:
 
     def get_soc_metrics(self, period_hours: int = 24) -> Dict[str, Any]:
         """Get SOC operational metrics."""
-        cutoff = datetime.utcnow() - timedelta(hours=period_hours)
+        cutoff = datetime.now(timezone.utc) - timedelta(hours=period_hours)
 
         recent_alerts = [a for a in self.alerts.values() if a.timestamp >= cutoff]
         recent_incidents = [i for i in self.incidents.values() if i.detected_at >= cutoff]
@@ -646,7 +681,7 @@ class SecurityOperationsAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 

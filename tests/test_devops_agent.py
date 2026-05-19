@@ -7,7 +7,6 @@ deployment orchestration, and monitoring.
 """
 
 import pytest
-from datetime import datetime, timedelta
 
 from agentic_ai.agents.devops import (
     DevOpsAgent,
@@ -381,7 +380,7 @@ class TestDevOpsCapabilities:
     
     def test_get_capabilities(self):
         """Test capabilities export."""
-        from agentic_ai.agents.devops import get_capabilities, DeploymentStatus, PipelineStatus
+        from agentic_ai.agents.devops import get_capabilities
         
         caps = get_capabilities()
         

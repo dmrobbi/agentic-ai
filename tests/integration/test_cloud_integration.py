@@ -7,8 +7,7 @@ Tests cover AWS, GCP, Azure, and Kubernetes interactions.
 """
 
 import pytest
-from datetime import datetime
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 from moto import mock_aws
 
 from agentic_ai.agents.cloud_security import CloudSecurityAgent, CloudProvider, Severity, ResourceType
@@ -106,7 +105,7 @@ class TestAWSIntegration:
             ResourceType.S3, account.account_id, "us-east-1", "test-public-bucket",
             configuration={'public_access': True, 'policy': public_policy},
         )
-        private_bucket = agent.add_resource(
+        agent.add_resource(
             ResourceType.S3, account.account_id, "us-east-1", "test-private-bucket",
             configuration={'public_access': False},
         )
@@ -261,14 +260,14 @@ class TestKubernetesIntegration:
             MagicMock(
                 metadata=MagicMock(name='web-pod-1', namespace='production'),
                 status=MagicMock(phase='Running'),
-                spec=MagicMock(containers=[MagicMock(name='nginx', image='nginx:1.21')]),
             ),
             MagicMock(
                 metadata=MagicMock(name='api-pod-1', namespace='production'),
                 status=MagicMock(phase='Running'),
-                spec=MagicMock(containers=[MagicMock(name='api', image='api:v2.1')]),
             ),
         ]
+        mock_pod_list.items[0].spec = MagicMock(containers=[MagicMock(name='nginx', image='nginx:1.21')])
+        mock_pod_list.items[1].spec = MagicMock(containers=[MagicMock(name='api', image='api:v2.1')])
         mock_core_api.return_value.list_pod_for_all_namespaces.return_value = mock_pod_list
         
         # Register pods
@@ -295,13 +294,13 @@ class TestKubernetesIntegration:
         # Mock pod without security context (running as root)
         insecure_pod = MagicMock(
             metadata=MagicMock(name='insecure-pod', namespace='default'),
-            spec=MagicMock(containers=[
+        )
+        insecure_pod.spec = MagicMock(containers=[
                 MagicMock(
                     name='app',
                     securityContext=MagicMock(runAsNonRoot=False, runAsUser=0),
                 )
-            ]),
-        )
+            ])
         
         resource = agent.add_resource(
             ResourceType.K8S_POD, account.account_id, "default", "insecure-pod",
@@ -391,7 +390,7 @@ class TestDevOpsCloudIntegration:
                 assignee="devops@example.com",
             )
             
-            assert task.task_id.startswith("task-")
+            assert task["task_id"].startswith("task-")
 
 
 # ============================================================================

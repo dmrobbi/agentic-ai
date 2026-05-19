@@ -19,7 +19,7 @@ Status: Alpha (0.1.0)
 """
 
 import logging
-from typing import List, Dict, Optional
+from typing import List, Dict
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -177,7 +177,7 @@ class SCADAAgent:
         
         logger.info(f"🏭 SCADA/ICS Agent v{self.VERSION}")
         logger.warning(f"⚠️  SAFETY MODE: {'ENABLED' if safety_mode else 'DISABLED'}")
-        logger.warning(f"⚠️  ONLY test on isolated lab systems!")
+        logger.warning("⚠️  ONLY test on isolated lab systems!")
         
         if target_network:
             logger.info(f"🎯 Target network: {target_network}")
@@ -211,7 +211,6 @@ class SCADAAgent:
         """Scan for ICS protocol ports"""
         logger.debug("  Scanning ICS protocol ports...")
         
-        devices = []
         
         # TODO: Implement actual port scanning
         # For now, return simulated results
@@ -490,7 +489,7 @@ def main():
     scada = SCADAAgent(target_network=target, verbose=True, safety_mode=True)
     
     # Discover devices
-    devices = scada.discover_ics_devices()
+    scada.discover_ics_devices()
     
     # Generate report
     report = scada.generate_report()

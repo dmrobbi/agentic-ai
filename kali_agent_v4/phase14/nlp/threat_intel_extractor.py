@@ -16,7 +16,7 @@ import logging
 import re
 from typing import List, Dict, Optional
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
@@ -24,13 +24,19 @@ logger = logging.getLogger('ThreatIntelExtractor')
 
 # Try to import transformers
 try:
-    from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification
-    from transformers import Pipeline
+    from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification  # noqa: F401
+    from transformers import Pipeline  # noqa: F401
     TRANSFORMERS_AVAILABLE = True
     logger.info("✅ Transformers available")
 except ImportError:
     TRANSFORMERS_AVAILABLE = False
     logger.warning("⚠️ Transformers not available - using rule-based fallback")
+
+try:
+    import torch
+    TORCH_AVAILABLE = True
+except ImportError:
+    TORCH_AVAILABLE = False
 
 
 @dataclass

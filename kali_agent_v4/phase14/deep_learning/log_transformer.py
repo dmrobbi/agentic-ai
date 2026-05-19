@@ -14,10 +14,8 @@ Status: Alpha (0.1.1)
 
 import logging
 import math
-import numpy as np
-from typing import List, Dict, Tuple, Optional
+from typing import List, Dict, Tuple
 from dataclasses import dataclass
-import json
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger('LogTransformer')
@@ -401,7 +399,7 @@ def main():
     print(f"   Confidence: {confidence[0]:.4f}")
     
     print("\n" + "="*70)
-    print(f"✅ Log Transformer demo complete!")
+    print("✅ Log Transformer demo complete!")
     print(f"   Best Test Accuracy: {best_acc:.4f}")
     print("="*70)
 

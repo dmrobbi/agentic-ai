@@ -9,7 +9,7 @@ adversary emulation, attack path discovery, and red team operations.
 import logging
 import secrets
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional
 
@@ -43,6 +43,7 @@ class EngagementStatus(Enum):
 class TargetType(Enum):
     """Target types."""
     NETWORK = "network"
+    SERVER = "server"
     WEB_APP = "web_application"
     MOBILE_APP = "mobile_application"
     SOCIAL = "social_engineering"
@@ -77,7 +78,7 @@ class Engagement:
     team_members: List[str] = field(default_factory=list)
     findings_count: int = 0
     critical_findings: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 @dataclass
@@ -113,7 +114,7 @@ class Finding:
     remediation: str = ""
     reproduction_steps: List[str] = field(default_factory=list)
     screenshots: List[str] = field(default_factory=list)
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
     reported: bool = False
 
 
@@ -145,7 +146,7 @@ class AttackPath:
     time_to_exploit: int = 0  # minutes
     detection_evasion: List[str] = field(default_factory=list)
     mitre_attack: List[str] = field(default_factory=list)
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
 
 class RedTeamAgent:
@@ -325,7 +326,7 @@ class RedTeamAgent:
 
         target = self.targets[target_id]
         target.accessed = True
-        target.compromised_at = datetime.utcnow()
+        target.compromised_at = datetime.now(timezone.utc)
 
         return True
 
@@ -346,7 +347,7 @@ class RedTeamAgent:
             'port': port,
             'version': version,
             'vulnerable': vulnerable,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': datetime.now(timezone.utc).isoformat(),
         })
 
         return True
@@ -471,7 +472,7 @@ class RedTeamAgent:
             self.targets[target_id].credentials_found.append({
                 'credential_id': cred.credential_id,
                 'username': username,
-                'added_at': datetime.utcnow().isoformat(),
+                'added_at': datetime.now(timezone.utc).isoformat(),
             })
 
         return cred
@@ -483,7 +484,7 @@ class RedTeamAgent:
 
         cred = self.credentials[credential_id]
         cred.valid = valid
-        cred.tested_at = datetime.utcnow()
+        cred.tested_at = datetime.now(timezone.utc)
 
         return True
 
@@ -529,10 +530,10 @@ class RedTeamAgent:
         )
 
         # Determine severity based on end point
-        if 'domain_admin' in end_point.lower() or 'critical' in end_point.lower():
+        if 'domain_admin' in end_point.lower() or 'domain admin' in end_point.lower() or 'critical' in end_point.lower():
             path.severity = FindingSeverity.CRITICAL
         elif 'admin' in end_point.lower() or 'sensitive' in end_point.lower():
-            path.severity = FindingSeverity.HIGH
+            path.severity = FindingSeverity.CRITICAL
 
         self.attack_paths[path.path_id] = path
         return path
@@ -575,7 +576,7 @@ class RedTeamAgent:
                 'name': engagement.name,
                 'type': engagement.engagement_type.value,
                 'status': engagement.status.value,
-                'duration_days': (engagement.end_date or datetime.utcnow() - engagement.start_date).days if engagement.end_date else (datetime.utcnow() - engagement.start_date).days,
+                'duration_days': (engagement.end_date or datetime.now(timezone.utc) - engagement.start_date).days if engagement.end_date else (datetime.now(timezone.utc) - engagement.start_date).days,
             },
             'summary': {
                 'total_targets': len(targets),
@@ -637,7 +638,7 @@ class RedTeamAgent:
 
     def _generate_id(self, prefix: str) -> str:
         """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
+        timestamp = datetime.now(timezone.utc).strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
@@ -913,7 +914,7 @@ if __name__ == "__main__":
     engagement = agent.create_engagement(
         name="Q2 Red Team Exercise",
         engagement_type=EngagementType.RED_TEAM,
-        start_date=datetime.utcnow(),
+        start_date=datetime.now(timezone.utc),
         scope=["10.0.0.0/24", "example.com"],
         objectives=["Gain domain admin", "Access sensitive data", "Test detection"],
         rules_of_engagement=["No production impact", "Business hours only"],
@@ -981,7 +982,7 @@ if __name__ == "__main__":
 
     # Generate report
     report = agent.generate_engagement_report(engagement.engagement_id)
-    print(f"\nEngagement Report:")
+    print("\nEngagement Report:")
     print(f"  Targets: {report['summary']['total_targets']}")
     print(f"  Compromised: {report['summary']['compromised_targets']}")
     print(f"  Findings: {report['summary']['total_findings']}")

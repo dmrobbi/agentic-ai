@@ -10,10 +10,8 @@ Integration tests for event-driven architecture:
 """
 
 import pytest
-import time
 from datetime import datetime, timedelta
-from unittest.mock import Mock, patch, MagicMock
-from typing import List
+from unittest.mock import Mock, patch
 
 from agentic_ai.messaging.message_bus import MessageBus, Message, MessageType
 from agentic_ai.messaging.event_bus import EventBus, Event, EventPriority, on_event
@@ -163,7 +161,7 @@ class TestMessageBus:
         
         mock_redis.lrange.return_value = [str(dlq_message)]
         
-        result = bus.retry_dlq_message(0)
+        bus.retry_dlq_message(0)
         
         # Should republish original message
         assert mock_redis.publish.called

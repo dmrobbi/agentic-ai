@@ -19,7 +19,7 @@ import logging
 import socket
 import struct
 import json
-from typing import List, Dict, Optional, Tuple
+from typing import List, Dict, Tuple
 from datetime import datetime
 from dataclasses import dataclass, field
 
@@ -32,8 +32,8 @@ logger = logging.getLogger('ModbusClient')
 
 # Try to import pymodbus, fall back to socket-based implementation
 try:
-    from pymodbus.client import ModbusTcpClient
-    from pymodbus.exceptions import ModbusException
+    from pymodbus.client import ModbusTcpClient  # noqa: F401
+    from pymodbus.exceptions import ModbusException  # noqa: F401
     PYMODBUS_AVAILABLE = True
 except ImportError:
     PYMODBUS_AVAILABLE = False
@@ -143,8 +143,8 @@ class ModbusClient:
         
         logger.info(f"📡 Modbus Client v{self.VERSION} initialized")
         logger.info(f"🎯 Target: {host}:{port}")
-        logger.warning(f"⚠️  WARNING: Testing SCADA/ICS systems can cause physical damage!")
-        logger.warning(f"⚠️  ONLY test on isolated lab systems!")
+        logger.warning("⚠️  WARNING: Testing SCADA/ICS systems can cause physical damage!")
+        logger.warning("⚠️  ONLY test on isolated lab systems!")
     
     def _build_modbus_request(self, unit_id: int, function_code: int, 
                                data: bytes = b'') -> bytes:
@@ -174,8 +174,8 @@ class ModbusClient:
         
         return packet
     
-    def _send_request(self, unit_id: int, function_code: int, 
-                      data: bytes = b') -> Tuple[bool, bytes]:
+    def _send_request(self, unit_id: int, function_code: int,
+                      data: bytes = b'') -> Tuple[bool, bytes]:
         """
         Send Modbus request
         
@@ -357,7 +357,7 @@ class ModbusClient:
                 logger.error(f"❌ Write failed: {exception['message']}")
                 return False
             
-            logger.warning(f"⚠️  COIL WRITE SUCCESSFUL!")
+            logger.warning("⚠️  COIL WRITE SUCCESSFUL!")
             self.device.vulnerabilities.append({
                 'type': 'unauthorized_coil_write',
                 'severity': 'critical',
@@ -434,7 +434,7 @@ class ModbusClient:
                 logger.error(f"❌ Write failed: {exception['message']}")
                 return False
             
-            logger.warning(f"⚠️  REGISTER WRITE SUCCESSFUL!")
+            logger.warning("⚠️  REGISTER WRITE SUCCESSFUL!")
             self.device.vulnerabilities.append({
                 'type': 'unauthorized_register_write',
                 'severity': 'critical',
@@ -666,11 +666,11 @@ class ModbusClient:
                     logger.info(f"📊 Read {len(registers)} registers")
                 
                 # Test function codes
-                fc_results = self.test_function_codes(unit_id)
+                self.test_function_codes(unit_id)
                 
                 # Test write access (CAREFUL!)
                 # Only test on lab systems!
-                logger.info(f"⚠️  Testing write access (LAB ONLY)...")
+                logger.info("⚠️  Testing write access (LAB ONLY)...")
                 if self.write_coil(unit_id, 0, True):
                     # Write back to original value
                     original_value = self.device.coils.get(0, False)

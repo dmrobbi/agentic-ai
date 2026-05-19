@@ -60,7 +60,6 @@ EXTRA_TOOLS = {
     'poetry-security': {'package': 'poetry', 'category': 'vulnerability-analysis', 'desc': 'Poetry security', 'mb': 5.0, 'priority': 7, 'tags': ['python', 'poetry']},
     
     # More web apps (20)
-    'sqlmap': {'package': 'sqlmap', 'category': 'web-application', 'desc': 'SQL injection', 'mb': 3.2, 'priority': 10, 'tags': ['sqli']},
     'nosqlmap': {'package': 'nosqlmap', 'category': 'web-application', 'desc': 'NoSQL injection', 'mb': 2.0, 'priority': 8, 'tags': ['nosql']},
     'xspear': {'package': 'xspear', 'category': 'web-application', 'desc': 'XSS scanner', 'mb': 1.5, 'priority': 7, 'tags': ['xss']},
     'xss-conqueror': {'package': 'xss-conqueror', 'category': 'web-application', 'desc': 'XSS conqueror', 'mb': 2.0, 'priority': 7, 'tags': ['xss']},
@@ -281,7 +280,7 @@ for tool, info in FINAL_TOOLS.items():
     cat = info['category']
     categories[cat] = categories.get(cat, 0) + 1
 
-print(f"\n📊 Tools by category:")
+print("\n📊 Tools by category:")
 for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
     print(f"  {cat}: {count} tools")
 

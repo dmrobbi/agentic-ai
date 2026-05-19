@@ -16,7 +16,7 @@ import logging
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple, Callable
 from enum import Enum
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from datetime import datetime, timedelta
 
 # Configure logging
@@ -878,11 +878,11 @@ def main():
     args = parser.parse_args()
     
     auth_manager = AuthorizationManager()
-    gate = AuthorizationGate(auth_manager)
+    AuthorizationGate(auth_manager)
     
     if args.set_pin:
         auth_manager._set_pin(args.set_pin)
-        print(f"✅ PIN set successfully")
+        print("✅ PIN set successfully")
         print("⚠️  Remember this PIN - it's required for ADVANCED and CRITICAL actions")
     
     elif args.check:
@@ -928,7 +928,7 @@ def main():
         else:
             print("  No pending authorizations")
         
-        print(f"\nActive Cooldowns:")
+        print("\nActive Cooldowns:")
         for action, cooldown_end in auth_manager.cooldowns.items():
             remaining = auth_manager._get_cooldown_remaining(action)
             if remaining > 0:

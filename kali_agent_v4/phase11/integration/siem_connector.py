@@ -20,7 +20,8 @@ import logging
 import json
 import requests
 from typing import List, Dict, Optional
-from datetime import datetime, timedelta
+from datetime import datetime, timezone
+UTC = timezone.utc, timedelta
 from abc import ABC, abstractmethod
 
 logging.basicConfig(level=logging.INFO)
@@ -226,7 +227,7 @@ class ElasticConnector(SIEMConnector):
             url = f"http://{self.host}:{self.port}"
             
             if self.api_key:
-                headers = {'Authorization': f'ApiKey {self.api_key}'}
+                pass
             elif self.username and self.password:
                 from requests.auth import HTTPBasicAuth
                 response = requests.get(url, auth=HTTPBasicAuth(self.username, self.password))

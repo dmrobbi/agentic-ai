@@ -348,7 +348,7 @@ class TestCollaborationSession:
     def test_session_capacity_limit(self, session_imports):
         """Test session capacity limit."""
         CollaborationSession = session_imports['CollaborationSession']
-        SessionConfig = session_imports['SessionConfig']
+        session_imports['SessionConfig']
         
         session = CollaborationSession(name="Test", creator_id="user-1")
         session.config.max_participants = 2
@@ -403,7 +403,7 @@ class TestSessionManager:
     def test_list_sessions(self, session_imports):
         """Test listing sessions."""
         SessionManager = session_imports['SessionManager']
-        SessionStatus = session_imports['SessionStatus']
+        session_imports['SessionStatus']
         
         manager = SessionManager()
         manager.create_session(name="Session 1", creator_id="user-1")
@@ -493,7 +493,7 @@ class TestSessionIntegration:
         assert session.status == SessionStatus.ACTIVE
         
         # Participants join
-        alice = session.join(user_id="alice", name="Alice")
+        session.join(user_id="alice", name="Alice")
         bob = session.join(user_id="bob", name="Bob")
         charlie = session.join(user_id="charlie", name="Charlie")
         
@@ -518,7 +518,7 @@ class TestSessionIntegration:
     def test_multi_session_manager(self, session_imports):
         """Test managing multiple sessions."""
         SessionManager = session_imports['SessionManager']
-        SessionStatus = session_imports['SessionStatus']
+        session_imports['SessionStatus']
         
         manager = SessionManager()
         

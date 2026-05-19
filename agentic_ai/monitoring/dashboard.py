@@ -7,7 +7,7 @@ Real-time dashboard for visualizing agent and workflow metrics.
 
 from typing import Dict, Any, List, Optional, Callable
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
 import json
 
@@ -25,7 +25,7 @@ class WidgetType(str, Enum):
 class DashboardWidget:
     """Dashboard widget configuration."""
 
-    widget_id: str = field(default_factory=lambda: str(hash(datetime.utcnow()))[:8])
+    widget_id: str = field(default_factory=lambda: str(hash(datetime.now(timezone.utc)))[:8])
     title: str = ""
     widget_type: WidgetType = WidgetType.GAUGE
     metric_name: str = ""
@@ -64,7 +64,7 @@ class DashboardWidget:
 class Dashboard:
     """Metrics dashboard configuration."""
 
-    dashboard_id: str = field(default_factory=lambda: str(hash(datetime.utcnow()))[:8])
+    dashboard_id: str = field(default_factory=lambda: str(hash(datetime.now(timezone.utc)))[:8])
     name: str = ""
     description: str = ""
     widgets: List[DashboardWidget] = field(default_factory=list)

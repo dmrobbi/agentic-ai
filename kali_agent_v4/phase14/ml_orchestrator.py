@@ -16,7 +16,7 @@ Status: Alpha (0.1.0)
 import logging
 from typing import List, Dict, Optional, Any
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timezone
 import json
 import sys
 from pathlib import Path
@@ -118,11 +118,16 @@ class MLOrchestrator:
     def _count_components(self) -> int:
         """Count initialized components"""
         count = 0
-        if self.lstm_detector: count += 1
-        if self.autoencoder_detector: count += 1
-        if self.nlp_extractor: count += 1
-        if self.nlp_classifier: count += 1
-        if self.registry: count += 1
+        if self.lstm_detector:
+            count += 1
+        if self.autoencoder_detector:
+            count += 1
+        if self.nlp_extractor:
+            count += 1
+        if self.nlp_classifier:
+            count += 1
+        if self.registry:
+            count += 1
         return count
     
     def _initialize_components(self, registry_path: str = None):
@@ -188,7 +193,7 @@ class MLOrchestrator:
         Returns:
             MLAnalysisResult with unified analysis
         """
-        logger.info(f"📊 Analyzing threat report...")
+        logger.info("📊 Analyzing threat report...")
         
         result = MLAnalysisResult(
             id=datetime.now().strftime("%Y%m%d%H%M%S"),
@@ -240,7 +245,7 @@ class MLOrchestrator:
         Returns:
             MLAnalysisResult with LSTM analysis
         """
-        logger.info(f"📊 Analyzing time-series data...")
+        logger.info("📊 Analyzing time-series data...")
         
         import numpy as np
         result = MLAnalysisResult(
@@ -282,10 +287,9 @@ class MLOrchestrator:
         Returns:
             Training results
         """
-        logger.info(f"📚 Training ML models...")
+        logger.info("📚 Training ML models...")
         results = {}
         
-        import numpy as np
         
         # Train LSTM
         if self.lstm_detector and 'lstm' in training_data:
@@ -326,7 +330,7 @@ class MLOrchestrator:
                     description="Autoencoder novelty detector v1.0"
                 )
         
-        logger.info(f"✅ Training complete")
+        logger.info("✅ Training complete")
         return results
     
     def _calculate_threat_score(self, result: MLAnalysisResult) -> float:
@@ -458,12 +462,12 @@ Unified ML pipeline integrating Phase 11-14
     result = orchestrator.analyze_threat_report(sample_report)
     
     # Display results
-    print(f"\n✅ ML Analysis Complete:")
+    print("\n✅ ML Analysis Complete:")
     print(f"   Threat Score: {result.threat_score:.2f}")
     print(f"   Threat Level: {result.threat_level.upper()}")
     
     if result.nlp_iocs:
-        print(f"\n📍 Extracted IOCs:")
+        print("\n📍 Extracted IOCs:")
         if result.nlp_iocs.get('ip_addresses'):
             print(f"   IPs: {', '.join(result.nlp_iocs['ip_addresses'])}")
         if result.nlp_iocs.get('threat_actors'):
@@ -474,17 +478,17 @@ Unified ML pipeline integrating Phase 11-14
             print(f"   CVEs: {', '.join(result.nlp_iocs['cves'])}")
     
     if result.nlp_classification:
-        print(f"\n🏷️  Classification:")
+        print("\n🏷️  Classification:")
         print(f"   Type: {result.nlp_classification.get('threat_type', 'Unknown')}")
         print(f"   Severity: {result.nlp_classification.get('severity', 'Unknown')}")
     
-    print(f"\n💡 Recommendations:")
+    print("\n💡 Recommendations:")
     for i, rec in enumerate(result.recommendations, 1):
         print(f"   {i}. {rec}")
     
     # Export
     orchestrator.export_analysis(result, "./ml_analysis_result.json")
-    print(f"\n💾 Analysis exported to ./ml_analysis_result.json")
+    print("\n💾 Analysis exported to ./ml_analysis_result.json")
     
     print("\n" + "="*70)
     print("✅ ML Orchestrator demo complete!")

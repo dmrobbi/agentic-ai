@@ -8,7 +8,6 @@ trend detection, and automated reporting.
 
 import pytest
 import random
-from datetime import datetime, timedelta
 
 from agentic_ai.agents.data_analyst import DataAnalystAgent
 

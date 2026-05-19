@@ -6,7 +6,7 @@ Tests for Inference Server and State Store
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
+from unittest.mock import patch, MagicMock
 import json
 
 # Add parent to path for imports
@@ -152,7 +152,7 @@ class TestACPMessage:
     
     def test_message_serialization(self):
         """Test message JSON serialization."""
-        from agentic_ai.protocol.acp import ACPMessage, MessageType, Priority
+        from agentic_ai.protocol.acp import ACPMessage, MessageType
         
         msg = ACPMessage(
             type=MessageType.QUERY,

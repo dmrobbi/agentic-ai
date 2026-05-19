@@ -8,8 +8,7 @@ Tests that verify all components work together.
 import pytest
 import sys
 from pathlib import Path
-from unittest.mock import Mock, patch, MagicMock
-import asyncio
+from unittest.mock import patch, MagicMock
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -37,14 +36,14 @@ class TestIntegration:
     def test_full_import_chain(self):
         """Test that all modules can be imported."""
         # Infrastructure
-        from agentic_ai.infrastructure.inference import InferenceServer, get_inference_server
+        from agentic_ai.infrastructure.inference import InferenceServer
         from agentic_ai.infrastructure.state import StateStore
         
         # Protocol
-        from agentic_ai.protocol.acp import ACPMessage, ACPBus, MessageType, Priority
+        from agentic_ai.protocol.acp import ACPMessage, ACPBus
         
         # Agents
-        from agentic_ai.agents.base import BaseAgent, AgentStatus, Permission
+        from agentic_ai.agents.base import BaseAgent
         
         # Verify classes exist
         assert InferenceServer is not None

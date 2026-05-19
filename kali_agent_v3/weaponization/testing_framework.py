@@ -9,12 +9,11 @@ Task: 3.3.3
 Status: IMPLEMENTED
 """
 
-import os
 import subprocess
 import hashlib
 import logging
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -139,7 +138,7 @@ class PayloadTester:
             ]
         
         results = []
-        start_time = datetime.now()
+        datetime.now()
         
         # Run each test
         for test_type in test_types:
@@ -518,7 +517,7 @@ class PayloadTester:
                     return TestResult(
                         test_type=TestType.FUNCTIONAL,
                         success=False,
-                        message=f"FAIL: PowerShell syntax error",
+                        message="FAIL: PowerShell syntax error",
                         duration_ms=0,
                         details={'error': result.stderr.decode('utf-8', errors='ignore')[:200]}
                     )
@@ -542,7 +541,7 @@ class PayloadTester:
                     return TestResult(
                         test_type=TestType.FUNCTIONAL,
                         success=False,
-                        message=f"FAIL: Python syntax error",
+                        message="FAIL: Python syntax error",
                         duration_ms=0,
                         details={'error': result.stderr.decode('utf-8', errors='ignore')[:200]}
                     )
@@ -566,7 +565,7 @@ class PayloadTester:
                     return TestResult(
                         test_type=TestType.FUNCTIONAL,
                         success=False,
-                        message=f"FAIL: Bash syntax error",
+                        message="FAIL: Bash syntax error",
                         duration_ms=0,
                         details={'error': result.stderr.decode('utf-8', errors='ignore')[:200]}
                     )

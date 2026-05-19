@@ -17,7 +17,6 @@ Output:
 
 import asyncio
 from pathlib import Path
-from datetime import datetime
 import sys
 
 try:
@@ -166,7 +165,7 @@ async def capture_screenshots():
     try:
         urllib.request.urlopen(DASHBOARD_URL, timeout=5)
         print_success(f"Dashboard is running at {DASHBOARD_URL}")
-    except Exception as e:
+    except Exception:
         print_error(f"Dashboard is NOT running at {DASHBOARD_URL}")
         print("\nPlease start the dashboard:")
         print("  cd kali_dashboard/frontend")
@@ -209,7 +208,7 @@ async def capture_screenshots():
                 try:
                     await page.wait_for_selector(f"text={screenshot['wait_for']}", 
                                                timeout=3000)
-                except:
+                except Exception:
                     # Fallback: just wait a bit
                     await page.wait_for_timeout(2000)
                 
@@ -237,7 +236,7 @@ async def capture_screenshots():
     
     # Summary
     print(f"\n{'═' * 70}")
-    print(f"  Capture Complete")
+    print("  Capture Complete")
     print(f"{'═' * 70}\n")
     print(f"Captured: {captured}/{len(SCREENSHOTS)}")
     print(f"Failed:   {failed}/{len(SCREENSHOTS)}\n")

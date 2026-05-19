@@ -259,7 +259,7 @@ for tool, info in ALL_TOOLS.items():
     cat = info['category']
     categories[cat] = categories.get(cat, 0) + 1
 
-print(f"\n📊 Tools by category:")
+print("\n📊 Tools by category:")
 for cat, count in sorted(categories.items(), key=lambda x: -x[1]):
     print(f"  {cat}: {count} tools")
 

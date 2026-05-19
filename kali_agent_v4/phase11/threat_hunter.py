@@ -19,7 +19,7 @@ Status: Alpha (0.1.0)
 import logging
 import json
 from typing import List, Dict, Optional
-from datetime import datetime, timedelta
+from datetime import datetime
 from dataclasses import dataclass, field
 from enum import Enum
 
@@ -325,7 +325,7 @@ class ThreatHunter:
         
         finding = ThreatFinding(
             id=str(uuid.uuid4()),
-            title=f"Suspicious Activity Detected",
+            title="Suspicious Activity Detected",
             description=f"Found {len(suspicious)} suspicious patterns",
             severity=severity,
             confidence=confidence,
@@ -389,12 +389,12 @@ class ThreatHunter:
             step_type = step.get('type')
             
             if step_type == 'log_query':
-                query = step.get('query')
+                step.get('query')
                 # Execute log query
                 pass
             
             elif step_type == 'ioc_scan':
-                iocs = step.get('iocs')
+                step.get('iocs')
                 # Scan IOCs
                 pass
             
@@ -522,7 +522,7 @@ def main():
     hunter = ThreatHunter(verbose=True)
     
     # Start hunt
-    session = hunter.start_hunt("Initial Threat Hunt", {'systems': 10})
+    hunter.start_hunt("Initial Threat Hunt", {'systems': 10})
     
     # Simulate logs
     logs = [
@@ -532,7 +532,7 @@ def main():
     ]
     
     # Analyze logs
-    findings = hunter.analyze_logs(logs)
+    hunter.analyze_logs(logs)
     
     # End hunt
     hunter.end_hunt()

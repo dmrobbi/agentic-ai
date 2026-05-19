@@ -28,15 +28,12 @@ Version: 1.0.0
 """
 
 import argparse
-import sys
 import logging
 import json
-import re
 from datetime import datetime
 from dataclasses import dataclass, field
-from typing import List, Optional, Dict
+from typing import List, Dict
 from pathlib import Path
-from urllib.parse import urlparse
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s [%(levelname)s] %(message)s')
 logger = logging.getLogger('CVE-2025-29927')
@@ -402,10 +399,10 @@ class CVE2025_29927_Demo:
 🔄 ATTACK STEPS:""")
         for s in sc.attack_steps:
             print(f"  {s}")
-        print(f"\n🔍 DETECTION:")
+        print("\n🔍 DETECTION:")
         for d in sc.detection:
             print(f"  • {d}")
-        print(f"\n🛡️  MITIGATION:")
+        print("\n🛡️  MITIGATION:")
         for m in sc.mitigation:
             print(f"  • {m}")
 

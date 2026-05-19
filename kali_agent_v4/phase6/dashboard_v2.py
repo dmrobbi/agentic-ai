@@ -4,12 +4,9 @@ KaliAgent v4 - Phase 6: Professional Dashboard v2
 Modern web interface with real-time updates, dark theme, and data visualization
 """
 
-from flask import Flask, render_template_string, jsonify, request, send_from_directory
+from flask import Flask, render_template_string
 from flask_socketio import SocketIO, emit
-import json
-import os
 from datetime import datetime
-from typing import Dict, List
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'kaliagent-v4-dashboard-secret'
