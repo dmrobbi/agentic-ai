@@ -221,7 +221,7 @@ class DBConfig:
     port: int = 5433
     database: str = "postgres"
     user: str = "postgres"
-    password: str = ""
+    password: str = "StsGym2024PostgreSQL"
     # For writes use port 5433, for reads use 5434 (replicas)
     writer_port: int = 5433
     reader_port: int = 5434
