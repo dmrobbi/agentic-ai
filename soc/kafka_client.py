@@ -351,6 +351,51 @@ class SOCKafkaClient:
             logger.error(f"Consumer error: {e}")
             return
 
+    def consume_investigation_tasks(self, group_id: str = "soc-specialist-consumer", timeout: float = 1.0):
+        """
+        Yield InvestigationTask objects from soc.investigation.tasks.
+        Used by specialist agents to consume their assigned tasks.
+        """
+        try:
+            from confluent_kafka import Consumer
+
+            consumer = Consumer({
+                "bootstrap.servers": self.bootstrap_server,
+                "group.id": group_id,
+                "auto.offset.reset": "earliest",
+                "enable.auto.commit": True,
+                "client.id": f"soc-specialist-consumer-{group_id}",
+            })
+            consumer.subscribe([self.TOPIC_INVESTIGATION_TASKS])
+
+            logger.info(f"Kafka specialist consumer started, group={group_id}")
+
+            try:
+                while True:
+                    msg = consumer.poll(timeout)
+                    if msg is None:
+                        continue
+                    if msg.error():
+                        logger.warning(f"Kafka error: {msg.error()}")
+                        continue
+
+                    try:
+                        data = json.loads(msg.value())
+                        task = InvestigationTask(**data)
+                        yield task
+                    except Exception as e:
+                        logger.error(f"Failed to parse investigation task: {e}")
+
+            finally:
+                consumer.close()
+
+        except ImportError:
+            logger.error("confluent-kafka not installed — cannot consume tasks")
+            return
+        except Exception as e:
+            logger.error(f"Consumer error: {e}")
+            return
+
     # ─────────────────────────────────────────────
     # Flush on exit
     # ─────────────────────────────────────────────
