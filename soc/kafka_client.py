@@ -133,8 +133,9 @@ class SOCKafkaClient:
     Produces to and consumes from SOC Kafka topics.
     """
 
-    # Kafka bootstrap server
-    BOOTSTRAP_SERVER = "207.244.226.151:9092"
+    # Kafka bootstrap servers (external ports on miner)
+    # kafka-0 → 9094, kafka-1 → 9095, kafka-2 → 9096
+    BOOTSTRAP_SERVER = "207.244.226.151:9094,207.244.226.151:9095,207.244.226.151:9096"
 
     # Topics
     TOPIC_ALERTS_RAW = "soc.alerts.raw"
@@ -313,7 +314,7 @@ class SOCKafkaClient:
         Use this as the main entry point for the Lead Agent.
         """
         try:
-            from confluent_kafka import Consumer, ConsumerConfig
+            from confluent_kafka import Consumer
 
             consumer = Consumer({
                 "bootstrap.servers": self.bootstrap_server,
@@ -323,6 +324,11 @@ class SOCKafkaClient:
                 "client.id": f"soc-conversation-consumer-{group_id}",
             })
             consumer.subscribe([self.TOPIC_ALERTS_RAW])
+
+            # Wait for initial partition assignment before polling
+            # to avoid timing issues with group join
+            import time
+            time.sleep(2.0)
 
             logger.info(f"Kafka consumer started, group={group_id}")
 
