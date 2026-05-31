@@ -5,7 +5,7 @@ Base agent classes and shared types for the agentic-ai framework.
 from enum import Enum
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, Any, Optional, List, Callable, Tuple, Union
+from typing import Dict, Any, Optional, List, Callable, Tuple
 from collections import OrderedDict
 import logging
 import asyncio
@@ -56,7 +56,7 @@ class Tool:
     """A tool that an agent can use."""
     name: str
     description: str = ""
-    func: Optional[Callable] = None
+    func: Callable = None
     parameters: Dict[str, Any] = field(default_factory=dict)
     requires_permission: Permission = Permission.STANDARD
 
@@ -140,10 +140,9 @@ class BaseAgent:
     agent_type: str = "base"
     permission: Permission = Permission.STANDARD
 
-    def __init__(self, agent_id: Optional[str] = None, name: Optional[str] = None,
-                 inference_engine: Optional[Any] = None, state_store: Optional[Any] = None,
-                 message_bus: Optional[Any] = None,
-                 permission: Optional[Permission] = None, knowledge: Optional[Any] = None,
+    def __init__(self, agent_id: str = None, name: str = None,
+                 inference_engine=None, state_store=None, message_bus=None,
+                 permission: Permission = None, knowledge=None,
                  rate_limiter: Optional['RateLimiter'] = None):
         self.agent_id = agent_id or f"{self.agent_type}-{id(self):08x}"
         self.name = name or self.agent_type
@@ -251,7 +250,7 @@ class BaseAgent:
         """Alias for inference_engine."""
         self.inference_engine = value
 
-    def log(self, action: str, details: Optional[Dict[str, Any]] = None):
+    def log(self, action: str, details: Dict[str, Any] = None):
         """Log an action for transparency."""
         entry = {
             "timestamp": datetime.now().isoformat(),
@@ -305,14 +304,13 @@ class BaseAgent:
         return True
 
     @trace_agent_method("think")
-    async def think(self, prompt: str, context: Optional[Dict[str, Any]] = None, response_model: Optional[Any] = None) -> str:
+    async def think(self, prompt: str, context: Dict[str, Any] = None, response_model=None) -> str:
         """Use LLM inference to reason about something. Optionally validate against a Pydantic model."""
         # Input guardrail
         sanitized, is_safe = self.input_guardrail(prompt)
         if not is_safe:
             return f"Error: Input blocked by guardrail"
 
-        result: str = "Generated response"
         if self.inference_engine:
             try:
                 gen = self.inference_engine.generate
@@ -323,6 +321,8 @@ class BaseAgent:
             except Exception as e:
                 logger.error(f"Inference failed: {e}")
                 return f"Error: {e}"
+        else:
+            result = "Generated response"
 
         # Output guardrail
         result, is_safe = self.output_guardrail(result)
@@ -333,10 +333,10 @@ class BaseAgent:
             try:
                 import json
                 parsed = response_model(**json.loads(result))
-                return str(parsed.model_dump_json())
+                return parsed.model_dump_json()
             except (json.JSONDecodeError, ValueError, TypeError):
                 pass  # Return raw result if parsing fails
-        return str(result)
+        return result
 
     @trace_agent_method("call_tool")
     async def call_tool(self, tool_name: str, **kwargs) -> Dict[str, Any]:
@@ -412,7 +412,7 @@ class BaseAgent:
         """Process an incoming message. Override in subclasses."""
         return None
 
-    async def reason(self, prompt: str, context: Optional[Dict[str, Any]] = None,
+    async def reason(self, prompt: str, context: Dict[str, Any] = None,
                      max_iterations: int = 5) -> Dict[str, Any]:
         """Iterative ReAct reasoning loop: think→act→observe."""
         loop = ReActLoop(max_iterations=max_iterations)
@@ -453,7 +453,7 @@ class BaseAgent:
 
         return trace.to_dict()
 
-    async def reflect(self, response: str, context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    async def reflect(self, response: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
         """Self-critique: evaluate response quality and suggest improvements."""
         reflection_prompt = f"""Evaluate the following response on a scale of 0.0 to 1.0.
 Provide a score, critique, and improved version if applicable.
@@ -516,6 +516,6 @@ Improved: <better version of the response, or "N/A" if good enough>"""
         )
 
     @trace_agent_method("perform_task")
-    async def perform_task(self, task_type: str, payload: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str, payload: Dict[str, Any] = None) -> Dict[str, Any]:
         """Perform a task. Override in subclasses."""
         return {"status": "done", "task_type": task_type}

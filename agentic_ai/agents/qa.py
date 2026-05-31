@@ -1,6 +1,6 @@
 """QA agent for testing and quality assurance."""
 from agentic_ai.agents.base import BaseAgent, Permission
-from typing import Dict, Any, List
+from typing import Optional, Dict, Any, List
 from pathlib import Path
 
 class QAAgent(BaseAgent):
@@ -68,7 +68,7 @@ class QAAgent(BaseAgent):
                 pass
         return {"bugs": bugs, "severity": severity, "language": language, "path": path, "count": len(bugs)}
 
-    def check_quality(self, path: str = "", standards: List[str] = None) -> Dict[str, Any]:
+    def check_quality(self, path: str = "", standards: Optional[List[str]] = None) -> Dict[str, Any]:
         result = {"quality_score": 0.95, "standards_checked": standards or [], "issues": [], "status": "pass", "path": path, "metrics": {"complexity": "low", "maintainability": 0.9, "reliability": 0.95}}
         if path:
             try:
@@ -83,7 +83,7 @@ class QAAgent(BaseAgent):
     def analyze_coverage(self, path: str = ".", test_type: str = "unit") -> Dict[str, Any]:
         return {"coverage": 0.85, "path": path, "uncovered_lines": [], "test_type": test_type}
 
-    def create_test_plan(self, feature: str = "", test_types: List[str] = None, path: str = "") -> Dict[str, Any]:
+    def create_test_plan(self, feature: str = "", test_types: Optional[List[str]] = None, path: str = "") -> Dict[str, Any]:
         return {"status": "created", "feature": feature, "test_types": test_types or ["unit", "integration"], "path": path, "tests": []}
 
     def execute_tests(self, test_plan_id: str = "", environment: str = "staging") -> Dict[str, Any]:
@@ -92,13 +92,13 @@ class QAAgent(BaseAgent):
     def report_bug(self, title: str = "", severity: str = "medium", description: str = "") -> Dict[str, Any]:
         return {"status": "reported", "bug_id": f"BUG-{hash(title) % 10000:04d}", "title": title, "severity": severity}
 
-    def validate_feature(self, feature_id: str = "", criteria: List[str] = None) -> Dict[str, Any]:
+    def validate_feature(self, feature_id: str = "", criteria: Optional[List[str]] = None) -> Dict[str, Any]:
         return {"status": "validated", "feature_id": feature_id, "passed": True}
 
     def regression_test(self, version: str = "", scope: str = "full") -> Dict[str, Any]:
         return {"status": "passed", "version": version, "scope": scope, "regressions": []}
 
-    async def perform_task(self, task_type: str = "", payload: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
         if task_type == "find_bugs":
             return self.find_bugs(**kwargs)
         elif task_type == "check_quality":

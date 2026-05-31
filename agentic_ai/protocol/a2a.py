@@ -6,11 +6,14 @@ A2A-compatible message types for inter-agent task communication,
 with bidirectional conversion to/from ACP messages.
 """
 
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any, List, TYPE_CHECKING
 from dataclasses import dataclass, field
 import uuid
 import json
 from agentic_ai.infrastructure.utils import utcnow
+
+if TYPE_CHECKING:
+    from agentic_ai.protocol.acp import ACPMessage
 
 
 @dataclass

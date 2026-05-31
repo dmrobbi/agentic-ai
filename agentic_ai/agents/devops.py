@@ -359,8 +359,8 @@ class DevOpsAgent(BaseAgent):
 
     def get_infrastructure_summary(self) -> Dict[str, Any]:
         """Get infrastructure summary."""
-        by_type = {}
-        by_status = {}
+        by_type: Dict[str, int] = {}
+        by_status: Dict[str, int] = {}
         total_cost = 0.0
 
         for resource in self.infrastructure.values():

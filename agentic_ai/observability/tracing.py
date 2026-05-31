@@ -11,7 +11,7 @@ _tracer = None
 _tracing_enabled = False
 
 
-def setup_tracing(service_name: str = "agentic-ai", endpoint: str = None):
+def setup_tracing(service_name: str = "agentic-ai", endpoint: Optional[str] = None):
     """Initialize OpenTelemetry tracing.
 
     Args:

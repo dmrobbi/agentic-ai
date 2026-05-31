@@ -752,7 +752,7 @@ class SecurityAgent(BaseAgent):
         ]
 
         # Count failed logins per user
-        failed_by_user = {}
+        failed_by_user: Dict[str, int] = {}
         for log in recent_logs:
             if not log['success'] and log['action'] == 'login':
                 user_id = log['user_id']
@@ -883,14 +883,14 @@ class SecurityAgent(BaseAgent):
         cutoff = utcnow() - timedelta(days=period_days)
 
         # Count findings by severity
-        findings_by_severity = {}
+        findings_by_severity: Dict[str, int] = {}
         for finding in self.findings.values():
             if finding.created_at > cutoff:
                 sev = finding.severity.value
                 findings_by_severity[sev] = findings_by_severity.get(sev, 0) + 1
 
         # Count incidents by status
-        incidents_by_status = {}
+        incidents_by_status: Dict[str, int] = {}
         for incident in self.incidents.values():
             if incident.detected_at > cutoff:
                 status = incident.status

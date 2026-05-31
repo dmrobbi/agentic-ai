@@ -1,6 +1,6 @@
 """Developer agent for code review, implementation, and testing."""
 from agentic_ai.agents.base import BaseAgent, Permission
-from typing import Dict, Any, List
+from typing import Optional, Dict, Any, List
 from pathlib import Path
 
 class DeveloperAgent(BaseAgent):
@@ -91,7 +91,7 @@ class DeveloperAgent(BaseAgent):
     def generate_docs(self, code: str = "", format: str = "markdown") -> Dict[str, Any]:
         return {"status": "generated", "format": format}
 
-    async def perform_task(self, task_type: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         params = params or {}
         if task_type == "implement":
             return self.implement_feature(**params)

@@ -58,7 +58,7 @@ class InferenceServer:
     """Manages inference requests for agents."""
 
     def __init__(self, host: str = "10.0.0.117", port: int = 11434,
-                 timeout: float = 120.0, config: InferenceConfig = None,
+                 timeout: float = 120.0, config: Optional[InferenceConfig] = None,
                  stub: bool = False):
         self.stub = stub
         self.host = host
@@ -76,7 +76,7 @@ class InferenceServer:
         self._default_model = os.environ.get("LLM_DEFAULT_MODEL", self.config.default_model)
         self._model_map: Dict[str, str] = dict(self.config.model_map)
 
-    def load_model(self, model_name: str = "", config: Dict[str, Any] = None) -> Dict[str, Any]:
+    def load_model(self, model_name: str = "", config: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         model = model_name or self.config.model_name
         self.status = InferenceStatus.LOADING
         self._models[model] = {
@@ -244,7 +244,7 @@ class InferenceServer:
 _inference_server: Optional[InferenceServer] = None
 
 
-def get_inference_server(config: InferenceConfig = None) -> InferenceServer:
+def get_inference_server(config: Optional[InferenceConfig] = None) -> InferenceServer:
     """Get or create the global inference server instance."""
     global _inference_server
     if _inference_server is None:

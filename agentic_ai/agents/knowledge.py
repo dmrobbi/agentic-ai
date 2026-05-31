@@ -44,7 +44,7 @@ class AgentKnowledge:
     """
 
     def __init__(self, collection_name: str = "agent_knowledge",
-                 persist_dir: str = None):
+                 persist_dir: Optional[str] = None):
         self.collection_name = collection_name
         self.persist_dir = persist_dir
         self._entries: Dict[str, KnowledgeEntry] = {}
@@ -72,8 +72,8 @@ class AgentKnowledge:
         """Whether vector store (ChromaDB) is available."""
         return self._collection is not None
 
-    def store(self, text: str, metadata: Dict[str, Any] = None,
-              doc_id: str = None) -> str:
+    def store(self, text: str, metadata: Optional[Dict[str, Any]] = None,
+              doc_id: Optional[str] = None) -> str:
         """Store a document in the knowledge base.
 
         Args:
@@ -173,7 +173,7 @@ class AgentKnowledge:
         """Return number of documents in the knowledge base."""
         if self._collection is not None:
             try:
-                return self._collection.count()
+                return int(self._collection.count())
             except Exception:
                 pass
         return len(self._entries)

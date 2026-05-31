@@ -507,19 +507,19 @@ class SupportAgent(BaseAgent):
         recent_tickets = [t for t in self.tickets.values() if t.created_at > cutoff]
 
         # Status breakdown
-        by_status = {}
+        by_status: Dict[str, int] = {}
         for ticket in recent_tickets:
             status = ticket.status.value
             by_status[status] = by_status.get(status, 0) + 1
 
         # Priority breakdown
-        by_priority = {}
+        by_priority: Dict[str, int] = {}
         for ticket in recent_tickets:
             priority = ticket.priority.value
             by_priority[priority] = by_priority.get(priority, 0) + 1
 
         # Category breakdown
-        by_category = {}
+        by_category: Dict[str, int] = {}
         for ticket in recent_tickets:
             category = ticket.category.value
             by_category[category] = by_category.get(category, 0) + 1

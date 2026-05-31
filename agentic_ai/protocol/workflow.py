@@ -6,7 +6,7 @@ Enhanced workflow support for parallel execution, conditional branching,
 retry logic, and rollback mechanisms.
 """
 
-from typing import Optional, Dict, Any, List, Callable, TYPE_CHECKING
+from typing import Optional, Dict, Any, List, Callable
 from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
@@ -17,10 +17,6 @@ from simpleeval import simple_eval, InvalidExpression
 from agentic_ai.infrastructure.utils import utcnow
 
 logger = logging.getLogger(__name__)
-
-if TYPE_CHECKING:
-    from .workflow import Task
-
 
 class TaskStatus(str, Enum):
     """Enhanced task status."""
@@ -100,7 +96,7 @@ class Condition:
 
         if self.type == "function" and self.function:
             try:
-                return self.function(context)
+                return bool(self.function(context))
             except Exception:
                 logger.warning("Condition function evaluation failed", exc_info=True)
                 return False

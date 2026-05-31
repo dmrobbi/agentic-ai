@@ -64,9 +64,9 @@ class FinanceAgent(BaseAgent):
     agent_type = "finance"
     permission = Permission.STANDARD
 
-    def __init__(self, agent_id: str = None, name: str = None,
+    def __init__(self, agent_id: Optional[str] = None, name: Optional[str] = None,
                  inference_engine=None, state_store=None, message_bus=None,
-                 permission: Permission = None):
+                 permission: Optional[Permission] = None):
         super().__init__(agent_id=agent_id, name=name,
                          inference_engine=inference_engine,
                          state_store=state_store, message_bus=message_bus)
@@ -97,8 +97,8 @@ class FinanceAgent(BaseAgent):
         return {"status": "recorded", "transaction_id": transaction_id, "txn_id": txn_id, "type": type, "amount": amount, "category": category}
 
     def create_budget(self, budget_name: str = "", name: str = "", total: float = 0.0,
-                      categories: Dict[str, float] = None,
-                      permission: Permission = None) -> Dict[str, Any]:
+                      categories: Optional[Dict[str, float]] = None,
+                      permission: Optional[Permission] = None) -> Dict[str, Any]:
         # Support both budget_name and name
         budget_label = budget_name or name or "Default Budget"
         budget_id = f"BUD-{len(self.budgets)+1:04d}"
@@ -111,14 +111,14 @@ class FinanceAgent(BaseAgent):
     def analyze_spending(self, period: str = "month", category: str = "") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
         expenses = sum(t.amount for t in self.transactions if t.type == TransactionType.EXPENSE)
-        by_category = {}
+        by_category: Dict[str, float] = {}
         expense_transactions = [t for t in self.transactions if t.type == TransactionType.EXPENSE]
         for t in expense_transactions:
             by_category[t.category] = by_category.get(t.category, 0) + t.amount
         return {"period": period, "total_income": income, "total_expense": expenses, "total_spent": expenses, "net": income - expenses, "transaction_count": len(expense_transactions), "by_category": by_category}
 
     def create_invoice(self, customer: str = "", client: str = "", amount: float = 0.0,
-                       items: List[Dict[str, Any]] = None) -> Dict[str, Any]:
+                       items: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
         customer = customer or client
         item_subtotal = sum(item.get("amount", item.get("quantity", 1) * item.get("price", 0)) for item in (items or []))
         subtotal = amount or item_subtotal
@@ -132,7 +132,7 @@ class FinanceAgent(BaseAgent):
         expenses = sum(t.amount for t in self.transactions if t.type == TransactionType.EXPENSE)
         return {"report_type": report_type, "period": period, "income": income, "expenses": expenses, "net": income - expenses, "budget_count": len(self.budgets), "invoice_count": len(self.invoices)}
 
-    async def perform_task(self, task_type: str = "", payload: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
         if task_type == "record_transaction":
             return self.record_transaction(**kwargs)
         elif task_type == "create_budget":

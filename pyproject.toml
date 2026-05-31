@@ -1,0 +1,66 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentic-ai"
+version = "0.1.0"
+description = "Multi-agent AI framework with BMD simulation engines"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [
+    {name = "Wesley Robbins", email = "wes@stsgym.com"},
+]
+
+dependencies = [
+    "redis>=5.0.0",
+    "aiosqlite>=0.19.0",
+    "sqlalchemy>=2.0.0",
+    "ollama>=0.1.0",
+    "httpx>=0.26.0",
+    "fastapi>=0.109.0",
+    "uvicorn[standard]>=0.27.0",
+    "python-multipart>=0.0.6",
+    "prometheus-client>=0.19.0",
+    "python-dotenv>=1.0.0",
+    "pydantic>=2.5.0",
+    "pydantic-settings>=2.1.0",
+    "anyio>=4.2.0",
+    "structlog>=24.1.0",
+    "python-jose[cryptography]>=3.3.0",
+    "passlib[bcrypt]>=1.7.4",
+    "typing-extensions>=4.9.0",
+    "simpleeval>=1.0.0",
+    "litellm>=1.0.0",
+    "opentelemetry-api>=1.20.0",
+    "opentelemetry-sdk>=1.20.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7.0", "pytest-asyncio>=0.21", "pytest-cov>=4.0", "mypy>=1.0", "black>=23.0", "isort>=5.0"]
+vector = ["chromadb>=0.4.0"]
+otel = ["opentelemetry-api>=1.20.0", "opentelemetry-sdk>=1.20.0"]
+redis = ["redis>=4.0"]
+
+[project.scripts]
+agenticai = "agentic_ai.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+ignore_missing_imports = true
+
+[tool.black]
+line-length = 100
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+line_length = 100

@@ -398,7 +398,7 @@ class ResearchAgent(BaseAgent):
             return {'error': f'No publications found for topic: {topic}'}
 
         # Generate summary
-        review = {
+        review: Dict[str, Any] = {
             'topic': topic,
             'papers_analyzed': len(relevant),
             'date_range': f"{min(p.year for p in relevant)}-{max(p.year for p in relevant)}",

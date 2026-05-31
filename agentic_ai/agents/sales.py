@@ -57,7 +57,7 @@ class SalesAgent(BaseAgent):
     agent_type = "sales"
     permission = Permission.STANDARD
 
-    def __init__(self, agent_id: str = None, name: str = None,
+    def __init__(self, agent_id: Optional[str] = None, name: Optional[str] = None,
                  inference_engine=None, state_store=None, message_bus=None,
                  crm_path: str = "/tmp/crm"):
         super().__init__(agent_id=agent_id, name=name,

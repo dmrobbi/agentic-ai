@@ -351,7 +351,7 @@ class EventBus:
         if not self._redis:
             return 0
 
-        return self._redis.xlen(self._get_stream_key(event_type))
+        return int(self._redis.xlen(self._get_stream_key(event_type)))
 
     def trim_stream(self, event_type: str, max_length: int) -> None:
         """Trim event stream to max length."""

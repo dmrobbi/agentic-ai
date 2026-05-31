@@ -263,8 +263,8 @@ class PrivacyAgent(BaseAgent):
         name: str = "",
         email: str = "",
         jurisdiction: str = "US",
-        applicable_regulations: Optional[List[PrivacyRegulation]] = None,
-        subject_id: str = None,
+        applicable_regulations: Optional[List[PrivacyRegulation]] = None,  # type: ignore[valid-type]
+        subject_id: Optional[str] = None,
     ) -> DataSubject:
         """Register a data subject."""
         sid = subject_id or self._generate_id("subj")
@@ -294,7 +294,7 @@ class PrivacyAgent(BaseAgent):
     def get_data_subjects(
         self,
         jurisdiction: Optional[str] = None,
-        regulation: Optional[PrivacyRegulation] = None,
+        regulation: Optional[PrivacyRegulation] = None,  # type: ignore[valid-type]
     ) -> List[DataSubject]:
         """Get data subjects with filtering."""
         subjects = list(self.data_subjects.values())
@@ -314,7 +314,7 @@ class PrivacyAgent(BaseAgent):
     def create_request(
         self,
         subject_id: str,
-        right_type: DataSubjectRight,
+        right_type: DataSubjectRight,  # type: ignore[valid-type]
         assigned_to: Optional[str] = None,
     ) -> DataSubjectRequest:
         """Create a data subject rights request."""
@@ -343,7 +343,7 @@ class PrivacyAgent(BaseAgent):
         self.requests[request.request_id] = request
         subject.requests_count += 1
 
-        logger.info(f"Created {right_type.value} request for {subject.email}")
+        logger.info(f"Created {right_type.value} request for {subject.email}")  # type: ignore[attr-defined]
         return request
 
     def verify_request(self, request_id: str) -> bool:
@@ -386,7 +386,7 @@ class PrivacyAgent(BaseAgent):
         self,
         subject_id: Optional[str] = None,
         status: Optional[RequestStatus] = None,
-        right_type: Optional[DataSubjectRight] = None,
+        right_type: Optional[DataSubjectRight] = None,  # type: ignore[valid-type]
         overdue_only: bool = False,
     ) -> List[DataSubjectRequest]:
         """Get requests with filtering."""
@@ -454,7 +454,7 @@ class PrivacyAgent(BaseAgent):
     def record_consent(
         self,
         subject_id: str,
-        purpose: ProcessingPurpose,
+        purpose: ProcessingPurpose,  # type: ignore[valid-type]
         method: str,
         ip_address: Optional[str] = None,
         user_agent: Optional[str] = None,
@@ -497,7 +497,7 @@ class PrivacyAgent(BaseAgent):
     def get_consents(
         self,
         subject_id: Optional[str] = None,
-        purpose: Optional[ProcessingPurpose] = None,
+        purpose: Optional[ProcessingPurpose] = None,  # type: ignore[valid-type]
         status: Optional[ConsentStatus] = None,
     ) -> List[ConsentRecord]:
         """Get consent records with filtering."""
@@ -514,7 +514,7 @@ class PrivacyAgent(BaseAgent):
 
         return consents
 
-    def check_valid_consent(self, subject_id: str, purpose: ProcessingPurpose) -> bool:
+    def check_valid_consent(self, subject_id: str, purpose: ProcessingPurpose) -> bool:  # type: ignore[valid-type]
         """Check if valid consent exists for a purpose."""
         consents = self.get_consents(
             subject_id=subject_id,
@@ -541,7 +541,7 @@ class PrivacyAgent(BaseAgent):
         name: str,
         description: str,
         data_categories: List[str],
-        purposes: List[ProcessingPurpose],
+        purposes: List[ProcessingPurpose],  # type: ignore[valid-type]
         legal_basis: str,
         retention_days: int,
         data_recipients: Optional[List[str]] = None,
@@ -568,7 +568,7 @@ class PrivacyAgent(BaseAgent):
     def get_processing_activities(
         self,
         risk_level: Optional[str] = None,
-        purpose: Optional[ProcessingPurpose] = None,
+        purpose: Optional[ProcessingPurpose] = None,  # type: ignore[valid-type]
     ) -> List[DataProcessingActivity]:
         """Get processing activities with filtering."""
         activities = list(self.processing_activities.values())
@@ -590,7 +590,7 @@ class PrivacyAgent(BaseAgent):
         name: str,
         project_description: str,
         data_categories: List[str],
-        processing_purposes: List[ProcessingPurpose],
+        processing_purposes: List[ProcessingPurpose],  # type: ignore[valid-type]
     ) -> PrivacyImpactAssessment:
         """Create a Privacy Impact Assessment."""
         pia = PrivacyImpactAssessment(
@@ -816,15 +816,15 @@ class PrivacyAgent(BaseAgent):
 
     def _group_by_field(self, items: List[Any], field: str) -> Dict[str, int]:
         """Group items by a field."""
-        result = {}
+        result: Dict[str, Any] = {}
         for item in items:
             value = getattr(item, field, 'unknown')
             result[value] = result.get(value, 0) + 1
         return result
 
-    def get_regulation_compliance(self, regulation: PrivacyRegulation) -> Dict[str, Any]:
+    def get_regulation_compliance(self, regulation: PrivacyRegulation) -> Dict[str, Any]:  # type: ignore[valid-type]
         """Get compliance status for a specific regulation."""
-        req = self.regulation_requirements.get(regulation.value, {})
+        req = self.regulation_requirements.get(regulation.value, {})  # type: ignore[attr-defined]
 
         subjects = [
             s for s in self.data_subjects.values()
@@ -842,7 +842,7 @@ class PrivacyAgent(BaseAgent):
         overdue = len([r for r in requests if r.deadline < utcnow() and r.status != RequestStatus.COMPLETED])
 
         return {
-            'regulation': regulation.value,
+            'regulation': regulation.value,  # type: ignore[attr-defined]
             'jurisdiction': req.get('jurisdiction', 'Unknown'),
             'data_subjects': len(subjects),
             'requests': {

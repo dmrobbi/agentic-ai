@@ -143,7 +143,7 @@ class ReActLoop:
         """Check if the step indicates the loop should finish."""
         return step.action == self.finish_keyword or step.status == ReasoningStatus.FINISHED
 
-    def format_prompt(self, prompt: str, trace: ReActTrace, context: Dict[str, Any] = None) -> str:
+    def format_prompt(self, prompt: str, trace: ReActTrace, context: Optional[Dict[str, Any]] = None) -> str:
         """Format a prompt with ReAct context for the next iteration."""
         parts = [prompt, "", "Follow this format exactly:"]
         parts.append("Thought: <your reasoning>")

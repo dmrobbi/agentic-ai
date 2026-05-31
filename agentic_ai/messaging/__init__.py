@@ -2,14 +2,19 @@
 Agentic AI Messaging - Event-Driven Agent Communication
 =========================================================
 
-Redis-based message bus for asynchronous agent communication.
+Pluggable message bus for asynchronous agent communication.
 Supports pub/sub, request/response, and event streaming patterns.
+Backends: Redis (production), Memory (testing).
 """
 
 from .message_bus import MessageBus, Message, MessageType
 from .event_bus import EventBus, Event, EventHandler
 from .agent_protocol import AgentProtocol, AgentMessage
 from .task_queue import TaskQueue, Task, TaskStatus
+
+from .backends import MessageBackend
+from .backends.memory_backend import MemoryBackend
+from .backends.redis_backend import RedisBackend
 
 __all__ = [
     'MessageBus',
@@ -23,4 +28,7 @@ __all__ = [
     'TaskQueue',
     'Task',
     'TaskStatus',
+    'MessageBackend',
+    'MemoryBackend',
+    'RedisBackend',
 ]

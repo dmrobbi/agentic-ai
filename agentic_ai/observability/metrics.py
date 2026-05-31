@@ -1,7 +1,7 @@
 """OpenTelemetry metrics for agent operations."""
 import os
 import logging
-from typing import Dict, Any
+from typing import Optional, Dict, Any
 
 logger = logging.getLogger(__name__)
 
@@ -12,7 +12,7 @@ _metrics_enabled = False
 _simple_metrics: Dict[str, Any] = {}
 
 
-def setup_metrics(service_name: str = "agentic-ai", endpoint: str = None):
+def setup_metrics(service_name: str = "agentic-ai", endpoint: Optional[str] = None):
     """Initialize OpenTelemetry metrics."""
     global _meter, _metrics_enabled
     try:
@@ -35,7 +35,7 @@ def get_meter():
     return _meter
 
 
-def increment_counter(name: str, value: int = 1, attributes: Dict[str, str] = None):
+def increment_counter(name: str, value: int = 1, attributes: Optional[Dict[str, str]] = None):
     """Increment a counter."""
     if _meter:
         try:
@@ -48,7 +48,7 @@ def increment_counter(name: str, value: int = 1, attributes: Dict[str, str] = No
     _simple_metrics[key] = _simple_metrics.get(key, 0) + value
 
 
-def record_latency(name: str, duration_ms: float, attributes: Dict[str, str] = None):
+def record_latency(name: str, duration_ms: float, attributes: Optional[Dict[str, str]] = None):
     """Record a latency measurement."""
     if _meter:
         try:

@@ -485,13 +485,13 @@ class HRAgent(BaseAgent):
         active = [e for e in employees if e.status == 'active']
 
         # Department breakdown
-        by_department = {}
+        by_department: Dict[str, int] = {}
         for emp in active:
             dept = emp.department
             by_department[dept] = by_department.get(dept, 0) + 1
 
         # Employment type breakdown
-        by_type = {}
+        by_type: Dict[str, int] = {}
         for emp in active:
             emp_type = emp.employment_type.value
             by_type[emp_type] = by_type.get(emp_type, 0) + 1

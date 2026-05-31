@@ -181,7 +181,7 @@ class LeadAgent(BaseAgent):
         return agent
 
     def create_task(self, task_type: str = "", description: str = "",
-                    priority: str = "medium", payload: Dict[str, Any] = None,
+                    priority: str = "medium", payload: Optional[Dict[str, Any]] = None,
                     title: str = "") -> Dict[str, Any]:
         # Resolve agent_type from routing rules
         agent_type = self._routing_rules.get(task_type, "developer")
@@ -207,7 +207,7 @@ class LeadAgent(BaseAgent):
         }
 
     def create_workflow(self, workflow_name: str = "", name: str = "",
-                        tasks: List[Dict[str, Any]] = None,
+                        tasks: Optional[List[Dict[str, Any]]] = None,
                         description: str = "") -> Dict[str, Any]:
         label = workflow_name or name or "Default Workflow"
         workflow_id = f"WF-{len(self._workflows)+1:04d}"
@@ -287,7 +287,7 @@ class LeadAgent(BaseAgent):
         }
 
     def get_status(self) -> Dict[str, Any]:
-        tasks_by_status = {}
+        tasks_by_status: Dict[str, int] = {}
         for t in self._tasks:
             key = t.status.value
             tasks_by_status[key] = tasks_by_status.get(key, 0) + 1
@@ -304,7 +304,7 @@ class LeadAgent(BaseAgent):
                 return {"request": request, "agent_type": agent_type, "confidence": 0.8}
         return {"request": request, "agent_type": "developer", "confidence": 0.5}
 
-    async def perform_task(self, task_type: str, params: Dict[str, Any] = None) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str, params: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Perform a task by type. Called with positional args: perform_task("type", {params})."""
         params = params or {}
         if task_type == "create_workflow":
@@ -493,7 +493,7 @@ class LeadAgent(BaseAgent):
         return "\n".join(parts)
 
     async def request_approval(self, agent_id: str, action: str,
-                                context: Dict[str, Any] = None) -> Dict[str, Any]:
+                                context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Request human approval for an action.
 
         Pauses execution until approved or denied.
@@ -507,7 +507,7 @@ class LeadAgent(BaseAgent):
         }
 
     def spawn_conversation(self, agents: List[str], topic: str,
-                           context: Dict[str, Any] = None) -> Dict[str, Any]:
+                           context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Create a sub-conversation with a group of agents."""
         conversation_id = self._generate_id("conv")
         return {

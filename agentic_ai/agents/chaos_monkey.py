@@ -244,7 +244,7 @@ class ChaosMonkeyAgent(BaseAgent):
 
     def register_target(
         self,
-        target_type: TargetType,
+        target_type: TargetType,  # type: ignore[valid-type]
         name: str,
         cloud_provider: str,
         region: str,
@@ -271,7 +271,7 @@ class ChaosMonkeyAgent(BaseAgent):
 
     def get_targets(
         self,
-        target_type: Optional[TargetType] = None,
+        target_type: Optional[TargetType] = None,  # type: ignore[valid-type]
         cloud_provider: Optional[str] = None,
         region: Optional[str] = None,
         critical: Optional[bool] = None,
@@ -296,7 +296,7 @@ class ChaosMonkeyAgent(BaseAgent):
     def select_random_targets(
         self,
         count: int = 1,
-        target_type: Optional[TargetType] = None,
+        target_type: Optional[TargetType] = None,  # type: ignore[valid-type]
         exclude_critical: bool = True,
     ) -> List[Target]:
         """Randomly select targets for chaos experiment."""
@@ -319,13 +319,13 @@ class ChaosMonkeyAgent(BaseAgent):
         self,
         name: str,
         description: str,
-        experiment_type: ExperimentType,
+        experiment_type: ExperimentType,  # type: ignore[valid-type]
         severity: SeverityLevel,
         blast_radius: BlastRadius,
         duration_minutes: int,
         hypothesis: str = "",
         expected_outcome: str = "",
-        abort_conditions: Optional[List[AbortCondition]] = None,
+        abort_conditions: Optional[List[AbortCondition]] = None,  # type: ignore[valid-type]
         abort_thresholds: Optional[Dict[str, float]] = None,
         created_by: str = "",
     ) -> Experiment:
@@ -517,7 +517,7 @@ class ChaosMonkeyAgent(BaseAgent):
 
     def get_experiments(
         self,
-        experiment_type: Optional[ExperimentType] = None,
+        experiment_type: Optional[ExperimentType] = None,  # type: ignore[valid-type]
         status: Optional[ExperimentStatus] = None,
         severity: Optional[SeverityLevel] = None,
     ) -> List[Experiment]:

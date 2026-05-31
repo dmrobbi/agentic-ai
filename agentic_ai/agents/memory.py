@@ -63,7 +63,7 @@ class TieredMemory:
         self._archival: List[Dict[str, Any]] = []
     
     def add(self, role: str, content: str, tier: MemoryTier = MemoryTier.WORKING,
-            metadata: Dict[str, Any] = None) -> None:
+            metadata: Optional[Dict[str, Any]] = None) -> None:
         """Add a memory entry to the specified tier."""
         entry = MemoryEntry(
             role=role, content=content, tier=tier,
@@ -79,15 +79,15 @@ class TieredMemory:
         elif tier == MemoryTier.ARCHIVAL:
             self._archival.append(entry.to_dict())
     
-    def add_core(self, role: str, content: str, metadata: Dict[str, Any] = None) -> None:
+    def add_core(self, role: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> None:
         """Add to core memory (always in context)."""
         self.add(role, content, MemoryTier.CORE, metadata)
     
-    def add_working(self, role: str, content: str, metadata: Dict[str, Any] = None) -> None:
+    def add_working(self, role: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> None:
         """Add to working memory (recent conversation)."""
         self.add(role, content, MemoryTier.WORKING, metadata)
     
-    def add_archival(self, role: str, content: str, metadata: Dict[str, Any] = None) -> None:
+    def add_archival(self, role: str, content: str, metadata: Optional[Dict[str, Any]] = None) -> None:
         """Add to archival memory (compressed history)."""
         self.add(role, content, MemoryTier.ARCHIVAL, metadata)
     

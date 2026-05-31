@@ -463,7 +463,7 @@ class TaskQueue:
         while wait_seconds > 0:
             result = self._redis.get(result_key)
             if result:
-                return _safe_loads(result)
+                return _safe_loads(result)  # type: ignore[no-any-return]
 
             if time.time() - start_time >= wait_seconds:
                 break
@@ -479,7 +479,7 @@ class TaskQueue:
         if not self._redis:
             return 0
 
-        return self._redis.zcard(self._get_queue_key(queue_name))
+        return self._redis.zcard(self._get_queue_key(queue_name))  # type: ignore[no-any-return]
 
     def get_dlq_length(self) -> int:
         """Get number of tasks in dead letter queue."""
@@ -487,7 +487,7 @@ class TaskQueue:
             return 0
 
         dlq_key = f"{self.queue_prefix}:dlq"
-        return self._redis.llen(dlq_key)
+        return self._redis.llen(dlq_key)  # type: ignore[no-any-return]
 
     def retry_dlq_task(self, task_index: int) -> bool:
         """Retry task from dead letter queue."""

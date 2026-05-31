@@ -90,6 +90,7 @@ class MessageBus:
         redis_url: str = "redis://localhost:6379",
         channel_prefix: str = "agentic_ai",
         dead_letter_queue: str = "dlq",
+        backend=None,
     ):
         """
         Initialize message bus.
@@ -98,6 +99,9 @@ class MessageBus:
             redis_url: Redis connection URL
             channel_prefix: Prefix for all channels
             dead_letter_queue: Queue for failed messages
+            backend: Optional pluggable messaging backend. If provided,
+                overrides Redis. If None, tries Redis then falls back to
+                MemoryBackend.
         """
         self.redis_url = redis_url
         self.channel_prefix = channel_prefix
@@ -106,6 +110,15 @@ class MessageBus:
         self._pubsub: Optional[redis.client.PubSub] = None
         self._subscribers: Dict[str, List[Callable]] = {}
         self._running = False
+        self.backend = backend
+        if backend is None:
+            try:
+                from agentic_ai.messaging.backends.redis_backend import RedisBackend
+                self.backend = RedisBackend()
+            except Exception:
+                from agentic_ai.messaging.backends.memory_backend import MemoryBackend
+                self.backend = MemoryBackend()
+                logger.info("Redis unavailable, using in-memory messaging backend")
 
     def connect(self) -> None:
         """Connect to Redis."""

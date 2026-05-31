@@ -54,7 +54,7 @@ class SysAdminAgent(BaseAgent):
     agent_type = "sysadmin"
     permission = Permission.ELEVATED
 
-    def __init__(self, agent_id: str = None, name: str = None,
+    def __init__(self, agent_id: Optional[str] = None, name: Optional[str] = None,
                  inference_engine=None, state_store=None, message_bus=None):
         super().__init__(agent_id=agent_id, name=name,
                          inference_engine=inference_engine,
@@ -74,7 +74,7 @@ class SysAdminAgent(BaseAgent):
 
     def create_incident(self, title: str = "", severity: str = "medium",
                         description: str = "",
-                        affected_systems: List[str] = None) -> Dict[str, Any]:
+                        affected_systems: Optional[List[str]] = None) -> Dict[str, Any]:
         severity_enum = IncidentSeverity(severity.lower()) if severity else IncidentSeverity.MEDIUM
         incident_id = f"INC-{len(self.incidents)+1:04d}"
         incident = Incident(
@@ -88,7 +88,7 @@ class SysAdminAgent(BaseAgent):
         logger.info(f"Created incident {incident_id}: {title}")
         return {"status": "created", "incident": {"incident_id": incident_id, "title": title, "severity": severity}}
 
-    def check_system(self, checks: List[str] = None) -> Dict[str, Any]:
+    def check_system(self, checks: Optional[List[str]] = None) -> Dict[str, Any]:
         checks = checks or ["memory", "disk", "cpu"]
         results = {}
         for check in checks:
@@ -132,7 +132,7 @@ class SysAdminAgent(BaseAgent):
         except Exception as e:
             return {"success": False, "error": str(e), "command": command, "timed_out": False}
 
-    def list_incidents(self, status: str = None) -> List[Dict[str, Any]]:
+    def list_incidents(self, status: Optional[str] = None) -> List[Dict[str, Any]]:
         if status:
             status_enum = IncidentStatus(status.lower())
             return [{"incident_id": i.incident_id, "title": i.title, "severity": i.severity.value, "status": i.status.value} for i in self.incidents if i.status == status_enum]
@@ -177,7 +177,7 @@ class SysAdminAgent(BaseAgent):
         except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
             return {"service": service_name, "action": action, "active": "unknown", "simulated": True}
 
-    async def perform_task(self, task_type: str = "", payload: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
         if task_type == "check_system":
             return self.check_system(**kwargs)
         elif task_type == "analyze_logs":

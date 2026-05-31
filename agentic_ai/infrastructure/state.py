@@ -110,7 +110,7 @@ class StateStore:
             logger.warning(f"SQLite init failed: {e}")
             self._conn = None
 
-    def save(self, key: str, value: Any, metadata: Dict[str, Any] = None) -> StateEntry:
+    def save(self, key: str, value: Any, metadata: Optional[Dict[str, Any]] = None) -> StateEntry:
         entry = StateEntry(key=key, value=value, metadata=metadata or {})
         self._state[key] = entry
         if self.redis_client:
@@ -153,7 +153,7 @@ class StateStore:
     # Task management
     def create_task(self, task_id: str = "", title: str = "", description: str = "",
                     agent_id: str = "", status: str = "pending",
-                    task_type: str = "", priority: int = 0, payload: Dict[str, Any] = None) -> StoredTask:
+                    task_type: str = "", priority: int = 0, payload: Optional[Dict[str, Any]] = None) -> StoredTask:
         tid = task_id or f"TASK-{len(self._tasks)+1:04d}"
         task = StoredTask(
             task_id=tid, title=title or task_type, description=description or "",
@@ -193,7 +193,7 @@ class StateStore:
         task.updated_at = datetime.now()
         return task
 
-    def update_task_status(self, task_id: str, status: str, result: Dict[str, Any] = None) -> bool:
+    def update_task_status(self, task_id: str, status: str, result: Optional[Dict[str, Any]] = None) -> bool:
         """Update task status and optional result."""
         task = self._tasks.get(task_id)
         if not task:

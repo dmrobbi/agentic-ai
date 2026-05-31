@@ -6,6 +6,7 @@ Agentic AI - Demo API Server
 Simple demo server for testing deployment.
 """
 
+from typing import Optional
 import os
 import logging
 from datetime import datetime
@@ -134,7 +135,7 @@ async def get_agent_info(agent_type: str):
 
 
 @app.get("/.well-known/agent-card")
-async def get_agent_card(type: str = None):
+async def get_agent_card(type: Optional[str] = None):
     """A2A Agent Card discovery endpoint."""
     # Return agent card for the specified type or default agent
     from agentic_ai.agents.base import BaseAgent

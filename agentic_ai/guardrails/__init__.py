@@ -35,7 +35,7 @@ class PIIFilter:
         "ip_address": "[REDACTED_IP]",
     }
     
-    def __init__(self, enabled_patterns: List[str] = None):
+    def __init__(self, enabled_patterns: Optional[List[str]] = None):
         self.enabled = enabled_patterns or list(self.PATTERNS.keys())
     
     def check(self, text: str) -> GuardrailResult:
@@ -79,10 +79,10 @@ class ContentPolicyFilter:
 class ToolAllowlist:
     """Only permit tools on the agent's registered list."""
     
-    def __init__(self, allowed_tools: List[str] = None):
+    def __init__(self, allowed_tools: Optional[List[str]] = None):
         self.allowed = set(allowed_tools) if allowed_tools else set()
     
-    def check(self, tool_name: str, kwargs: Dict[str, Any] = None) -> GuardrailResult:
+    def check(self, tool_name: str, kwargs: Optional[Dict[str, Any]] = None) -> GuardrailResult:
         """Check if tool call is permitted."""
         if not self.allowed:
             return GuardrailResult(is_safe=True, reason="No allowlist configured")
