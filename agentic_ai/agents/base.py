@@ -13,6 +13,7 @@ import secrets
 from agentic_ai.infrastructure.utils import utcnow
 from agentic_ai.agents.reasoning import ReActLoop, ReActTrace, ReasoningStatus, ReflectionResult
 from agentic_ai.guardrails import PIIFilter, ContentPolicyFilter, ToolAllowlist, MaxLengthGuardrail
+from agentic_ai.observability.tracing import trace_agent_method
 
 
 logger = logging.getLogger(__name__)
@@ -291,6 +292,7 @@ class BaseAgent:
                     return False
         return True
 
+    @trace_agent_method("think")
     async def think(self, prompt: str, context: Dict[str, Any] = None, response_model=None) -> str:
         """Use LLM inference to reason about something. Optionally validate against a Pydantic model."""
         # Input guardrail
@@ -325,6 +327,7 @@ class BaseAgent:
                 pass  # Return raw result if parsing fails
         return result
 
+    @trace_agent_method("call_tool")
     async def call_tool(self, tool_name: str, **kwargs) -> Dict[str, Any]:
         """Call a tool by name with keyword arguments."""
         # Tool guardrail
@@ -352,6 +355,7 @@ class BaseAgent:
             logger.error(f"Tool '{tool_name}' failed: {e}")
             return {"error": str(e), "tool": tool_name}
 
+    @trace_agent_method("send_message")
     def send_message(self, recipient: str = "", content: str = "", msg_type: str = "info", **kwargs):
         """Send a message to another agent."""
         # Output guardrail — log warning but still send
@@ -467,6 +471,7 @@ Improved: <better version of the response, or "N/A" if good enough>"""
 
         return ReflectionResult(score=score, critique=critique, improved_response=improved).to_dict()
 
+    @trace_agent_method("perform_task")
     async def perform_task(self, task_type: str, payload: Dict[str, Any] = None) -> Dict[str, Any]:
         """Perform a task. Override in subclasses."""
         return {"status": "done", "task_type": task_type}

@@ -40,6 +40,8 @@ setup(
         "typing-extensions>=4.9.0",
         "simpleeval>=1.0.0",
         "litellm>=1.0.0",
+        "opentelemetry-api>=1.20.0",
+        "opentelemetry-sdk>=1.20.0",
     ],
     extras_require={
         "dev": [
