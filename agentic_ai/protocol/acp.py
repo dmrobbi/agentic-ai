@@ -11,7 +11,11 @@ from datetime import datetime
 from enum import Enum
 import uuid
 import json
+import redis
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class MessageType(str, Enum):
@@ -139,7 +143,7 @@ class ACPBus:
             try:
                 self.redis.publish(message.subject or "default", message.message_id)
                 self.redis.lpush(f"queue:{message.recipient}", message.message_id)
-            except Exception:
+            except (redis.RedisError, ConnectionError, OSError, RuntimeError):
                 pass
 
     def publish(self, message: ACPMessage):
@@ -152,7 +156,7 @@ class ACPBus:
                 try:
                     callback(message)
                 except Exception:
-                    pass
+                    logger.warning("Callback error in publish", exc_info=True)
 
     def subscribe(self, topic: str, callback):
         """Subscribe to a topic."""
@@ -181,7 +185,7 @@ class ACPBus:
         if self.redis:
             try:
                 self.redis.publish("broadcast", message.message_id)
-            except Exception:
+            except (redis.RedisError, ConnectionError, OSError, RuntimeError):
                 pass
 
     def clear(self):

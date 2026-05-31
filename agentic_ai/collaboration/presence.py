@@ -11,7 +11,10 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class PresenceStatus(str, Enum):
@@ -153,7 +156,7 @@ class PresenceManager:
                     "timestamp": utcnow().isoformat(),
                 })
             except Exception:
-                pass
+                logger.warning("Presence callback error", exc_info=True)
 
     def set_presence(self, user_id: str, status: PresenceStatus,
                     session_id: Optional[str] = None,
@@ -318,7 +321,7 @@ class ActivityFeed:
             try:
                 callback(event.to_dict())
             except Exception:
-                pass
+                logger.warning("Activity callback error", exc_info=True)
 
         return event
 
@@ -441,7 +444,7 @@ class TypingManager:
             try:
                 callback(indicator.to_dict())
             except Exception:
-                pass
+                logger.warning("Typing callback error", exc_info=True)
 
     def get_typing_users(self, target_type: str, target_id: str) -> List[str]:
         """Get list of users currently typing in a target."""

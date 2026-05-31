@@ -152,7 +152,7 @@ class MetricsCollector:
         for callback in self._callbacks:
             try:
                 callback(metric_name, value, labels)
-            except Exception:
+            except (TypeError, ValueError, AttributeError):
                 pass
 
     def increment(self, metric_name: str, amount: float = 1.0,

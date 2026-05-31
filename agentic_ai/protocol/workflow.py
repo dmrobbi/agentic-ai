@@ -11,9 +11,12 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 import uuid
+import logging
 
-from simpleeval import simple_eval
+from simpleeval import simple_eval, InvalidExpression
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 if TYPE_CHECKING:
     from .workflow import Task
@@ -92,13 +95,14 @@ class Condition:
                 safe_context = {k: v for k, v in context.items() if not k.startswith('_')}
                 s = simple_eval(self.expression, names=safe_context)
                 return bool(s)
-            except Exception:
+            except (ValueError, TypeError, NameError, SyntaxError, KeyError, InvalidExpression):
                 return False
 
         if self.type == "function" and self.function:
             try:
                 return self.function(context)
             except Exception:
+                logger.warning("Condition function evaluation failed", exc_info=True)
                 return False
 
         return True

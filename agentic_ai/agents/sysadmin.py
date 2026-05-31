@@ -174,7 +174,7 @@ class SysAdminAgent(BaseAgent):
         try:
             result = subprocess.run(["systemctl", action, service_name], capture_output=True, text=True, timeout=10)
             return {"service": service_name, "action": action, "active": result.returncode == 0, "output": result.stdout.strip()[:200]}
-        except Exception:
+        except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
             return {"service": service_name, "action": action, "active": "unknown", "simulated": True}
 
     async def perform_task(self, task_type: str = "", payload: Dict[str, Any] = None, **kwargs) -> Dict[str, Any]:

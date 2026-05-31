@@ -341,7 +341,7 @@ class EventBus:
                 event = Event.from_json(message_data['data'])
                 if event.correlation_id == correlation_id:
                     events.append(event)
-            except Exception:
+            except (json.JSONDecodeError, TypeError, KeyError, ValueError):
                 continue
 
         return events

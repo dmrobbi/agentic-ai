@@ -11,7 +11,10 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class SessionStatus(str, Enum):
@@ -185,7 +188,7 @@ class CollaborationSession:
             try:
                 callback(event.to_dict())
             except Exception:
-                pass
+                logger.warning("Session event callback error", exc_info=True)
 
     def start(self):
         """Start the session."""

@@ -33,7 +33,7 @@ class QAAgent(BaseAgent):
             filepath = self.project_path / path
             content = filepath.read_text()
             return {"path": str(filepath), "content": content, "lines": len(content.splitlines())}
-        except Exception as e:
+        except OSError as e:
             return {"error": str(e), "path": path}
 
     def write_file(self, path: str = "", content: str = "") -> Dict[str, Any]:
@@ -42,7 +42,7 @@ class QAAgent(BaseAgent):
             filepath.parent.mkdir(parents=True, exist_ok=True)
             filepath.write_text(content)
             return {"status": "written", "path": str(filepath), "bytes": len(content)}
-        except Exception as e:
+        except OSError as e:
             return {"error": str(e), "path": path}
 
     def list_files(self, path: str = ".", pattern: str = "*") -> Dict[str, Any]:
@@ -50,7 +50,7 @@ class QAAgent(BaseAgent):
             directory = self.project_path / path
             files = [str(f.relative_to(self.project_path)) for f in directory.rglob(pattern) if f.is_file()]
             return {"directory": str(directory), "files": files, "pattern": pattern, "count": len(files)}
-        except Exception as e:
+        except OSError as e:
             return {"error": str(e), "directory": path}
 
     def find_bugs(self, path: str = "", severity: str = "medium", language: str = "python") -> Dict[str, Any]:
@@ -64,7 +64,7 @@ class QAAgent(BaseAgent):
                     stripped = line.strip()
                     if 'TODO' in stripped or 'FIXME' in stripped or 'HACK' in stripped:
                         bugs.append({"line": i + 1, "severity": severity, "message": stripped[:80]})
-            except Exception:
+            except (OSError, UnicodeDecodeError):
                 pass
         return {"bugs": bugs, "severity": severity, "language": language, "path": path, "count": len(bugs)}
 
@@ -76,7 +76,7 @@ class QAAgent(BaseAgent):
                 content = filepath.read_text()
                 result["lines"] = len(content.splitlines())
                 result["summary"] = f"Quality check passed for {path}"
-            except Exception:
+            except (OSError, UnicodeDecodeError):
                 result["summary"] = f"Could not check {path}"
         return result
 

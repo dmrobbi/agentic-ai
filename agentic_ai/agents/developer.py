@@ -72,7 +72,7 @@ class DeveloperAgent(BaseAgent):
             result["summary"] = f"{len(lines)} lines of {language} code"
             result["functions"] = sum(1 for l in lines if l.strip().startswith("def "))
             result["classes"] = sum(1 for l in lines if l.strip().startswith("class "))
-        except Exception:
+        except (OSError, UnicodeDecodeError):
             result["summary"] = f"Could not analyze {path}"
         return result
 

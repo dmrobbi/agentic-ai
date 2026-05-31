@@ -11,7 +11,10 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class LockType(str, Enum):
@@ -153,7 +156,7 @@ class Workspace:
             try:
                 callback(event)
             except Exception:
-                pass
+                logger.warning("Workspace event callback error", exc_info=True)
 
     def add_participant(self, participant_id: str, is_owner: bool = False):
         """Add a participant to the workspace."""

@@ -981,7 +981,7 @@ class MetasploitRPC:
             )
             self.token = None
             return True
-        except Exception:
+        except (ConnectionError, TimeoutError, OSError):
             return False
 
     def get_modules(self, module_type: Optional[str] = None) -> List[Dict[str, Any]]:
@@ -1789,7 +1789,7 @@ class KaliAgent(BaseAgent):
         """Parse JSON output."""
         try:
             return json.loads(output)
-        except Exception:
+        except (json.JSONDecodeError, TypeError, ValueError):
             return None
 
     def _parse_csv(self, output: str) -> Optional[List[Dict[str, Any]]]:
@@ -1800,7 +1800,7 @@ class KaliAgent(BaseAgent):
         try:
             reader = csv.DictReader(StringIO(output))
             return list(reader)
-        except Exception:
+        except (ValueError, OSError):
             return None
 
     def _parse_nikto(self, output: str) -> Optional[Dict[str, Any]]:

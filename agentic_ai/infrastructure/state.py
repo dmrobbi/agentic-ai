@@ -7,6 +7,7 @@ from typing import Dict, Any, List, Optional
 from enum import Enum
 import json
 import sqlite3
+import redis
 import logging
 import os
 import threading
@@ -66,7 +67,7 @@ class StateStore:
             from agentic_ai.infrastructure.config import RedisConfig
             self.redis_client = RedisConfig().create_client()
             self.redis_client.ping()
-        except Exception:
+        except (ImportError, ConnectionError, OSError):
             self.redis_client = None
 
     def _init_db(self):
@@ -105,7 +106,7 @@ class StateStore:
                 )
             """)
             self._conn.commit()
-        except Exception as e:
+        except (sqlite3.OperationalError, sqlite3.IntegrityError, OSError) as e:
             logger.warning(f"SQLite init failed: {e}")
             self._conn = None
 
@@ -115,7 +116,7 @@ class StateStore:
         if self.redis_client:
             try:
                 self.redis_client.hset("agentic_state", key, json.dumps({"value": value, "metadata": metadata or {}}))
-            except Exception:
+            except (redis.RedisError, TypeError):
                 pass
         return entry
 
@@ -125,7 +126,7 @@ class StateStore:
                 data = self.redis_client.hget("agentic_state", key)
                 if data:
                     return json.loads(data)["value"]
-            except Exception:
+            except (redis.RedisError, json.JSONDecodeError, TypeError, KeyError):
                 pass
         entry = self._state.get(key)
         if entry is None:
@@ -171,7 +172,7 @@ class StateStore:
                          utcnow().isoformat(), utcnow().isoformat())
                     )
                     self._conn.commit()
-                except Exception:
+                except (sqlite3.OperationalError, sqlite3.IntegrityError, TypeError):
                     pass
         if payload:
             self.save(f"task:{tid}:payload", payload)
@@ -211,7 +212,7 @@ class StateStore:
                          utcnow().isoformat(), task_id)
                     )
                     self._conn.commit()
-                except Exception:
+                except (sqlite3.OperationalError, sqlite3.IntegrityError, TypeError):
                     pass
         return True
 
@@ -250,7 +251,7 @@ class StateStore:
                         if row[5]:
                             r["payload"] = json.loads(row[5])
                         results.append(r)
-                except Exception:
+                except (sqlite3.OperationalError, json.JSONDecodeError, TypeError):
                     pass
         return results
 
@@ -269,7 +270,7 @@ class StateStore:
                         (agent_id, agent_type, json.dumps(state), utcnow().isoformat())
                     )
                     self._conn.commit()
-                except Exception:
+                except (sqlite3.OperationalError, sqlite3.IntegrityError, TypeError):
                     pass
         return True
 
@@ -290,7 +291,7 @@ class StateStore:
                     row = cursor.fetchone()
                     if row:
                         return json.loads(row[0])
-                except Exception:
+                except (sqlite3.OperationalError, json.JSONDecodeError, TypeError):
                     pass
         return None
 
@@ -302,7 +303,7 @@ class StateStore:
             with open(path, 'w') as f:
                 json.dump(data, f, indent=2)
             return True
-        except Exception:
+        except (OSError, TypeError):
             return False
 
     def load_from_file(self, filepath: str = "") -> bool:
@@ -317,5 +318,5 @@ class StateStore:
                     metadata=v.get("metadata", {}),
                 )
             return True
-        except Exception:
+        except (OSError, json.JSONDecodeError, ValueError, TypeError, KeyError):
             return False

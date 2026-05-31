@@ -10,7 +10,10 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 import uuid
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class FeedbackType(str, Enum):
@@ -122,8 +125,8 @@ class FeedbackCollector:
         for callback in self._callbacks:
             try:
                 callback(feedback)
-            except Exception:
-                pass
+            except (TypeError, ValueError, AttributeError, KeyError, RuntimeError):
+                logger.warning("Feedback callback error", exc_info=True)
 
         return feedback.feedback_id
 

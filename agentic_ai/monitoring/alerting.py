@@ -11,7 +11,10 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class AlertSeverity(str, Enum):
@@ -320,7 +323,7 @@ class AlertManager:
                 try:
                     callback(alert.to_dict())
                 except Exception:
-                    pass  # Ignore notification errors
+                    logger.warning("Alert notification callback error", exc_info=True)
 
     def get_summary(self) -> Dict[str, Any]:
         """Get alert summary."""

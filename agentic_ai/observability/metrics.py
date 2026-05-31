@@ -41,7 +41,7 @@ def increment_counter(name: str, value: int = 1, attributes: Dict[str, str] = No
         try:
             counter = _meter.create_counter(name)
             counter.add(value, attributes or {})
-        except Exception:
+        except (AttributeError, TypeError, ValueError):
             pass
     # Always track in simple metrics
     key = f"{name}:{attributes}" if attributes else name
@@ -54,7 +54,7 @@ def record_latency(name: str, duration_ms: float, attributes: Dict[str, str] = N
         try:
             histogram = _meter.create_histogram(name)
             histogram.record(duration_ms, attributes or {})
-        except Exception:
+        except (AttributeError, TypeError, ValueError):
             pass
     key = f"latency:{name}:{attributes}" if attributes else f"latency:{name}"
     _simple_metrics.setdefault(key, []).append(duration_ms)

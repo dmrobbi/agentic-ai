@@ -180,7 +180,7 @@ class ConsensusEngine:
             try:
                 callback(result)
             except Exception:
-                pass
+                logger.warning("Consensus result callback error", exc_info=True)
 
         return result
 

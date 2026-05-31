@@ -323,7 +323,7 @@ class BaseAgent:
                 import json
                 parsed = response_model(**json.loads(result))
                 return parsed.model_dump_json()
-            except Exception:
+            except (json.JSONDecodeError, ValueError, TypeError):
                 pass  # Return raw result if parsing fails
         return result
 

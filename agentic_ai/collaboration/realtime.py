@@ -12,7 +12,10 @@ from datetime import datetime
 from enum import Enum
 import uuid
 import threading
+import logging
 from agentic_ai.infrastructure.utils import utcnow
+
+logger = logging.getLogger(__name__)
 
 
 class OperationType(str, Enum):
@@ -295,7 +298,7 @@ class PubSubChannel:
                 try:
                     callback(event)
                 except Exception:
-                    pass  # Ignore callback errors
+                    logger.warning("Realtime subscriber callback error", exc_info=True)
 
     def get_subscriber_count(self) -> int:
         """Get number of subscribers."""
