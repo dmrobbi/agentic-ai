@@ -291,7 +291,7 @@ class TaskQueue:
         if not result:
             return None
 
-        task_json = result[0][0]
+        task_json = result[0][0]  # type: ignore[index]
         task = Task.from_json(task_json)
         task.status = TaskStatus.QUEUED
 
@@ -308,7 +308,7 @@ class TaskQueue:
         # Get due tasks
         due_tasks = self._redis.zrangebyscore(scheduled_key, '-inf', now)  # type: ignore[union-attr]
 
-        for task_json in due_tasks:
+        for task_json in due_tasks:  # type: ignore[union-attr]
             task = Task.from_json(task_json)
 
             # Remove from scheduled
@@ -479,7 +479,7 @@ class TaskQueue:
         if not self._redis:
             return 0
 
-        return self._redis.zcard(self._get_queue_key(queue_name))  # type: ignore[no-any-return]
+        return self._redis.zcard(self._get_queue_key(queue_name))  # type: ignore[no-any-return,return-value]
 
     def get_dlq_length(self) -> int:
         """Get number of tasks in dead letter queue."""
@@ -487,7 +487,7 @@ class TaskQueue:
             return 0
 
         dlq_key = f"{self.queue_prefix}:dlq"
-        return self._redis.llen(dlq_key)  # type: ignore[no-any-return]
+        return self._redis.llen(dlq_key)  # type: ignore[no-any-return,return-value]
 
     def retry_dlq_task(self, task_index: int) -> bool:
         """Retry task from dead letter queue."""
@@ -515,7 +515,7 @@ class TaskQueue:
         )
 
         # Remove from DLQ
-        self._redis.lrem(dlq_key, task_index + 1, task_json)  # type: ignore[union-attr]
+        self._redis.lrem(dlq_key, task_index + 1, task_json)  # type: ignore[union-attr,arg-type]
 
         logger.info(f"Retried DLQ task {task.task_id}")
         return True
@@ -530,7 +530,7 @@ class TaskQueue:
         self._redis.delete(dlq_key)  # type: ignore[union-attr]
 
         logger.info(f"Cleared {count} tasks from DLQ")
-        return count  # type: ignore[no-any-return]
+        return count  # type: ignore[no-any-return,return-value]
 
     def process_tasks(self, queue_name: str = "default", batch_size: int = 10) -> int:
         """

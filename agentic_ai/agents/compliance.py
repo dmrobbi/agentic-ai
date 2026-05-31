@@ -162,7 +162,7 @@ class ComplianceAgent(BaseAgent):
         self.agent_id = agent_id
         self.regulations: Dict[str, Regulation] = {}
         self.controls: Dict[str, Control] = {}
-        self.audits: Dict[str, Audit] = {}
+        self.audits: Dict[str, Any] = {}
         self.policies: Dict[str, Policy] = {}
         self.findings: Dict[str, Finding] = {}
         self.certificates: Dict[str, Certificate] = {}

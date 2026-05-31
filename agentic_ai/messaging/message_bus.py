@@ -314,7 +314,7 @@ class MessageBus:
             return []
 
         messages = self._redis.lrange(self.dead_letter_queue, 0, limit - 1)  # type: ignore[union-attr]
-        return [_safe_loads(m) for m in messages]
+        return [_safe_loads(m) for m in messages]  # type: ignore[union-attr]
 
     def retry_dlq_message(self, message_index: int) -> bool:
         """Retry message from dead letter queue."""
@@ -326,12 +326,12 @@ class MessageBus:
             return False
 
         try:
-            dlq_message = _safe_loads(messages[0])
+            dlq_message = _safe_loads(messages[0])  # type: ignore[index]
             original_message = Message.from_json(dlq_message['original_message'])
 
             # Republish original message
             if self.publish(original_message):
-                self._redis.lrem(self.dead_letter_queue, message_index + 1, messages[0])  # type: ignore[union-attr]
+                self._redis.lrem(self.dead_letter_queue, message_index + 1, messages[0])  # type: ignore[union-attr,arg-type,index]
                 return True
         except Exception as e:
             logger.error(f"Failed to retry DLQ message: {e}")
@@ -346,7 +346,7 @@ class MessageBus:
         count = self._redis.llen(self.dead_letter_queue)  # type: ignore[union-attr]
         self._redis.delete(self.dead_letter_queue)  # type: ignore[union-attr]
         logger.info(f"Cleared {count} messages from DLQ")
-        return count  # type: ignore[no-any-return]
+        return count  # type: ignore[no-any-return,return-value]
 
     @contextmanager
     def connection(self):

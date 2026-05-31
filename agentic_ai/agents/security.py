@@ -325,7 +325,7 @@ class SecurityAgent(BaseAgent):
         assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])  # type: ignore[union-attr]
         assessments.append(assessment)
         self.state_store.set(f"agent:{self.agent_id}:assessments", assessments)  # type: ignore[union-attr]
-        return SecurityAssessment(**assessment)
+        return SecurityAssessment(**assessment)  # type: ignore[arg-type]
 
     def add_control(self, assessment_id: str = "", name: str = "", description: str = "", control_type: str = "", category: str = "", status: str = "effective", **kwargs) -> Any:
         """Add a control to a security assessment."""
@@ -343,7 +343,7 @@ class SecurityAgent(BaseAgent):
         controls = self.state_store.get(f"agent:{self.agent_id}:controls", [])  # type: ignore[union-attr]
         controls.append(control)
         self.state_store.set(f"agent:{self.agent_id}:controls", controls)  # type: ignore[union-attr]
-        return SecurityControl(**control)
+        return SecurityControl(**control)  # type: ignore[arg-type]
 
     # ============================================
     # Vulnerability Scanning

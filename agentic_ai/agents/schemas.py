@@ -56,9 +56,11 @@ class ComplianceAssessment(AgentResponse):
     """Compliance assessment response."""
     assessment_id: str = ""
     title: str = ""
+    name: str = ""  # Alias for title
     framework: str = ""
     scope: str = ""
     assessor: str = ""
+    assessment_type: str = ""
     status: str = "planned"
     compliance_score: float = 0.0
     findings: List[Dict[str, Any]] = Field(default_factory=list)
@@ -79,6 +81,10 @@ class IncidentReport(AgentResponse):
     status: str = "open"
     description: str = ""
     affected_systems: List[str] = Field(default_factory=list)
+    affected_users: List[str] = Field(default_factory=list)
+    category: str = ""
+    detected_at: Any = ""
+    source_ip: str = ""
     timeline: List[Dict[str, Any]] = Field(default_factory=list)
     response_actions: List[str] = Field(default_factory=list)
     reporter: str = ""
@@ -96,6 +102,7 @@ class LegalMatter(AgentResponse):
     title: str = ""
     matter_type: str = ""
     status: str = "open"
+    priority: str = "medium"
     description: str = ""
     parties: List[str] = Field(default_factory=list)
     key_dates: Dict[str, str] = Field(default_factory=dict)

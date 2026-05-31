@@ -230,12 +230,12 @@ class EventBus:
         while self._running:
             try:
                 # Read from streams
-                messages = self._redis.xread(streams, count=10, block=block_ms)  # type: ignore[union-attr]
+                messages = self._redis.xread(streams, count=10, block=block_ms)  # type: ignore[union-attr,arg-type]
 
                 if not messages:
                     continue
 
-                for stream_name, stream_messages in messages:
+                for stream_name, stream_messages in messages:  # type: ignore[union-attr]
                     for message_id, message_data in stream_messages:
                         self._process_message(stream_name, message_id, message_data)
 
@@ -294,10 +294,10 @@ class EventBus:
         end = '+' if not end_time else end_time.timestamp() * 1000
 
         # Read historical events
-        events = self._redis.xrange(stream_key, min=start, max=end, count=count)  # type: ignore[union-attr]
+        events = self._redis.xrange(stream_key, min=str(start), max=str(end), count=count)  # type: ignore[union-attr,arg-type]
 
         replayed = 0
-        for message_id, message_data in events:
+        for message_id, message_data in events:  # type: ignore[union-attr]
             try:
                 event = Event.from_json(message_data['data'])
                 handler(event)
@@ -329,14 +329,14 @@ class EventBus:
         events = []
         start_time = utcnow() - timedelta(days=7)  # Last 7 days
 
-        stream_messages = self._redis.xrange(  # type: ignore[union-attr]
+        stream_messages = self._redis.xrange(  # type: ignore[union-attr,arg-type]
             self.event_log_key,
-            min=start_time.timestamp() * 1000,
+            min=str(start_time.timestamp() * 1000),
             max='+',
             count=limit
         )
 
-        for _, message_data in stream_messages:
+        for _, message_data in stream_messages:  # type: ignore[union-attr]
             try:
                 event = Event.from_json(message_data['data'])
                 if event.correlation_id == correlation_id:
@@ -351,7 +351,7 @@ class EventBus:
         if not self._redis:
             return 0
 
-        return int(self._redis.xlen(self._get_stream_key(event_type)))  # type: ignore[union-attr]
+        return int(self._redis.xlen(self._get_stream_key(event_type)))  # type: ignore[union-attr,arg-type]
 
     def trim_stream(self, event_type: str, max_length: int) -> None:
         """Trim event stream to max length."""

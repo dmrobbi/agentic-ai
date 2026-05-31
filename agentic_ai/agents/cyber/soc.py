@@ -356,16 +356,16 @@ class SecurityOperationsAgent(BaseAgent):
         if target_user:
             incident.affected_users = [target_user]
         # Return a wrapper that preserves the string severity
-        result = IncidentReport(
+        result = IncidentReport(  # type: ignore[arg-type,call-arg]
             incident_id=incident.incident_id,
             title=incident.title,
             severity=severity,
-            status=incident.status,
+            status=str(incident.status.value) if hasattr(incident.status, 'value') else str(incident.status),
             category=incident.category,
             description=description,
             affected_systems=incident.affected_systems,
             affected_users=incident.affected_users,
-            source_ip=source_ip or None,
+            source_ip=source_ip or "",
             detected_at=str(incident.detected_at),
             _incident=incident,
         )
