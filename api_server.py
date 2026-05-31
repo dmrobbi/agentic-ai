@@ -15,6 +15,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.protocol.agent_card import AgentCard, AgentCapability
 
 app = FastAPI(
     title="Agentic AI Demo API",
@@ -268,6 +269,18 @@ def root():
 def health():
     """Health check endpoint."""
     return {"status": "healthy", "timestamp": utcnow().isoformat()}
+
+
+@app.get("/.well-known/agent-card")
+async def get_agent_card(type: str = None):
+    """A2A Agent Card discovery endpoint."""
+    from agentic_ai.agents.base import BaseAgent
+    agent = BaseAgent()
+    if type:
+        agent.agent_type = type
+        agent.agent_id = f"{type}-1"
+    card = agent.get_agent_card()
+    return card.to_dict()
 
 
 # Chaos Endpoints

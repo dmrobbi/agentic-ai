@@ -14,6 +14,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.protocol.agent_card import AgentCard, AgentCapability
 
 # Configuration
 LOG_LEVEL = os.getenv("AGENTIC_AI_LOG_LEVEL", "INFO")
@@ -130,6 +131,19 @@ async def get_agent_info(agent_type: str):
         "status": "healthy",
         "capabilities": ["capability_1", "capability_2"],
     }
+
+
+@app.get("/.well-known/agent-card")
+async def get_agent_card(type: str = None):
+    """A2A Agent Card discovery endpoint."""
+    # Return agent card for the specified type or default agent
+    from agentic_ai.agents.base import BaseAgent
+    agent = BaseAgent()
+    if type:
+        agent.agent_type = type
+        agent.agent_id = f"{type}-1"
+    card = agent.get_agent_card()
+    return card.to_dict()
 
 
 # ============================================

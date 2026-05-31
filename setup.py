@@ -44,6 +44,7 @@ setup(
         "opentelemetry-sdk>=1.20.0",
     ],
     extras_require={
+        "vector": ["chromadb>=0.4.0"],
         "dev": [
             "pytest>=8.0.0",
             "pytest-asyncio>=0.23.0",

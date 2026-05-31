@@ -12,8 +12,10 @@ import asyncio
 import secrets
 from agentic_ai.infrastructure.utils import utcnow
 from agentic_ai.agents.reasoning import ReActLoop, ReActTrace, ReasoningStatus, ReflectionResult
+from agentic_ai.agents.memory import TieredMemory
 from agentic_ai.guardrails import PIIFilter, ContentPolicyFilter, ToolAllowlist, MaxLengthGuardrail
 from agentic_ai.observability.tracing import trace_agent_method
+from agentic_ai.protocol.agent_card import AgentCard, AgentCapability
 
 
 logger = logging.getLogger(__name__)
@@ -64,16 +66,20 @@ class Tool:
 
 
 class AgentMemory:
-    """Agent memory store with limited capacity."""
+    """Backward-compatible memory wrapper around TieredMemory.
+    
+    Preserves the original AgentMemory interface while delegating
+    storage to the new TieredMemory system.
+    """
 
     def __init__(self, max_entries: int = 100):
         self.max_entries = max_entries
+        self._tiered = TieredMemory(max_working=max_entries)
         self._entries: OrderedDict = OrderedDict()
-        self._conversation: List[Dict[str, str]] = []
 
     def add(self, role: str, content: str) -> None:
         """Add a conversation entry (role, content)."""
-        self._conversation.append({"role": role, "content": content})
+        self._tiered.add_working(role, content)
         # Also store in entries for retrieval
         self.store(role, content)
 
@@ -103,7 +109,7 @@ class AgentMemory:
     def clear(self) -> None:
         """Clear all memory."""
         self._entries.clear()
-        self._conversation.clear()
+        self._tiered.clear_working()
 
     def keys(self) -> List[str]:
         """List all keys."""
@@ -116,11 +122,12 @@ class AgentMemory:
 
     def get_recent(self, count: int = 1) -> List[Dict[str, str]]:
         """Get recent conversation entries."""
-        return self._conversation[-count:]
+        working = self._tiered.working
+        return working[-count:]
 
     def to_messages(self) -> List[Dict[str, str]]:
         """Convert conversation to message list."""
-        return list(self._conversation)
+        return self._tiered.to_messages()
 
     def __len__(self):
         return len(self._entries)
@@ -134,7 +141,7 @@ class BaseAgent:
 
     def __init__(self, agent_id: str = None, name: str = None,
                  inference_engine=None, state_store=None, message_bus=None,
-                 permission: Permission = None):
+                 permission: Permission = None, knowledge=None):
         self.agent_id = agent_id or f"{self.agent_type}-{id(self):08x}"
         self.name = name or self.agent_type
         self.inference_engine = inference_engine
@@ -148,6 +155,7 @@ class BaseAgent:
         self._memory = AgentMemory()
         self._transparency_log: List[Dict[str, Any]] = []
         self.guardrails: List = []  # Configurable guardrail pipeline
+        self.knowledge = knowledge  # Optional AgentKnowledge instance
 
         # Register default tools
         self._register_default_tools()
@@ -470,6 +478,30 @@ Improved: <better version of the response, or "N/A" if good enough>"""
                     improved = None
 
         return ReflectionResult(score=score, critique=critique, improved_response=improved).to_dict()
+
+    def get_agent_card(self) -> AgentCard:
+        """Generate an A2A-compatible agent card describing this agent."""
+        capabilities = []
+        for tool_name, tool in self._tools.items():
+            if callable(tool):
+                # Extract tool info
+                cap = AgentCapability(
+                    name=tool_name,
+                    description=getattr(tool, '__doc__', '') or '',
+                    input_schema=getattr(tool, 'input_schema', {}),
+                    output_schema=getattr(tool, 'output_schema', {}),
+                )
+                capabilities.append(cap)
+        
+        return AgentCard(
+            name=f"{self.agent_type}_agent",
+            description=f"{self.agent_type} agent with {len(self._tools)} tools",
+            agent_type=self.agent_type,
+            agent_id=self.agent_id,
+            capabilities=capabilities,
+            permissions=[self.permission.value] if hasattr(self.permission, 'value') else [str(self.permission)],
+            metadata={"tools": list(self._tools.keys())},
+        )
 
     @trace_agent_method("perform_task")
     async def perform_task(self, task_type: str, payload: Dict[str, Any] = None) -> Dict[str, Any]:

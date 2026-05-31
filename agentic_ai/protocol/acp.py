@@ -17,6 +17,9 @@ from agentic_ai.infrastructure.utils import utcnow
 
 logger = logging.getLogger(__name__)
 
+# A2A-compatible message type (defined in a2a.py, re-exported here)
+from agentic_ai.protocol.a2a import A2ATaskMessage  # noqa: E402,F401
+
 
 class MessageType(str, Enum):
     """Message type enumeration."""

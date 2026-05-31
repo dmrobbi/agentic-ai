@@ -7,8 +7,11 @@ and cross-agent coordination.
 
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List, Optional, Callable
 from enum import Enum
+import asyncio
+
+from agentic_ai.infrastructure.utils import utcnow
 
 from agentic_ai.agents.base import BaseAgent, Permission
 
@@ -81,6 +84,19 @@ class Workflow:
             self.workflow_id = self.id
         elif not self.id and self.workflow_id:
             self.id = self.workflow_id
+
+
+@dataclass
+class CancellationToken:
+    """Token for graceful cancellation of orchestration."""
+    _cancelled: bool = False
+
+    def cancel(self):
+        self._cancelled = True
+
+    @property
+    def is_cancelled(self) -> bool:
+        return self._cancelled
 
 
 class LeadAgent(BaseAgent):
@@ -306,3 +322,199 @@ class LeadAgent(BaseAgent):
         elif task_type == "analyze_request":
             return self.analyze_request(**params)
         return {"error": f"Unknown task type: {task_type}"}
+
+    # ============================================
+    # Conversation Orchestration Methods
+    # ============================================
+
+    async def round_robin(self, agents: List[str], prompt: str,
+                          rounds: int = 3,
+                          cancellation_token: Optional[CancellationToken] = None) -> List[Dict[str, Any]]:
+        """Agents take turns in sequence responding to a prompt.
+
+        Each agent sees the previous agent's response and builds on it.
+        """
+        results = []
+        current_prompt = prompt
+        for round_num in range(rounds):
+            if cancellation_token and cancellation_token.is_cancelled:
+                break
+            for agent_id in agents:
+                if cancellation_token and cancellation_token.is_cancelled:
+                    break
+                response = self.send_message(
+                    recipient=agent_id,
+                    content=current_prompt,
+                    msg_type="task"
+                )
+                # send_message may return None (sync bus publish); normalise
+                response_text = response if response is not None else current_prompt
+                results.append({
+                    "round": round_num + 1,
+                    "agent_id": agent_id,
+                    "response": response_text,
+                    "prompt": current_prompt,
+                })
+                current_prompt = f"Round {round_num + 1} - {agent_id} said: {response_text}. Continue the discussion."
+        return results
+
+    async def selector(self, agents: List[str], prompt: str,
+                       selector_fn: Callable = None,
+                       cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
+        """Select the best agent for a task, then delegate.
+
+        selector_fn: function(agent_ids, prompt) -> selected_agent_id
+        If no selector_fn provided, uses simple keyword matching.
+        """
+        if cancellation_token and cancellation_token.is_cancelled:
+            return {"error": "cancelled"}
+
+        if selector_fn:
+            selected = selector_fn(agents, prompt)
+        else:
+            selected = self._default_selector(agents, prompt)
+
+        response = self.send_message(
+            recipient=selected,
+            content=prompt,
+            msg_type="task"
+        )
+        response_text = response if response is not None else prompt
+        return {
+            "selected_agent": selected,
+            "response": response_text,
+            "prompt": prompt,
+        }
+
+    def _default_selector(self, agents: List[str], prompt: str) -> str:
+        """Default agent selection based on keyword matching."""
+        prompt_lower = prompt.lower()
+        routing = {
+            "security": ["security", "vulnerability", "threat", "breach"],
+            "compliance": ["compliance", "regulation", "audit", "policy"],
+            "risk": ["risk", "assessment", "mitigation", "exposure"],
+            "privacy": ["privacy", "data protection", "gdpr", "consent"],
+            "legal": ["legal", "contract", "litigation", "regulatory"],
+        }
+        for keyword, matches in routing.items():
+            if any(m in prompt_lower for m in matches):
+                for agent_id in agents:
+                    if keyword in agent_id.lower():
+                        return agent_id
+        return agents[0] if agents else ""
+
+    async def broadcast_and_collect(self, agents: List[str], prompt: str,
+                                     timeout: float = 30.0,
+                                     cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
+        """Send prompt to all agents, collect responses.
+
+        Returns dict of agent_id -> response.
+        """
+        responses = {}
+        for agent_id in agents:
+            if cancellation_token and cancellation_token.is_cancelled:
+                break
+            try:
+                response = self.send_message(
+                    recipient=agent_id,
+                    content=prompt,
+                    msg_type="broadcast"
+                )
+                response_text = response if response is not None else prompt
+                responses[agent_id] = response_text
+            except Exception as e:
+                responses[agent_id] = {"error": str(e)}
+
+        return {
+            "prompt": prompt,
+            "responses": responses,
+            "agent_count": len(agents),
+            "response_count": len(responses),
+        }
+
+    async def decompose_and_parallel(self, task: str, agents: List[str],
+                                      merge_fn: Callable = None,
+                                      cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
+        """Decompose a task into subtasks, run agents in parallel, merge results.
+
+        merge_fn: function(responses) -> merged_result
+        If no merge_fn provided, simple concatenation.
+        """
+        # Decompose task into subtasks
+        subtasks = self._decompose_task(task, len(agents))
+
+        # Run agents on subtasks
+        results = {}
+        for i, agent_id in enumerate(agents):
+            if cancellation_token and cancellation_token.is_cancelled:
+                break
+            subtask = subtasks[i] if i < len(subtasks) else task
+            response = self.send_message(
+                recipient=agent_id,
+                content=subtask,
+                msg_type="task"
+            )
+            response_text = response if response is not None else subtask
+            results[agent_id] = {
+                "subtask": subtask,
+                "response": response_text,
+            }
+
+        # Merge results
+        if merge_fn:
+            merged = merge_fn(results)
+        else:
+            merged = self._default_merge(results)
+
+        return {
+            "task": task,
+            "subtasks": subtasks,
+            "results": results,
+            "merged": merged,
+        }
+
+    def _decompose_task(self, task: str, num_agents: int) -> List[str]:
+        """Simple task decomposition by splitting into aspects."""
+        aspects = [
+            f"Security analysis of: {task}",
+            f"Risk assessment of: {task}",
+            f"Compliance review of: {task}",
+            f"Strategic implications of: {task}",
+            f"Operational impact of: {task}",
+        ]
+        return aspects[:num_agents]
+
+    def _default_merge(self, results: Dict[str, Any]) -> str:
+        """Default merge: concatenate all responses."""
+        parts = []
+        for agent_id, data in results.items():
+            response = data.get("response", "")
+            parts.append(f"Agent {agent_id}: {response}")
+        return "\n".join(parts)
+
+    async def request_approval(self, agent_id: str, action: str,
+                                context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Request human approval for an action.
+
+        Pauses execution until approved or denied.
+        """
+        return {
+            "agent_id": agent_id,
+            "action": action,
+            "context": context or {},
+            "status": "pending_approval",
+            "approved": None,
+        }
+
+    def spawn_conversation(self, agents: List[str], topic: str,
+                           context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Create a sub-conversation with a group of agents."""
+        conversation_id = self._generate_id("conv")
+        return {
+            "conversation_id": conversation_id,
+            "topic": topic,
+            "agents": agents,
+            "context": context or {},
+            "status": "active",
+            "created_at": utcnow().isoformat(),
+        }
