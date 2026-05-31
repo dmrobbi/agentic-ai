@@ -352,7 +352,7 @@ class SecurityOperationsAgent(BaseAgent):
         )
         incident.description = description
         if source_ip:
-            incident.source_ip = source_ip
+            incident.source_ip = source_ip  # type: ignore[attr-defined]
         if target_user:
             incident.affected_users = [target_user]
         # Return a wrapper that preserves the string severity
@@ -638,7 +638,7 @@ class SecurityOperationsAgent(BaseAgent):
 
         # Incident metrics
         incidents_by_severity = {}
-        for severity in IncidentSeverity:
+        for severity in IncidentSeverity:  # type: ignore[assignment]
             incidents_by_severity[severity.value] = len([
                 i for i in recent_incidents if i.severity == severity
             ])
@@ -648,10 +648,10 @@ class SecurityOperationsAgent(BaseAgent):
         mttr_hours = 0
         if resolved:
             total_time = sum(
-                (i.resolved_at - i.detected_at).total_seconds() / 3600
-                for i in resolved if i.resolved_at > i.detected_at
+                (i.resolved_at - i.detected_at).total_seconds() / 3600  # type: ignore[misc,operator]
+                for i in resolved if i.resolved_at > i.detected_at  # type: ignore[operator]
             )
-            mttr_hours = total_time / len(resolved)
+            mttr_hours = total_time / len(resolved)  # type: ignore[assignment]
 
         return {
             'period_hours': period_hours,
@@ -751,7 +751,7 @@ def get_capabilities() -> Dict[str, Any]:
         'incident_severities': [s.value for s in IncidentSeverity],
         'incident_statuses': [s.value for s in IncidentStatus],
         'threat_actors': [a.value for a in ThreatActor],
-        'attack_tactics': list(SecurityOperationsAgent(None).attack_tactics.keys()),
+        'attack_tactics': list(SecurityOperationsAgent(None).attack_tactics.keys()),  # type: ignore[arg-type]
     }
 
 

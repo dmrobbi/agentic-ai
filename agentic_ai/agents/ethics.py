@@ -927,10 +927,10 @@ if __name__ == "__main__":
     )
 
     # Get ethics report
-    report = agent.get_ethics_report()
+    report = agent.get_ethics_report()  # type: ignore[assignment]
     print(f"\nEthics Report:")
-    print(f"  Total Models: {report['models']['total']}")
-    print(f"  High Risk: {report['models']['high_risk_count']}")
-    print(f"  Bias Detected: {report['bias']['total_detected']}")
+    print(f"  Total Models: {report['models']['total']}")  # type: ignore[index]
+    print(f"  High Risk: {report['models']['high_risk_count']}")  # type: ignore[index]
+    print(f"  Bias Detected: {report['bias']['total_detected']}")  # type: ignore[index]
 
     print(f"\nState: {agent.get_state()}")

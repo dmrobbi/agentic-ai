@@ -560,7 +560,7 @@ def get_capabilities() -> Dict[str, Any]:
         'connection_statuses': [s.value for s in ConnectionStatus],
         'sync_directions': [d.value for d in SyncDirection],
         'webhook_events': [e.value for e in WebhookEvent],
-        'service_templates': list(IntegrationAgent(None).service_templates.keys()),
+        'service_templates': list(IntegrationAgent(None).service_templates.keys()),  # type: ignore[arg-type]
     }
 
 

@@ -547,7 +547,7 @@ def get_capabilities() -> Dict[str, Any]:
         ],
         'publication_types': [t.value for t in PublicationType],
         'research_statuses': [s.value for s in ResearchStatus],
-        'citation_styles': list(ResearchAgent(None).citation_styles.keys()),
+        'citation_styles': list(ResearchAgent(None).citation_styles.keys()),  # type: ignore[arg-type]
     }
 
 

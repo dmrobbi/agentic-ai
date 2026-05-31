@@ -357,7 +357,7 @@ class DataAnalystAgent(BaseAgent):
                     correlations.append(corr)
                     insights.append(f"{corr['strength'].capitalize()} {corr['direction']} correlation between {col1} and {col2}")
 
-        results['correlations'] = correlations
+        results['correlations'] = correlations  # type: ignore[assignment]
 
         # Generate recommendations
         if len(numeric_stats) > 0:

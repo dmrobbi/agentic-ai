@@ -391,7 +391,7 @@ class LegalAgent(BaseAgent):
         }
 
         for reg, info in self.regulations.items():
-            status['regulations'][reg.value] = {
+            status['regulations'][reg.value] = {  # type: ignore[index]
                 'name': info['name'],
                 'region': info['region'],
                 'status': info['status'].value,

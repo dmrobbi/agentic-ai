@@ -115,7 +115,7 @@ class EventBus:
         """Disconnect from Redis."""
         self._running = False
         if self._redis:
-            self._redis.close()
+            self._redis.close()  # type: ignore[union-attr]
         logger.info("EventBus disconnected")
 
     def _get_stream_key(self, event_type: str) -> str:
@@ -141,10 +141,10 @@ class EventBus:
             event_data = event.to_json()
 
             # Add to typed stream
-            self._redis.xadd(stream_key, {'data': event_data}, maxlen=10000)
+            self._redis.xadd(stream_key, {'data': event_data}, maxlen=10000)  # type: ignore[union-attr]
 
             # Add to global event log (for event sourcing)
-            self._redis.xadd(
+            self._redis.xadd(  # type: ignore[union-attr]
                 self.event_log_key,
                 {'event_type': event.event_type, 'data': event_data},
                 maxlen=100000
@@ -230,7 +230,7 @@ class EventBus:
         while self._running:
             try:
                 # Read from streams
-                messages = self._redis.xread(streams, count=10, block=block_ms)
+                messages = self._redis.xread(streams, count=10, block=block_ms)  # type: ignore[union-attr]
 
                 if not messages:
                     continue
@@ -294,7 +294,7 @@ class EventBus:
         end = '+' if not end_time else end_time.timestamp() * 1000
 
         # Read historical events
-        events = self._redis.xrange(stream_key, min=start, max=end, count=count)
+        events = self._redis.xrange(stream_key, min=start, max=end, count=count)  # type: ignore[union-attr]
 
         replayed = 0
         for message_id, message_data in events:
@@ -329,7 +329,7 @@ class EventBus:
         events = []
         start_time = utcnow() - timedelta(days=7)  # Last 7 days
 
-        stream_messages = self._redis.xrange(
+        stream_messages = self._redis.xrange(  # type: ignore[union-attr]
             self.event_log_key,
             min=start_time.timestamp() * 1000,
             max='+',
@@ -351,14 +351,14 @@ class EventBus:
         if not self._redis:
             return 0
 
-        return int(self._redis.xlen(self._get_stream_key(event_type)))
+        return int(self._redis.xlen(self._get_stream_key(event_type)))  # type: ignore[union-attr]
 
     def trim_stream(self, event_type: str, max_length: int) -> None:
         """Trim event stream to max length."""
         if not self._redis:
             return
 
-        self._redis.xtrim(self._get_stream_key(event_type), maxlen=max_length)
+        self._redis.xtrim(self._get_stream_key(event_type), maxlen=max_length)  # type: ignore[union-attr]
         logger.info(f"Trimmed {event_type} stream to {max_length}")
 
 

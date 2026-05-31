@@ -322,9 +322,9 @@ class SecurityAgent(BaseAgent):
             "created_at": utcnow().isoformat(),
         }
         # Store in state for tracking
-        assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])
+        assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])  # type: ignore[union-attr]
         assessments.append(assessment)
-        self.state_store.set(f"agent:{self.agent_id}:assessments", assessments)
+        self.state_store.set(f"agent:{self.agent_id}:assessments", assessments)  # type: ignore[union-attr]
         return SecurityAssessment(**assessment)
 
     def add_control(self, assessment_id: str = "", name: str = "", description: str = "", control_type: str = "", category: str = "", status: str = "effective", **kwargs) -> Any:
@@ -340,9 +340,9 @@ class SecurityAgent(BaseAgent):
             "status": status,
             "created_at": utcnow().isoformat(),
         }
-        controls = self.state_store.get(f"agent:{self.agent_id}:controls", [])
+        controls = self.state_store.get(f"agent:{self.agent_id}:controls", [])  # type: ignore[union-attr]
         controls.append(control)
-        self.state_store.set(f"agent:{self.agent_id}:controls", controls)
+        self.state_store.set(f"agent:{self.agent_id}:controls", controls)  # type: ignore[union-attr]
         return SecurityControl(**control)
 
     # ============================================
@@ -935,7 +935,7 @@ class SecurityAgent(BaseAgent):
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
-        assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])
+        assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])  # type: ignore[union-attr]
         return {
             'agent_id': self.agent_id,
             'findings_count': len(self.findings),

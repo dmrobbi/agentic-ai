@@ -145,7 +145,7 @@ class TaskQueue:
         """Disconnect from Redis."""
         self._running = False
         if self._redis:
-            self._redis.close()
+            self._redis.close()  # type: ignore[union-attr]
         logger.info("TaskQueue disconnected")
 
     def _get_queue_key(self, queue_name: str) -> str:
@@ -224,13 +224,13 @@ class TaskQueue:
 
         if delay_seconds > 0:
             # Add to scheduled queue
-            self._redis.zadd(
+            self._redis.zadd(  # type: ignore[union-attr]
                 self._get_scheduled_key(),
-                {task.to_json(): task.scheduled_at.timestamp()}
+                {task.to_json(): task.scheduled_at.timestamp()}  # type: ignore[union-attr]
             )
         else:
             # Add to priority queue
-            self._redis.zadd(
+            self._redis.zadd(  # type: ignore[union-attr]
                 self._get_queue_key(queue_name),
                 {task.to_json(): -priority}  # Negative for descending order
             )
@@ -286,7 +286,7 @@ class TaskQueue:
 
         # Get highest priority task
         queue_key = self._get_queue_key(queue_name)
-        result = self._redis.zpopmin(queue_key, count=1)
+        result = self._redis.zpopmin(queue_key, count=1)  # type: ignore[union-attr]
 
         if not result:
             return None
@@ -306,17 +306,17 @@ class TaskQueue:
         scheduled_key = self._get_scheduled_key()
 
         # Get due tasks
-        due_tasks = self._redis.zrangebyscore(scheduled_key, '-inf', now)
+        due_tasks = self._redis.zrangebyscore(scheduled_key, '-inf', now)  # type: ignore[union-attr]
 
         for task_json in due_tasks:
             task = Task.from_json(task_json)
 
             # Remove from scheduled
-            self._redis.zrem(scheduled_key, task_json)
+            self._redis.zrem(scheduled_key, task_json)  # type: ignore[union-attr]
 
             # Add to queue
             queue_key = self._get_queue_key(task.queue_name)
-            self._redis.zadd(queue_key, {task.to_json(): -task.priority})
+            self._redis.zadd(queue_key, {task.to_json(): -task.priority})  # type: ignore[union-attr]
 
             logger.debug(f"Moved scheduled task {task.task_id} to queue")
 
@@ -401,7 +401,7 @@ class TaskQueue:
             'completed_at': task.completed_at.isoformat() if task.completed_at else None,
         }
 
-        self._redis.setex(
+        self._redis.setex(  # type: ignore[union-attr]
             result_key,
             self.result_ttl_seconds,
             json.dumps(result_data)
@@ -419,7 +419,7 @@ class TaskQueue:
 
         # Re-add to scheduled queue
         if self._redis:
-            self._redis.zadd(
+            self._redis.zadd(  # type: ignore[union-attr]
                 self._get_scheduled_key(),
                 {task.to_json(): task.scheduled_at.timestamp()}
             )
@@ -437,8 +437,8 @@ class TaskQueue:
             'failed_at': utcnow().isoformat(),
         }
 
-        self._redis.lpush(dlq_key, json.dumps(dlq_data))
-        self._redis.ltrim(dlq_key, 0, 999)  # Keep last 1000
+        self._redis.lpush(dlq_key, json.dumps(dlq_data))  # type: ignore[union-attr]
+        self._redis.ltrim(dlq_key, 0, 999)  # Keep last 1000  # type: ignore[union-attr]
 
         logger.warning(f"Task {task.task_id} sent to DLQ after {task.max_retries} retries")
 
@@ -461,7 +461,7 @@ class TaskQueue:
         # Wait for result if requested
         start_time = time.time()
         while wait_seconds > 0:
-            result = self._redis.get(result_key)
+            result = self._redis.get(result_key)  # type: ignore[union-attr]
             if result:
                 return _safe_loads(result)  # type: ignore[no-any-return]
 
@@ -471,7 +471,7 @@ class TaskQueue:
             time.sleep(0.1)
 
         # Final check
-        result = self._redis.get(result_key)
+        result = self._redis.get(result_key)  # type: ignore[union-attr]
         return _safe_loads(result) if result else None
 
     def get_queue_length(self, queue_name: str = "default") -> int:
@@ -495,7 +495,7 @@ class TaskQueue:
             return False
 
         dlq_key = f"{self.queue_prefix}:dlq"
-        task_json = self._redis.lindex(dlq_key, task_index)
+        task_json = self._redis.lindex(dlq_key, task_index)  # type: ignore[union-attr]
 
         if not task_json:
             return False
@@ -509,13 +509,13 @@ class TaskQueue:
         task.retry_count = 0
 
         # Re-enqueue
-        self._redis.zadd(
+        self._redis.zadd(  # type: ignore[union-attr]
             self._get_queue_key(task.queue_name),
             {task.to_json(): -task.priority}
         )
 
         # Remove from DLQ
-        self._redis.lrem(dlq_key, task_index + 1, task_json)
+        self._redis.lrem(dlq_key, task_index + 1, task_json)  # type: ignore[union-attr]
 
         logger.info(f"Retried DLQ task {task.task_id}")
         return True
@@ -526,11 +526,11 @@ class TaskQueue:
             return 0
 
         dlq_key = f"{self.queue_prefix}:dlq"
-        count = self._redis.llen(dlq_key)
-        self._redis.delete(dlq_key)
+        count = self._redis.llen(dlq_key)  # type: ignore[union-attr]
+        self._redis.delete(dlq_key)  # type: ignore[union-attr]
 
         logger.info(f"Cleared {count} tasks from DLQ")
-        return count
+        return count  # type: ignore[no-any-return]
 
     def process_tasks(self, queue_name: str = "default", batch_size: int = 10) -> int:
         """

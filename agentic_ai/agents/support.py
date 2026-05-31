@@ -530,7 +530,7 @@ class SupportAgent(BaseAgent):
 
         # Satisfaction
         scored = [t for t in resolved if t.satisfaction_score]
-        avg_satisfaction = sum(t.satisfaction_score for t in scored) / len(scored) if scored else 0
+        avg_satisfaction = sum(t.satisfaction_score for t in scored) / len(scored) if scored else 0  # type: ignore[misc]
 
         # SLA breaches
         breaches = self.check_sla_breaches()

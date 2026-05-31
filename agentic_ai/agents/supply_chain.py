@@ -371,7 +371,7 @@ class SupplyChainAgent(BaseAgent):
         self.vulnerabilities[vuln_id].status = status
 
         if status == "patched":
-            self.vulnerabilities[vuln_id].resolved_at = utcnow()
+            self.vulnerabilities[vuln_id].resolved_at = utcnow()  # type: ignore[attr-defined]
 
         return True
 

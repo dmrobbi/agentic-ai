@@ -547,7 +547,7 @@ if __name__ == "__main__":
 
     # Render template
     rendered = agent.render_template(template.template_id, {'company': 'Acme', 'name': 'John'})
-    print(f"Rendered: {rendered['subject']}")
+    print(f"Rendered: {rendered['subject']}")  # type: ignore[index]
 
     # Send message
     message = agent.send_message(

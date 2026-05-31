@@ -338,7 +338,7 @@ class DataGovernanceAgent(BaseAgent):
             'policy_id': 'default',
             'retention_period': default['period'],
             'unit': default['unit'],
-            'action': default['action'].value,
+            'action': default['action'].value,  # type: ignore[attr-defined]
         }
 
     def get_assets_due_for_action(self, action: RetentionAction) -> List[Dict[str, Any]]:
@@ -421,7 +421,7 @@ class DataGovernanceAgent(BaseAgent):
         result = {'asset_id': asset_id}
 
         if direction in ['upstream', 'both']:
-            result['upstream'] = [
+            result['upstream'] = [  # type: ignore[assignment]
                 {
                     'lineage_id': l.lineage_id,
                     'source': l.source_asset,
@@ -432,7 +432,7 @@ class DataGovernanceAgent(BaseAgent):
             ]
 
         if direction in ['downstream', 'both']:
-            result['downstream'] = [
+            result['downstream'] = [  # type: ignore[assignment]
                 {
                     'lineage_id': l.lineage_id,
                     'target': l.target_asset,

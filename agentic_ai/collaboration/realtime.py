@@ -74,7 +74,7 @@ class Operation:
     def from_dict(cls, data: Dict[str, Any]) -> 'Operation':
         """Create from dictionary."""
         return cls(
-            operation_id=data.get("operation_id"),
+            operation_id=data.get("operation_id"),  # type: ignore[arg-type]
             operation_type=OperationType(data.get("operation_type", "update")),
             document_id=data.get("document_id", ""),
             user_id=data.get("user_id", ""),
@@ -82,7 +82,7 @@ class Operation:
             content=data.get("content"),
             length=data.get("length", 0),
             path=data.get("path", []),
-            timestamp=data.get("timestamp"),
+            timestamp=data.get("timestamp"),  # type: ignore[arg-type]
             version=data.get("version", 0),
             parent_operation=data.get("parent_operation"),
         )

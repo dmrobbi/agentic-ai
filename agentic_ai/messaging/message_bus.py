@@ -128,7 +128,7 @@ class MessageBus:
             socket_connect_timeout=5,
             socket_timeout=5,
         )
-        self._pubsub = self._redis.pubsub()
+        self._pubsub = self._redis.pubsub()  # type: ignore[union-attr]
         logger.info(f"Connected to Redis: {self.redis_url}")
 
     def disconnect(self) -> None:
@@ -137,7 +137,7 @@ class MessageBus:
         if self._pubsub:
             self._pubsub.close()
         if self._redis:
-            self._redis.close()
+            self._redis.close()  # type: ignore[union-attr]
         logger.info("Disconnected from Redis")
 
     def _get_channel(self, topic: str) -> str:
@@ -159,7 +159,7 @@ class MessageBus:
 
         try:
             channel = self._get_channel(message.topic)
-            self._redis.publish(channel, message.to_json())
+            self._redis.publish(channel, message.to_json())  # type: ignore[union-attr]
             logger.debug(f"Published message {message.message_id} to {channel}")
             return True
         except Exception as e:
@@ -241,7 +241,7 @@ class MessageBus:
 
         # Subscribe to reply channel
         reply_channel = self._get_channel(reply_topic)
-        pubsub = self._redis.pubsub()
+        pubsub = self._redis.pubsub()  # type: ignore[union-attr]
         pubsub.subscribe(reply_channel)
 
         try:
@@ -302,8 +302,8 @@ class MessageBus:
         }
 
         try:
-            self._redis.lpush(self.dead_letter_queue, json.dumps(dlq_message))
-            self._redis.ltrim(self.dead_letter_queue, 0, 999)  # Keep last 1000
+            self._redis.lpush(self.dead_letter_queue, json.dumps(dlq_message))  # type: ignore[union-attr]
+            self._redis.ltrim(self.dead_letter_queue, 0, 999)  # Keep last 1000  # type: ignore[union-attr]
             logger.warning(f"Message {message.message_id} sent to DLQ: {error}")
         except Exception as e:
             logger.error(f"Failed to send to DLQ: {e}")
@@ -313,7 +313,7 @@ class MessageBus:
         if not self._redis:
             return []
 
-        messages = self._redis.lrange(self.dead_letter_queue, 0, limit - 1)
+        messages = self._redis.lrange(self.dead_letter_queue, 0, limit - 1)  # type: ignore[union-attr]
         return [_safe_loads(m) for m in messages]
 
     def retry_dlq_message(self, message_index: int) -> bool:
@@ -321,7 +321,7 @@ class MessageBus:
         if not self._redis:
             return False
 
-        messages = self._redis.lrange(self.dead_letter_queue, message_index, message_index)
+        messages = self._redis.lrange(self.dead_letter_queue, message_index, message_index)  # type: ignore[union-attr]
         if not messages:
             return False
 
@@ -331,7 +331,7 @@ class MessageBus:
 
             # Republish original message
             if self.publish(original_message):
-                self._redis.lrem(self.dead_letter_queue, message_index + 1, messages[0])
+                self._redis.lrem(self.dead_letter_queue, message_index + 1, messages[0])  # type: ignore[union-attr]
                 return True
         except Exception as e:
             logger.error(f"Failed to retry DLQ message: {e}")
@@ -343,10 +343,10 @@ class MessageBus:
         if not self._redis:
             return 0
 
-        count = self._redis.llen(self.dead_letter_queue)
-        self._redis.delete(self.dead_letter_queue)
+        count = self._redis.llen(self.dead_letter_queue)  # type: ignore[union-attr]
+        self._redis.delete(self.dead_letter_queue)  # type: ignore[union-attr]
         logger.info(f"Cleared {count} messages from DLQ")
-        return count
+        return count  # type: ignore[no-any-return]
 
     @contextmanager
     def connection(self):

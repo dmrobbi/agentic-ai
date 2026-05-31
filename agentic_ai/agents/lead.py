@@ -155,7 +155,7 @@ class LeadAgent(BaseAgent):
         self._agent_pools[pool].append(agent.agent_id)
         return agent.agent_id
 
-    def _create_agent(self, agent_type: str) -> BaseAgent:
+    def _create_agent(self, agent_type: str) -> Optional[BaseAgent]:
         """Create and register a new agent of the given type."""
         from agentic_ai.agents.developer import DeveloperAgent
         from agentic_ai.agents.qa import QAAgent
@@ -178,7 +178,7 @@ class LeadAgent(BaseAgent):
         agent.state_store = self.state_store
         agent.bus = self.bus
         self.register_agent(agent)
-        return agent
+        return agent  # type: ignore[no-any-return]
 
     def create_task(self, task_type: str = "", description: str = "",
                     priority: str = "medium", payload: Optional[Dict[str, Any]] = None,
@@ -235,7 +235,7 @@ class LeadAgent(BaseAgent):
     def route_task(self, task_id: str = "", agent_id: str = "") -> Dict[str, Any]:
         task = None
         for t in self._tasks:
-            if t.id == task_id or t.task_id == task_id:
+            if t.id == task_id or t.id == task_id:
                 task = t
                 break
         if not task:
@@ -256,7 +256,7 @@ class LeadAgent(BaseAgent):
     def delegate_task(self, task_id: str = "", agent_id: str = "") -> Dict[str, Any]:
         task = None
         for t in self._tasks:
-            if t.id == task_id or t.task_id == task_id:
+            if t.id == task_id or t.id == task_id:
                 task = t
                 break
         if not task:
@@ -359,7 +359,7 @@ class LeadAgent(BaseAgent):
         return results
 
     async def selector(self, agents: List[str], prompt: str,
-                       selector_fn: Callable = None,
+                       selector_fn: Optional[Callable] = None,
                        cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
         """Select the best agent for a task, then delegate.
 
@@ -369,7 +369,7 @@ class LeadAgent(BaseAgent):
         if cancellation_token and cancellation_token.is_cancelled:
             return {"error": "cancelled"}
 
-        if selector_fn:
+        if selector_fn is not None:
             selected = selector_fn(agents, prompt)
         else:
             selected = self._default_selector(agents, prompt)
@@ -433,7 +433,7 @@ class LeadAgent(BaseAgent):
         }
 
     async def decompose_and_parallel(self, task: str, agents: List[str],
-                                      merge_fn: Callable = None,
+                                      merge_fn: Optional[Callable] = None,
                                       cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
         """Decompose a task into subtasks, run agents in parallel, merge results.
 
@@ -461,7 +461,7 @@ class LeadAgent(BaseAgent):
             }
 
         # Merge results
-        if merge_fn:
+        if merge_fn is not None:
             merged = merge_fn(results)
         else:
             merged = self._default_merge(results)

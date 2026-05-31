@@ -666,7 +666,7 @@ class ComplianceAgent(BaseAgent):
     # ============================================
 
 
-    def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
+    def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:  # type: ignore[no-redef]
         """Create a compliance assessment."""
         assessment_id = self._generate_id("assess")
         assessment = ComplianceAssessment(
@@ -726,7 +726,7 @@ def get_capabilities() -> Dict[str, Any]:
         'risk_levels': [l.value for l in RiskLevel],
         'audit_statuses': [s.value for s in AuditStatus],
         'control_types': [t.value for t in ControlType],
-        'framework_templates': list(ComplianceAgent(None).framework_templates.keys()),
+        'framework_templates': list(ComplianceAgent(None).framework_templates.keys()),  # type: ignore[arg-type]
     }
 
 

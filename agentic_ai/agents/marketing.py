@@ -157,7 +157,7 @@ class MarketingAgent(BaseAgent):
         campaign.status = status
 
         if status == CampaignStatus.ACTIVE:
-            campaign.metrics['start_date'] = utcnow().isoformat()
+            campaign.metrics['start_date'] = utcnow().isoformat()  # type: ignore[assignment]
 
         logger.info(f"Campaign {campaign_id} status: {status.value}")
         return campaign

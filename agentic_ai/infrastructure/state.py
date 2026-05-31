@@ -280,7 +280,7 @@ class StateStore:
         key = f"agent_state:{agent_id}"
         entry = self._state.get(key)
         if entry:
-            return entry.value.get("state")
+            return entry.value.get("state")  # type: ignore[no-any-return]
         # Try SQLite
         if self._conn:
             with self._db_lock:

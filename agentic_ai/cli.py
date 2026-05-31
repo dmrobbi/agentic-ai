@@ -208,7 +208,7 @@ def agent_info(agent_name: str = typer.Argument(..., help="Agent name or ID")):
         raise typer.Exit(1)
 
     agent = agent_func()
-    state = agent.get_state()
+    state = agent.get_state()  # type: ignore[attr-defined]
 
     console.print(Panel.fit(f"[bold]{agent_name}[/bold] State", box=box.ROUNDED))
 
@@ -407,14 +407,14 @@ def vendor_list(
             'tier_4': 'T4',
         }
 
-        risk_color = "red" if vendor.risk_score > 0.7 else "yellow" if vendor.risk_score > 0.4 else "green"
+        risk_color = "red" if vendor.risk_score > 0.7 else "yellow" if vendor.risk_score > 0.4 else "green"  # type: ignore[attr-defined]
 
         table.add_row(
             vendor.vendor_id[:20] + "...",
             vendor.name,
             tier_display.get(vendor.tier.value, vendor.tier.value),
             vendor.category,
-            f"[{risk_color}]{vendor.risk_score:.2f}[/{risk_color}]",
+            f"[{risk_color}]{vendor.risk_score:.2f}[/{risk_color}]",  # type: ignore[attr-defined]
             vendor.status,
         )
 
@@ -683,7 +683,7 @@ def cloud_compliance(
 ):
     """Show compliance scores."""
     agent = get_cloud_agent()
-    score = agent.get_compliance_score(framework)
+    score = agent.get_compliance_score(framework)  # type: ignore[arg-type]
 
     console.print(Panel.fit(f"[bold]{framework.upper()}[/bold] Compliance", box=box.ROUNDED))
 

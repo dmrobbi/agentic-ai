@@ -79,7 +79,7 @@ class DeveloperAgent(BaseAgent):
     def review_code(self, code: str = "", language: str = "python", path: str = "", pr: str = "", **kwargs) -> Dict[str, Any]:
         return {"status": "reviewed", "issues": [], "suggestions": ["Code looks good"], "language": language, "path": path, "pr": pr, "code": code, "feedback": "Code review completed successfully"}
 
-    def implement_feature(self, feature: str = "", language: str = "python", description: str = "", files: list = None, specs: str = "", module: str = "") -> Dict[str, Any]:
+    def implement_feature(self, feature: str = "", language: str = "python", description: str = "", files: Optional[list] = None, specs: str = "", module: str = "") -> Dict[str, Any]:
         return {"status": "implemented", "feature": feature or description or specs, "language": language, "implementation": "Feature implementation generated", "files": files or [], "module": module}
 
     def run_tests(self, path: str = ".", test_type: str = "unit") -> Dict[str, Any]:

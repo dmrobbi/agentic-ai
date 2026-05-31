@@ -57,7 +57,7 @@ class AgentKnowledge:
                     self._chroma_client = chromadb.PersistentClient(path=persist_dir)
                 else:
                     self._chroma_client = chromadb.Client()
-                self._collection = self._chroma_client.get_or_create_collection(
+                self._collection = self._chroma_client.get_or_create_collection(  # type: ignore[union-attr]
                     name=collection_name,
                     metadata={"hnsw:space": "cosine"}
                 )
@@ -96,7 +96,7 @@ class AgentKnowledge:
         # Store in ChromaDB if available
         if self._collection is not None:
             try:
-                self._collection.add(
+                self._collection.add(  # type: ignore[union-attr]
                     documents=[text],
                     metadatas=[metadata],
                     ids=[doc_id],
@@ -119,7 +119,7 @@ class AgentKnowledge:
     def _vector_search(self, query: str, top_k: int) -> List[KnowledgeEntry]:
         """Search using ChromaDB vector similarity."""
         try:
-            results = self._collection.query(
+            results = self._collection.query(  # type: ignore[union-attr]
                 query_texts=[query],
                 n_results=min(top_k, len(self._entries) or 1),
             )
@@ -164,7 +164,7 @@ class AgentKnowledge:
             del self._entries[doc_id]
         if self._collection is not None:
             try:
-                self._collection.delete(ids=[doc_id])
+                self._collection.delete(ids=[doc_id])  # type: ignore[union-attr]
             except Exception as e:
                 logger.warning(f"ChromaDB delete failed: {e}")
         return existed
@@ -173,7 +173,7 @@ class AgentKnowledge:
         """Return number of documents in the knowledge base."""
         if self._collection is not None:
             try:
-                return int(self._collection.count())
+                return int(self._collection.count())  # type: ignore[union-attr]
             except Exception:
                 pass
         return len(self._entries)
@@ -183,8 +183,8 @@ class AgentKnowledge:
         self._entries.clear()
         if self._collection is not None:
             try:
-                self._chroma_client.delete_collection(self.collection_name)
-                self._collection = self._chroma_client.get_or_create_collection(
+                self._chroma_client.delete_collection(self.collection_name)  # type: ignore[union-attr]
+                self._collection = self._chroma_client.get_or_create_collection(  # type: ignore[union-attr]
                     name=self.collection_name,
                     metadata={"hnsw:space": "cosine"}
                 )

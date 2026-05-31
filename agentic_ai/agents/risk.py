@@ -716,7 +716,7 @@ class RiskAgent(BaseAgent):
             risks_in_cat = [r for r in self.risks.values() if r.category == category]
 
             # Count risks above appetite limit
-            above_limit = len([r for r in risks_in_cat if r.residual_score > appetite['limit']])
+            above_limit = len([r for r in risks_in_cat if r.residual_score > appetite['limit']])  # type: ignore[operator]
 
             status[category.value] = {
                 'tolerance': appetite['tolerance'],

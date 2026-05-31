@@ -17,13 +17,13 @@ Agents:
 - SecurityAgent: Threat detection, code scanning
 """
 
-from agentic_ai.agents.cyber.soc import SecurityOperationsAgent
-from agentic_ai.agents.cyber.vulnman import VulnerabilityManagementAgent
-from agentic_ai.agents.cyber.redteam import RedTeamAgent
-from agentic_ai.agents.cyber.redteam_v2 import RedTeamAgentV2
-from agentic_ai.agents.cyber.malware import MalwareAnalysisAgent
-from agentic_ai.agents.cyber.kali import KaliAgent
-from agentic_ai.agents.cyber.kali_v2 import KaliAgentV2
+from agentic_ai.agents.cyber.soc import SecurityOperationsAgent  # type: ignore[attr-defined]
+from agentic_ai.agents.cyber.vulnman import VulnerabilityManagementAgent  # type: ignore[attr-defined]
+from agentic_ai.agents.cyber.redteam import RedTeamAgent  # type: ignore[attr-defined]
+from agentic_ai.agents.cyber.redteam_v2 import RedTeamAgentV2  # type: ignore[attr-defined]
+from agentic_ai.agents.cyber.malware import MalwareAnalysisAgent  # type: ignore[attr-defined]
+from agentic_ai.agents.cyber.kali import KaliAgent  # type: ignore[attr-defined]
+from agentic_ai.agents.cyber.kali_v2 import KaliAgentV2  # type: ignore[attr-defined]
 
 __all__ = [
     # Blue Team

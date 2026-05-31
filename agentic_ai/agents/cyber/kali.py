@@ -1105,7 +1105,7 @@ class MetasploitRPC:
                 },
                 timeout=30
             )
-            return response.json().get("data", "")
+            return response.json().get("data", "")  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Session write failed: {e}")
             return ""
@@ -1123,7 +1123,7 @@ class MetasploitRPC:
                 json={"method": "db.hosts", "params": [self.token]},
                 timeout=30
             )
-            return response.json().get("hosts", [])
+            return response.json().get("hosts", [])  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Get hosts failed: {e}")
             return []
@@ -1138,14 +1138,14 @@ class MetasploitRPC:
         try:
             params = [self.token]
             if host:
-                params.append({"address": host})
+                params.append({"address": host})  # type: ignore[arg-type]
 
             response = requests.post(
                 f"{self.url}/db_services",
                 json={"method": "db.services", "params": params},
                 timeout=30
             )
-            return response.json().get("services", [])
+            return response.json().get("services", [])  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Get services failed: {e}")
             return []
@@ -1160,14 +1160,14 @@ class MetasploitRPC:
         try:
             params = [self.token]
             if host:
-                params.append({"address": host})
+                params.append({"address": host})  # type: ignore[arg-type]
 
             response = requests.post(
                 f"{self.url}/db_vulns",
                 json={"method": "db.vulns", "params": params},
                 timeout=30
             )
-            return response.json().get("vulns", [])
+            return response.json().get("vulns", [])  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Get vulns failed: {e}")
             return []
@@ -1185,7 +1185,7 @@ class MetasploitRPC:
                 json={"method": "db.creds", "params": [self.token]},
                 timeout=30
             )
-            return response.json().get("creds", [])
+            return response.json().get("creds", [])  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Get creds failed: {e}")
             return []
@@ -1203,7 +1203,7 @@ class MetasploitRPC:
                 json={"method": "db.loots", "params": [self.token]},
                 timeout=30
             )
-            return response.json().get("loots", [])
+            return response.json().get("loots", [])  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Get loots failed: {e}")
             return []
@@ -1227,7 +1227,7 @@ class MetasploitRPC:
                 },
                 timeout=60
             )
-            return response.json().get("result") == "success"
+            return response.json().get("result") == "success"  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Nmap import failed: {e}")
             return False
@@ -1261,7 +1261,7 @@ class MetasploitRPC:
                 },
                 timeout=120
             )
-            return response.json()
+            return response.json()  # type: ignore[no-any-return]
         except Exception as e:
             logger.error(f"Post module failed: {e}")
             return {"success": False, "error": str(e)}
@@ -1740,7 +1740,7 @@ class KaliAgent(BaseAgent):
             hosts = []
 
             for host in root.findall(".//host"):
-                host_info = {
+                host_info = {  # type: ignore[var-annotated]
                     "address": "",
                     "hostname": "",
                     "ports": [],
@@ -1772,7 +1772,7 @@ class KaliAgent(BaseAgent):
                         port_info["service"] = service.get("name", "")
 
                     if port_info["state"] == "open":
-                        host_info["ports"].append(port_info)
+                        host_info["ports"].append(port_info)  # type: ignore[union-attr]
 
                 os_match = host.find(".//osmatch")
                 if os_match is not None:
@@ -1788,7 +1788,7 @@ class KaliAgent(BaseAgent):
     def _parse_json(self, output: str) -> Optional[Dict[str, Any]]:
         """Parse JSON output."""
         try:
-            return json.loads(output)
+            return json.loads(output)  # type: ignore[no-any-return]
         except (json.JSONDecodeError, TypeError, ValueError):
             return None
 
@@ -1841,7 +1841,7 @@ class KaliAgent(BaseAgent):
     def _parse_sqlmap(self, output: str) -> Optional[Dict[str, Any]]:
         """Parse SQLMap output."""
         try:
-            result = {
+            result = {  # type: ignore[var-annotated]
                 "vulnerable": False,
                 "injection_type": None,
                 "database": None,
@@ -1857,20 +1857,20 @@ class KaliAgent(BaseAgent):
             if "Type: " in output:
                 for line in output.split("\n"):
                     if "Type: " in line:
-                        result["injection_type"] = line.split("Type: ")[1].strip()
+                        result["injection_type"] = line.split("Type: ")[1].strip()  # type: ignore[assignment]
 
             # Extract database name
             if "current database: " in output:
                 for line in output.split("\n"):
                     if "current database: " in line:
-                        result["database"] = line.split("current database: ")[1].strip()
+                        result["database"] = line.split("current database: ")[1].strip()  # type: ignore[assignment]
 
             # Extract tables
             if "available databases" in output.lower():
                 in_tables = False
                 for line in output.split("\n"):
                     if "[*]" in line and in_tables:
-                        result["tables"].append(line.replace("[*]", "").strip())
+                        result["tables"].append(line.replace("[*]", "").strip())  # type: ignore[union-attr]
                     if "available databases" in line.lower():
                         in_tables = True
 

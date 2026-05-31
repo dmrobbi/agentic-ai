@@ -152,7 +152,7 @@ class AgentProtocol:
         self._message_bus.connect()
 
         self._event_bus = EventBus(redis_url=self.redis_url)
-        self._event_bus.connect()
+        self._event_bus.connect()  # type: ignore[union-attr]
 
         # Subscribe to agent messages
         self._message_bus.subscribe(
@@ -169,7 +169,7 @@ class AgentProtocol:
         if self._message_bus:
             self._message_bus.disconnect()
         if self._event_bus:
-            self._event_bus.disconnect()
+            self._event_bus.disconnect()  # type: ignore[union-attr]
 
         logger.info(f"Agent {self.agent_id} disconnected")
 
@@ -202,7 +202,7 @@ class AgentProtocol:
         if not self._message_bus:
             self.connect()
 
-        result = self._message_bus.publish(message.to_message())
+        result = self._message_bus.publish(message.to_message())  # type: ignore[union-attr]
         return result if isinstance(result, bool) else True
 
     def request(
@@ -235,7 +235,7 @@ class AgentProtocol:
         if not self._message_bus:
             self.connect()
 
-        response = self._message_bus.request(message.to_message(), timeout_seconds)
+        response = self._message_bus.request(message.to_message(), timeout_seconds)  # type: ignore[union-attr]
 
         if response:
             return response.payload
@@ -286,7 +286,7 @@ class AgentProtocol:
         if not self._event_bus:
             self.connect()
 
-        return self._event_bus.emit(
+        return self._event_bus.emit(  # type: ignore[union-attr]
             event_type=event_type,
             data=data,
             source=self.agent_id,
@@ -455,7 +455,7 @@ class AgentRegistry:
 
     def __init__(self, redis_url: str = "redis://localhost:6379"):
         self.redis_url = redis_url
-        self._redis: Optional[redis.Redis] = None
+        self._redis: Optional[redis.Redis] = None  # type: ignore[name-defined]
         self._registry_key = "agent_registry"
 
     def connect(self) -> None:
@@ -476,30 +476,30 @@ class AgentRegistry:
             'last_heartbeat': utcnow().isoformat(),
         }
 
-        self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
+        self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))  # type: ignore[union-attr]
 
     def deregister_agent(self, agent_id: str) -> None:
         """Remove agent from registry."""
         if self._redis:
-            self._redis.hdel(self._registry_key, agent_id)
+            self._redis.hdel(self._registry_key, agent_id)  # type: ignore[union-attr]
 
     def update_heartbeat(self, agent_id: str) -> None:
         """Update agent heartbeat timestamp."""
         if not self._redis:
             return
 
-        data = self._redis.hget(self._registry_key, agent_id)
+        data = self._redis.hget(self._registry_key, agent_id)  # type: ignore[union-attr]
         if data:
             agent_data = _safe_loads(data)
             agent_data['last_heartbeat'] = utcnow().isoformat()
-            self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
+            self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))  # type: ignore[union-attr]
 
     def get_agent(self, agent_id: str) -> Optional[Dict[str, Any]]:
         """Get agent by ID."""
         if not self._redis:
             return None
 
-        data = self._redis.hget(self._registry_key, agent_id)
+        data = self._redis.hget(self._registry_key, agent_id)  # type: ignore[union-attr]
         return _safe_loads(data) if data else None
 
     def get_agents_by_type(self, agent_type: str) -> List[Dict[str, Any]]:
@@ -508,7 +508,7 @@ class AgentRegistry:
             return []
 
         agents = []
-        all_agents = self._redis.hgetall(self._registry_key)
+        all_agents = self._redis.hgetall(self._registry_key)  # type: ignore[union-attr]
 
         for agent_data in all_agents.values():
             data = _safe_loads(agent_data)
@@ -523,7 +523,7 @@ class AgentRegistry:
             return []
 
         agents = []
-        all_agents = self._redis.hgetall(self._registry_key)
+        all_agents = self._redis.hgetall(self._registry_key)  # type: ignore[union-attr]
 
         for agent_data in all_agents.values():
             agents.append(_safe_loads(agent_data))
@@ -536,7 +536,7 @@ class AgentRegistry:
             return []
 
         agents = []
-        all_agents = self._redis.hgetall(self._registry_key)
+        all_agents = self._redis.hgetall(self._registry_key)  # type: ignore[union-attr]
 
         for agent_data in all_agents.values():
             data = _safe_loads(agent_data)
@@ -555,14 +555,14 @@ class AgentRegistry:
         cutoff = utcnow() - timedelta(seconds=max_age_seconds)
         removed = 0
 
-        all_agents = self._redis.hgetall(self._registry_key)
+        all_agents = self._redis.hgetall(self._registry_key)  # type: ignore[union-attr]
 
         for agent_id, agent_data in all_agents.items():
             data = _safe_loads(agent_data)
             last_heartbeat = datetime.fromisoformat(data.get('last_heartbeat', ''))
 
             if last_heartbeat < cutoff:
-                self._redis.hdel(self._registry_key, agent_id)
+                self._redis.hdel(self._registry_key, agent_id)  # type: ignore[union-attr]
                 removed += 1
 
         if removed > 0:

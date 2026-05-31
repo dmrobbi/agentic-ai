@@ -538,12 +538,12 @@ class RedTeamAgentV2:
             for tech_id in techniques:
                 tech = self.get_technique(tech_id)
                 if tech:
-                    coverage["techniques_mapped"].append(tech_id)
-                    coverage["tactics_mapped"][tech["tactic"]] += 1
+                    coverage["techniques_mapped"].append(tech_id)  # type: ignore[attr-defined]
+                    coverage["tactics_mapped"][tech["tactic"]] += 1  # type: ignore[index]
 
-        coverage["techniques_mapped"] = list(set(coverage["techniques_mapped"]))
+        coverage["techniques_mapped"] = list(set(coverage["techniques_mapped"]))  # type: ignore[call-overload]
         coverage["coverage_percentage"] = round(
-            len(coverage["techniques_mapped"]) / coverage["total_techniques"] * 100, 2
+            len(coverage["techniques_mapped"]) / coverage["total_techniques"] * 100, 2  # type: ignore[arg-type,operator]
         )
 
         return coverage
@@ -582,7 +582,7 @@ class RedTeamAgentV2:
                 "id": f"node_{i}",
                 "name": step.get("action", f"Step {i}"),
                 "type": step.get("type", "action"),
-                "target": step.get("target"),
+                "target": step.get("target"),  # type: ignore[dict-item]
                 "time_minutes": step.get("time_minutes", 0),
                 "mitre": step.get("mitre", []),
             })

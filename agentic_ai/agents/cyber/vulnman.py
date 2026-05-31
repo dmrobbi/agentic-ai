@@ -555,7 +555,7 @@ class VulnerabilityManagementAgent(BaseAgent):
                 'cve_id': v.cve_id,
                 'cvss_score': v.cvss_score,
                 'severity': v.severity.value,
-                'asset': self.assets.get(v.asset_id, {}).name if v.asset_id in self.assets else v.asset_id,
+                'asset': self.assets.get(v.asset_id, {}).name if v.asset_id in self.assets else v.asset_id,  # type: ignore[union-attr]
                 'exploit_available': v.exploit_available,
                 'priority_score': round(score, 1),
             }

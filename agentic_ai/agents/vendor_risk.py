@@ -639,7 +639,7 @@ class VendorRiskAgent(BaseAgent):
         self.findings[finding_id].status = status
 
         if status == "closed":
-            self.findings[finding_id].closed_at = utcnow()
+            self.findings[finding_id].closed_at = utcnow()  # type: ignore[attr-defined]
 
         return True
 

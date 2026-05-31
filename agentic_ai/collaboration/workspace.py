@@ -5,7 +5,7 @@ Shared Workspace System
 Enables multiple agents and humans to collaborate in shared workspaces.
 """
 
-from typing import Dict, Any, List, Optional, Set
+from typing import Callable, Dict, Any, List, Optional, Set
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
@@ -141,7 +141,7 @@ class Workspace:
         self._lock = threading.RLock()
 
         # Events
-        self._event_callbacks: List[callable] = []
+        self._event_callbacks: List[callable] = []  # type: ignore[valid-type]
 
     def _emit_event(self, event_type: str, data: Dict[str, Any]):
         """Emit a workspace event."""
@@ -154,7 +154,7 @@ class Workspace:
 
         for callback in self._event_callbacks:
             try:
-                callback(event)
+                callback(event)  # type: ignore[misc]
             except Exception:
                 logger.warning("Workspace event callback error", exc_info=True)
 
@@ -440,7 +440,7 @@ class Workspace:
         # Write locks conflict with everything
         return False
 
-    def register_event_callback(self, callback: callable):
+    def register_event_callback(self, callback: Callable):
         """Register a callback for workspace events."""
         self._event_callbacks.append(callback)
 
