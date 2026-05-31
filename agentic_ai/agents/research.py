@@ -6,13 +6,14 @@ Provides literature review, research synthesis, citation management,
 trend analysis, and knowledge discovery.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 import hashlib
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -54,7 +55,7 @@ class Publication:
     url: str = ""
     pdf_url: str = ""
     doi: str = ""
-    added_at: datetime = field(default_factory=datetime.utcnow)
+    added_at: datetime = field(default_factory=utcnow)
     notes: str = ""
 
 
@@ -70,7 +71,7 @@ class ResearchProject:
     methodology: str = ""
     publications: List[str] = field(default_factory=list)
     findings: List[str] = field(default_factory=list)
-    start_date: datetime = field(default_factory=datetime.utcnow)
+    start_date: datetime = field(default_factory=utcnow)
     target_completion: Optional[datetime] = None
     completed_at: Optional[datetime] = None
 
@@ -82,16 +83,17 @@ class Citation:
     source_publication_id: str
     target_publication_id: str
     citation_context: str = ""
-    cited_at: datetime = field(default_factory=datetime.utcnow)
+    cited_at: datetime = field(default_factory=utcnow)
 
 
-class ResearchAgent:
+class ResearchAgent(BaseAgent):
     """
     Research Agent for literature review, research synthesis,
     citation management, and knowledge discovery.
     """
 
     def __init__(self, agent_id: str = "research-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.publications: Dict[str, Publication] = {}
         self.projects: Dict[str, ResearchProject] = {}
@@ -322,7 +324,7 @@ class ResearchAgent:
         project.status = status
 
         if status == ResearchStatus.COMPLETED:
-            project.completed_at = datetime.utcnow()
+            project.completed_at = utcnow()
 
         return project
 
@@ -473,7 +475,7 @@ class ResearchAgent:
             'description': description,
             'parent': parent_topic,
             'publication_count': 0,
-            'created_at': datetime.utcnow().isoformat(),
+            'created_at': utcnow().isoformat(),
         }
 
         self.topics[name] = topic
@@ -509,11 +511,6 @@ class ResearchAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

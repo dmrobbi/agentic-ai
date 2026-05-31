@@ -7,6 +7,7 @@ Unit tests for presence, activity feeds, and typing indicators.
 
 import pytest
 from datetime import datetime, timedelta
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @pytest.fixture
@@ -54,7 +55,7 @@ class TestPresenceInfo:
         
         presence = PresenceInfo(
             user_id="user-1",
-            last_seen=(datetime.utcnow() - timedelta(minutes=10)).isoformat(),
+            last_seen=(utcnow() - timedelta(minutes=10)).isoformat(),
             auto_away_minutes=5,
         )
         
@@ -66,7 +67,7 @@ class TestPresenceInfo:
         
         presence = PresenceInfo(
             user_id="user-1",
-            last_seen=(datetime.utcnow() - timedelta(minutes=45)).isoformat(),
+            last_seen=(utcnow() - timedelta(minutes=45)).isoformat(),
             auto_offline_minutes=30,
         )
         
@@ -160,7 +161,7 @@ class TestPresenceManager:
         # Set user with old last_seen
         manager.set_presence("user-1", PresenceStatus.ONLINE)
         presence = manager.get_presence("user-1")
-        presence.last_seen = (datetime.utcnow() - timedelta(minutes=60)).isoformat()
+        presence.last_seen = (utcnow() - timedelta(minutes=60)).isoformat()
         
         updated = manager.cleanup_inactive()
         
@@ -307,7 +308,7 @@ class TestActivityFeed:
             target_type="document",
             target_id="d1",
         )
-        event.timestamp = (datetime.utcnow() - timedelta(hours=48)).isoformat()
+        event.timestamp = (utcnow() - timedelta(hours=48)).isoformat()
         feed._events.append(event)
         
         # Add recent event

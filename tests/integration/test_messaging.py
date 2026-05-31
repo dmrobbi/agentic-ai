@@ -19,6 +19,7 @@ from agentic_ai.messaging.message_bus import MessageBus, Message, MessageType
 from agentic_ai.messaging.event_bus import EventBus, Event, EventPriority, on_event
 from agentic_ai.messaging.task_queue import TaskQueue, Task, TaskStatus
 from agentic_ai.messaging.agent_protocol import AgentProtocol, AgentMessage, AgentCapability, AgentRegistry
+from agentic_ai.infrastructure.utils import utcnow
 
 
 # ============================================================================
@@ -158,7 +159,7 @@ class TestMessageBus:
         dlq_message = {
             'original_message': original_message.to_json(),
             'error': 'Test error',
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': utcnow().isoformat(),
         }
         
         mock_redis.lrange.return_value = [str(dlq_message)]
@@ -456,7 +457,7 @@ class TestTaskQueue:
             'task_id': 'task-123',
             'status': 'completed',
             'result': {'success': True},
-            'completed_at': datetime.utcnow().isoformat(),
+            'completed_at': utcnow().isoformat(),
         }
         mock_redis.get.return_value = str(result_data)
         
@@ -648,7 +649,7 @@ class TestAgentRegistry:
             'agent_id': 'agent-1',
             'agent_type': 'test',
             'capabilities': '[]',
-            'last_heartbeat': datetime.utcnow().isoformat(),
+            'last_heartbeat': utcnow().isoformat(),
         }
         mock_redis.hget.return_value = str(agent_data)
         
@@ -713,13 +714,13 @@ class TestAgentRegistry:
         old_agent = {
             'agent_id': 'old-agent',
             'agent_type': 'test',
-            'last_heartbeat': (datetime.utcnow() - timedelta(minutes=10)).isoformat(),
+            'last_heartbeat': (utcnow() - timedelta(minutes=10)).isoformat(),
         }
         
         new_agent = {
             'agent_id': 'new-agent',
             'agent_type': 'test',
-            'last_heartbeat': datetime.utcnow().isoformat(),
+            'last_heartbeat': utcnow().isoformat(),
         }
         
         mock_redis.hgetall.return_value = {

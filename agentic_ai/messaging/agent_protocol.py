@@ -17,6 +17,7 @@ from abc import ABC, abstractmethod
 
 from .message_bus import MessageBus, Message, MessageType
 from .event_bus import EventBus, Event, EventPriority
+from agentic_ai.infrastructure.utils import utcnow
 
 logger = logging.getLogger(__name__)
 
@@ -67,7 +68,7 @@ class AgentMessage:
     receiver_agent: Optional[str]
     action: str
     parameters: Dict[str, Any]
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=utcnow)
     correlation_id: Optional[str] = None
     reply_to: Optional[str] = None
     priority: int = 5
@@ -143,7 +144,7 @@ class AgentProtocol:
         self._capabilities: Dict[str, AgentCapability] = {}
         self._handlers: Dict[str, Callable] = {}
         self._running = False
-        self._last_heartbeat = datetime.utcnow()
+        self._last_heartbeat = utcnow()
 
     def connect(self) -> None:
         """Connect to message and event buses."""
@@ -380,7 +381,7 @@ class AgentProtocol:
 
     def send_heartbeat(self) -> None:
         """Send heartbeat event."""
-        self._last_heartbeat = datetime.utcnow()
+        self._last_heartbeat = utcnow()
 
         self.emit_event(
             'agent.heartbeat',
@@ -416,16 +417,16 @@ class AgentProtocol:
         self.initialize()
 
         heartbeat_interval = 30  # seconds
-        last_heartbeat = datetime.utcnow()
+        last_heartbeat = utcnow()
 
         logger.info(f"Agent {self.agent_id} started")
 
         try:
             while self._running:
                 # Send periodic heartbeat
-                if (datetime.utcnow() - last_heartbeat).total_seconds() > heartbeat_interval:
+                if (utcnow() - last_heartbeat).total_seconds() > heartbeat_interval:
                     self.send_heartbeat()
-                    last_heartbeat = datetime.utcnow()
+                    last_heartbeat = utcnow()
 
                 # Process messages (non-blocking)
                 if self._message_bus:
@@ -471,8 +472,8 @@ class AgentRegistry:
             'agent_id': agent_id,
             'agent_type': agent_type,
             'capabilities': json.dumps(capabilities),
-            'registered_at': datetime.utcnow().isoformat(),
-            'last_heartbeat': datetime.utcnow().isoformat(),
+            'registered_at': utcnow().isoformat(),
+            'last_heartbeat': utcnow().isoformat(),
         }
 
         self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
@@ -490,7 +491,7 @@ class AgentRegistry:
         data = self._redis.hget(self._registry_key, agent_id)
         if data:
             agent_data = _safe_loads(data)
-            agent_data['last_heartbeat'] = datetime.utcnow().isoformat()
+            agent_data['last_heartbeat'] = utcnow().isoformat()
             self._redis.hset(self._registry_key, agent_id, json.dumps(agent_data))
 
     def get_agent(self, agent_id: str) -> Optional[Dict[str, Any]]:
@@ -551,7 +552,7 @@ class AgentRegistry:
         if not self._redis:
             return 0
 
-        cutoff = datetime.utcnow() - timedelta(seconds=max_age_seconds)
+        cutoff = utcnow() - timedelta(seconds=max_age_seconds)
         removed = 0
 
         all_agents = self._redis.hgetall(self._registry_key)

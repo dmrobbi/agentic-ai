@@ -6,12 +6,13 @@ Provides AI ethics review, bias detection, fairness assessment,
 explainability tracking, and ethical impact assessments.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -82,7 +83,7 @@ class AIModel:
     training_data_description: str = ""
     training_period: Optional[str] = None
     deployment_date: Optional[datetime] = None
-    last_updated: datetime = field(default_factory=datetime.utcnow)
+    last_updated: datetime = field(default_factory=utcnow)
     tags: List[str] = field(default_factory=list)
 
 
@@ -100,7 +101,7 @@ class EthicsAssessment:
     mitigations: List[str] = field(default_factory=list)
     reviewer: Optional[str] = None
     reviewed_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -118,7 +119,7 @@ class BiasAssessment:
     threshold: Optional[float] = None
     status: str = "identified"  # identified, investigating, mitigated, accepted
     remediation_plan: str = ""
-    identified_at: datetime = field(default_factory=datetime.utcnow)
+    identified_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -132,7 +133,7 @@ class FairnessReport:
     overall_score: float
     disparities: List[Dict[str, Any]] = field(default_factory=list)
     recommendations: List[str] = field(default_factory=list)
-    generated_at: datetime = field(default_factory=datetime.utcnow)
+    generated_at: datetime = field(default_factory=utcnow)
 
     def __contains__(self, key):
         return hasattr(self, key)
@@ -147,7 +148,7 @@ class ExplainabilityRecord:
     explanation_type: str  # global, local
     features: List[Dict[str, Any]] = field(default_factory=list)
     visualization_url: Optional[str] = None
-    generated_at: datetime = field(default_factory=datetime.utcnow)
+    generated_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -163,7 +164,7 @@ class EthicalIncident:
     status: str = "reported"  # reported, investigating, contained, resolved
     root_cause: str = ""
     remediation: List[str] = field(default_factory=list)
-    reported_at: datetime = field(default_factory=datetime.utcnow)
+    reported_at: datetime = field(default_factory=utcnow)
     resolved_at: Optional[datetime] = None
 
 
@@ -178,16 +179,17 @@ class HumanOversight:
     escalation_path: List[str] = field(default_factory=list)
     review_timeout_hours: int = 24
     enabled: bool = True
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
-class EthicsAgent:
+class EthicsAgent(BaseAgent):
     """
     Ethics Agent for AI ethics review, bias detection,
     fairness assessment, and explainability tracking.
     """
 
     def __init__(self, agent_id: str = "ethics-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.models: Dict[str, AIModel] = {}
         self.assessments: Dict[str, EthicsAssessment] = {}
@@ -276,7 +278,7 @@ class EthicsAgent:
             return False
 
         self.models[model_id].risk_level = risk_level
-        self.models[model_id].last_updated = datetime.utcnow()
+        self.models[model_id].last_updated = utcnow()
 
         return True
 
@@ -339,7 +341,7 @@ class EthicsAgent:
             'finding': finding,
             'severity': severity.value,
             'recommendation': recommendation,
-            'identified_at': datetime.utcnow().isoformat(),
+            'identified_at': utcnow().isoformat(),
         })
 
         # Update overall risk
@@ -361,7 +363,7 @@ class EthicsAgent:
         assessment = self.assessments[assessment_id]
         assessment.status = status
         assessment.reviewer = reviewer
-        assessment.reviewed_at = datetime.utcnow()
+        assessment.reviewed_at = utcnow()
         assessment.mitigations = mitigations or []
 
         return True
@@ -621,7 +623,7 @@ class EthicsAgent:
         incident.status = "resolved"
         incident.root_cause = root_cause
         incident.remediation = remediation
-        incident.resolved_at = datetime.utcnow()
+        incident.resolved_at = utcnow()
 
         return True
 
@@ -785,11 +787,6 @@ class EthicsAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

@@ -27,6 +27,7 @@ from agentic_ai.agents.communications import (
     MessageStatus,
     Priority,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestIntegrationAgent:
@@ -210,7 +211,7 @@ class TestComplianceAgent:
             name="Annual SOC 2 Audit",
             audit_type="external",
             regulation_id=reg.regulation_id,
-            start_date=datetime.utcnow(),
+            start_date=utcnow(),
             auditor="External Auditor",
         )
         
@@ -224,7 +225,7 @@ class TestComplianceAgent:
             "Test Audit",
             "internal",
             reg.regulation_id,
-            datetime.utcnow(),
+            utcnow(),
         )
         
         compliance.start_audit(audit.audit_id)
@@ -246,7 +247,7 @@ class TestComplianceAgent:
             category="security",
             version="1.0",
             owner="ciso@example.com",
-            review_date=datetime.utcnow() + timedelta(days=365),
+            review_date=utcnow() + timedelta(days=365),
         )
         
         assert policy.policy_id.startswith("policy-")
@@ -259,7 +260,7 @@ class TestComplianceAgent:
             description="Admin accounts without MFA",
             severity=RiskLevel.HIGH,
             assigned_to="security@example.com",
-            due_date=datetime.utcnow() + timedelta(days=30),
+            due_date=utcnow() + timedelta(days=30),
         )
         
         assert finding.finding_id.startswith("finding-")
@@ -356,7 +357,7 @@ class TestCommunicationsAgent:
     
     def test_schedule_message(self, comms):
         """Test scheduling message."""
-        scheduled_time = datetime.utcnow() + timedelta(hours=2)
+        scheduled_time = utcnow() + timedelta(hours=2)
         
         message = comms.schedule_message(
             channel=ChannelType.SMS,

@@ -8,6 +8,7 @@ Integration tests for complete collaboration workflows.
 import pytest
 import time
 from datetime import datetime, timedelta
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @pytest.fixture
@@ -476,7 +477,7 @@ class TestPerformanceScenarios:
         doc_id = "perf-test-doc"
         
         # Submit 100 operations rapidly
-        start_time = datetime.utcnow()
+        start_time = utcnow()
         
         for i in range(100):
             op = Operation(
@@ -488,7 +489,7 @@ class TestPerformanceScenarios:
             )
             rtc.submit_operation(op)
         
-        end_time = datetime.utcnow()
+        end_time = utcnow()
         elapsed = (end_time - start_time).total_seconds()
         
         # Should complete in reasonable time (< 5 seconds for 100 ops)

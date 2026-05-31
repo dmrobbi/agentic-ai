@@ -14,6 +14,7 @@ from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
+from agentic_ai.infrastructure.utils import utcnow
 
 app = FastAPI(
     title="Agentic AI Demo API",
@@ -53,7 +54,7 @@ def generate_chaos_experiments(count: int = 10) -> List[Dict[str, Any]]:
             "severity": random.choice(severities),
             "status": random.choice(statuses),
             "duration_minutes": random.randint(15, 60),
-            "created_at": (datetime.utcnow() - timedelta(days=random.randint(0, 30))).isoformat(),
+            "created_at": (utcnow() - timedelta(days=random.randint(0, 30))).isoformat(),
             "target_count": random.randint(1, 10),
             "success_rate": random.uniform(0.7, 1.0) if random.random() > 0.2 else None,
         }
@@ -74,7 +75,7 @@ def generate_chaos_runs(experiment_id: str, count: int = 5) -> List[Dict[str, An
             "experiment_id": experiment_id,
             "status": random.choice(statuses),
             "target": random.choice(targets),
-            "started_at": (datetime.utcnow() - timedelta(hours=random.randint(1, 100))).isoformat(),
+            "started_at": (utcnow() - timedelta(hours=random.randint(1, 100))).isoformat(),
             "duration_seconds": random.randint(60, 600),
             "resiliency_score": random.uniform(60, 100),
             "findings": random.randint(0, 5),
@@ -101,7 +102,7 @@ def generate_vendors(count: int = 15) -> List[Dict[str, Any]]:
             "risk_score": random.uniform(0.1, 0.9),
             "inherent_risk": random.uniform(0.2, 0.8),
             "residual_risk": random.uniform(0.1, 0.6),
-            "last_assessment": (datetime.utcnow() - timedelta(days=random.randint(0, 180))).isoformat(),
+            "last_assessment": (utcnow() - timedelta(days=random.randint(0, 180))).isoformat(),
             "open_findings": random.randint(0, 10),
             "new_alerts": random.randint(0, 5),
         }
@@ -124,8 +125,8 @@ def generate_audits(count: int = 8) -> List[Dict[str, Any]]:
             "status": random.choice(statuses),
             "auditor": f"auditor{random.randint(1, 10)}@auditfirm.com",
             "auditee": f"{random.choice(['Finance', 'IT', 'HR', 'Operations'])} Department",
-            "start_date": (datetime.utcnow() - timedelta(days=random.randint(0, 90))).isoformat(),
-            "end_date": (datetime.utcnow() + timedelta(days=random.randint(0, 60))).isoformat(),
+            "start_date": (utcnow() - timedelta(days=random.randint(0, 90))).isoformat(),
+            "end_date": (utcnow() + timedelta(days=random.randint(0, 60))).isoformat(),
             "findings_count": random.randint(0, 20),
             "controls_tested": random.randint(10, 100),
             "effectiveness_rate": random.uniform(0.6, 1.0),
@@ -153,7 +154,7 @@ def generate_cloud_findings(count: int = 20) -> List[Dict[str, Any]]:
             "service": random.choice(services),
             "resource_id": f"{random.choice(services)}-{random.randint(1000, 9999)}",
             "region": random.choice(["us-east-1", "us-west-2", "eu-west-1", "ap-southeast-1"]),
-            "created_at": (datetime.utcnow() - timedelta(days=random.randint(0, 60))).isoformat(),
+            "created_at": (utcnow() - timedelta(days=random.randint(0, 60))).isoformat(),
             "remediation_steps": f"Review and fix {random.choice(services)} configuration",
         }
         findings.append(finding)
@@ -176,7 +177,7 @@ def generate_ml_models(count: int = 10) -> List[Dict[str, Any]]:
             "stage": random.choice(stages),
             "model_type": random.choice(types),
             "version": f"v{random.randint(1, 5)}.{random.randint(0, 9)}.{random.randint(0, 9)}",
-            "created_at": (datetime.utcnow() - timedelta(days=random.randint(0, 180))).isoformat(),
+            "created_at": (utcnow() - timedelta(days=random.randint(0, 180))).isoformat(),
             "metrics": {
                 "accuracy": random.uniform(0.7, 0.99),
                 "precision": random.uniform(0.7, 0.99),
@@ -184,7 +185,7 @@ def generate_ml_models(count: int = 10) -> List[Dict[str, Any]]:
                 "f1_score": random.uniform(0.7, 0.99),
             },
             "drift_score": random.uniform(0, 0.3),
-            "last_trained": (datetime.utcnow() - timedelta(days=random.randint(0, 30))).isoformat(),
+            "last_trained": (utcnow() - timedelta(days=random.randint(0, 30))).isoformat(),
         }
         models.append(model)
     
@@ -203,8 +204,8 @@ def generate_ml_experiments(count: int = 15) -> List[Dict[str, Any]]:
             "name": f"Experiment {random.choice(['A', 'B', 'C', 'D'])}-{random.randint(1, 100)}",
             "model_type": random.choice(types),
             "status": random.choice(statuses),
-            "created_at": (datetime.utcnow() - timedelta(days=random.randint(0, 60))).isoformat(),
-            "completed_at": (datetime.utcnow() - timedelta(days=random.randint(0, 30))).isoformat() if random.random() > 0.3 else None,
+            "created_at": (utcnow() - timedelta(days=random.randint(0, 60))).isoformat(),
+            "completed_at": (utcnow() - timedelta(days=random.randint(0, 30))).isoformat() if random.random() > 0.3 else None,
             "metrics": {
                 "loss": random.uniform(0.1, 2.0),
                 "accuracy": random.uniform(0.7, 0.99),
@@ -225,7 +226,7 @@ def generate_system_health() -> Dict[str, Any]:
     """Generate mock system health data."""
     return {
         "status": "healthy",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": utcnow().isoformat(),
         "agents": {
             "total": 33,
             "healthy": random.randint(30, 33),
@@ -259,14 +260,14 @@ def root():
         "name": "Agentic AI Demo API",
         "version": "1.0.0",
         "status": "running",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": utcnow().isoformat(),
     }
 
 
 @app.get("/health")
 def health():
     """Health check endpoint."""
-    return {"status": "healthy", "timestamp": datetime.utcnow().isoformat()}
+    return {"status": "healthy", "timestamp": utcnow().isoformat()}
 
 
 # Chaos Endpoints
@@ -443,7 +444,7 @@ def get_cloud_compliance(framework: str = Query(default="cis_aws")):
         "passed_controls": random.randint(80, 190),
         "failed_controls": random.randint(5, 30),
         "open_findings": random.randint(10, 50),
-        "last_assessment": (datetime.utcnow() - timedelta(days=random.randint(0, 30))).isoformat(),
+        "last_assessment": (utcnow() - timedelta(days=random.randint(0, 30))).isoformat(),
     }
 
 

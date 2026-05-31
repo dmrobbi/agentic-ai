@@ -10,6 +10,7 @@ import pytest
 import os
 import tempfile
 from datetime import datetime, timedelta
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestSecurityAgentInitialization:
@@ -348,8 +349,8 @@ class TestSecretsManagement:
             secret_type="api_key",
             rotation_days=1,  # Already expired
         )
-        rotation.last_rotated = datetime.utcnow() - timedelta(days=2)
-        rotation.next_rotation = datetime.utcnow() - timedelta(days=1)
+        rotation.last_rotated = utcnow() - timedelta(days=2)
+        rotation.next_rotation = utcnow() - timedelta(days=1)
         
         due = security_agent.get_secrets_due_for_rotation(days_ahead=7)
         assert len(due) >= 1
@@ -504,7 +505,7 @@ class TestAccessLogAnalysis:
         """Test anomaly detection for unusual time access."""
         # Create access log at 3 AM for sensitive action
         from datetime import datetime as dt
-        unusual_time = dt.utcnow().replace(hour=3, minute=0, second=0)
+        unusual_time = utcnow().replace(hour=3, minute=0, second=0)
         
         security_agent.access_logs.append({
             'timestamp': unusual_time.isoformat(),

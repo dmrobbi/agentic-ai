@@ -1,4 +1,5 @@
 """State management for infrastructure and agents."""
+from agentic_ai.infrastructure.utils import utcnow
 
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -8,6 +9,7 @@ import json
 import sqlite3
 import logging
 import os
+import threading
 
 logger = logging.getLogger(__name__)
 
@@ -57,11 +59,12 @@ class StateStore:
         self._tasks: Dict[str, StoredTask] = {}
         self.redis_client = None
         self._conn = None
+        self._db_lock = threading.Lock()
         self._init_db()
         # Try to connect to Redis
         try:
-            import redis
-            self.redis_client = redis.Redis(host='localhost', port=6379, decode_responses=True)
+            from agentic_ai.infrastructure.config import RedisConfig
+            self.redis_client = RedisConfig().create_client()
             self.redis_client.ping()
         except Exception:
             self.redis_client = None
@@ -71,6 +74,8 @@ class StateStore:
         try:
             os.makedirs(os.path.dirname(self.db_path) or ".", exist_ok=True)
             self._conn = sqlite3.connect(self.db_path, check_same_thread=False)
+            self._conn.execute("PRAGMA journal_mode=WAL")
+            self._conn.execute("PRAGMA busy_timeout=5000")
             self._conn.execute("""
                 CREATE TABLE IF NOT EXISTS agent_state (
                     agent_id TEXT PRIMARY KEY,
@@ -157,16 +162,17 @@ class StateStore:
         self._tasks[tid] = task
         # Store in SQLite
         if self._conn:
-            try:
-                self._conn.execute(
-                    "INSERT OR REPLACE INTO tasks (task_id, task_type, agent_id, status, priority, payload, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                    (tid, task_type or title, agent_id, status, priority,
-                     json.dumps(payload) if payload else None,
-                     datetime.utcnow().isoformat(), datetime.utcnow().isoformat())
-                )
-                self._conn.commit()
-            except Exception:
-                pass
+            with self._db_lock:
+                try:
+                    self._conn.execute(
+                        "INSERT OR REPLACE INTO tasks (task_id, task_type, agent_id, status, priority, payload, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        (tid, task_type or title, agent_id, status, priority,
+                         json.dumps(payload) if payload else None,
+                         utcnow().isoformat(), utcnow().isoformat())
+                    )
+                    self._conn.commit()
+                except Exception:
+                    pass
         if payload:
             self.save(f"task:{tid}:payload", payload)
         if task_type:
@@ -197,15 +203,16 @@ class StateStore:
         task.updated_at = datetime.now()
         # Update SQLite
         if self._conn:
-            try:
-                self._conn.execute(
-                    "UPDATE tasks SET status=?, result=?, updated_at=? WHERE task_id=?",
-                    (status, json.dumps(result) if result else None,
-                     datetime.utcnow().isoformat(), task_id)
-                )
-                self._conn.commit()
-            except Exception:
-                pass
+            with self._db_lock:
+                try:
+                    self._conn.execute(
+                        "UPDATE tasks SET status=?, result=?, updated_at=? WHERE task_id=?",
+                        (status, json.dumps(result) if result else None,
+                         utcnow().isoformat(), task_id)
+                    )
+                    self._conn.commit()
+                except Exception:
+                    pass
         return True
 
     def list_tasks(self, status: str = "") -> List[StoredTask]:
@@ -231,19 +238,20 @@ class StateStore:
                 results.append(result)
         # Also check SQLite
         if self._conn and not results:
-            try:
-                cursor = self._conn.execute(
-                    "SELECT task_id, task_type, agent_id, status, priority, payload FROM tasks WHERE status='pending' AND (agent_id=? OR ?='')",
-                    (agent_id, agent_id)
-                )
-                for row in cursor.fetchall():
-                    r = {"task_id": row[0], "task_type": row[1], "agent_id": row[2],
-                         "status": row[3], "priority": row[4]}
-                    if row[5]:
-                        r["payload"] = json.loads(row[5])
-                    results.append(r)
-            except Exception:
-                pass
+            with self._db_lock:
+                try:
+                    cursor = self._conn.execute(
+                        "SELECT task_id, task_type, agent_id, status, priority, payload FROM tasks WHERE status='pending' AND (agent_id=? OR ?='')",
+                        (agent_id, agent_id)
+                    )
+                    for row in cursor.fetchall():
+                        r = {"task_id": row[0], "task_type": row[1], "agent_id": row[2],
+                             "status": row[3], "priority": row[4]}
+                        if row[5]:
+                            r["payload"] = json.loads(row[5])
+                        results.append(r)
+                except Exception:
+                    pass
         return results
 
     # Agent state management
@@ -254,14 +262,15 @@ class StateStore:
         self.save(key, data)
         # Also store in SQLite
         if self._conn:
-            try:
-                self._conn.execute(
-                    "INSERT OR REPLACE INTO agent_state (agent_id, agent_type, state, updated_at) VALUES (?, ?, ?, ?)",
-                    (agent_id, agent_type, json.dumps(state), datetime.utcnow().isoformat())
-                )
-                self._conn.commit()
-            except Exception:
-                pass
+            with self._db_lock:
+                try:
+                    self._conn.execute(
+                        "INSERT OR REPLACE INTO agent_state (agent_id, agent_type, state, updated_at) VALUES (?, ?, ?, ?)",
+                        (agent_id, agent_type, json.dumps(state), utcnow().isoformat())
+                    )
+                    self._conn.commit()
+                except Exception:
+                    pass
         return True
 
     def get_agent_state(self, agent_id: str) -> Optional[Dict[str, Any]]:
@@ -273,15 +282,16 @@ class StateStore:
             return entry.value.get("state")
         # Try SQLite
         if self._conn:
-            try:
-                cursor = self._conn.execute(
-                    "SELECT state FROM agent_state WHERE agent_id=?", (agent_id,)
-                )
-                row = cursor.fetchone()
-                if row:
-                    return json.loads(row[0])
-            except Exception:
-                pass
+            with self._db_lock:
+                try:
+                    cursor = self._conn.execute(
+                        "SELECT state FROM agent_state WHERE agent_id=?", (agent_id,)
+                    )
+                    row = cursor.fetchone()
+                    if row:
+                        return json.loads(row[0])
+                except Exception:
+                    pass
         return None
 
     def save_to_file(self, filepath: str = "") -> bool:

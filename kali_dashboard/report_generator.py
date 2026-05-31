@@ -11,6 +11,7 @@ import sys
 from datetime import datetime
 from pathlib import Path
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 try:
     from reportlab.lib import colors
@@ -88,7 +89,7 @@ class KaliReportGenerator:
         if not REPORTLAB_AVAILABLE:
             raise ImportError("reportlab is required for PDF generation")
         
-        timestamp = datetime.utcnow().strftime('%Y%m%d_%H%M%S')
+        timestamp = utcnow().strftime('%Y%m%d_%H%M%S')
         
         if output_file is None:
             output_file = self.output_dir / f"{engagement_name.replace(' ', '_')}_{timestamp}.pdf"
@@ -153,7 +154,7 @@ class KaliReportGenerator:
         elements.append(Paragraph("Security Assessment Report", title_style))
         elements.append(Paragraph(f"{engagement_name}", subtitle_style))
         elements.append(Paragraph(
-            f"Generated: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}",
+            f"Generated: {utcnow().strftime('%Y-%m-%d %H:%M:%S UTC')}",
             styles['Normal']
         ))
         elements.append(Spacer(1, 0.5*inch))

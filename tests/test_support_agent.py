@@ -15,6 +15,7 @@ from agentic_ai.agents.support import (
     TicketPriority,
     TicketCategory,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestSupportAgentInitialization:
@@ -314,7 +315,7 @@ class TestSLAManagement:
         
         # Manually set creation time to 30 minutes ago
         import datetime
-        ticket.created_at = datetime.datetime.utcnow() - datetime.timedelta(minutes=30)
+        ticket.created_at = utcnow() - datetime.timedelta(minutes=30)
         
         # Check breaches
         breaches = support_agent.check_sla_breaches()

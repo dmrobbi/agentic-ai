@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class LockType(str, Enum):
@@ -28,7 +29,7 @@ class ResourceLock:
     resource_id: str = ""
     holder_id: str = ""  # Agent or human ID
     lock_type: LockType = LockType.WRITE
-    acquired_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    acquired_at: str = field(default_factory=lambda: utcnow().isoformat())
     expires_at: Optional[str] = None
     purpose: str = ""
 
@@ -36,7 +37,7 @@ class ResourceLock:
         """Check if lock has expired."""
         if not self.expires_at:
             return False
-        return datetime.fromisoformat(self.expires_at) < datetime.utcnow()
+        return datetime.fromisoformat(self.expires_at) < utcnow()
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -62,7 +63,7 @@ class ChangeRecord:
     change_type: str = ""  # create, update, delete
     old_value: Optional[Any] = None
     new_value: Optional[Any] = None
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: utcnow().isoformat())
     metadata: Dict[str, str] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -90,8 +91,8 @@ class WorkspaceResource:
     content: Any = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    updated_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
+    updated_at: str = field(default_factory=lambda: utcnow().isoformat())
     created_by: str = ""
 
     # Version tracking
@@ -144,7 +145,7 @@ class Workspace:
         event = {
             "event_type": event_type,
             "workspace_id": self.workspace_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
             "data": data,
         }
 
@@ -255,7 +256,7 @@ class Workspace:
 
             # Update resource
             resource.content = content
-            resource.updated_at = datetime.utcnow().isoformat()
+            resource.updated_at = utcnow().isoformat()
             resource.version += 1
 
             if metadata:
@@ -335,7 +336,7 @@ class Workspace:
                 lock_type=lock_type,
                 purpose=purpose,
                 expires_at=(
-                    datetime.utcnow() + timedelta(minutes=duration_minutes)
+                    utcnow() + timedelta(minutes=duration_minutes)
                 ).isoformat() if duration_minutes else None,
             )
 

@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class SessionStatus(str, Enum):
@@ -39,7 +40,7 @@ class Participant:
     user_id: str = ""
     name: str = ""
     role: ParticipantRole = ParticipantRole.VIEWER
-    joined_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    joined_at: str = field(default_factory=lambda: utcnow().isoformat())
     left_at: Optional[str] = None
     is_active: bool = True
 
@@ -84,7 +85,7 @@ class SessionEvent:
     event_type: str = ""  # participant_joined, participant_left, role_changed, etc.
     actor_id: str = ""  # Who triggered the event
     target_id: str = ""  # Who/what the event affects
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: utcnow().isoformat())
     data: Dict[str, Any] = field(default_factory=dict)
 
     def to_dict(self) -> Dict[str, Any]:
@@ -139,7 +140,7 @@ class CollaborationSession:
 
         # Status
         self.status: SessionStatus = SessionStatus.INITIALIZING
-        self.created_at: str = datetime.utcnow().isoformat()
+        self.created_at: str = utcnow().isoformat()
         self.started_at: Optional[str] = None
         self.ended_at: Optional[str] = None
 
@@ -191,7 +192,7 @@ class CollaborationSession:
         with self._lock:
             if self.status == SessionStatus.INITIALIZING:
                 self.status = SessionStatus.ACTIVE
-                self.started_at = datetime.utcnow().isoformat()
+                self.started_at = utcnow().isoformat()
                 self._emit_event("session_started", self.creator_id)
 
     def pause(self, paused_by: str = ""):
@@ -220,7 +221,7 @@ class CollaborationSession:
                     self._remove_participant_internal(participant_id, "session_ended")
 
                 self.status = SessionStatus.ENDED
-                self.ended_at = datetime.utcnow().isoformat()
+                self.ended_at = utcnow().isoformat()
                 self._emit_event("session_ended", ended_by)
 
     def join(self, user_id: str, name: str = "",
@@ -287,7 +288,7 @@ class CollaborationSession:
 
         participant = self._participants[participant_id]
         participant.is_active = False
-        participant.left_at = datetime.utcnow().isoformat()
+        participant.left_at = utcnow().isoformat()
 
         self._emit_event(
             "participant_left",
@@ -373,9 +374,9 @@ class CollaborationSession:
         with self._lock:
             self._invites[invite_code] = {
                 "created_by": created_by,
-                "created_at": datetime.utcnow().isoformat(),
+                "created_at": utcnow().isoformat(),
                 "expires_at": (
-                    datetime.utcnow() + timedelta(minutes=expires_minutes)
+                    utcnow() + timedelta(minutes=expires_minutes)
                 ).isoformat(),
                 "max_uses": max_uses,
                 "uses": 0,
@@ -448,7 +449,7 @@ class CollaborationSession:
             return False
 
         start = datetime.fromisoformat(self.started_at)
-        elapsed = datetime.utcnow() - start
+        elapsed = utcnow() - start
 
         return elapsed > timedelta(minutes=self.config.max_duration_minutes)
 
@@ -598,7 +599,7 @@ class SessionManager:
 
     def cleanup_ended(self, older_than_minutes: int = 60) -> int:
         """Clean up ended sessions older than specified time."""
-        cutoff = datetime.utcnow() - timedelta(minutes=older_than_minutes)
+        cutoff = utcnow() - timedelta(minutes=older_than_minutes)
 
         with self._lock:
             to_delete = []

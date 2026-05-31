@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class CloudProvider(Enum):
@@ -106,7 +107,7 @@ class CloudAgent:
         # In production, would actually authenticate
         # For now, simulate success
         self.session_data['authenticated'] = True
-        self.session_data['timestamp'] = datetime.utcnow().isoformat()
+        self.session_data['timestamp'] = utcnow().isoformat()
         
         print(f"✅ Successfully authenticated to {self.provider.value}")
         return True
@@ -375,7 +376,7 @@ class CloudAgent:
         report = {
             "agent_id": self.agent_id,
             "provider": self.provider.value,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
             "summary": {
                 "resources_scanned": len(self.resources),
                 "findings_count": len(self.findings),

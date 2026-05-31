@@ -7,6 +7,7 @@ and end-to-end security workflows.
 """
 
 import pytest
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestSecurityAgentCapabilities:
@@ -241,8 +242,8 @@ def authenticate(token):
         import datetime
         for rotation in rotations:
             if rotation.secret_name == "API_KEY_1":
-                rotation.last_rotated = datetime.datetime.utcnow() - datetime.timedelta(days=31)
-                rotation.next_rotation = datetime.datetime.utcnow() - datetime.timedelta(days=1)
+                rotation.last_rotated = utcnow() - datetime.timedelta(days=31)
+                rotation.next_rotation = utcnow() - datetime.timedelta(days=1)
         
         # Check for rotations needed
         due = agent.get_secrets_due_for_rotation(days_ahead=7)

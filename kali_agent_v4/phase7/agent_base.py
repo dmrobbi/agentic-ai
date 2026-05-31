@@ -12,6 +12,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field, asdict
 from enum import Enum
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class AgentRole(Enum):
@@ -59,7 +60,7 @@ class AgentState:
     capabilities: Dict[str, bool]
     current_task: Optional[str] = None
     task_progress: float = 0.0
-    last_heartbeat: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    last_heartbeat: str = field(default_factory=lambda: utcnow().isoformat())
     tasks_completed: int = 0
     tasks_failed: int = 0
     uptime_seconds: float = 0.0
@@ -77,7 +78,7 @@ class Task:
     assigned_to: Optional[str] = None
     status: str = "pending"  # pending, running, completed, failed
     result: Optional[Any] = None
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
     error: Optional[str] = None
@@ -91,7 +92,7 @@ class Intelligence:
     data: Dict[str, Any]
     confidence: float = 0.0  # 0.0 - 1.0
     source_agent: str
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
     verified: bool = False
     tags: List[str] = field(default_factory=list)
 
@@ -153,7 +154,7 @@ class AgentBase:
             capabilities=asdict(self.capabilities),
             current_task=self.current_task.task_id if self.current_task else None,
             task_progress=self.current_task.task_progress if self.current_task else 0.0,
-            last_heartbeat=datetime.utcnow().isoformat(),
+            last_heartbeat=utcnow().isoformat(),
             tasks_completed=0,  # Would track actual count
             tasks_failed=0,
             uptime_seconds=time.time() - self.start_time
@@ -204,7 +205,7 @@ class AgentBase:
         
         task = self.current_task
         task.status = "running"
-        task.started_at = datetime.utcnow().isoformat()
+        task.started_at = utcnow().isoformat()
         
         print(f"🚀 Executing task: {task.task_type} on {task.target}")
         
@@ -212,7 +213,7 @@ class AgentBase:
         result = self._simulate_execution(task)
         
         # Update task
-        task.completed_at = datetime.utcnow().isoformat()
+        task.completed_at = utcnow().isoformat()
         task.result = result
         task.status = "completed" if result.get("success") else "failed"
         

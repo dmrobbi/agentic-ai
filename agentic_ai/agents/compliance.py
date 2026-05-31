@@ -6,12 +6,13 @@ Provides compliance tracking, policy management, audit preparation,
 risk assessment, and regulatory reporting.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -65,7 +66,7 @@ class Regulation:
     owner: Optional[str] = None
     controls_count: int = 0
     controls_passed: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -83,7 +84,7 @@ class Control:
     test_frequency: str = "quarterly"  # monthly, quarterly, annually
     owner: Optional[str] = None
     risk_level: RiskLevel = RiskLevel.MEDIUM
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -100,7 +101,7 @@ class Audit:
     findings: List[Dict[str, Any]] = field(default_factory=list)
     recommendations: List[str] = field(default_factory=list)
     score: Optional[float] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -116,7 +117,7 @@ class Policy:
     owner: Optional[str] = None
     approvers: List[str] = field(default_factory=list)
     related_controls: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -128,7 +129,7 @@ class Certificate:
     issued_date: datetime
     expiry_date: Optional[datetime] = None
     status: str = "valid"  # valid, expired, revoked, pending
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -146,16 +147,17 @@ class Finding:
     due_date: Optional[datetime] = None
     resolved_date: Optional[datetime] = None
     assigned_to: Optional[str] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
-class ComplianceAgent:
+class ComplianceAgent(BaseAgent):
     """
     Compliance Agent for regulatory compliance tracking,
     policy management, audit preparation, and risk assessment.
     """
 
     def __init__(self, agent_id: str = "compliance-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.regulations: Dict[str, Regulation] = {}
         self.controls: Dict[str, Control] = {}
@@ -244,7 +246,7 @@ class ComplianceAgent:
         reg = self.regulations[regulation_id]
         reg.controls_count = controls_total
         reg.controls_passed = controls_passed
-        reg.last_assessment = datetime.utcnow()
+        reg.last_assessment = utcnow()
 
         # Calculate status
         compliance_rate = controls_passed / controls_total if controls_total > 0 else 0
@@ -313,7 +315,7 @@ class ComplianceAgent:
             return False
 
         control = self.controls[control_id]
-        control.last_tested = datetime.utcnow()
+        control.last_tested = utcnow()
         control.evidence_locations = evidence_locations or []
         control.status = ComplianceStatus.COMPLIANT if passed else ComplianceStatus.NON_COMPLIANT
 
@@ -387,7 +389,7 @@ class ComplianceAgent:
 
         audit = self.audits[audit_id]
         audit.status = AuditStatus.COMPLETED
-        audit.end_date = datetime.utcnow()
+        audit.end_date = utcnow()
         audit.score = score
         audit.findings = findings or []
         audit.recommendations = recommendations or []
@@ -442,7 +444,7 @@ class ComplianceAgent:
         # Auto-approve if at least 2 approvers
         if len(policy.approvers) >= 2:
             policy.status = "approved"
-            policy.effective_date = datetime.utcnow()
+            policy.effective_date = utcnow()
 
         return True
 
@@ -464,7 +466,7 @@ class ComplianceAgent:
 
     def get_policies_due_for_review(self, days_ahead: int = 30) -> List[Policy]:
         """Get policies due for review."""
-        threshold = datetime.utcnow() + timedelta(days=days_ahead)
+        threshold = utcnow() + timedelta(days=days_ahead)
 
         return [
             p for p in self.policies.values()
@@ -515,7 +517,7 @@ class ComplianceAgent:
         finding = self.findings[finding_id]
         finding.status = "resolved"
         finding.remediation_plan = remediation_plan
-        finding.resolved_date = datetime.utcnow()
+        finding.resolved_date = utcnow()
 
         return True
 
@@ -550,7 +552,7 @@ class ComplianceAgent:
             scope=scope,
             assessor=assessor,
             status="planned",
-            created_at=datetime.utcnow().isoformat(),
+            created_at=utcnow().isoformat(),
         )
         self.audits[assessment_id] = assessment
         return assessment
@@ -663,11 +665,6 @@ class ComplianceAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
         """Create a compliance assessment."""
@@ -680,7 +677,7 @@ class ComplianceAgent:
             scope=scope,
             assessor=assessor,
             status="planned",
-            created_at=datetime.utcnow().isoformat(),
+            created_at=utcnow().isoformat(),
         )
         # Store assessment (we reuse audits dict for storage)
         self.audits[assessment_id] = assessment
@@ -743,7 +740,7 @@ if __name__ == "__main__":
         framework="SOC2",
         jurisdiction="USA",
         owner="compliance@example.com",
-        next_assessment=datetime.utcnow() + timedelta(days=180),
+        next_assessment=utcnow() + timedelta(days=180),
     )
 
     print(f"Added regulation: {reg.name}")
@@ -774,7 +771,7 @@ if __name__ == "__main__":
         name="SOC 2 Annual Audit",
         audit_type="external",
         regulation_id=reg.regulation_id,
-        start_date=datetime.utcnow(),
+        start_date=utcnow(),
         auditor="External Auditor LLC",
     )
 
@@ -786,7 +783,7 @@ if __name__ == "__main__":
         category="security",
         version="1.0",
         owner="ciso@example.com",
-        review_date=datetime.utcnow() + timedelta(days=365),
+        review_date=utcnow() + timedelta(days=365),
     )
 
     print(f"Created policy: {policy.title}")
@@ -798,7 +795,7 @@ if __name__ == "__main__":
         severity=RiskLevel.HIGH,
         regulation_id=reg.regulation_id,
         assigned_to="security@example.com",
-        due_date=datetime.utcnow() + timedelta(days=30),
+        due_date=utcnow() + timedelta(days=30),
     )
 
     print(f"Created finding: {finding.title}")

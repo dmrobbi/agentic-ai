@@ -8,6 +8,7 @@ Tracks agent performance metrics over time.
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass, field
 from datetime import datetime
+from agentic_ai.infrastructure.utils import utcnow
 
 # Shared global corrections registry so FeedbackCollector can update PerformanceTracker
 global_corrections: Dict[str, int] = {}  # key="agent_id:task_type", value=count
@@ -52,7 +53,7 @@ class AgentMetrics:
     # Time tracking
     first_task_at: Optional[str] = None
     last_task_at: Optional[str] = None
-    updated_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    updated_at: str = field(default_factory=lambda: utcnow().isoformat())
 
     def record_task(
         self,
@@ -62,7 +63,7 @@ class AgentMetrics:
     ):
         """Record a task execution."""
         self.total_tasks += 1
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = utcnow().isoformat()
 
         if success:
             self.successful_tasks += 1
@@ -81,7 +82,7 @@ class AgentMetrics:
             self.max_time_ms = duration_ms
 
         # Update timestamps
-        now = datetime.utcnow().isoformat()
+        now = utcnow().isoformat()
         if not self.first_task_at:
             self.first_task_at = now
         self.last_task_at = now
@@ -230,7 +231,7 @@ class PerformanceTracker:
 
         # Record in history
         self.history.append({
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
             "agent_id": agent_id,
             "task_type": task_type,
             "success": success,

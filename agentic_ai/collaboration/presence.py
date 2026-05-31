@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class PresenceStatus(str, Enum):
@@ -43,7 +44,7 @@ class PresenceInfo:
 
     user_id: str = ""
     status: PresenceStatus = PresenceStatus.OFFLINE
-    last_seen: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    last_seen: str = field(default_factory=lambda: utcnow().isoformat())
     current_session: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
 
@@ -64,13 +65,13 @@ class PresenceInfo:
     def is_auto_away(self) -> bool:
         """Check if user should be auto-marked as away."""
         last = datetime.fromisoformat(self.last_seen)
-        elapsed = datetime.utcnow() - last
+        elapsed = utcnow() - last
         return elapsed > timedelta(minutes=self.auto_away_minutes)
 
     def is_auto_offline(self) -> bool:
         """Check if user should be auto-marked as offline."""
         last = datetime.fromisoformat(self.last_seen)
-        elapsed = datetime.utcnow() - last
+        elapsed = utcnow() - last
         return elapsed > timedelta(minutes=self.auto_offline_minutes)
 
 
@@ -85,7 +86,7 @@ class ActivityEvent:
     target_type: str = ""  # session, document, workspace, etc.
     target_id: str = ""
     target_name: str = ""
-    timestamp: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    timestamp: str = field(default_factory=lambda: utcnow().isoformat())
     metadata: Dict[str, Any] = field(default_factory=dict)
     visibility: str = "public"  # public, participants, private
 
@@ -149,7 +150,7 @@ class PresenceManager:
                     "user_id": user_id,
                     "old_status": old_status.value,
                     "new_status": new_status.value,
-                    "timestamp": datetime.utcnow().isoformat(),
+                    "timestamp": utcnow().isoformat(),
                 })
             except Exception:
                 pass
@@ -170,7 +171,7 @@ class PresenceManager:
             old_status = presence.status
 
             presence.status = status
-            presence.last_seen = datetime.utcnow().isoformat()
+            presence.last_seen = utcnow().isoformat()
 
             if session_id:
                 presence.current_session = session_id
@@ -217,7 +218,7 @@ class PresenceManager:
             presence = self._presence[user_id]
             old_status = presence.status
 
-            presence.last_seen = datetime.utcnow().isoformat()
+            presence.last_seen = utcnow().isoformat()
 
             if presence.status == PresenceStatus.OFFLINE:
                 presence.status = PresenceStatus.ONLINE
@@ -371,7 +372,7 @@ class ActivityFeed:
 
     def clear_old_events(self, older_than_hours: int = 24) -> int:
         """Clear events older than specified time."""
-        cutoff = datetime.utcnow() - timedelta(hours=older_than_hours)
+        cutoff = utcnow() - timedelta(hours=older_than_hours)
 
         with self._lock:
             original_count = len(self._events)
@@ -413,7 +414,7 @@ class TypingManager:
                 target_type=target_type,
                 target_id=target_id,
                 is_typing=True,
-                started_at=datetime.utcnow().isoformat(),
+                started_at=utcnow().isoformat(),
             )
             self._typing[key] = indicator
 
@@ -428,7 +429,7 @@ class TypingManager:
             if key in self._typing:
                 indicator = self._typing[key]
                 indicator.is_typing = False
-                indicator.stopped_at = datetime.utcnow().isoformat()
+                indicator.stopped_at = utcnow().isoformat()
                 del self._typing[key]
 
         # Notify callbacks
@@ -454,7 +455,7 @@ class TypingManager:
 
     def cleanup_stale(self) -> int:
         """Clean up stale typing indicators (timeout)."""
-        cutoff = datetime.utcnow() - timedelta(seconds=self._timeout_seconds)
+        cutoff = utcnow() - timedelta(seconds=self._timeout_seconds)
 
         with self._lock:
             to_remove = []

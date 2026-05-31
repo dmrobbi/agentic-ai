@@ -17,6 +17,7 @@ from agentic_ai.agents.audit import (
     FindingSeverity,
     FindingStatus,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestAuditAgent:
@@ -215,7 +216,7 @@ class TestAuditAgent:
             FindingSeverity.MEDIUM, "condition", "criteria",
         )
         
-        due_date = datetime.utcnow() + timedelta(days=60)
+        due_date = utcnow() + timedelta(days=60)
         
         result = audit_agent.update_finding(
             finding.finding_id,

@@ -8,11 +8,12 @@ including Metasploit, Nmap, Burp Suite, SQLMap, Hashcat, and 600+ other tools.
 Includes safety gates, authorization controls, and automated reporting.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import json
 import logging
 import os
 import re
-import secrets
+import shlex
 import subprocess
 import tempfile
 import threading
@@ -23,6 +24,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Callable
 from xml.etree import ElementTree as ET
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -1046,7 +1048,7 @@ class MetasploitRPC:
                     target=target,
                     payload=payload,
                     status="running",
-                    started_at=datetime.utcnow(),
+                    started_at=utcnow(),
                     completed_at=None,
                 )
             return None
@@ -1077,8 +1079,8 @@ class MetasploitRPC:
                     target_port=info.get("target_port", 0),
                     exploit_used=info.get("exploit", ""),
                     payload=info.get("payload", ""),
-                    opened_at=datetime.utcnow(),
-                    last_activity=datetime.utcnow(),
+                    opened_at=utcnow(),
+                    last_activity=utcnow(),
                     user_context=info.get("username"),
                 ))
 
@@ -1275,12 +1277,15 @@ class MetasploitRPC:
         """Generate payload using msfvenom."""
         import subprocess
 
-        cmd = f"msfvenom -p {payload} LHOST={lhost} LPORT={lport} -f {format}"
+        cmd_args = ["msfvenom", "-p", payload, f"LHOST={lhost}", f"LPORT={lport}", "-f", format]
+        if output_file:
+            cmd_args.extend(["-o", output_file])
+
+        _validate_command_args(cmd_args)
 
         if output_file:
-            cmd += f" -o {output_file}"
             try:
-                subprocess.run(cmd, shell=True, check=True)
+                subprocess.run(cmd_args, check=True)
                 return None  # Saved to file
             except Exception as e:
                 logger.error(f"Payload generation failed: {e}")
@@ -1288,7 +1293,7 @@ class MetasploitRPC:
         else:
             try:
                 result = subprocess.run(
-                    cmd, shell=True, capture_output=True, check=True
+                    cmd_args, capture_output=True, check=True
                 )
                 return result.stdout
             except Exception as e:
@@ -1300,7 +1305,16 @@ class MetasploitRPC:
 # Kali Agent
 # ============================================
 
-class KaliAgent:
+def _validate_command_args(args: list) -> None:
+    """Reject args containing shell metacharacters."""
+    dangerous = [';', '|', '&', '$(', '`']
+    for arg in args:
+        for d in dangerous:
+            if d in arg:
+                raise ValueError(f"Rejected dangerous metacharacter in argument: {arg}")
+
+
+class KaliAgent(BaseAgent):
     """
     Kali Linux Tool Orchestration Agent
 
@@ -1317,6 +1331,7 @@ class KaliAgent:
         workspace: str = "/tmp/kali-workspace",
         log_dir: str = "/tmp/kali-logs",
     ):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.workspace = Path(workspace)
         self.log_dir = Path(log_dir)
@@ -1376,7 +1391,7 @@ class KaliAgent:
         expires_at: Optional[datetime] = None
     ) -> bool:
         """Set authorization level for tool execution."""
-        if expires_at and expires_at < datetime.utcnow():
+        if expires_at and expires_at < utcnow():
             logger.warning("Authorization expiry is in the past")
             return False
 
@@ -1502,7 +1517,7 @@ class KaliAgent:
             return
 
         try:
-            event["timestamp"] = datetime.utcnow().isoformat()
+            event["timestamp"] = utcnow().isoformat()
             with open(self.audit_log_file, "a") as f:
                 f.write(json.dumps(event) + "\n")
         except Exception as e:
@@ -1560,7 +1575,7 @@ class KaliAgent:
             stdout="",
             stderr="",
             output_file=None,
-            started_at=datetime.utcnow(),
+            started_at=utcnow(),
             completed_at=None,
             duration_seconds=0,
             authorization_level=tool.authorization,
@@ -1572,7 +1587,7 @@ class KaliAgent:
             if self.current_jobs >= self.max_concurrent_jobs:
                 execution.status = "failed"
                 execution.stderr = "Maximum concurrent jobs reached"
-                execution.completed_at = datetime.utcnow()
+                execution.completed_at = utcnow()
                 execution.duration_seconds = 0
                 self.executions[execution.execution_id] = execution
                 return execution
@@ -1604,9 +1619,10 @@ class KaliAgent:
         execution.status = "running"
 
         try:
+            cmd_args = shlex.split(execution.command)
+            _validate_command_args(cmd_args)
             process = subprocess.Popen(
-                execution.command,
-                shell=True,
+                cmd_args,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
                 cwd=str(self.workspace),
@@ -1628,7 +1644,7 @@ class KaliAgent:
             execution.stderr = str(e)
             execution.exit_code = -1
 
-        execution.completed_at = datetime.utcnow()
+        execution.completed_at = utcnow()
         execution.duration_seconds = (execution.completed_at - execution.started_at).total_seconds()
 
         # Save output to file
@@ -1672,8 +1688,8 @@ class KaliAgent:
             stdout="",
             stderr=error,
             output_file=None,
-            started_at=datetime.utcnow(),
-            completed_at=datetime.utcnow(),
+            started_at=utcnow(),
+            completed_at=utcnow(),
             duration_seconds=0,
             authorization_level=AuthorizationLevel.NONE,
         )
@@ -1764,7 +1780,7 @@ class KaliAgent:
 
                 hosts.append(host_info)
 
-            return {"hosts": hosts, "scan_time": datetime.utcnow().isoformat()}
+            return {"hosts": hosts, "scan_time": utcnow().isoformat()}
         except Exception as e:
             logger.error(f"Nmap XML parse failed: {e}")
             return None
@@ -1816,7 +1832,7 @@ class KaliAgent:
             return {
                 "vulnerabilities": vulnerabilities,
                 "total": len(vulnerabilities),
-                "scan_time": datetime.utcnow().isoformat(),
+                "scan_time": utcnow().isoformat(),
             }
         except Exception as e:
             logger.error(f"Nikto parse failed: {e}")
@@ -1882,7 +1898,7 @@ class KaliAgent:
             return {
                 "paths": found_paths,
                 "total_found": len(found_paths),
-                "scan_time": datetime.utcnow().isoformat(),
+                "scan_time": utcnow().isoformat(),
             }
         except Exception as e:
             logger.error(f"Gobuster parse failed: {e}")
@@ -2478,7 +2494,7 @@ class KaliAgent:
         """Generate playbook execution report."""
         lines = [
             f"# Playbook Report: {playbook_name}",
-            f"\nGenerated: {datetime.utcnow().isoformat()}",
+            f"\nGenerated: {utcnow().isoformat()}",
             f"\nTools Executed: {len(results)}",
             "",
             "## Execution Summary",
@@ -2561,7 +2577,7 @@ class KaliAgent:
         """Generate markdown report."""
         lines = [
             "# Kali Agent Execution Report",
-            f"\nGenerated: {datetime.utcnow().isoformat()}",
+            f"\nGenerated: {utcnow().isoformat()}",
             f"\nTotal Executions: {len(executions)}",
             "",
             "## Summary",
@@ -2601,9 +2617,6 @@ class KaliAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate unique ID."""
-        return f"{prefix}_{secrets.token_hex(8)}"
 
     def list_tools(self, category: Optional[ToolCategory] = None) -> List[Dict[str, Any]]:
         """List available tools."""

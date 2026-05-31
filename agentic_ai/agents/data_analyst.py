@@ -6,12 +6,13 @@ Provides data analysis, statistical insights, trend detection,
 automated reporting, and data visualization generation.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
 import math
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Tuple
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -26,7 +27,7 @@ class Dataset:
     row_count: int = 0
     column_count: int = 0
     columns: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
     last_updated: Optional[datetime] = None
 
 
@@ -40,7 +41,7 @@ class Analysis:
     results: Dict[str, Any]
     insights: List[str] = field(default_factory=list)
     recommendations: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -50,18 +51,19 @@ class Report:
     name: str
     title: str
     sections: List[Dict[str, Any]]
-    generated_at: datetime = field(default_factory=datetime.utcnow)
+    generated_at: datetime = field(default_factory=utcnow)
     period_start: Optional[datetime] = None
     period_end: Optional[datetime] = None
 
 
-class DataAnalystAgent:
+class DataAnalystAgent(BaseAgent):
     """
     Data Analyst Agent for statistical analysis, insights,
     trend detection, and automated reporting.
     """
 
     def __init__(self, agent_id: str = "data-analyst-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.datasets: Dict[str, Dataset] = {}
         self.analyses: Dict[str, Analysis] = {}
@@ -100,7 +102,7 @@ class DataAnalystAgent:
 
         self.data_cache[dataset_id] = data
         self.datasets[dataset_id].row_count = len(data)
-        self.datasets[dataset_id].last_updated = datetime.utcnow()
+        self.datasets[dataset_id].last_updated = utcnow()
 
         logger.info(f"Loaded {len(data)} rows into dataset {dataset_id}")
 
@@ -438,11 +440,6 @@ class DataAnalystAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

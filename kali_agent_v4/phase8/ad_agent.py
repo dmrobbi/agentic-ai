@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class ADAttackType(Enum):
@@ -117,7 +118,7 @@ class ADAgent:
         self.session_data['authenticated'] = True
         self.session_data['username'] = username
         self.session_data['method'] = 'kerberos' if kerberos else ('hash' if hash else 'password')
-        self.session_data['timestamp'] = datetime.utcnow().isoformat()
+        self.session_data['timestamp'] = utcnow().isoformat()
         
         print(f"✅ Successfully authenticated as: {username}")
         print(f"   Method: {self.session_data['method']}")
@@ -269,21 +270,21 @@ class ADAgent:
                 dns_hostname="dc01.corp.local",
                 enabled=True,
                 operating_system="Windows Server 2019",
-                last_logon=datetime.utcnow().isoformat()
+                last_logon=utcnow().isoformat()
             ),
             ADComputer(
                 hostname="SQL01",
                 dns_hostname="sql01.corp.local",
                 enabled=True,
                 operating_system="Windows Server 2016",
-                last_logon=datetime.utcnow().isoformat()
+                last_logon=utcnow().isoformat()
             ),
             ADComputer(
                 hostname="WS-001",
                 dns_hostname="ws-001.corp.local",
                 enabled=True,
                 operating_system="Windows 10 Enterprise",
-                last_logon=datetime.utcnow().isoformat()
+                last_logon=utcnow().isoformat()
             )
         ]
         
@@ -554,7 +555,7 @@ class ADAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
             "domain": self.domain,
             "dc_ip": self.dc_ip,
             "summary": {

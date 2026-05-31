@@ -11,6 +11,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class AlertSeverity(str, Enum):
@@ -44,8 +45,8 @@ class Alert:
     metric_value: Optional[float] = None
     threshold: Optional[float] = None
 
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
-    updated_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
+    updated_at: str = field(default_factory=lambda: utcnow().isoformat())
     acknowledged_at: Optional[str] = None
     resolved_at: Optional[str] = None
 
@@ -82,22 +83,22 @@ class Alert:
     def acknowledge(self, user: str = "system"):
         """Acknowledge the alert."""
         self.status = AlertStatus.ACKNOWLEDGED
-        self.acknowledged_at = datetime.utcnow().isoformat()
+        self.acknowledged_at = utcnow().isoformat()
         self.updated_at = self.acknowledged_at
         self.annotations["acknowledged_by"] = user
 
     def resolve(self):
         """Resolve the alert."""
         self.status = AlertStatus.RESOLVED
-        self.resolved_at = datetime.utcnow().isoformat()
+        self.resolved_at = utcnow().isoformat()
         self.updated_at = self.resolved_at
 
     def silence(self, duration_minutes: int = 60):
         """Silence the alert."""
         self.status = AlertStatus.SILENCED
-        self.updated_at = datetime.utcnow().isoformat()
+        self.updated_at = utcnow().isoformat()
         self.annotations["silenced_until"] = (
-            datetime.utcnow() + timedelta(minutes=duration_minutes)
+            utcnow() + timedelta(minutes=duration_minutes)
         ).isoformat()
 
 
@@ -280,7 +281,7 @@ class AlertManager:
         if rule.last_triggered:
             last_fire = datetime.fromisoformat(rule.last_triggered)
             cooldown = timedelta(minutes=rule.cooldown_minutes)
-            if datetime.utcnow() - last_fire < cooldown:
+            if utcnow() - last_fire < cooldown:
                 return
 
         # Create or update alert
@@ -290,7 +291,7 @@ class AlertManager:
             if alert_key in self._alerts:
                 alert = self._alerts[alert_key]
                 alert.metric_value = value
-                alert.updated_at = datetime.utcnow().isoformat()
+                alert.updated_at = utcnow().isoformat()
                 alert.notification_count += 1
             else:
                 alert = Alert(
@@ -306,7 +307,7 @@ class AlertManager:
                 self._alerts[alert_key] = alert
                 self._active_alerts.append(alert_key)
 
-        rule.last_triggered = datetime.utcnow().isoformat()
+        rule.last_triggered = utcnow().isoformat()
 
         # Send notifications
         self._send_notifications(alert, rule)
@@ -341,7 +342,7 @@ class AlertManager:
 
     def clear_resolved(self, older_than_minutes: int = 60):
         """Clear resolved alerts older than specified time."""
-        cutoff = datetime.utcnow() - timedelta(minutes=older_than_minutes)
+        cutoff = utcnow() - timedelta(minutes=older_than_minutes)
 
         with self._lock:
             to_remove = []

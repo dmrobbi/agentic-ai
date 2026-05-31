@@ -8,6 +8,7 @@ Pytest fixtures for integration tests.
 import pytest
 from datetime import datetime
 from unittest.mock import Mock, MagicMock, patch
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @pytest.fixture
@@ -74,7 +75,7 @@ def mock_sqlite_db(tmp_path):
 @pytest.fixture
 def sample_timestamp():
     """Sample timestamp for tests."""
-    return datetime.utcnow()
+    return utcnow()
 
 
 @pytest.fixture

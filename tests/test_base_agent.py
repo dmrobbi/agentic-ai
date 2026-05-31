@@ -10,6 +10,7 @@ import sys
 from pathlib import Path
 from unittest.mock import Mock, patch, MagicMock, AsyncMock
 import asyncio
+from agentic_ai.agents.base import BaseAgent
 
 # Add parent to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -207,7 +208,6 @@ class TestBaseAgent:
     @pytest.mark.asyncio
     async def test_think_method(self, mock_inference, mock_state_store, mock_bus):
         """Test LLM inference through think method."""
-        from agentic_ai.agents.base import BaseAgent
         
         class TestAgent(BaseAgent):
             agent_type = "test"

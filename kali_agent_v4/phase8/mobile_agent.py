@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class MobilePlatform(Enum):
@@ -588,7 +589,7 @@ class MobileAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
             "platform": self.platform.value,
             "app_info": {
                 "package": self.apk_info.package_name if self.apk_info else self.ipa_info.bundle_id,

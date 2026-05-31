@@ -30,6 +30,7 @@ from agentic_ai.agents.cyber.redteam import (
     TargetType,
     FindingSeverity,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestSecurityOperationsAgent:
@@ -312,7 +313,7 @@ class TestVulnerabilityManagementAgent:
             vuln.vuln_id,
             VulnerabilityStatus.IN_REMEDIATION,
             assigned_to="security@example.com",
-            due_date=datetime.utcnow() + timedelta(days=14),
+            due_date=utcnow() + timedelta(days=14),
         )
         
         assert result is True
@@ -333,7 +334,7 @@ class TestVulnerabilityManagementAgent:
         vulnman.update_vulnerability_status(
             vuln.vuln_id,
             VulnerabilityStatus.IN_REMEDIATION,
-            due_date=datetime.utcnow() - timedelta(days=1),
+            due_date=utcnow() - timedelta(days=1),
         )
         
         overdue = vulnman.get_overdue_vulnerabilities()
@@ -457,7 +458,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             name="Q2 Red Team Exercise",
             engagement_type=EngagementType.RED_TEAM,
-            start_date=datetime.utcnow(),
+            start_date=utcnow(),
             scope=["10.0.0.0/24", "example.com"],
             objectives=["Gain domain admin", "Access sensitive data"],
             rules_of_engagement=["No production impact"],
@@ -473,7 +474,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.PENETRATION_TEST,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -488,7 +489,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -539,7 +540,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -563,7 +564,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -584,7 +585,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -607,7 +608,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -634,7 +635,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test Engagement",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )
@@ -666,9 +667,9 @@ class TestRedTeamAgent:
     
     def test_get_engagements_by_type(self, redteam):
         """Test filtering engagements by type."""
-        redteam.create_engagement("Pen Test", EngagementType.PENETRATION_TEST, datetime.utcnow(), ["scope"], ["obj"])
-        redteam.create_engagement("Red Team", EngagementType.RED_TEAM, datetime.utcnow(), ["scope"], ["obj"])
-        redteam.create_engagement("Emulation", EngagementType.ADVERSARY_EMULATION, datetime.utcnow(), ["scope"], ["obj"])
+        redteam.create_engagement("Pen Test", EngagementType.PENETRATION_TEST, utcnow(), ["scope"], ["obj"])
+        redteam.create_engagement("Red Team", EngagementType.RED_TEAM, utcnow(), ["scope"], ["obj"])
+        redteam.create_engagement("Emulation", EngagementType.ADVERSARY_EMULATION, utcnow(), ["scope"], ["obj"])
         
         red_team = redteam.get_engagements(engagement_type=EngagementType.RED_TEAM)
         
@@ -679,7 +680,7 @@ class TestRedTeamAgent:
         engagement = redteam.create_engagement(
             "Test",
             EngagementType.RED_TEAM,
-            datetime.utcnow(),
+            utcnow(),
             ["scope"],
             ["obj"],
         )

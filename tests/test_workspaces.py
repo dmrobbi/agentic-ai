@@ -7,6 +7,7 @@ Unit tests for workspace collaboration features.
 
 import pytest
 from datetime import datetime, timedelta
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @pytest.fixture
@@ -96,7 +97,7 @@ class TestResourceLock:
         lock = ResourceLock(
             resource_id="res-001",
             holder_id="agent-1",
-            expires_at=(datetime.utcnow() - timedelta(minutes=5)).isoformat(),
+            expires_at=(utcnow() - timedelta(minutes=5)).isoformat(),
         )
         
         assert lock.is_expired() is True
@@ -105,7 +106,7 @@ class TestResourceLock:
         lock2 = ResourceLock(
             resource_id="res-001",
             holder_id="agent-1",
-            expires_at=(datetime.utcnow() + timedelta(minutes=30)).isoformat(),
+            expires_at=(utcnow() + timedelta(minutes=30)).isoformat(),
         )
         
         assert lock2.is_expired() is False

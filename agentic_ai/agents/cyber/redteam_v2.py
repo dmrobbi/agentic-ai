@@ -19,6 +19,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 from collections import defaultdict
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -405,7 +406,7 @@ class NetworkTopology:
     edges: List[Dict[str, Any]] = field(default_factory=list)
     subnets: List[str] = field(default_factory=list)
     critical_assets: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -447,7 +448,7 @@ class EngagementRisk:
     risk_factors: Dict[str, float] = field(default_factory=dict)
     findings_by_severity: Dict[str, int] = field(default_factory=dict)
     mitre_coverage: Dict[str, int] = field(default_factory=dict)
-    calculated_at: datetime = field(default_factory=datetime.utcnow)
+    calculated_at: datetime = field(default_factory=utcnow)
 
 
 # ============================================
@@ -864,7 +865,7 @@ class RedTeamAgentV2:
 
         test = self.detection_tests[test_id]
         test.status = "executed" if detected else "failed"
-        test.executed_at = datetime.utcnow()
+        test.executed_at = utcnow()
         test.detected = detected
         test.detection_time_seconds = detection_time_seconds
         test.detection_source = detection_source

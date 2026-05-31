@@ -6,6 +6,7 @@ Provides security scanning, vulnerability assessment, incident response,
 secrets management, and security policy enforcement.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import hashlib
 import logging
 import os
@@ -13,9 +14,10 @@ import re
 import secrets
 import string
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -83,7 +85,7 @@ class SecurityFinding:
     recommendation: str = ""
     cwe_id: Optional[str] = None  # Common Weakness Enumeration
     cvss_score: Optional[float] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
     status: str = "open"  # open, investigating, mitigated, false_positive
     assigned_to: Optional[str] = None
 
@@ -99,7 +101,7 @@ class SecurityIncident:
     source_ip: Optional[str] = None
     target_resource: Optional[str] = None
     user_id: Optional[str] = None
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=utcnow)
     status: str = "detected"  # detected, investigating, contained, resolved
     response_actions: List[str] = field(default_factory=list)
     evidence: List[str] = field(default_factory=list)
@@ -147,13 +149,14 @@ class SimpleStateStore:
             del self._data[key]
 
 
-class SecurityAgent:
+class SecurityAgent(BaseAgent):
     """
     Security Agent for vulnerability scanning, incident response,
     and security policy enforcement.
     """
 
     def __init__(self, agent_id: str = "security-agent", state_store: Optional[Any] = None):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.state_store = state_store or SimpleStateStore()
         self.findings: Dict[str, SecurityFinding] = {}
@@ -294,7 +297,7 @@ class SecurityAgent:
             state = {
                 'findings_count': len(self.findings),
                 'incidents_count': len(self.incidents),
-                'last_scan': datetime.utcnow().isoformat(),
+                'last_scan': utcnow().isoformat(),
             }
             self.state_store.set(f"agent:{self.agent_id}:state", state)
         except Exception as e:
@@ -315,7 +318,7 @@ class SecurityAgent:
             "assessor": assessor,
             "target_vendor": target_vendor,
             "status": "planned",
-            "created_at": datetime.utcnow().isoformat(),
+            "created_at": utcnow().isoformat(),
         }
         # Store in state for tracking
         assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])
@@ -336,7 +339,7 @@ class SecurityAgent:
             "control_type": control_type,
             "category": category,
             "status": status,
-            "created_at": datetime.utcnow().isoformat(),
+            "created_at": utcnow().isoformat(),
         }
         controls = self.state_store.get(f"agent:{self.agent_id}:controls", [])
         controls.append(control)
@@ -574,7 +577,7 @@ class SecurityAgent:
             incident.response_actions.extend(response_actions)
 
         if status == "resolved":
-            incident.resolved_at = datetime.utcnow()
+            incident.resolved_at = utcnow()
             incident.resolved_by = resolved_by
 
         self._save_state()
@@ -615,7 +618,7 @@ class SecurityAgent:
         rotation_days: int = 90,
     ) -> SecretRotation:
         """Register a secret for rotation tracking."""
-        now = datetime.utcnow()
+        now = utcnow()
         rotation = SecretRotation(
             rotation_id=self._generate_id("rotation"),
             secret_name=secret_name,
@@ -643,7 +646,7 @@ class SecurityAgent:
             return False
 
         rotation = self.secret_rotations[rotation_id]
-        rotation.last_rotated = datetime.utcnow()
+        rotation.last_rotated = utcnow()
         rotation.next_rotation = rotation.last_rotated + timedelta(days=90)
         rotation.rotation_count += 1
 
@@ -655,7 +658,7 @@ class SecurityAgent:
 
     def get_secrets_due_for_rotation(self, days_ahead: int = 7) -> List[SecretRotation]:
         """Get secrets due for rotation within specified days."""
-        threshold = datetime.utcnow() + timedelta(days=days_ahead)
+        threshold = utcnow() + timedelta(days=days_ahead)
         due = []
 
         for rotation in self.secret_rotations.values():
@@ -695,7 +698,7 @@ class SecurityAgent:
     ):
         """Log an access event for security analysis."""
         log_entry = {
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': utcnow().isoformat(),
             'user_id': user_id,
             'resource': resource,
             'action': action,
@@ -737,12 +740,17 @@ class SecurityAgent:
     def detect_anomalies(self, window_hours: int = 24) -> List[Dict[str, Any]]:
         """Detect anomalies in access logs."""
         anomalies = []
-        cutoff = datetime.utcnow() - timedelta(hours=window_hours)
+        cutoff = utcnow() - timedelta(hours=window_hours)
 
-        # Filter recent logs
+        # Filter recent logs (handle both naive and aware datetimes)
+        def _make_utc(dt_obj):
+            if dt_obj.tzinfo is None:
+                return dt_obj.replace(tzinfo=timezone.utc)
+            return dt_obj
+
         recent_logs = [
             log for log in self.access_logs
-            if datetime.fromisoformat(log['timestamp']) > cutoff
+            if _make_utc(datetime.fromisoformat(log['timestamp'])) > cutoff
         ]
 
         # Count failed logins per user
@@ -837,7 +845,7 @@ class SecurityAgent:
         max_attempts = rules.get('max_attempts', 5)
 
         # Count recent attempts
-        cutoff = datetime.utcnow() - timedelta(minutes=window_minutes)
+        cutoff = utcnow() - timedelta(minutes=window_minutes)
         recent_logs = [
             log for log in self.access_logs
             if datetime.fromisoformat(log['timestamp']) > cutoff
@@ -874,7 +882,7 @@ class SecurityAgent:
 
     def generate_security_report(self, period_days: int = 30) -> Dict[str, Any]:
         """Generate a security status report."""
-        cutoff = datetime.utcnow() - timedelta(days=period_days)
+        cutoff = utcnow() - timedelta(days=period_days)
 
         # Count findings by severity
         findings_by_severity = {}
@@ -897,7 +905,7 @@ class SecurityAgent:
         anomalies = self.detect_anomalies()
 
         report = {
-            'generated_at': datetime.utcnow().isoformat(),
+            'generated_at': utcnow().isoformat(),
             'period_days': period_days,
             'findings': {
                 'total': len([f for f in self.findings.values() if f.created_at > cutoff]),
@@ -926,11 +934,6 @@ class SecurityAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

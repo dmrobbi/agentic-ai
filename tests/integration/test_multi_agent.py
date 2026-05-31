@@ -22,6 +22,7 @@ from agentic_ai.agents.security import SecurityAgent
 from agentic_ai.agents.compliance import ComplianceAgent
 from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, TargetType, AbortCondition
 from agentic_ai.agents.ml_ops import MLOpsAgent
+from agentic_ai.infrastructure.utils import utcnow
 
 
 # ============================================================================
@@ -156,7 +157,7 @@ class TestVendorAssessment:
             tier=VendorTier.TIER_1,
             category="saas",
             relationship_type="vendor",
-            contract_start=datetime.utcnow(),
+            contract_start=utcnow(),
             contract_value=500000.0,
         )
         
@@ -193,8 +194,8 @@ class TestVendorAssessment:
         soc2_cert = compliance.add_certificate(
             certificate_type="soc2_type2",
             issuer=vendor.name,
-            issued_date=datetime.utcnow() - timedelta(days=90),
-            expiry_date=datetime.utcnow() + timedelta(days=275),
+            issued_date=utcnow() - timedelta(days=90),
+            expiry_date=utcnow() + timedelta(days=275),
             status="valid",
         )
         
@@ -319,8 +320,8 @@ class TestAuditPreparation:
         dsar = privacy.create_data_request(
             subject_id="customer-001",
             right_type=DataSubjectRight.ACCESS,
-            submitted_at=datetime.utcnow() - timedelta(days=30),
-            deadline=datetime.utcnow() - timedelta(days=5),
+            submitted_at=utcnow() - timedelta(days=30),
+            deadline=utcnow() - timedelta(days=5),
             status="completed",
         )
         
@@ -535,7 +536,7 @@ class TestCrossAgentContextSharing:
             tier=VendorTier.TIER_2,
             category="saas",
             relationship_type="vendor",
-            contract_start=datetime.utcnow(),
+            contract_start=utcnow(),
         )
         
         # Security assessment references vendor
@@ -551,8 +552,8 @@ class TestCrossAgentContextSharing:
         cert = compliance.add_certificate(
             certificate_type="soc2_type2",
             issuer=vendor.name,
-            issued_date=datetime.utcnow(),
-            expiry_date=datetime.utcnow() + timedelta(days=365),
+            issued_date=utcnow(),
+            expiry_date=utcnow() + timedelta(days=365),
             status="valid",
         )
         

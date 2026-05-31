@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 import uuid
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class FeedbackType(str, Enum):
@@ -37,7 +38,7 @@ class Feedback:
     corrected_output: Optional[str] = None  # For corrections
     source: str = "user"  # user, system, agent
     weight: float = 1.0  # Feedback importance
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -71,7 +72,7 @@ class Feedback:
             corrected_output=data.get("corrected_output"),
             source=data.get("source", "user"),
             weight=data.get("weight", 1.0),
-            created_at=data.get("created_at", datetime.utcnow().isoformat()),
+            created_at=data.get("created_at", utcnow().isoformat()),
         )
 
     def get_score(self) -> float:

@@ -14,6 +14,7 @@ This example shows safe chaos engineering with automated abort conditions.
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from agentic_ai.infrastructure.utils import utcnow
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -495,14 +496,14 @@ def run_chaos_with_monitoring():
             description="Experiment showed benefit of multi-AZ. Add us-east-1c to autoscaling group.",
             priority="medium",
             assignee="platform-team@example.com",
-            due_date=datetime.utcnow() + timedelta(days=14),
+            due_date=utcnow() + timedelta(days=14),
         ),
         devops.create_task(
             title="Reduce auto-scaling cooldown",
             description="Current 5min cooldown too conservative. Reduce to 2min for faster recovery.",
             priority="low",
             assignee="platform-team@example.com",
-            due_date=datetime.utcnow() + timedelta(days=30),
+            due_date=utcnow() + timedelta(days=30),
         ),
     ]
     print(f"  ✓ {len(tasks)} follow-up tasks created")

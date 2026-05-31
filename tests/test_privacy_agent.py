@@ -16,6 +16,7 @@ from agentic_ai.agents.privacy import (
     ConsentStatus,
     ProcessingPurpose,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestPrivacyAgent:
@@ -72,7 +73,7 @@ class TestPrivacyAgent:
         assert request.request_id.startswith("req-")
         assert request.right_type == DataSubjectRight.ACCESS
         assert request.status == RequestStatus.SUBMITTED
-        assert request.deadline > datetime.utcnow()
+        assert request.deadline > utcnow()
     
     def test_fulfill_access_request(self, privacy):
         """Test fulfilling access request."""
@@ -131,7 +132,7 @@ class TestPrivacyAgent:
         request = privacy.create_request(subject.subject_id, DataSubjectRight.ACCESS)
         
         # Manually set deadline to past
-        request.deadline = datetime.utcnow() - timedelta(days=1)
+        request.deadline = utcnow() - timedelta(days=1)
         request.status = RequestStatus.IN_PROGRESS
         
         overdue = privacy.get_requests(overdue_only=True)
@@ -158,7 +159,7 @@ class TestPrivacyAgent:
         assert consent.consent_id.startswith("consent-")
         assert consent.status == ConsentStatus.GIVEN
         assert consent.purpose == ProcessingPurpose.MARKETING
-        assert consent.expires_at > datetime.utcnow()
+        assert consent.expires_at > utcnow()
     
     def test_withdraw_consent(self, privacy):
         """Test withdrawing consent."""

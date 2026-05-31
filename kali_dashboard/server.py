@@ -16,6 +16,7 @@ from fastapi import FastAPI, HTTPException, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse, FileResponse
 from pydantic import BaseModel, Field
+from agentic_ai.infrastructure.utils import utcnow
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent))
@@ -120,7 +121,7 @@ async def health_check():
     return {
         "status": "healthy",
         "version": "1.0.0",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": utcnow().isoformat(),
         "tools_loaded": len(kali_agent.tools) if kali_agent else 0,
     }
 
@@ -206,7 +207,7 @@ async def create_engagement(data: EngagementCreate):
     engagement = redteam_agent.create_engagement(
         name=data.name,
         engagement_type=engagement_type,
-        start_date=datetime.utcnow(),
+        start_date=utcnow(),
         scope=data.scope,
         objectives=data.objectives,
     )
@@ -311,7 +312,7 @@ async def execute_playbook(
         engagement_results[engagement_id] = {
             "playbook_type": data.playbook_type,
             "results": {k: v.__dict__ if hasattr(v, '__dict__') else v for k, v in results.items()},
-            "executed_at": datetime.utcnow().isoformat(),
+            "executed_at": utcnow().isoformat(),
         }
         
         # Generate report

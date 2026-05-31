@@ -16,6 +16,7 @@ This example shows how agents collaborate following incident response playbooks.
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from agentic_ai.infrastructure.utils import utcnow
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -100,7 +101,7 @@ def run_security_incident_response():
         description=incident.description,
         severity="P1",
         affected_services=["api-gateway", "customer-database"],
-        detected_at=datetime.utcnow(),
+        detected_at=utcnow(),
     )
     print(f"  ✓ Incident ticket created: {incident_ticket.incident_id}")
     
@@ -338,7 +339,7 @@ Sincerely,
         tier=VendorTier.TIER_1,
         category="cloud",
         relationship_type="vendor",
-        contract_start=datetime.utcnow() - timedelta(days=365),
+        contract_start=utcnow() - timedelta(days=365),
         contract_value=250000.0,
         primary_contact="support@apigateway.com",
         security_contact="security@apigateway.com",
@@ -459,21 +460,21 @@ Sincerely,
             description="Implement mandatory MFA for all IAM users with admin privileges",
             priority="critical",
             assignee="identity-team@example.com",
-            due_date=datetime.utcnow() + timedelta(days=7),
+            due_date=utcnow() + timedelta(days=7),
         ),
         devops.create_task(
             title="Restrict S3 bucket policies",
             description="Update all S3 buckets to deny access from non-VPC endpoints",
             priority="critical",
             assignee="cloud-team@example.com",
-            due_date=datetime.utcnow() + timedelta(days=3),
+            due_date=utcnow() + timedelta(days=3),
         ),
         devops.create_task(
             title="Implement anomaly detection",
             description="Deploy ML-based anomaly detection for API access patterns",
             priority="high",
             assignee="security-team@example.com",
-            due_date=datetime.utcnow() + timedelta(days=30),
+            due_date=utcnow() + timedelta(days=30),
         ),
     ]
     print(f"  ✓ Created {len(remediation_tasks)} remediation tasks")
@@ -489,7 +490,7 @@ Sincerely,
 INCIDENT: {incident.title}
 INCIDENT ID: {incident.incident_id}
 SEVERITY: {incident.severity.upper()}
-DURATION: {format_timestamp(incident.detected_at)} - {format_timestamp(datetime.utcnow())}
+DURATION: {format_timestamp(incident.detected_at)} - {format_timestamp(utcnow())}
 
 AGENTS INVOLVED:
   ✓ SOC Agent - Detection, triage, threat intelligence

@@ -16,6 +16,7 @@ This example shows go-to-market coordination across teams.
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from agentic_ai.infrastructure.utils import utcnow
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -50,7 +51,7 @@ def run_product_launch():
     data = DataAnalystAgent()
     
     # Define launch date
-    launch_date = datetime.utcnow() + timedelta(days=30)
+    launch_date = utcnow() + timedelta(days=30)
     
     # ========================================================================
     # PHASE 1: PRODUCT DEFINITION
@@ -133,7 +134,7 @@ def run_product_launch():
     launch_campaign = marketing.create_campaign(
         name="CloudSecure Pro Launch Campaign",
         campaign_type="product_launch",
-        start_date=datetime.utcnow(),
+        start_date=utcnow(),
         end_date=launch_date + timedelta(days=30),
         budget=150000.0,
         target_audience="security decision makers at enterprise companies",

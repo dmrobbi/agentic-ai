@@ -13,6 +13,7 @@ from datetime import datetime
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
+from agentic_ai.infrastructure.utils import utcnow
 
 # Configuration
 LOG_LEVEL = os.getenv("AGENTIC_AI_LOG_LEVEL", "INFO")
@@ -80,7 +81,7 @@ async def health_check():
         status="healthy",
         version="1.0.0",
         environment=ENV,
-        timestamp=datetime.utcnow().isoformat(),
+        timestamp=utcnow().isoformat(),
         agents_loaded=33,
     )
 

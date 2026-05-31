@@ -6,12 +6,13 @@ Provides penetration testing automation, exploit simulation,
 adversary emulation, attack path discovery, and red team operations.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -78,7 +79,7 @@ class Engagement:
     team_members: List[str] = field(default_factory=list)
     findings_count: int = 0
     critical_findings: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -114,7 +115,7 @@ class Finding:
     remediation: str = ""
     reproduction_steps: List[str] = field(default_factory=list)
     screenshots: List[str] = field(default_factory=list)
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=utcnow)
     reported: bool = False
 
 
@@ -146,16 +147,17 @@ class AttackPath:
     time_to_exploit: int = 0  # minutes
     detection_evasion: List[str] = field(default_factory=list)
     mitre_attack: List[str] = field(default_factory=list)
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=utcnow)
 
 
-class RedTeamAgent:
+class RedTeamAgent(BaseAgent):
     """
     Red Team Agent for offensive security operations,
     penetration testing, and adversary emulation.
     """
 
     def __init__(self, agent_id: str = "redteam-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.engagements: Dict[str, Engagement] = {}
         self.targets: Dict[str, Target] = {}
@@ -326,7 +328,7 @@ class RedTeamAgent:
 
         target = self.targets[target_id]
         target.accessed = True
-        target.compromised_at = datetime.utcnow()
+        target.compromised_at = utcnow()
 
         return True
 
@@ -347,7 +349,7 @@ class RedTeamAgent:
             'port': port,
             'version': version,
             'vulnerable': vulnerable,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': utcnow().isoformat(),
         })
 
         return True
@@ -472,7 +474,7 @@ class RedTeamAgent:
             self.targets[target_id].credentials_found.append({
                 'credential_id': cred.credential_id,
                 'username': username,
-                'added_at': datetime.utcnow().isoformat(),
+                'added_at': utcnow().isoformat(),
             })
 
         return cred
@@ -484,7 +486,7 @@ class RedTeamAgent:
 
         cred = self.credentials[credential_id]
         cred.valid = valid
-        cred.tested_at = datetime.utcnow()
+        cred.tested_at = utcnow()
 
         return True
 
@@ -576,7 +578,7 @@ class RedTeamAgent:
                 'name': engagement.name,
                 'type': engagement.engagement_type.value,
                 'status': engagement.status.value,
-                'duration_days': (engagement.end_date or datetime.utcnow() - engagement.start_date).days if engagement.end_date else (datetime.utcnow() - engagement.start_date).days,
+                'duration_days': (engagement.end_date or utcnow() - engagement.start_date).days if engagement.end_date else (utcnow() - engagement.start_date).days,
             },
             'summary': {
                 'total_targets': len(targets),
@@ -636,11 +638,6 @@ class RedTeamAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
@@ -914,7 +911,7 @@ if __name__ == "__main__":
     engagement = agent.create_engagement(
         name="Q2 Red Team Exercise",
         engagement_type=EngagementType.RED_TEAM,
-        start_date=datetime.utcnow(),
+        start_date=utcnow(),
         scope=["10.0.0.0/24", "example.com"],
         objectives=["Gain domain admin", "Access sensitive data", "Test detection"],
         rules_of_engagement=["No production impact", "Business hours only"],

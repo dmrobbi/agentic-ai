@@ -30,6 +30,7 @@ from agentic_ai.agents.risk import (
     RiskStatus,
     TreatmentStrategy,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestDataGovernanceAgent:
@@ -545,7 +546,7 @@ class TestRiskAgent:
             risk_item.risk_id,
             strategy=TreatmentStrategy.REDUCE,
             treatment_plan="Implement additional controls",
-            target_resolution=datetime.utcnow() + timedelta(days=90),
+            target_resolution=utcnow() + timedelta(days=90),
         )
         
         assert result is True
@@ -654,7 +655,7 @@ class TestRiskAgent:
             name="Q1 Cybersecurity Assessment",
             scope="All IT systems",
             assessor="risk-team@example.com",
-            start_date=datetime.utcnow(),
+            start_date=utcnow(),
         )
         
         assert assessment.assessment_id.startswith("assess-")
@@ -664,7 +665,7 @@ class TestRiskAgent:
         """Test completing assessment."""
         assessment = risk.create_assessment(
             "Test Assessment", "Scope",
-            "assessor@example.com", datetime.utcnow(),
+            "assessor@example.com", utcnow(),
         )
         
         result = risk.complete_assessment(

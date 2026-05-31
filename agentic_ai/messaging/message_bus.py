@@ -16,6 +16,7 @@ from typing import Any, Callable, Dict, List, Optional, TypeVar
 from contextlib import contextmanager
 
 import redis
+from agentic_ai.infrastructure.utils import utcnow
 
 logger = logging.getLogger(__name__)
 
@@ -50,7 +51,7 @@ class Message:
     target_agent: Optional[str]
     topic: str
     payload: Dict[str, Any]
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=utcnow)
     correlation_id: Optional[str] = None
     reply_to: Optional[str] = None
     ttl_seconds: int = 3600
@@ -284,7 +285,7 @@ class MessageBus:
         dlq_message = {
             'original_message': message.to_json(),
             'error': error,
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': utcnow().isoformat(),
         }
 
         try:

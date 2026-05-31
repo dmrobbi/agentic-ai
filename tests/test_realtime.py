@@ -7,6 +7,7 @@ Unit tests for operational transformation and real-time features.
 
 import pytest
 from datetime import datetime, timedelta
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @pytest.fixture
@@ -495,7 +496,7 @@ class TestRealTimeCollaboration:
         
         # Manually set old activity time
         from datetime import datetime, timedelta
-        user.last_activity = (datetime.utcnow() - timedelta(minutes=60)).isoformat()
+        user.last_activity = (utcnow() - timedelta(minutes=60)).isoformat()
         
         removed = rtc.cleanup_inactive(inactive_minutes=30)
         

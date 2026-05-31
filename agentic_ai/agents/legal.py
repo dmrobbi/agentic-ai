@@ -6,13 +6,14 @@ Provides contract review, legal document generation, compliance checking,
 risk assessment, and regulatory tracking.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 import re
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -69,7 +70,7 @@ class LegalDocument:
     value: float = 0.0
     clauses: List[Dict[str, Any]] = field(default_factory=list)
     risks: List[Dict[str, Any]] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -80,7 +81,7 @@ class ComplianceCheck:
     status: ComplianceStatus
     findings: List[str]
     recommendations: List[str]
-    checked_at: datetime = field(default_factory=datetime.utcnow)
+    checked_at: datetime = field(default_factory=utcnow)
     next_review: Optional[datetime] = None
 
 
@@ -95,13 +96,14 @@ class ContractClause:
     suggested_changes: List[str] = field(default_factory=list)
 
 
-class LegalAgent:
+class LegalAgent(BaseAgent):
     """
     Legal Agent for contract review, document generation,
     compliance checking, and risk assessment.
     """
 
     def __init__(self, agent_id: str = "legal-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.documents: Dict[str, LegalDocument] = {}
         self.compliance_checks: Dict[str, ComplianceCheck] = {}
@@ -233,7 +235,7 @@ class LegalAgent:
 
     def get_expiring_documents(self, days_ahead: int = 30) -> List[LegalDocument]:
         """Get documents expiring within specified days."""
-        threshold = datetime.utcnow() + timedelta(days=days_ahead)
+        threshold = utcnow() + timedelta(days=days_ahead)
         expiring = []
 
         for doc in self.documents.values():
@@ -326,7 +328,7 @@ class LegalAgent:
         doc.clauses.append({
             'type': clause_type,
             'text': clause_text,
-            'added_at': datetime.utcnow().isoformat(),
+            'added_at': utcnow().isoformat(),
         })
 
         return True
@@ -366,7 +368,7 @@ class LegalAgent:
             status=status,
             findings=findings,
             recommendations=recommendations,
-            next_review=datetime.utcnow() + timedelta(days=90),
+            next_review=utcnow() + timedelta(days=90),
         )
 
         self.compliance_checks[check.check_id] = check
@@ -374,7 +376,7 @@ class LegalAgent:
         # Update regulation status
         if regulation in self.regulations:
             self.regulations[regulation]['status'] = status
-            self.regulations[regulation]['last_audit'] = datetime.utcnow()
+            self.regulations[regulation]['last_audit'] = utcnow()
 
         logger.info(f"Compliance check {regulation.value}: {status.value}")
         return check
@@ -489,11 +491,6 @@ These Terms are governed by applicable law.
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
@@ -566,8 +563,8 @@ if __name__ == "__main__":
         title="Mutual NDA - Acme Corp",
         document_type=DocumentType.NDA,
         parties=["Our Company", "Acme Corp"],
-        effective_date=datetime.utcnow(),
-        expiration_date=datetime.utcnow() + timedelta(days=730),
+        effective_date=utcnow(),
+        expiration_date=utcnow() + timedelta(days=730),
     )
 
     print(f"Created: {nda.title}")

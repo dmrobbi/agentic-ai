@@ -6,12 +6,13 @@ Provides cloud security monitoring, compliance checking, misconfiguration
 detection, and remediation for AWS, Azure, and GCP environments.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -90,7 +91,7 @@ class CloudAccount:
     name: str
     environment: str  # production, staging, development
     owner: str
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
     last_scanned: Optional[datetime] = None
     resource_count: int = 0
     findings_count: int = 0
@@ -107,7 +108,7 @@ class CloudResource:
     tags: Dict[str, str] = field(default_factory=dict)
     configuration: Dict[str, Any] = field(default_factory=dict)
     compliant: bool = True
-    last_checked: datetime = field(default_factory=datetime.utcnow)
+    last_checked: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -123,7 +124,7 @@ class SecurityFinding:
     compliance_framework: Optional[ComplianceFramework] = None
     control_id: Optional[str] = None
     remediation: str = ""
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    detected_at: datetime = field(default_factory=utcnow)
     resolved_at: Optional[datetime] = None
     assigned_to: Optional[str] = None
 
@@ -140,7 +141,7 @@ class Policy:
     severity: Severity
     compliance_frameworks: List[ComplianceFramework] = field(default_factory=list)
     enabled: bool = True
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -156,13 +157,14 @@ class Remediation:
     result: Optional[str] = None
 
 
-class CloudSecurityAgent:
+class CloudSecurityAgent(BaseAgent):
     """
     Cloud Security Agent for CSPM, compliance checking,
     misconfiguration detection, and remediation.
     """
 
     def __init__(self, agent_id: str = "cloud-security-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.accounts: Dict[str, CloudAccount] = {}
         self.resources: Dict[str, CloudResource] = {}
@@ -286,7 +288,7 @@ class CloudSecurityAgent:
             return False
 
         account = self.accounts[account_id]
-        account.last_scanned = datetime.utcnow()
+        account.last_scanned = utcnow()
         account.resource_count = resource_count
         account.findings_count = findings_count
 
@@ -466,7 +468,7 @@ class CloudSecurityAgent:
             finding.assigned_to = assigned_to
 
         if status == FindingStatus.RESOLVED:
-            finding.resolved_at = datetime.utcnow()
+            finding.resolved_at = utcnow()
 
         return True
 
@@ -574,13 +576,13 @@ class CloudSecurityAgent:
         remediation = self.remediations[remediation_id]
         remediation.status = "completed"
         remediation.executed_by = executed_by
-        remediation.executed_at = datetime.utcnow()
+        remediation.executed_at = utcnow()
         remediation.result = result
 
         # Update finding status
         if remediation.finding_id in self.findings:
             self.findings[remediation.finding_id].status = FindingStatus.RESOLVED
-            self.findings[remediation.finding_id].resolved_at = datetime.utcnow()
+            self.findings[remediation.finding_id].resolved_at = utcnow()
 
         return True
 
@@ -706,11 +708,6 @@ class CloudSecurityAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

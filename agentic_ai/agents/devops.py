@@ -6,15 +6,16 @@ Provides infrastructure automation, CI/CD pipeline management,
 deployment orchestration, monitoring, and cost optimization.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
 import os
 import re
-import secrets
 import string
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -60,7 +61,7 @@ class Deployment:
     version: str
     environment: str  # dev, staging, prod
     status: DeploymentStatus
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
     deployed_at: Optional[datetime] = None
     deployed_by: Optional[str] = None
     rollback_to: Optional[str] = None
@@ -106,19 +107,20 @@ class Alert:
     metric: str
     threshold: float
     current_value: float
-    triggered_at: datetime = field(default_factory=datetime.utcnow)
+    triggered_at: datetime = field(default_factory=utcnow)
     acknowledged: bool = False
     acknowledged_by: Optional[str] = None
     resolved_at: Optional[datetime] = None
 
 
-class DevOpsAgent:
+class DevOpsAgent(BaseAgent):
     """
     DevOps Agent for infrastructure automation, CI/CD,
     deployment orchestration, and monitoring.
     """
 
     def __init__(self, agent_id: str = "devops-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.deployments: Dict[str, Deployment] = {}
         self.pipelines: Dict[str, Pipeline] = {}
@@ -198,7 +200,7 @@ class DevOpsAgent:
             deployment.logs.extend(logs)
 
         if status == DeploymentStatus.DEPLOYED:
-            deployment.deployed_at = datetime.utcnow()
+            deployment.deployed_at = utcnow()
 
         logger.info(f"Deployment {deployment_id} status: {status.value}")
         return deployment
@@ -273,7 +275,7 @@ class DevOpsAgent:
 
         pipeline = self.pipelines[pipeline_id]
         pipeline.status = PipelineStatus.RUNNING
-        pipeline.started_at = datetime.utcnow()
+        pipeline.started_at = utcnow()
         pipeline.current_stage = pipeline.stages[0] if pipeline.stages else None
 
         return pipeline
@@ -292,7 +294,7 @@ class DevOpsAgent:
 
         if status == "failed":
             pipeline.status = PipelineStatus.FAILED
-            pipeline.completed_at = datetime.utcnow()
+            pipeline.completed_at = utcnow()
         else:
             # Move to next stage
             current_idx = pipeline.stages.index(stage) if stage in pipeline.stages else -1
@@ -300,7 +302,7 @@ class DevOpsAgent:
                 pipeline.current_stage = pipeline.stages[current_idx + 1]
             else:
                 pipeline.status = PipelineStatus.PASSED
-                pipeline.completed_at = datetime.utcnow()
+                pipeline.completed_at = utcnow()
 
         return pipeline
 
@@ -392,7 +394,7 @@ class DevOpsAgent:
             self.metrics[metric_name] = []
 
         self.metrics[metric_name].append({
-            'timestamp': datetime.utcnow().isoformat(),
+            'timestamp': utcnow().isoformat(),
             'value': value,
             'tags': tags or {},
         })
@@ -438,7 +440,7 @@ class DevOpsAgent:
         if alert_id not in self.alerts:
             return False
 
-        self.alerts[alert_id].resolved_at = datetime.utcnow()
+        self.alerts[alert_id].resolved_at = utcnow()
 
         return True
 
@@ -568,11 +570,6 @@ class DevOpsAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

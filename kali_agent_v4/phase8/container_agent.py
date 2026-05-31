@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import Dict, List, Optional, Any
 from dataclasses import dataclass, field
 from enum import Enum
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class ContainerAttackType(Enum):
@@ -632,7 +633,7 @@ class ContainerAgent:
         
         report = {
             "agent_id": self.agent_id,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
             "target": self.target,
             "k8s_context": self.k8s_context,
             "summary": {

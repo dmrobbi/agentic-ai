@@ -6,12 +6,13 @@ Provides email campaigns, SMS notifications, push notifications,
 message templates, delivery tracking, and communication analytics.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -56,7 +57,7 @@ class Contact:
     phone: Optional[str] = None
     preferences: Dict[str, bool] = field(default_factory=dict)
     tags: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -73,7 +74,7 @@ class Message:
     priority: Priority = Priority.NORMAL
     template_id: Optional[str] = None
     metadata: Dict[str, Any] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -87,7 +88,7 @@ class Template:
     variables: List[str] = field(default_factory=list)
     category: str = "general"
     version: str = "1.0"
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -105,16 +106,17 @@ class Campaign:
     failed_count: int = 0
     start_date: Optional[datetime] = None
     end_date: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
-class CommunicationsAgent:
+class CommunicationsAgent(BaseAgent):
     """
     Communications Agent for multi-channel messaging,
     campaign management, and delivery tracking.
     """
 
     def __init__(self, agent_id: str = "communications-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.contacts: Dict[str, Contact] = {}
         self.messages: Dict[str, Message] = {}
@@ -263,7 +265,7 @@ class CommunicationsAgent:
             content=content,
             status=MessageStatus.SENT,
             recipients=recipients,
-            sent_at=datetime.utcnow(),
+            sent_at=utcnow(),
             priority=priority,
             template_id=template_id,
         )
@@ -353,7 +355,7 @@ class CommunicationsAgent:
 
         campaign = self.campaigns[campaign_id]
         campaign.status = "active"
-        campaign.start_date = datetime.utcnow()
+        campaign.start_date = utcnow()
 
         return True
 
@@ -386,7 +388,7 @@ class CommunicationsAgent:
 
         campaign = self.campaigns[campaign_id]
         campaign.status = "completed"
-        campaign.end_date = datetime.utcnow()
+        campaign.end_date = utcnow()
 
         return True
 
@@ -474,11 +476,6 @@ class CommunicationsAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

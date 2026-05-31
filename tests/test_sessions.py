@@ -7,6 +7,7 @@ Unit tests for session management features.
 
 import pytest
 from datetime import datetime, timedelta
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @pytest.fixture
@@ -454,7 +455,7 @@ class TestSessionManager:
         manager.end_session(session.session_id)
         
         # Manually set old ended time
-        session.ended_at = (datetime.utcnow() - timedelta(minutes=90)).isoformat()
+        session.ended_at = (utcnow() - timedelta(minutes=90)).isoformat()
         
         removed = manager.cleanup_ended(older_than_minutes=60)
         

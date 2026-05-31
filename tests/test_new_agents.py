@@ -33,6 +33,7 @@ from agentic_ai.agents.research import (
     PublicationType,
     ResearchStatus,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestMarketingAgent:
@@ -48,7 +49,7 @@ class TestMarketingAgent:
         campaign = marketing.create_campaign(
             name="Q2 Launch",
             campaign_type=CampaignType.PRODUCT_LAUNCH,
-            start_date=datetime.utcnow(),
+            start_date=utcnow(),
             budget=50000.0,
             target_audience="Tech professionals",
             goals=["1000 signups", "50k visits"],
@@ -63,7 +64,7 @@ class TestMarketingAgent:
         campaign = marketing.create_campaign(
             "Test Campaign",
             CampaignType.EMAIL,
-            datetime.utcnow(),
+            utcnow(),
         )
         
         marketing.update_campaign_status(campaign.campaign_id, CampaignStatus.ACTIVE)
@@ -74,7 +75,7 @@ class TestMarketingAgent:
         content = marketing.create_content(
             title="Blog Post",
             content_type="blog",
-            scheduled_date=datetime.utcnow() + timedelta(days=7),
+            scheduled_date=utcnow() + timedelta(days=7),
             tags=["marketing", "content"],
         )
         
@@ -86,7 +87,7 @@ class TestMarketingAgent:
         post = marketing.schedule_social_post(
             platform=SocialPlatform.TWITTER,
             content="Exciting announcement!",
-            scheduled_time=datetime.utcnow() + timedelta(hours=2),
+            scheduled_time=utcnow() + timedelta(hours=2),
         )
         
         assert post['post_id'].startswith("post-")
@@ -184,7 +185,7 @@ class TestHRAgent:
     def test_create_onboarding(self, hr):
         """Test onboarding creation."""
         emp = hr.hire_employee("Test", "t@e.com", "eng", "Dev", EmploymentType.FULL_TIME)
-        onboarding = hr.create_onboarding(emp.employee_id, datetime.utcnow(), duration_days=30)
+        onboarding = hr.create_onboarding(emp.employee_id, utcnow(), duration_days=30)
         
         assert onboarding.onboarding_id.startswith("onboard-")
         assert len(onboarding.tasks) >= 5
@@ -193,7 +194,7 @@ class TestHRAgent:
     def test_complete_onboarding_task(self, hr):
         """Test completing onboarding tasks."""
         emp = hr.hire_employee("Test", "t@e.com", "eng", "Dev", EmploymentType.FULL_TIME)
-        onboarding = hr.create_onboarding(emp.employee_id, datetime.utcnow())
+        onboarding = hr.create_onboarding(emp.employee_id, utcnow())
         
         hr.complete_onboarding_task(onboarding.onboarding_id, "Complete HR paperwork")
         
@@ -205,8 +206,8 @@ class TestHRAgent:
         review = hr.create_review(
             emp.employee_id,
             "manager@e.com",
-            datetime.utcnow() - timedelta(days=90),
-            datetime.utcnow(),
+            utcnow() - timedelta(days=90),
+            utcnow(),
             goals=["Complete project", "Learn new tech"],
         )
         
@@ -216,7 +217,7 @@ class TestHRAgent:
     def test_submit_review(self, hr):
         """Test submitting review."""
         emp = hr.hire_employee("Test", "t@e.com", "eng", "Dev", EmploymentType.FULL_TIME)
-        review = hr.create_review(emp.employee_id, "mgr@e.com", datetime.utcnow(), datetime.utcnow())
+        review = hr.create_review(emp.employee_id, "mgr@e.com", utcnow(), utcnow())
         
         submitted = hr.submit_review(
             review.review_id,
@@ -235,8 +236,8 @@ class TestHRAgent:
         request = hr.request_time_off(
             emp.employee_id,
             TimeOffType.VACATION,
-            datetime.utcnow() + timedelta(days=30),
-            datetime.utcnow() + timedelta(days=37),
+            utcnow() + timedelta(days=30),
+            utcnow() + timedelta(days=37),
             "Family vacation",
         )
         
@@ -249,8 +250,8 @@ class TestHRAgent:
         request = hr.request_time_off(
             emp.employee_id,
             TimeOffType.VACATION,
-            datetime.utcnow() + timedelta(days=30),
-            datetime.utcnow() + timedelta(days=35),
+            utcnow() + timedelta(days=30),
+            utcnow() + timedelta(days=35),
         )
         
         approved = hr.approve_time_off(request.request_id, "manager")
@@ -283,8 +284,8 @@ class TestLegalAgent:
             title="Mutual NDA",
             document_type=DocumentType.NDA,
             parties=["Company A", "Company B"],
-            effective_date=datetime.utcnow(),
-            expiration_date=datetime.utcnow() + timedelta(days=730),
+            effective_date=utcnow(),
+            expiration_date=utcnow() + timedelta(days=730),
             value=0.0,
         )
         
@@ -297,7 +298,7 @@ class TestLegalAgent:
             "Expiring Soon",
             DocumentType.CONTRACT,
             ["A", "B"],
-            expiration_date=datetime.utcnow() + timedelta(days=10),
+            expiration_date=utcnow() + timedelta(days=10),
         )
         
         expiring = legal.get_expiring_documents(days_ahead=30)
@@ -345,13 +346,13 @@ class TestLegalAgent:
         nda = legal.generate_nda_template(
             "Disclosing Corp",
             "Receiving Inc",
-            datetime.utcnow(),
+            utcnow(),
         )
         
         assert "NON-DISCLOSURE AGREEMENT" in nda
         assert "Disclosing Corp" in nda
         
-        tos = legal.generate_terms_template("My Company", datetime.utcnow())
+        tos = legal.generate_terms_template("My Company", utcnow())
         
         assert "TERMS OF SERVICE" in tos
 
@@ -419,7 +420,7 @@ class TestResearchAgent:
             description="Machine learning research project",
             research_question="What are the latest ML advances?",
             hypothesis="Transformers will dominate",
-            target_completion=datetime.utcnow() + timedelta(days=180),
+            target_completion=utcnow() + timedelta(days=180),
         )
         
         assert project.project_id.startswith("project-")

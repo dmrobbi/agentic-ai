@@ -17,6 +17,7 @@ from agentic_ai.agents.chaos_monkey import (
     BlastRadius,
     AbortCondition,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestChaosMonkeyAgent:
@@ -143,7 +144,7 @@ class TestChaosMonkeyAgent:
             SeverityLevel.LOW, BlastRadius.SINGLE, 15,
         )
         
-        start_time = datetime.utcnow() + timedelta(hours=1)
+        start_time = utcnow() + timedelta(hours=1)
         result = chaos.schedule_experiment(experiment.experiment_id, start_time)
         
         assert result is True

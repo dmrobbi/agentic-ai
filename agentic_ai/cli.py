@@ -8,6 +8,7 @@ Interactive CLI for managing Agentic AI agents and operations.
 import sys
 from datetime import datetime
 from typing import Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 try:
     import typer
@@ -114,7 +115,7 @@ def status():
         table.add_row(name, "✅ Healthy", str(active))
 
     console.print(table)
-    console.print(f"\n[green]✓[/green] All systems operational - {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
+    console.print(f"\n[green]✓[/green] All systems operational - {utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
 
 
 @app.command()
@@ -442,7 +443,7 @@ def vendor_add(
         tier=tier_map.get(tier, VendorTier.TIER_2),
         category=category,
         relationship_type="vendor",
-        contract_start=datetime.utcnow(),
+        contract_start=utcnow(),
     )
 
     console.print(f"[green]✓[/green] Vendor added: [bold]{vendor.vendor_id}[/bold]")

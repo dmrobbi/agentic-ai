@@ -16,7 +16,9 @@ from agentic_ai.agents.cyber.kali import (
     AuthorizationLevel,
     ExecutionMode,
     ToolDefinition,
+    _validate_command_args,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestKaliAgentInitialization:
@@ -94,7 +96,7 @@ class TestAuthorization:
         agent = KaliAgent()
         
         # Expired authorization
-        expired = datetime.utcnow() - timedelta(hours=1)
+        expired = utcnow() - timedelta(hours=1)
         result = agent.set_authorization(AuthorizationLevel.BASIC, expires_at=expired)
         assert result is False
     
@@ -550,7 +552,7 @@ class TestRedTeamIntegration:
         engagement = agent.create_engagement(
             name="Test Engagement",
             engagement_type=EngagementType.PENETRATION_TEST,
-            start_date=datetime.utcnow(),
+            start_date=utcnow(),
             scope=["192.168.1.0/24"],
             objectives=["Find vulns"],
         )
@@ -562,3 +564,36 @@ class TestRedTeamIntegration:
 
 if __name__ == "__main__":
     pytest.main([__file__, "-v"])
+
+
+class TestValidateCommandArgs:
+    """Test _validate_command_args rejects shell metacharacters."""
+
+    def test_safe_args_pass(self):
+        """Normal args should pass validation."""
+        _validate_command_args(["ls", "-la"])
+
+    def test_semicolon_rejected(self):
+        """Semicolon metacharacter should be rejected."""
+        with pytest.raises(ValueError, match="Rejected dangerous metacharacter"):
+            _validate_command_args(["ls; rm -rf /"])
+
+    def test_pipe_rejected(self):
+        """Pipe metacharacter should be rejected."""
+        with pytest.raises(ValueError, match="Rejected dangerous metacharacter"):
+            _validate_command_args(["ls | cat"])
+
+    def test_command_substitution_rejected(self):
+        """Command substitution $(...) should be rejected."""
+        with pytest.raises(ValueError, match="Rejected dangerous metacharacter"):
+            _validate_command_args(["$(whoami)"])
+
+    def test_backtick_rejected(self):
+        """Backtick metacharacter should be rejected."""
+        with pytest.raises(ValueError, match="Rejected dangerous metacharacter"):
+            _validate_command_args(["`whoami`"])
+
+    def test_ampersand_rejected(self):
+        """Ampersand metacharacter should be rejected."""
+        with pytest.raises(ValueError, match="Rejected dangerous metacharacter"):
+            _validate_command_args(["ls & echo pwned"])

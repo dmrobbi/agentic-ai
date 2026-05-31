@@ -11,6 +11,7 @@ from datetime import datetime
 from enum import Enum
 import uuid
 import json
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class MessageType(str, Enum):
@@ -55,7 +56,7 @@ class ACPMessage:
     channel: str = ""  # Channel for broadcast
     body: Dict[str, Any] = field(default_factory=dict)
 
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
     expires_at: Optional[str] = None
     correlation_id: Optional[str] = None
 

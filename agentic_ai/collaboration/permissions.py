@@ -10,6 +10,7 @@ from dataclasses import dataclass, field
 from datetime import datetime
 from enum import Enum
 import uuid
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class Permission(str, Enum):
@@ -47,7 +48,7 @@ class AccessGrant:
     resource_id: str = ""  # Empty for workspace-level
     role: Role = Role.VIEWER
     granted_by: str = ""
-    granted_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    granted_at: str = field(default_factory=lambda: utcnow().isoformat())
     expires_at: Optional[str] = None
 
     def has_permission(self, permission: Permission) -> bool:
@@ -59,7 +60,7 @@ class AccessGrant:
         """Check if grant has expired."""
         if not self.expires_at:
             return False
-        return datetime.fromisoformat(self.expires_at) < datetime.utcnow()
+        return datetime.fromisoformat(self.expires_at) < utcnow()
 
     def to_dict(self) -> Dict[str, Any]:
         """Convert to dictionary."""
@@ -93,7 +94,7 @@ class PermissionManager:
         expires_at = None
         if duration_minutes:
             from datetime import timedelta
-            expires_at = (datetime.utcnow() + timedelta(minutes=duration_minutes)).isoformat()
+            expires_at = (utcnow() + timedelta(minutes=duration_minutes)).isoformat()
 
         grant = AccessGrant(
             participant_id=participant_id,

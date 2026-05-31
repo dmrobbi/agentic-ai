@@ -14,6 +14,7 @@ This example shows third-party risk management workflow.
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from agentic_ai.infrastructure.utils import utcnow
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -53,8 +54,8 @@ def run_vendor_assessment():
         tier=VendorTier.TIER_1,  # Critical - handles customer data
         category="saas",
         relationship_type="vendor",
-        contract_start=datetime.utcnow(),
-        contract_end=datetime.utcnow() + timedelta(days=730),  # 2 years
+        contract_start=utcnow(),
+        contract_end=utcnow() + timedelta(days=730),  # 2 years
         contract_value=500000.0,  # $500K annual
         primary_contact="sales@clouddata.io",
         security_contact="security@clouddata.io",
@@ -127,7 +128,7 @@ def run_vendor_assessment():
     
     # Mark questionnaire as completed
     questionnaire.status = "completed"
-    questionnaire.completed_at = datetime.utcnow()
+    questionnaire.completed_at = utcnow()
     
     # ========================================================================
     # PHASE 3: SECURITY ASSESSMENT
@@ -205,7 +206,7 @@ def run_vendor_assessment():
         finding_type="pentest_result",
         severity="low",
         status="resolved",
-        pentest_date=datetime.utcnow() - timedelta(days=180),
+        pentest_date=utcnow() - timedelta(days=180),
         pentest_firm="SecurityExperts Inc",
         findings_critical=0,
         findings_high=0,
@@ -268,8 +269,8 @@ def run_vendor_assessment():
     soc2_cert = compliance.add_certificate(
         certificate_type="soc2_type2",
         issuer="CloudData Analytics",
-        issued_date=datetime.utcnow() - timedelta(days=90),
-        expiry_date=datetime.utcnow() + timedelta(days=275),
+        issued_date=utcnow() - timedelta(days=90),
+        expiry_date=utcnow() + timedelta(days=275),
         status="valid",
         scope="Cloud-based data analytics platform",
         auditor="Big4 Audit Firm LLP",
@@ -282,8 +283,8 @@ def run_vendor_assessment():
     iso_cert = compliance.add_certificate(
         certificate_type="iso27001",
         issuer="CloudData Analytics",
-        issued_date=datetime.utcnow() - timedelta(days=180),
-        expiry_date=datetime.utcnow() + timedelta(days=545),
+        issued_date=utcnow() - timedelta(days=180),
+        expiry_date=utcnow() + timedelta(days=545),
         status="valid",
         scope="Information Security Management",
         auditor="ISO Certification Body",
@@ -417,13 +418,13 @@ def run_vendor_assessment():
             events=[
                 {
                     'event': 'Contract renewal notice deadline',
-                    'deadline': datetime.utcnow() + timedelta(days=670),
+                    'deadline': utcnow() + timedelta(days=670),
                     'status': 'scheduled',
                     'notes': '90 days before contract end',
                 },
                 {
                     'event': 'Annual security review',
-                    'deadline': datetime.utcnow() + timedelta(days=365),
+                    'deadline': utcnow() + timedelta(days=365),
                     'status': 'scheduled',
                     'notes': 'Required by contract Section 8.3',
                 },
@@ -562,7 +563,7 @@ FINDINGS:
 RECOMMENDATIONS:
 {chr(10).join(f"  • {rec}" for rec in assessment.recommendations)}
 
-NEXT REVIEW: {format_date(datetime.utcnow() + timedelta(days=365))}
+NEXT REVIEW: {format_date(utcnow() + timedelta(days=365))}
 """)
     
     # Get final state from all agents

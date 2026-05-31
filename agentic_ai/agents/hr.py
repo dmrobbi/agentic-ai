@@ -6,12 +6,13 @@ Provides employee management, onboarding, performance reviews,
 time-off tracking, and HR analytics.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -66,7 +67,7 @@ class Employee:
     location: str = ""
     status: str = "active"  # active, on_leave, terminated
     skills: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -96,7 +97,7 @@ class PerformanceReview:
     areas_for_improvement: List[str] = field(default_factory=list)
     rating: Optional[int] = None  # 1-5
     feedback: str = ""
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -111,16 +112,17 @@ class TimeOffRequest:
     reason: str = ""
     approved_by: Optional[str] = None
     approved_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
-class HRAgent:
+class HRAgent(BaseAgent):
     """
     HR Agent for employee management, onboarding,
     performance reviews, and time-off tracking.
     """
 
     def __init__(self, agent_id: str = "hr-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.employees: Dict[str, Employee] = {}
         self.onboardings: Dict[str, Onboarding] = {}
@@ -166,7 +168,7 @@ class HRAgent:
             position=position,
             manager_id=manager_id,
             employment_type=employment_type,
-            hire_date=datetime.utcnow(),
+            hire_date=utcnow(),
             salary=salary,
             location=location,
             skills=skills or [],
@@ -306,7 +308,7 @@ class HRAgent:
         # Check if all tasks complete
         if onboarding.progress == 100:
             onboarding.status = "completed"
-            onboarding.completed_at = datetime.utcnow()
+            onboarding.completed_at = utcnow()
 
         return True
 
@@ -426,7 +428,7 @@ class HRAgent:
         request = self.time_off_requests[request_id]
         request.status = TimeOffStatus.APPROVED
         request.approved_by = approved_by
-        request.approved_at = datetime.utcnow()
+        request.approved_at = utcnow()
 
         # Update employee status if long leave
         days = (request.end_date - request.start_date).days
@@ -450,7 +452,7 @@ class HRAgent:
         request = self.time_off_requests[request_id]
         request.status = TimeOffStatus.REJECTED
         request.approved_by = approved_by
-        request.approved_at = datetime.utcnow()
+        request.approved_at = utcnow()
 
         if reason:
             request.reason = f"{request.reason} (Rejected: {reason})"
@@ -522,11 +524,6 @@ class HRAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
@@ -591,7 +588,7 @@ if __name__ == "__main__":
     print(f"Position: {emp.position}")
 
     # Create onboarding
-    onboarding = agent.create_onboarding(emp.employee_id, datetime.utcnow())
+    onboarding = agent.create_onboarding(emp.employee_id, utcnow())
     print(f"\nOnboarding created: {onboarding.progress}% complete")
 
     # Complete a task

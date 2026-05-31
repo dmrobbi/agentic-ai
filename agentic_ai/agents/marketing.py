@@ -6,12 +6,13 @@ Provides campaign management, content creation, social media scheduling,
 A/B testing, and marketing analytics.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -60,7 +61,7 @@ class Campaign:
     target_audience: str = ""
     goals: List[str] = field(default_factory=list)
     metrics: Dict[str, float] = field(default_factory=dict)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -74,7 +75,7 @@ class Content:
     scheduled_date: Optional[datetime] = None
     word_count: int = 0
     tags: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -89,16 +90,17 @@ class ABTest:
     confidence_level: float = 95.0
     status: str = "running"  # running, completed, inconclusive
     results: Optional[Dict[str, Any]] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
-class MarketingAgent:
+class MarketingAgent(BaseAgent):
     """
     Marketing Agent for campaign management, content creation,
     social media, A/B testing, and analytics.
     """
 
     def __init__(self, agent_id: str = "marketing-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.campaigns: Dict[str, Campaign] = {}
         self.content: Dict[str, Content] = {}
@@ -155,7 +157,7 @@ class MarketingAgent:
         campaign.status = status
 
         if status == CampaignStatus.ACTIVE:
-            campaign.metrics['start_date'] = datetime.utcnow().isoformat()
+            campaign.metrics['start_date'] = utcnow().isoformat()
 
         logger.info(f"Campaign {campaign_id} status: {status.value}")
         return campaign
@@ -243,7 +245,7 @@ class MarketingAgent:
             'scheduled_time': scheduled_time.isoformat(),
             'status': 'scheduled',
             'campaign_id': campaign_id,
-            'created_at': datetime.utcnow().isoformat(),
+            'created_at': utcnow().isoformat(),
         }
 
         self.social_posts.append(post)
@@ -361,7 +363,7 @@ class MarketingAgent:
         if channel not in self.analytics:
             self.analytics[channel] = []
 
-        metrics['timestamp'] = datetime.utcnow().isoformat()
+        metrics['timestamp'] = utcnow().isoformat()
         self.analytics[channel].append(metrics)
 
         # Keep last 1000 data points
@@ -396,11 +398,6 @@ class MarketingAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
@@ -450,7 +447,7 @@ if __name__ == "__main__":
     campaign = agent.create_campaign(
         name="Q2 Product Launch",
         campaign_type=CampaignType.PRODUCT_LAUNCH,
-        start_date=datetime.utcnow(),
+        start_date=utcnow(),
         budget=50000.0,
         target_audience="Tech professionals 25-45",
         goals=["Generate 1000 signups", "50000 website visits"],

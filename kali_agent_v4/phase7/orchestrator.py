@@ -13,6 +13,7 @@ from dataclasses import dataclass, field, asdict
 from enum import Enum
 
 from .agent_base import AgentBase, AgentRole, AgentStatus, Task, Intelligence, AgentState
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class OperationStatus(Enum):
@@ -36,7 +37,7 @@ class Operation:
     team_agents: List[str] = field(default_factory=list)
     tasks: List[Task] = field(default_factory=list)
     intelligence: List[Intelligence] = field(default_factory=list)
-    created_at: str = field(default_factory=lambda: datetime.utcnow().isoformat())
+    created_at: str = field(default_factory=lambda: utcnow().isoformat())
     started_at: Optional[str] = None
     completed_at: Optional[str] = None
     progress: float = 0.0
@@ -179,7 +180,7 @@ class LeadAgent:
         
         operation = self.active_operations[operation_id]
         operation.status = "running"
-        operation.started_at = datetime.utcnow().isoformat()
+        operation.started_at = utcnow().isoformat()
         
         print(f"🚀 Starting operation: {operation.name}")
         
@@ -231,7 +232,7 @@ class LeadAgent:
         # Check if complete
         if completed_tasks == total_tasks:
             operation.status = "completed"
-            operation.completed_at = datetime.utcnow().isoformat()
+            operation.completed_at = utcnow().isoformat()
         
         return {
             "operation_id": operation.operation_id,
@@ -316,7 +317,7 @@ class LeadAgent:
         
         operation = self.active_operations[operation_id]
         operation.status = "failed"
-        operation.completed_at = datetime.utcnow().isoformat()
+        operation.completed_at = utcnow().isoformat()
         
         # Stop all agent tasks
         for agent_id in operation.team_agents:

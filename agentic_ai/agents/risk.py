@@ -6,12 +6,13 @@ Provides risk identification, assessment, treatment planning,
 risk registers, key risk indicators (KRIs), and risk reporting.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -80,7 +81,7 @@ class Risk:
     treatment_strategy: Optional[TreatmentStrategy] = None
     treatment_plan: str = ""
     controls: List[str] = field(default_factory=list)
-    identified_at: datetime = field(default_factory=datetime.utcnow)
+    identified_at: datetime = field(default_factory=utcnow)
     assessed_at: Optional[datetime] = None
     target_resolution: Optional[datetime] = None
     closed_at: Optional[datetime] = None
@@ -101,7 +102,7 @@ class Control:
     last_tested: Optional[datetime] = None
     test_results: str = ""
     automated: bool = False
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -121,7 +122,7 @@ class KeyRiskIndicator:
     status: str = "green"  # green, yellow, red
     last_measured: Optional[datetime] = None
     trend: str = "stable"  # improving, stable, deteriorating
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -139,7 +140,7 @@ class RiskAssessment:
     assessor: str = ""
     findings: List[Dict[str, Any]] = field(default_factory=list)
     recommendations: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -151,20 +152,21 @@ class RiskEvent:
     description: str
     actual_impact: str
     financial_impact: float = 0.0
-    occurred_at: datetime = field(default_factory=datetime.utcnow)
-    detected_at: datetime = field(default_factory=datetime.utcnow)
+    occurred_at: datetime = field(default_factory=utcnow)
+    detected_at: datetime = field(default_factory=utcnow)
     status: str = "reported"  # reported, investigating, contained, resolved
     root_cause: str = ""
     lessons_learned: List[str] = field(default_factory=list)
 
 
-class RiskAgent:
+class RiskAgent(BaseAgent):
     """
     Risk Agent for Enterprise Risk Management (ERM),
     risk registers, KRIs, and risk reporting.
     """
 
     def __init__(self, agent_id: str = "risk-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.risks: Dict[str, Risk] = {}
         self.controls: Dict[str, Control] = {}
@@ -250,7 +252,7 @@ class RiskAgent:
 
         risk = self.risks[risk_id]
         risk.status = RiskStatus.ASSESSED
-        risk.assessed_at = datetime.utcnow()
+        risk.assessed_at = utcnow()
 
         if controls:
             risk.controls = controls
@@ -297,7 +299,7 @@ class RiskAgent:
         self.risks[risk_id].status = status
 
         if status == RiskStatus.CLOSED:
-            self.risks[risk_id].closed_at = datetime.utcnow()
+            self.risks[risk_id].closed_at = utcnow()
 
         return True
 
@@ -388,7 +390,7 @@ class RiskAgent:
         control = self.controls[control_id]
         control.effectiveness = effectiveness
         control.test_results = test_results
-        control.last_tested = datetime.utcnow()
+        control.last_tested = utcnow()
 
         return True
 
@@ -456,7 +458,7 @@ class RiskAgent:
 
         kri = self.kris[kri_id]
         kri.current_value = current_value
-        kri.last_measured = datetime.utcnow()
+        kri.last_measured = utcnow()
 
         # Determine status based on thresholds and direction
         if kri.direction == "lower_is_better":
@@ -536,7 +538,7 @@ class RiskAgent:
 
         assessment = self.assessments[assessment_id]
         assessment.status = "completed"
-        assessment.end_date = datetime.utcnow()
+        assessment.end_date = utcnow()
         assessment.risks_identified = risks_identified
         assessment.findings = findings or []
         assessment.recommendations = recommendations or []
@@ -665,7 +667,7 @@ class RiskAgent:
         kris_at_risk = [k for k in kris if k.status in ['yellow', 'red']]
 
         # Events this month
-        this_month = datetime.utcnow() - timedelta(days=30)
+        this_month = utcnow() - timedelta(days=30)
         recent_events = [e for e in events if e.occurred_at >= this_month]
 
         # Financial impact
@@ -744,11 +746,6 @@ class RiskAgent:
         else:
             return RiskLevel.VERY_HIGH
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
@@ -843,7 +840,7 @@ if __name__ == "__main__":
         risk1.risk_id,
         strategy=TreatmentStrategy.REDUCE,
         treatment_plan="Implement additional monitoring and DLP",
-        target_resolution=datetime.utcnow() + timedelta(days=90),
+        target_resolution=utcnow() + timedelta(days=90),
     )
 
     # Create KRI
@@ -868,7 +865,7 @@ if __name__ == "__main__":
         name="Q1 Cybersecurity Assessment",
         scope="All IT systems and applications",
         assessor="risk-team@example.com",
-        start_date=datetime.utcnow(),
+        start_date=utcnow(),
     )
 
     agent.complete_assessment(

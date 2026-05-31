@@ -9,6 +9,9 @@ from typing import Dict, Any, Optional, List, Callable
 from collections import OrderedDict
 import logging
 import asyncio
+import secrets
+from agentic_ai.infrastructure.utils import utcnow
+
 
 logger = logging.getLogger(__name__)
 
@@ -191,9 +194,32 @@ class BaseAgent:
         self._tools["list_tools"] = lambda: {"tools": list(self._tools.keys())}
         self._tools["send_message"] = self.send_message
 
+    def _generate_id(self, prefix: str) -> str:
+        """Generate a unique ID with the given prefix."""
+        timestamp = utcnow().strftime('%Y%m%d%H%M%S')
+        random_suffix = secrets.token_hex(4)
+        return f"{prefix}-{timestamp}-{random_suffix}"
+
+    @staticmethod
+    def generate_id(prefix: str) -> str:
+        """Generate a unique ID with the given prefix (static version)."""
+        timestamp = utcnow().strftime('%Y%m%d%H%M%S')
+        random_suffix = secrets.token_hex(4)
+        return f"{prefix}-{timestamp}-{random_suffix}"
+
     @property
     def tools(self):
-        return list(self._tools.keys())
+        return self._tools
+
+    @tools.setter
+    def tools(self, value):
+        """Allow setting tools (e.g., from subclasses like KaliAgent)."""
+        if isinstance(value, dict):
+            self._tools = value
+        elif isinstance(value, list):
+            self._tools = {t.name if hasattr(t, 'name') else str(t): t for t in value}
+        else:
+            self._tools = value
 
     @property
     def memory(self):

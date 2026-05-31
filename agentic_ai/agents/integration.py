@@ -6,6 +6,7 @@ Provides API connection management, webhook handling, data synchronization,
 integration monitoring, and cross-platform automation.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
 import secrets
 import hashlib
@@ -14,6 +15,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional, Callable
 import json
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -63,7 +65,7 @@ class APIConnection:
     rate_limit_remaining: int = 1000
     rate_limit_reset: Optional[datetime] = None
     last_used: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
     config: Dict[str, Any] = field(default_factory=dict)
 
 
@@ -80,7 +82,7 @@ class Webhook:
     last_triggered: Optional[datetime] = None
     success_count: int = 0
     failure_count: int = 0
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -97,7 +99,7 @@ class SyncJob:
     next_run: Optional[datetime] = None
     records_synced: int = 0
     errors: List[str] = field(default_factory=list)
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -110,16 +112,17 @@ class IntegrationLog:
     status: str
     details: Dict[str, Any] = field(default_factory=dict)
     error: Optional[str] = None
-    timestamp: datetime = field(default_factory=datetime.utcnow)
+    timestamp: datetime = field(default_factory=utcnow)
 
 
-class IntegrationAgent:
+class IntegrationAgent(BaseAgent):
     """
     Integration Agent for API connections, webhooks,
     data synchronization, and cross-platform automation.
     """
 
     def __init__(self, agent_id: str = "integration-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.connections: Dict[str, APIConnection] = {}
         self.webhooks: Dict[str, Webhook] = {}
@@ -235,7 +238,7 @@ class IntegrationAgent:
             'rate_limit': conn.rate_limit,
         }
 
-        conn.last_used = datetime.utcnow()
+        conn.last_used = utcnow()
         self._log('connection', connection_id, 'test', 'success', result)
 
         return result
@@ -325,7 +328,7 @@ class IntegrationAgent:
             return {'success': False, 'error': f'Event {event} not subscribed'}
 
         # Simulate webhook delivery
-        webhook.last_triggered = datetime.utcnow()
+        webhook.last_triggered = utcnow()
         webhook.success_count += 1
 
         result = {
@@ -392,7 +395,7 @@ class IntegrationAgent:
 
         job = self.sync_jobs[job_id]
         job.status = 'running'
-        job.last_run = datetime.utcnow()
+        job.last_run = utcnow()
 
         # Simulate sync
         record_count = len(records) if records else 100
@@ -516,11 +519,6 @@ class IntegrationAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def _generate_secret(self) -> str:
         """Generate a webhook secret."""

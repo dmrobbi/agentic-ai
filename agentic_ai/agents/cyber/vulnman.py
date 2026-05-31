@@ -6,12 +6,13 @@ Provides vulnerability scanning, CVE tracking, patch management,
 risk scoring, and remediation workflow automation.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -64,7 +65,7 @@ class Asset:
     tags: List[str] = field(default_factory=list)
     vulnerabilities_count: int = 0
     last_scan: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -79,7 +80,7 @@ class Vulnerability:
     asset_id: str
     status: VulnerabilityStatus
     scanner: str  # nessus, qualys, openvas, etc.
-    discovered_at: datetime = field(default_factory=datetime.utcnow)
+    discovered_at: datetime = field(default_factory=utcnow)
     remediation: str = ""
     patch_available: bool = False
     patch_id: Optional[str] = None
@@ -129,13 +130,14 @@ class Patch:
     failed_count: int = 0
 
 
-class VulnerabilityManagementAgent:
+class VulnerabilityManagementAgent(BaseAgent):
     """
     Vulnerability Management Agent for scanning,
     tracking, and remediating security vulnerabilities.
     """
 
     def __init__(self, agent_id: str = "vulnman-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.assets: Dict[str, Asset] = {}
         self.vulnerabilities: Dict[str, Vulnerability] = {}
@@ -212,7 +214,7 @@ class VulnerabilityManagementAgent:
             return False
 
         self.assets[asset_id].vulnerabilities_count = count
-        self.assets[asset_id].last_scan = datetime.utcnow()
+        self.assets[asset_id].last_scan = utcnow()
         return True
 
     # ============================================
@@ -281,7 +283,7 @@ class VulnerabilityManagementAgent:
             vuln.due_date = due_date
 
         if status == VulnerabilityStatus.PATCHED:
-            vuln.remediated_at = datetime.utcnow()
+            vuln.remediated_at = utcnow()
 
         return True
 
@@ -311,7 +313,7 @@ class VulnerabilityManagementAgent:
 
     def get_overdue_vulnerabilities(self) -> List[Vulnerability]:
         """Get vulnerabilities past due date."""
-        now = datetime.utcnow()
+        now = utcnow()
         return [
             v for v in self.vulnerabilities.values()
             if v.due_date and v.due_date < now and v.status not in [
@@ -343,7 +345,7 @@ class VulnerabilityManagementAgent:
             target_type=target_type,
             targets=targets,
             scheduled_at=scheduled_at,
-            started_at=datetime.utcnow() if not scheduled_at else None,
+            started_at=utcnow() if not scheduled_at else None,
             created_by=created_by,
         )
 
@@ -365,7 +367,7 @@ class VulnerabilityManagementAgent:
 
         scan = self.scans[scan_id]
         scan.status = "completed"
-        scan.completed_at = datetime.utcnow()
+        scan.completed_at = utcnow()
         scan.vulnerabilities_found = vulnerabilities_found
         scan.critical_count = critical
         scan.high_count = high
@@ -404,7 +406,7 @@ class VulnerabilityManagementAgent:
             product=product,
             kb_article=kb_article,
             severity=severity,
-            released_date=datetime.utcnow(),
+            released_date=utcnow(),
             affected_assets=affected_assets or [],
         )
 
@@ -577,11 +579,6 @@ class VulnerabilityManagementAgent:
         else:
             return Severity.CRITICAL
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

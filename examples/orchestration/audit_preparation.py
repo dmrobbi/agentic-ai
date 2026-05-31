@@ -16,6 +16,7 @@ This example shows SOC2 Type II audit preparation workflow.
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
+from agentic_ai.infrastructure.utils import utcnow
 
 # Add parent directory to path for imports
 sys.path.insert(0, str(Path(__file__).parent.parent.parent))
@@ -45,8 +46,8 @@ def run_audit_preparation():
     legal = LegalAgent()
     
     # Define audit period
-    audit_period_start = datetime.utcnow() - timedelta(days=365)
-    audit_period_end = datetime.utcnow()
+    audit_period_start = utcnow() - timedelta(days=365)
+    audit_period_end = utcnow()
     
     # ========================================================================
     # PHASE 1: AUDIT PLANNING
@@ -382,22 +383,22 @@ def run_audit_preparation():
         privacy.create_data_request(
             subject_id="customer-001",
             right_type=DataSubjectRight.ACCESS,
-            submitted_at=datetime.utcnow() - timedelta(days=30),
-            deadline=datetime.utcnow() - timedelta(days=5),
+            submitted_at=utcnow() - timedelta(days=30),
+            deadline=utcnow() - timedelta(days=5),
             status="completed",
         ),
         privacy.create_data_request(
             subject_id="customer-042",
             right_type=DataSubjectRight.ERASURE,
-            submitted_at=datetime.utcnow() - timedelta(days=20),
-            deadline=datetime.utcnow() + timedelta(days=10),
+            submitted_at=utcnow() - timedelta(days=20),
+            deadline=utcnow() + timedelta(days=10),
             status="in_progress",
         ),
         privacy.create_data_request(
             subject_id="customer-108",
             right_type=DataSubjectRight.PORTABILITY,
-            submitted_at=datetime.utcnow() - timedelta(days=15),
-            deadline=datetime.utcnow() + timedelta(days=15),
+            submitted_at=utcnow() - timedelta(days=15),
+            deadline=utcnow() + timedelta(days=15),
             status="in_progress",
         ),
     ]
@@ -482,8 +483,8 @@ def run_audit_preparation():
             description="Targeted phishing campaign against employees",
             severity="medium",
             incident_type="phishing",
-            detected_at=datetime.utcnow() - timedelta(days=180),
-            resolved_at=datetime.utcnow() - timedelta(days=179),
+            detected_at=utcnow() - timedelta(days=180),
+            resolved_at=utcnow() - timedelta(days=179),
             root_cause="Employee clicked malicious link",
             remediation="MFA enforced, security awareness training",
         ),
@@ -492,8 +493,8 @@ def run_audit_preparation():
             description="Outdated library in non-production environment",
             severity="low",
             incident_type="vulnerability",
-            detected_at=datetime.utcnow() - timedelta(days=90),
-            resolved_at=datetime.utcnow() - timedelta(days=85),
+            detected_at=utcnow() - timedelta(days=90),
+            resolved_at=utcnow() - timedelta(days=85),
             root_cause="Dependency not updated",
             remediation="Library updated, automated scanning implemented",
         ),
@@ -510,7 +511,7 @@ def run_audit_preparation():
         finding_type="pentest_result",
         severity="low",
         status="resolved",
-        pentest_date=datetime.utcnow() - timedelta(days=180),
+        pentest_date=utcnow() - timedelta(days=180),
         pentest_firm="SecurityExperts Inc",
         findings_critical=0,
         findings_high=0,
@@ -575,8 +576,8 @@ def run_audit_preparation():
         compliance.add_certificate(
             certificate_type="soc2_type2",
             issuer="Example Corp",
-            issued_date=datetime.utcnow() - timedelta(days=455),
-            expiry_date=datetime.utcnow() - timedelta(days=90),
+            issued_date=utcnow() - timedelta(days=455),
+            expiry_date=utcnow() - timedelta(days=90),
             status="expired",  # Previous year's cert
             scope="Security, Availability, Confidentiality",
             auditor="Previous Audit Firm LLP",
@@ -584,8 +585,8 @@ def run_audit_preparation():
         compliance.add_certificate(
             certificate_type="iso27001",
             issuer="Example Corp",
-            issued_date=datetime.utcnow() - timedelta(days=365),
-            expiry_date=datetime.utcnow() + timedelta(days=730),
+            issued_date=utcnow() - timedelta(days=365),
+            expiry_date=utcnow() + timedelta(days=730),
             status="valid",
             scope="Information Security Management",
             auditor="ISO Certification Body",
@@ -602,8 +603,8 @@ def run_audit_preparation():
             category="security",
             version="3.2",
             status="approved",
-            effective_date=datetime.utcnow() - timedelta(days=365),
-            review_date=datetime.utcnow() + timedelta(days=365),
+            effective_date=utcnow() - timedelta(days=365),
+            review_date=utcnow() + timedelta(days=365),
             owner="ciso@example.com",
         ),
         compliance.create_policy(
@@ -611,8 +612,8 @@ def run_audit_preparation():
             category="data_protection",
             version="2.1",
             status="approved",
-            effective_date=datetime.utcnow() - timedelta(days=300),
-            review_date=datetime.utcnow() + timedelta(days=65),
+            effective_date=utcnow() - timedelta(days=300),
+            review_date=utcnow() + timedelta(days=65),
             owner="data-governance@example.com",
         ),
         compliance.create_policy(
@@ -620,8 +621,8 @@ def run_audit_preparation():
             category="security",
             version="4.0",
             status="approved",
-            effective_date=datetime.utcnow() - timedelta(days=180),
-            review_date=datetime.utcnow() + timedelta(days=185),
+            effective_date=utcnow() - timedelta(days=180),
+            review_date=utcnow() + timedelta(days=185),
             owner="security-team@example.com",
         ),
     ]
@@ -744,7 +745,7 @@ def run_audit_preparation():
                 management_response="Will address within 30 days",
                 action_plan="Update procedure and retrain team",
                 responsible_party=control.control_owner,
-                due_date=datetime.utcnow() + timedelta(days=30),
+                due_date=utcnow() + timedelta(days=30),
             )
     
     findings = audit.get_findings(audit_id=soc2_audit.audit_id)

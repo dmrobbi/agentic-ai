@@ -15,6 +15,7 @@ import time
 from datetime import datetime
 from typing import Dict, List
 from dataclasses import dataclass
+from agentic_ai.infrastructure.utils import utcnow
 
 
 @dataclass
@@ -45,10 +46,10 @@ class PerformanceBenchmark:
         rtc.connect_user("benchmark-user")
         
         latencies = []
-        start = datetime.utcnow()
+        start = utcnow()
         
         for i in range(count):
-            op_start = datetime.utcnow()
+            op_start = utcnow()
             
             op = Operation(
                 operation_type=OperationType.INSERT,
@@ -59,10 +60,10 @@ class PerformanceBenchmark:
             )
             rtc.submit_operation(op)
             
-            op_end = datetime.utcnow()
+            op_end = utcnow()
             latencies.append((op_end - op_start).total_seconds() * 1000)
         
-        end = datetime.utcnow()
+        end = utcnow()
         duration = (end - start).total_seconds()
         
         latencies.sort()
@@ -90,11 +91,11 @@ class PerformanceBenchmark:
         workspace.add_participant("benchmark-user", is_owner=True)
         
         latencies = []
-        start = datetime.utcnow()
+        start = utcnow()
         
         # Create resources
         for i in range(count):
-            op_start = datetime.utcnow()
+            op_start = utcnow()
             
             workspace.create_resource(
                 name=f"Resource-{i}",
@@ -103,10 +104,10 @@ class PerformanceBenchmark:
                 creator_id="benchmark-user",
             )
             
-            op_end = datetime.utcnow()
+            op_end = utcnow()
             latencies.append((op_end - op_start).total_seconds() * 1000)
         
-        end = datetime.utcnow()
+        end = utcnow()
         duration = (end - start).total_seconds()
         
         latencies.sort()
@@ -134,18 +135,18 @@ class PerformanceBenchmark:
         session.start()
         
         latencies = []
-        start = datetime.utcnow()
+        start = utcnow()
         
         # Add participants
         for i in range(max_participants):
-            op_start = datetime.utcnow()
+            op_start = utcnow()
             
             session.join(user_id=f"user-{i}", name=f"User {i}")
             
-            op_end = datetime.utcnow()
+            op_end = utcnow()
             latencies.append((op_end - op_start).total_seconds() * 1000)
         
-        end = datetime.utcnow()
+        end = utcnow()
         duration = (end - start).total_seconds()
         
         latencies.sort()
@@ -172,18 +173,18 @@ class PerformanceBenchmark:
         hub = CollaborationHub()
         
         latencies = []
-        start = datetime.utcnow()
+        start = utcnow()
         
         # Mark users active
         for i in range(count):
-            op_start = datetime.utcnow()
+            op_start = utcnow()
             
             hub.presence.mark_active(f"user-{i}", session_id="bench-session")
             
-            op_end = datetime.utcnow()
+            op_end = utcnow()
             latencies.append((op_end - op_start).total_seconds() * 1000)
         
-        end = datetime.utcnow()
+        end = utcnow()
         duration = (end - start).total_seconds()
         
         latencies.sort()
@@ -229,7 +230,7 @@ async def main():
     print("=" * 70)
     print("Agentic AI Performance Benchmark Suite")
     print("=" * 70)
-    print(f"Started: {datetime.utcnow().isoformat()}")
+    print(f"Started: {utcnow().isoformat()}")
     
     benchmark = PerformanceBenchmark()
     
@@ -242,7 +243,7 @@ async def main():
     # Print summary
     benchmark.print_summary()
     
-    print(f"\nCompleted: {datetime.utcnow().isoformat()}")
+    print(f"\nCompleted: {utcnow().isoformat()}")
     print("\n✓ All benchmarks complete!")
 
 

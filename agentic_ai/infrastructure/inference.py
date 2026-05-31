@@ -1,4 +1,5 @@
 """Inference server for agent communication and model serving."""
+from agentic_ai.infrastructure.utils import utcnow
 
 from dataclasses import dataclass, field
 from datetime import datetime
@@ -69,7 +70,7 @@ class InferenceServer:
         self.status = InferenceStatus.LOADING
         self._models[model] = {
             "name": model,
-            "loaded_at": datetime.utcnow().isoformat(),
+            "loaded_at": utcnow().isoformat(),
             "config": config or {},
             "status": "ready",
         }
@@ -95,7 +96,7 @@ class InferenceServer:
         self._request_history.append({
             "prompt": prompt[:100],
             "model": model,
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": utcnow().isoformat(),
         })
         return {
             "status": "completed",

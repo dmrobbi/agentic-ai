@@ -6,12 +6,13 @@ Provides GDPR, CCPA, and privacy regulation compliance,
 data subject rights management, consent tracking, and privacy impact assessments.
 """
 
+from agentic_ai.agents.base import BaseAgent
 import logging
-import secrets
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
+from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -78,7 +79,7 @@ class DataSubject:
     email: str
     jurisdiction: str  # EU, California, Brazil, etc.
     applicable_regulations: List[PrivacyRegulation]
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
     verified: bool = False
     data_categories: List[str] = field(default_factory=list)
     consent_records: List[str] = field(default_factory=list)
@@ -100,7 +101,7 @@ class DataProcessingActivity:
     cross_border_transfer: bool = False
     transfer_mechanisms: List[str] = field(default_factory=list)  # SCCs, adequacy, etc.
     risk_level: str = "low"  # low, medium, high
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -150,7 +151,7 @@ class PrivacyImpactAssessment:
     mitigations: List[str] = field(default_factory=list)
     dpo_review: bool = False
     approved_at: Optional[datetime] = None
-    created_at: datetime = field(default_factory=datetime.utcnow)
+    created_at: datetime = field(default_factory=utcnow)
 
 
 @dataclass
@@ -172,7 +173,7 @@ class DataBreach:
     remediation: List[str] = field(default_factory=list)
 
 
-class PrivacyAgent:
+class PrivacyAgent(BaseAgent):
     """
     Privacy Agent for GDPR, CCPA, and privacy regulation compliance,
     data subject rights, consent management, and privacy assessments.
@@ -184,6 +185,7 @@ class PrivacyAgent:
     PrivacyRegulation = PrivacyRegulation
 
     def __init__(self, agent_id: str = "privacy-agent"):
+        super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.data_subjects: Dict[str, DataSubject] = {}
         self.processing_activities: Dict[str, DataProcessingActivity] = {}
@@ -333,8 +335,8 @@ class PrivacyAgent:
             subject_id=subject_id,
             right_type=right_type,
             status=RequestStatus.SUBMITTED,
-            submitted_at=datetime.utcnow(),
-            deadline=datetime.utcnow() + timedelta(days=deadline_days),
+            submitted_at=utcnow(),
+            deadline=utcnow() + timedelta(days=deadline_days),
             assigned_to=assigned_to,
         )
 
@@ -351,7 +353,7 @@ class PrivacyAgent:
 
         request = self.requests[request_id]
         request.status = RequestStatus.VERIFIED
-        request.verified_at = datetime.utcnow()
+        request.verified_at = utcnow()
 
         return True
 
@@ -376,7 +378,7 @@ class PrivacyAgent:
             request.denial_reason = denial_reason
 
         if status == RequestStatus.COMPLETED:
-            request.completed_at = datetime.utcnow()
+            request.completed_at = utcnow()
 
         return True
 
@@ -400,7 +402,7 @@ class PrivacyAgent:
             requests = [r for r in requests if r.right_type == right_type]
 
         if overdue_only:
-            now = datetime.utcnow()
+            now = utcnow()
             requests = [r for r in requests if r.deadline < now and r.status != RequestStatus.COMPLETED]
 
         return requests
@@ -421,7 +423,7 @@ class PrivacyAgent:
             response_data={
                 'export_format': 'json',
                 'data_categories': list(data.keys()),
-                'export_timestamp': datetime.utcnow().isoformat(),
+                'export_timestamp': utcnow().isoformat(),
                 'data': data,
             },
         )
@@ -441,7 +443,7 @@ class PrivacyAgent:
             RequestStatus.COMPLETED,
             response_data={
                 'systems_cleared': systems_cleared,
-                'deletion_timestamp': datetime.utcnow().isoformat(),
+                'deletion_timestamp': utcnow().isoformat(),
             },
         )
 
@@ -464,7 +466,7 @@ class PrivacyAgent:
             subject_id=subject_id,
             purpose=purpose,
             status=ConsentStatus.GIVEN,
-            given_at=datetime.utcnow(),
+            given_at=utcnow(),
             method=method,
             ip_address=ip_address,
             user_agent=user_agent,
@@ -472,7 +474,7 @@ class PrivacyAgent:
         )
 
         if expires_in_days:
-            consent.expires_at = datetime.utcnow() + timedelta(days=expires_in_days)
+            consent.expires_at = utcnow() + timedelta(days=expires_in_days)
 
         self.consent_records[consent.consent_id] = consent
 
@@ -488,7 +490,7 @@ class PrivacyAgent:
 
         consent = self.consent_records[consent_id]
         consent.status = ConsentStatus.WITHDRAWN
-        consent.withdrawn_at = datetime.utcnow()
+        consent.withdrawn_at = utcnow()
 
         return True
 
@@ -520,7 +522,7 @@ class PrivacyAgent:
             status=ConsentStatus.GIVEN,
         )
 
-        now = datetime.utcnow()
+        now = utcnow()
 
         for consent in consents:
             # Check if not expired
@@ -626,7 +628,7 @@ class PrivacyAgent:
             'impact': impact,
             'risk_score': overall_score,
             'mitigations': mitigations or [],
-            'identified_at': datetime.utcnow().isoformat(),
+            'identified_at': utcnow().isoformat(),
         })
 
         # Update overall risk level
@@ -648,7 +650,7 @@ class PrivacyAgent:
         pia = self.pias[pia_id]
         pia.status = "approved"
         pia.dpo_review = dpo_reviewed
-        pia.approved_at = datetime.utcnow()
+        pia.approved_at = utcnow()
 
         return True
 
@@ -680,7 +682,7 @@ class PrivacyAgent:
             description=description,
             severity=severity,
             status="detected",
-            detected_at=datetime.utcnow(),
+            detected_at=utcnow(),
             affected_subjects=affected_subjects,
             data_categories=data_categories,
         )
@@ -701,7 +703,7 @@ class PrivacyAgent:
 
         breach = self.breaches[breach_id]
         breach.status = "contained"
-        breach.contained_at = datetime.utcnow()
+        breach.contained_at = utcnow()
 
         return True
 
@@ -711,7 +713,7 @@ class PrivacyAgent:
             return False
 
         breach = self.breaches[breach_id]
-        breach.notified_authority = datetime.utcnow()
+        breach.notified_authority = utcnow()
 
         if breach.status == "contained":
             breach.status = "notified"
@@ -768,7 +770,7 @@ class PrivacyAgent:
         for status in RequestStatus:
             by_status[status.value] = len([r for r in requests if r.status == status])
 
-        overdue = len([r for r in requests if r.deadline < datetime.utcnow() and r.status != RequestStatus.COMPLETED])
+        overdue = len([r for r in requests if r.deadline < utcnow() and r.status != RequestStatus.COMPLETED])
 
         # Consent metrics
         active_consents = len([c for c in consents if c.status == ConsentStatus.GIVEN])
@@ -777,7 +779,7 @@ class PrivacyAgent:
         # Breach metrics
         breaches_this_year = len([
             b for b in breaches
-            if b.detected_at.year == datetime.utcnow().year
+            if b.detected_at.year == utcnow().year
         ])
 
         return {
@@ -837,7 +839,7 @@ class PrivacyAgent:
             )
         ]
 
-        overdue = len([r for r in requests if r.deadline < datetime.utcnow() and r.status != RequestStatus.COMPLETED])
+        overdue = len([r for r in requests if r.deadline < utcnow() and r.status != RequestStatus.COMPLETED])
 
         return {
             'regulation': regulation.value,
@@ -856,11 +858,6 @@ class PrivacyAgent:
     # Utilities
     # ============================================
 
-    def _generate_id(self, prefix: str) -> str:
-        """Generate a unique ID."""
-        timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
-        random_suffix = secrets.token_hex(4)
-        return f"{prefix}-{timestamp}-{random_suffix}"
 
     def register_processing_activity(self, name: str, purpose=None, data_categories=None, legal_basis: str = "legitimate_interest", **kwargs) -> Any:
         """Alias for add_processing_activity with more flexible interface."""

@@ -17,6 +17,7 @@ from agentic_ai.agents.vendor_risk import (
     ControlMaturity,
     ResidualRisk,
 )
+from agentic_ai.infrastructure.utils import utcnow
 
 
 class TestVendorRiskAgent:
@@ -35,8 +36,8 @@ class TestVendorRiskAgent:
             tier=VendorTier.TIER_1,
             category="cloud",
             relationship_type="vendor",
-            contract_start=datetime.utcnow(),
-            contract_end=datetime.utcnow() + timedelta(days=365),
+            contract_start=utcnow(),
+            contract_end=utcnow() + timedelta(days=365),
             contract_value=500000.0,
             primary_contact="contact@example.com",
             security_contact="security@example.com",
@@ -49,10 +50,10 @@ class TestVendorRiskAgent:
     
     def test_vendor_inherent_risk_by_tier(self, vr_agent):
         """Test inherent risk calculation by tier."""
-        v1 = vr_agent.add_vendor("V1", "Legal1", VendorTier.TIER_1, "cat", "vendor", datetime.utcnow())
-        v2 = vr_agent.add_vendor("V2", "Legal2", VendorTier.TIER_2, "cat", "vendor", datetime.utcnow())
-        v3 = vr_agent.add_vendor("V3", "Legal3", VendorTier.TIER_3, "cat", "vendor", datetime.utcnow())
-        v4 = vr_agent.add_vendor("V4", "Legal4", VendorTier.TIER_4, "cat", "vendor", datetime.utcnow())
+        v1 = vr_agent.add_vendor("V1", "Legal1", VendorTier.TIER_1, "cat", "vendor", utcnow())
+        v2 = vr_agent.add_vendor("V2", "Legal2", VendorTier.TIER_2, "cat", "vendor", utcnow())
+        v3 = vr_agent.add_vendor("V3", "Legal3", VendorTier.TIER_3, "cat", "vendor", utcnow())
+        v4 = vr_agent.add_vendor("V4", "Legal4", VendorTier.TIER_4, "cat", "vendor", utcnow())
         
         assert v1.inherent_risk == 0.9
         assert v2.inherent_risk == 0.7
@@ -61,9 +62,9 @@ class TestVendorRiskAgent:
     
     def test_get_vendors_by_tier(self, vr_agent):
         """Test filtering vendors by tier."""
-        vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
-        vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", datetime.utcnow())
-        vr_agent.add_vendor("V3", "L3", VendorTier.TIER_1, "hardware", "vendor", datetime.utcnow())
+        vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
+        vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", utcnow())
+        vr_agent.add_vendor("V3", "L3", VendorTier.TIER_1, "hardware", "vendor", utcnow())
         
         tier1 = vr_agent.get_vendors(tier=VendorTier.TIER_1)
         tier2 = vr_agent.get_vendors(tier=VendorTier.TIER_2)
@@ -73,7 +74,7 @@ class TestVendorRiskAgent:
     
     def test_update_vendor_risk(self, vr_agent):
         """Test updating vendor residual risk."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_2, "cat", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_2, "cat", "vendor", utcnow())
         
         result = vr_agent.update_vendor_risk(vendor.vendor_id, 0.4)
         
@@ -82,7 +83,7 @@ class TestVendorRiskAgent:
     
     def test_create_questionnaire(self, vr_agent):
         """Test creating questionnaire."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         questionnaire = vr_agent.create_questionnaire(
             vendor.vendor_id,
@@ -97,7 +98,7 @@ class TestVendorRiskAgent:
     
     def test_send_questionnaire(self, vr_agent):
         """Test sending questionnaire."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         questionnaire = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_LITE)
         
         result = vr_agent.send_questionnaire(questionnaire.questionnaire_id)
@@ -108,7 +109,7 @@ class TestVendorRiskAgent:
     
     def test_respond_to_question(self, vr_agent):
         """Test responding to questionnaire question."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         questionnaire = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_LITE)
         
         # Get a question
@@ -129,7 +130,7 @@ class TestVendorRiskAgent:
     
     def test_respond_to_question_scoring(self, vr_agent):
         """Test question response scoring."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         questionnaire = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_LITE)
         
         questions = [q for q in vr_agent.questions.values() if q.questionnaire_id == questionnaire.questionnaire_id]
@@ -148,7 +149,7 @@ class TestVendorRiskAgent:
     
     def test_get_questionnaires_by_status(self, vr_agent):
         """Test filtering questionnaires by status."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         q1 = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_LITE)
         q2 = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_CORE)
@@ -163,7 +164,7 @@ class TestVendorRiskAgent:
     
     def test_create_assessment(self, vr_agent):
         """Test creating vendor assessment."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         questionnaire = vr_agent.create_questionnaire(vendor.vendor_id, QuestionnaireType.SIG_CORE)
         
         assessment = vr_agent.create_assessment(
@@ -179,7 +180,7 @@ class TestVendorRiskAgent:
     
     def test_start_assessment(self, vr_agent):
         """Test starting assessment."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "assessor")
         
         result = vr_agent.start_assessment(assessment.assessment_id)
@@ -189,7 +190,7 @@ class TestVendorRiskAgent:
     
     def test_complete_assessment(self, vr_agent):
         """Test completing assessment."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "assessor")
         vr_agent.start_assessment(assessment.assessment_id)
         
@@ -224,7 +225,7 @@ class TestVendorRiskAgent:
     
     def test_assessment_risk_levels(self, vr_agent):
         """Test residual risk level determination."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         # Extreme (>= 0.8)
         a1 = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
@@ -248,7 +249,7 @@ class TestVendorRiskAgent:
     
     def test_get_assessments_by_type(self, vr_agent):
         """Test filtering assessments by type."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         vr_agent.create_assessment(vendor.vendor_id, AssessmentType.INITIAL, "a")
         vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
@@ -262,7 +263,7 @@ class TestVendorRiskAgent:
     
     def test_create_finding(self, vr_agent):
         """Test creating assessment finding."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
         
         finding = vr_agent.create_finding(
@@ -283,14 +284,14 @@ class TestVendorRiskAgent:
     
     def test_update_finding(self, vr_agent):
         """Test updating finding details."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
         finding = vr_agent.create_finding(
             assessment.assessment_id, RiskDomain.INFO_SECURITY if hasattr(RiskDomain, 'INFO_SECURITY') else RiskDomain.INFORMATION_SECURITY,
             "Title", "Desc", "high", 0.7, 0.4, 0.5,
         )
         
-        due_date = datetime.utcnow() + timedelta(days=90)
+        due_date = utcnow() + timedelta(days=90)
         
         result = vr_agent.update_finding(
             finding.finding_id,
@@ -306,7 +307,7 @@ class TestVendorRiskAgent:
     
     def test_update_finding_status(self, vr_agent):
         """Test updating finding status."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
         finding = vr_agent.create_finding(
             assessment.assessment_id, RiskDomain.INFORMATION_SECURITY,
@@ -324,7 +325,7 @@ class TestVendorRiskAgent:
     
     def test_get_findings_by_severity(self, vr_agent):
         """Test filtering findings by severity."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
         
         vr_agent.create_finding(assessment.assessment_id, RiskDomain.INFORMATION_SECURITY, "T", "D", "critical", 0.9, 0.3, 0.8)
@@ -339,7 +340,7 @@ class TestVendorRiskAgent:
     
     def test_enable_monitoring(self, vr_agent):
         """Test enabling continuous monitoring."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         monitor = vr_agent.enable_monitoring(
             vendor.vendor_id,
@@ -353,7 +354,7 @@ class TestVendorRiskAgent:
     
     def test_record_monitoring_result(self, vr_agent):
         """Test recording monitoring result."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         monitor = vr_agent.enable_monitoring(vendor.vendor_id, ['security_ratings'])
         
         result = vr_agent.record_monitoring_result(
@@ -369,7 +370,7 @@ class TestVendorRiskAgent:
     
     def test_create_alert(self, vr_agent):
         """Test creating vendor alert."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         alert = vr_agent.create_alert(
             vendor.vendor_id,
@@ -386,7 +387,7 @@ class TestVendorRiskAgent:
     
     def test_acknowledge_alert(self, vr_agent):
         """Test acknowledging alert."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         alert = vr_agent.create_alert(vendor.vendor_id, "type", "high", "Title", "Desc", "source")
         
         result = vr_agent.acknowledge_alert(alert.alert_id)
@@ -397,7 +398,7 @@ class TestVendorRiskAgent:
     
     def test_resolve_alert(self, vr_agent):
         """Test resolving alert."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         alert = vr_agent.create_alert(vendor.vendor_id, "type", "high", "Title", "Desc", "source")
         
         result = vr_agent.resolve_alert(alert.alert_id)
@@ -408,7 +409,7 @@ class TestVendorRiskAgent:
     
     def test_get_alerts_by_status(self, vr_agent):
         """Test filtering alerts by status."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         a1 = vr_agent.create_alert(vendor.vendor_id, "type", "high", "T1", "D", "s")
         a2 = vr_agent.create_alert(vendor.vendor_id, "type", "medium", "T2", "D", "s")
@@ -427,7 +428,7 @@ class TestVendorRiskAgent:
     
     def test_get_vendor_risk_report(self, vr_agent):
         """Test vendor risk report generation."""
-        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
+        vendor = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
         
         assessment = vr_agent.create_assessment(vendor.vendor_id, AssessmentType.ANNUAL, "a")
         vr_agent.complete_assessment(assessment.assessment_id, 0.8, 0.6, 0.5)
@@ -444,9 +445,9 @@ class TestVendorRiskAgent:
     
     def test_get_vendor_risk_dashboard(self, vr_agent):
         """Test vendor risk dashboard."""
-        vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
-        vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", datetime.utcnow())
-        vr_agent.add_vendor("V3", "L3", VendorTier.TIER_1, "hardware", "vendor", datetime.utcnow())
+        vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
+        vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", utcnow())
+        vr_agent.add_vendor("V3", "L3", VendorTier.TIER_1, "hardware", "vendor", utcnow())
         
         dashboard = vr_agent.get_vendor_risk_dashboard()
         
@@ -459,14 +460,14 @@ class TestVendorRiskAgent:
     
     def test_get_vendors_due_for_assessment(self, vr_agent):
         """Test getting vendors due for assessment."""
-        v1 = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
-        v2 = vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", datetime.utcnow())
+        v1 = vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
+        v2 = vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", utcnow())
         
         # Set v1's next assessment to 15 days from now
-        v1.next_assessment = datetime.utcnow() + timedelta(days=15)
+        v1.next_assessment = utcnow() + timedelta(days=15)
         
         # Set v2's next assessment to 60 days from now
-        v2.next_assessment = datetime.utcnow() + timedelta(days=60)
+        v2.next_assessment = utcnow() + timedelta(days=60)
         
         due_soon = vr_agent.get_vendors_due_for_assessment(days=30)
         
@@ -475,8 +476,8 @@ class TestVendorRiskAgent:
     
     def test_get_state(self, vr_agent):
         """Test agent state summary."""
-        vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", datetime.utcnow())
-        vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", datetime.utcnow())
+        vr_agent.add_vendor("V1", "L1", VendorTier.TIER_1, "cloud", "vendor", utcnow())
+        vr_agent.add_vendor("V2", "L2", VendorTier.TIER_2, "software", "vendor", utcnow())
         
         state = vr_agent.get_state()
         

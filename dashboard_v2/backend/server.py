@@ -15,6 +15,7 @@ import json
 import random
 from datetime import datetime
 import uvicorn
+from agentic_ai.infrastructure.utils import utcnow
 
 # =============================================================================
 # Application Setup
@@ -105,7 +106,7 @@ AGENTS = {
         requests_per_minute=245,
         avg_latency_ms=45.2,
         success_rate=99.8,
-        last_active=datetime.utcnow().isoformat()
+        last_active=utcnow().isoformat()
     ),
     "vulnman": AgentStatus(
         name="VulnMan Agent",
@@ -115,7 +116,7 @@ AGENTS = {
         requests_per_minute=189,
         avg_latency_ms=67.3,
         success_rate=99.5,
-        last_active=datetime.utcnow().isoformat()
+        last_active=utcnow().isoformat()
     ),
     "redteam": AgentStatus(
         name="RedTeam Agent",
@@ -125,7 +126,7 @@ AGENTS = {
         requests_per_minute=156,
         avg_latency_ms=89.1,
         success_rate=98.9,
-        last_active=datetime.utcnow().isoformat()
+        last_active=utcnow().isoformat()
     ),
     "malware": AgentStatus(
         name="Malware Agent",
@@ -135,7 +136,7 @@ AGENTS = {
         requests_per_minute=78,
         avg_latency_ms=234.5,
         success_rate=99.2,
-        last_active=datetime.utcnow().isoformat()
+        last_active=utcnow().isoformat()
     ),
     "security": AgentStatus(
         name="Security Agent",
@@ -145,7 +146,7 @@ AGENTS = {
         requests_per_minute=312,
         avg_latency_ms=34.7,
         success_rate=99.9,
-        last_active=datetime.utcnow().isoformat()
+        last_active=utcnow().isoformat()
     ),
     "cloudsec": AgentStatus(
         name="CloudSecurity Agent",
@@ -155,7 +156,7 @@ AGENTS = {
         requests_per_minute=198,
         avg_latency_ms=56.8,
         success_rate=99.6,
-        last_active=datetime.utcnow().isoformat()
+        last_active=utcnow().isoformat()
     ),
 }
 
@@ -252,7 +253,7 @@ async def health_check():
     return {
         "status": "healthy",
         "version": "2.0.0",
-        "timestamp": datetime.utcnow().isoformat(),
+        "timestamp": utcnow().isoformat(),
         "agents_loaded": len(AGENTS)
     }
 
@@ -312,7 +313,7 @@ async def get_metrics():
 @app.get("/api/metrics/history/{metric_type}")
 async def get_metrics_history(metric_type: str, points: int = 50):
     """Get historical metrics for graphs"""
-    now = datetime.utcnow()
+    now = utcnow()
     history = []
     
     for i in range(points):
@@ -453,7 +454,7 @@ async def update_agent_metrics():
             agent.requests_per_minute = max(50, agent.requests_per_minute + random.randint(-20, 20))
             agent.avg_latency_ms = max(10, agent.avg_latency_ms + random.uniform(-5, 5))
             agent.success_rate = min(100, max(95, agent.success_rate + random.uniform(-0.1, 0.1)))
-            agent.last_active = datetime.utcnow().isoformat()
+            agent.last_active = utcnow().isoformat()
         
         await asyncio.sleep(10)
 
