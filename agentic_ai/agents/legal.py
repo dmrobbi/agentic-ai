@@ -500,10 +500,37 @@ These Terms are governed by applicable law.
         return {
             'agent_id': self.agent_id,
             'documents_count': len(self.documents),
+            'matters_count': len(self.documents),  # Legal matters are tracked as documents
             'compliance_checks_count': len(self.compliance_checks),
             'expiring_documents': len(self.get_expiring_documents(days_ahead=30)),
             'regulations_tracked': len(self.regulations),
         }
+
+    def create_legal_matter(self, title: str, matter_type: str = "", description: str = "", priority: str = "medium", **kwargs) -> Any:
+        """Create a legal matter (tracked as a legal document)."""
+        from types import SimpleNamespace
+        matter_id = self._generate_id("legal")
+        matter_type_map = {
+            "data_breach": DocumentType.COMPLIANCE_REPORT,
+            "contract_review": DocumentType.CONTRACT,
+            "incident_review": DocumentType.COMPLIANCE_REPORT,
+        }
+        doc_type = matter_type_map.get(matter_type, DocumentType.CONTRACT)
+        document = self.create_document(
+            title=title,
+            document_type=doc_type,
+            parties=[],
+        )
+        # Return a namespace-like object with matter_id
+        return SimpleNamespace(
+            matter_id=matter_id,
+            title=title,
+            matter_type=matter_type,
+            description=description,
+            priority=priority,
+            status=document.status,
+            created_at=document.created_at,
+        )
 
 
 def get_capabilities() -> Dict[str, Any]:

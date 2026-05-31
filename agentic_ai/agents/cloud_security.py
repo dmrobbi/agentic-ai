@@ -22,6 +22,7 @@ class CloudProvider(Enum):
     AWS = "aws"
     AZURE = "azure"
     GCP = "gcp"
+    KUBERNETES = "kubernetes"
     MULTI = "multi_cloud"
 
 
@@ -35,6 +36,8 @@ class ResourceType(Enum):
     VPC = "vpc"
     KMS = "kms"
     EKS = "eks"
+    AZURE_VM = "azure_vm"
+    AZURE_STORAGE = "azure_storage"
     VM = "vm"
     STORAGE_ACCOUNT = "storage_account"
     SQL_DATABASE = "sql_database"
@@ -43,6 +46,9 @@ class ResourceType(Enum):
     GCS = "gcs"
     BIGQUERY = "bigquery"
     GKE = "gke"
+    K8S_POD = "k8s_pod"
+    K8S_SERVICE = "k8s_service"
+    K8S_NAMESPACE = "k8s_namespace"
 
 
 class ComplianceFramework(Enum):
@@ -316,14 +322,21 @@ class CloudSecurityAgent:
         tags: Optional[Dict[str, str]] = None,
     ) -> CloudResource:
         """Add cloud resource for monitoring."""
+        config = configuration or {}
+        # Auto-detect common compliance issues from configuration
+        is_compliant = True
+        if config.get('public_access') or config.get('public_blob_access') or config.get('public_blob'):
+            is_compliant = False
+
         resource = CloudResource(
             resource_id=self._generate_id("res"),
             resource_type=resource_type,
             account_id=account_id,
             region=region,
             name=name,
-            configuration=configuration or {},
+            configuration=config,
             tags=tags or {},
+            compliant=is_compliant,
         )
 
         self.resources[resource.resource_id] = resource

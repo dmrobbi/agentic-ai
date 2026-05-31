@@ -120,13 +120,25 @@ class Policy:
 
 
 @dataclass
+class Certificate:
+    """Compliance certificate."""
+    certificate_id: str
+    certificate_type: str
+    issuer: str
+    issued_date: datetime
+    expiry_date: Optional[datetime] = None
+    status: str = "valid"  # valid, expired, revoked, pending
+    created_at: datetime = field(default_factory=datetime.utcnow)
+
+
+@dataclass
 class Finding:
     """Compliance finding."""
     finding_id: str
     title: str
     description: str
     severity: RiskLevel
-    status: str  # open, in_progress, resolved, accepted
+    status: str = "open"  # open, in_progress, resolved, accepted
     regulation_id: Optional[str] = None
     control_id: Optional[str] = None
     audit_id: Optional[str] = None
@@ -150,6 +162,7 @@ class ComplianceAgent:
         self.audits: Dict[str, Audit] = {}
         self.policies: Dict[str, Policy] = {}
         self.findings: Dict[str, Finding] = {}
+        self.certificates: Dict[str, Certificate] = {}
 
         # Pre-built framework templates
         self.framework_templates = self._init_framework_templates()
@@ -523,6 +536,48 @@ class ComplianceAgent:
         return findings
 
     # ============================================
+    # Certificate Management
+    # ============================================
+
+    def create_assessment(self, name: str = "", assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
+        """Create a compliance assessment."""
+        assessment_id = self._generate_id("assess")
+        from types import SimpleNamespace
+        assessment = SimpleNamespace(
+            assessment_id=assessment_id,
+            name=name,
+            assessment_type=assessment_type,
+            scope=scope,
+            assessor=assessor,
+            status="planned",
+            created_at=datetime.utcnow().isoformat(),
+        )
+        self.audits[assessment_id] = assessment
+        return assessment
+
+    def add_certificate(
+        self,
+        certificate_type: str,
+        issuer: str,
+        issued_date: datetime,
+        expiry_date: Optional[datetime] = None,
+        status: str = "valid",
+    ) -> Certificate:
+        """Add a compliance certificate."""
+        certificate = Certificate(
+            certificate_id=self._generate_id("cert"),
+            certificate_type=certificate_type,
+            issuer=issuer,
+            issued_date=issued_date,
+            expiry_date=expiry_date,
+            status=status,
+        )
+
+        self.certificates[certificate.certificate_id] = certificate
+        logger.info(f"Added certificate: {certificate.certificate_type} from {certificate.issuer}")
+        return certificate
+
+    # ============================================
     # Compliance Reporting
     # ============================================
 
@@ -614,6 +669,24 @@ class ComplianceAgent:
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
 
+    def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
+        """Create a compliance assessment."""
+        from types import SimpleNamespace
+        assessment_id = self._generate_id("assess")
+        assessment = SimpleNamespace(
+            assessment_id=assessment_id,
+            name=name,
+            assessment_type=assessment_type,
+            scope=scope,
+            assessor=assessor,
+            status="planned",
+            created_at=datetime.utcnow().isoformat(),
+        )
+        # Store assessment (we reuse audits dict for storage)
+        self.audits[assessment_id] = assessment
+        logger.info(f"Created compliance assessment: {name}")
+        return assessment
+
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
         return {
@@ -623,6 +696,7 @@ class ComplianceAgent:
             'audits_count': len(self.audits),
             'policies_count': len(self.policies),
             'open_findings': len([f for f in self.findings.values() if f.status != 'resolved']),
+            'certificates_count': len(self.certificates),
         }
 
 

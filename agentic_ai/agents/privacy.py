@@ -178,6 +178,11 @@ class PrivacyAgent:
     data subject rights, consent management, and privacy assessments.
     """
 
+    # Expose enums as class attributes for convenience
+    ProcessingPurpose = ProcessingPurpose
+    DataSubjectRight = DataSubjectRight
+    PrivacyRegulation = PrivacyRegulation
+
     def __init__(self, agent_id: str = "privacy-agent"):
         self.agent_id = agent_id
         self.data_subjects: Dict[str, DataSubject] = {}
@@ -253,14 +258,16 @@ class PrivacyAgent:
 
     def register_data_subject(
         self,
-        name: str,
-        email: str,
-        jurisdiction: str,
+        name: str = "",
+        email: str = "",
+        jurisdiction: str = "US",
         applicable_regulations: Optional[List[PrivacyRegulation]] = None,
+        subject_id: str = None,
     ) -> DataSubject:
         """Register a data subject."""
+        sid = subject_id or self._generate_id("subj")
         subject = DataSubject(
-            subject_id=self._generate_id("subj"),
+            subject_id=sid,
             name=name,
             email=email,
             jurisdiction=jurisdiction,
@@ -854,6 +861,61 @@ class PrivacyAgent:
         timestamp = datetime.utcnow().strftime('%Y%m%d%H%M%S')
         random_suffix = secrets.token_hex(4)
         return f"{prefix}-{timestamp}-{random_suffix}"
+
+    def register_processing_activity(self, name: str, purpose=None, data_categories=None, legal_basis: str = "legitimate_interest", **kwargs) -> Any:
+        """Alias for add_processing_activity with more flexible interface."""
+        purposes = [purpose] if purpose else kwargs.get('purposes', [])
+        if not purposes:
+            from agentic_ai.agents.privacy import ProcessingPurpose as PP
+            purposes = [PP.SERVICE_DELIVERY]
+        categories = data_categories or []
+        return self.add_processing_activity(
+            name=name,
+            description=kwargs.get('description', name),
+            data_categories=categories,
+            purposes=purposes,
+            legal_basis=legal_basis,
+            retention_days=kwargs.get('retention_days', 365),
+            data_recipients=kwargs.get('data_recipients'),
+            cross_border=kwargs.get('cross_border', False),
+            risk_level=kwargs.get('risk_level', 'low'),
+        )
+
+    def create_data_request(self, subject_id: str, right_type=None, submitted_at=None, deadline=None, status: str = "submitted", **kwargs) -> Any:
+        """Create a data subject request with flexible interface."""
+        # Ensure subject exists
+        if subject_id not in self.data_subjects:
+            self.register_data_subject(
+                subject_id=subject_id,
+                email=f"{subject_id}@example.com",
+                name=subject_id,
+            )
+
+        if right_type is None:
+            from agentic_ai.agents.privacy import DataSubjectRight as DSR
+            right_type = DSR.ACCESS
+
+        request = self.create_request(
+            subject_id=subject_id,
+            right_type=right_type,
+        )
+
+        # Override dates/status if provided
+        if submitted_at is not None:
+            request.submitted_at = submitted_at
+        if deadline is not None:
+            request.deadline = deadline
+        if status:
+            from agentic_ai.agents.privacy import RequestStatus as RS
+            status_map = {
+                'submitted': RS.SUBMITTED,
+                'in_progress': RS.IN_PROGRESS,
+                'completed': RS.COMPLETED,
+                'denied': RS.DENIED,
+            }
+            request.status = status_map.get(status, RS.SUBMITTED)
+
+        return request
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

@@ -214,6 +214,11 @@ class ChaosMonkeyAgent:
     and injects failures to build resilient systems.
     """
 
+    # Expose enums as class attributes for convenience
+    AbortCondition = AbortCondition
+    ExperimentType = ExperimentType
+    TargetType = TargetType
+
     def __init__(self, agent_id: str = "chaos-monkey-agent"):
         self.agent_id = agent_id
         self.targets: Dict[str, Target] = {}
@@ -500,9 +505,9 @@ class ChaosMonkeyAgent:
         experiment.completed_at = datetime.utcnow()
         experiment.lessons_learned.append(f"Aborted: {reason}")
 
-        # Abort all running runs
+        # Abort all runs for this experiment
         for run in self.runs.values():
-            if run.experiment_id == experiment_id and run.status == "running":
+            if run.experiment_id == experiment_id and run.status in ("pending", "running"):
                 run.status = "aborted"
                 run.completed_at = datetime.utcnow()
 

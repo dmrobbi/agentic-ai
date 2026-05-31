@@ -28,6 +28,9 @@ class DataClassification(Enum):
 
 class DataType(Enum):
     """Data types."""
+    STRUCTURED = "structured"
+    UNSTRUCTURED = "unstructured"
+    SEMI_STRUCTURED = "semi_structured"
     PII = "pii"  # Personal Identifiable Information
     PHI = "phi"  # Protected Health Information
     PCI = "pci"  # Payment Card Information
@@ -197,12 +200,12 @@ class DataGovernanceAgent:
     def register_asset(
         self,
         name: str,
-        description: str,
-        data_type: DataType,
-        classification: DataClassification,
-        owner: str,
-        location: str,
-        system: str,
+        description: str = "",
+        data_type: DataType = DataType.STRUCTURED,
+        classification: DataClassification = DataClassification.INTERNAL,
+        owner: str = "",
+        location: str = "",
+        system: str = "",
         steward: Optional[str] = None,
         tags: Optional[List[str]] = None,
     ) -> DataAsset:

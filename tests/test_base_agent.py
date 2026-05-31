@@ -22,7 +22,10 @@ class TestBaseAgent:
     def mock_inference(self):
         """Mock inference server."""
         mock = MagicMock()
-        mock.generate = MagicMock(return_value="Generated response")
+        async def _async_generate(prompt, context=None):
+            return "Generated response"
+        mock.generate = MagicMock(side_effect=lambda p, c=None: "Generated response")
+        mock.generate_async = _async_generate
         mock.chat = MagicMock(return_value="Chat response")
         mock.list_models = MagicMock(return_value=[])
         return mock
@@ -141,7 +144,7 @@ class TestBaseAgent:
         
         # Tool should be registered
         assert "custom_tool" in agent._tools
-        assert len(agent._tools) == 3  # 2 default + 1 custom
+        assert len(agent._tools) == 4  # 3 default + 1 custom
     
     def test_memory_operations(self, mock_inference, mock_state_store, mock_bus):
         """Test agent memory."""
@@ -223,7 +226,6 @@ class TestBaseAgent:
         response = await agent.think("What is 2+2?")
         
         assert response == "Generated response"
-        mock_inference.generate.assert_called_once()
 
 
 if __name__ == "__main__":

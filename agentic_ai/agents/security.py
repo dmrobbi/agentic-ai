@@ -301,6 +301,50 @@ class SecurityAgent:
             logger.error(f"Could not save security state: {e}")
 
     # ============================================
+    # Security Assessment
+    # ============================================
+
+    def create_assessment(self, title: str, assessment_type: str = "", scope: str = "", assessor: str = "", target_vendor: str = "", **kwargs) -> Any:
+        """Create a security assessment."""
+        assessment_id = self._generate_id("assess")
+        assessment = {
+            "assessment_id": assessment_id,
+            "title": title,
+            "assessment_type": assessment_type,
+            "scope": scope,
+            "assessor": assessor,
+            "target_vendor": target_vendor,
+            "status": "planned",
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        # Store in state for tracking
+        assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])
+        assessments.append(assessment)
+        self.state_store.set(f"agent:{self.agent_id}:assessments", assessments)
+        # Simple namespace-style object
+        from types import SimpleNamespace
+        return SimpleNamespace(**assessment)
+
+    def add_control(self, assessment_id: str = "", name: str = "", description: str = "", control_type: str = "", category: str = "", status: str = "effective", **kwargs) -> Any:
+        """Add a control to a security assessment."""
+        control_id = self._generate_id("ctrl")
+        control = {
+            "control_id": control_id,
+            "assessment_id": assessment_id,
+            "name": name,
+            "description": description,
+            "control_type": control_type,
+            "category": category,
+            "status": status,
+            "created_at": datetime.utcnow().isoformat(),
+        }
+        controls = self.state_store.get(f"agent:{self.agent_id}:controls", [])
+        controls.append(control)
+        self.state_store.set(f"agent:{self.agent_id}:controls", controls)
+        from types import SimpleNamespace
+        return SimpleNamespace(**control)
+
+    # ============================================
     # Vulnerability Scanning
     # ============================================
 
@@ -890,6 +934,7 @@ class SecurityAgent:
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
+        assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])
         return {
             'agent_id': self.agent_id,
             'findings_count': len(self.findings),
@@ -897,6 +942,7 @@ class SecurityAgent:
             'secrets_tracked': len(self.secret_rotations),
             'policies_count': len(self.policies),
             'access_logs_count': len(self.access_logs),
+            'assessments_count': len(assessments),
             'open_critical_incidents': len([
                 i for i in self.incidents.values()
                 if i.severity == SeverityLevel.CRITICAL and i.status != 'resolved'

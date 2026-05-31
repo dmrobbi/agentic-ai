@@ -76,17 +76,17 @@ class DeveloperAgent(BaseAgent):
             result["summary"] = f"Could not analyze {path}"
         return result
 
-    def review_code(self, code: str = "", language: str = "python", path: str = "") -> Dict[str, Any]:
-        return {"status": "reviewed", "issues": [], "suggestions": ["Code looks good"], "language": language, "path": path, "code": code, "feedback": "Code review completed successfully"}
+    def review_code(self, code: str = "", language: str = "python", path: str = "", pr: str = "", **kwargs) -> Dict[str, Any]:
+        return {"status": "reviewed", "issues": [], "suggestions": ["Code looks good"], "language": language, "path": path, "pr": pr, "code": code, "feedback": "Code review completed successfully"}
 
-    def implement_feature(self, feature: str = "", language: str = "python", description: str = "", files: list = None) -> Dict[str, Any]:
-        return {"status": "implemented", "feature": feature or description, "language": language, "implementation": "Feature implementation generated", "files": files or []}
+    def implement_feature(self, feature: str = "", language: str = "python", description: str = "", files: list = None, specs: str = "", module: str = "") -> Dict[str, Any]:
+        return {"status": "implemented", "feature": feature or description or specs, "language": language, "implementation": "Feature implementation generated", "files": files or [], "module": module}
 
     def run_tests(self, path: str = ".", test_type: str = "unit") -> Dict[str, Any]:
         return {"status": "passed", "tests_run": 0, "failures": 0, "path": path}
 
-    def fix_bug(self, bug_id: str = "", description: str = "", issue_id: str = "") -> Dict[str, Any]:
-        return {"status": "fixed", "bug_id": bug_id or issue_id}
+    def fix_bug(self, bug_id: str = "", description: str = "", issue_id: str = "", context: str = "") -> Dict[str, Any]:
+        return {"status": "fixed", "bug_id": bug_id or issue_id, "context": context}
 
     def generate_docs(self, code: str = "", format: str = "markdown") -> Dict[str, Any]:
         return {"status": "generated", "format": format}

@@ -257,18 +257,29 @@ class TestKubernetesIntegration:
         
         # Mock pods
         mock_pod_list = MagicMock()
-        mock_pod_list.items = [
-            MagicMock(
-                metadata=MagicMock(name='web-pod-1', namespace='production'),
-                status=MagicMock(phase='Running'),
-                spec=MagicMock(containers=[MagicMock(name='nginx', image='nginx:1.21')]),
-            ),
-            MagicMock(
-                metadata=MagicMock(name='api-pod-1', namespace='production'),
-                status=MagicMock(phase='Running'),
-                spec=MagicMock(containers=[MagicMock(name='api', image='api:v2.1')]),
-            ),
-        ]
+        pod1 = MagicMock()
+        pod1.metadata = MagicMock(name='web-pod-1')
+        pod1.metadata.namespace = 'production'
+        pod1.status = MagicMock()
+        pod1.status.phase = 'Running'
+        container1 = MagicMock()
+        container1.name = 'nginx'
+        container1.image = 'nginx:1.21'
+        pod1.spec = MagicMock()
+        pod1.spec.containers = [container1]
+
+        pod2 = MagicMock()
+        pod2.metadata = MagicMock(name='api-pod-1')
+        pod2.metadata.namespace = 'production'
+        pod2.status = MagicMock()
+        pod2.status.phase = 'Running'
+        container2 = MagicMock()
+        container2.name = 'api'
+        container2.image = 'api:v2.1'
+        pod2.spec = MagicMock()
+        pod2.spec.containers = [container2]
+
+        mock_pod_list.items = [pod1, pod2]
         mock_core_api.return_value.list_pod_for_all_namespaces.return_value = mock_pod_list
         
         # Register pods
@@ -293,15 +304,18 @@ class TestKubernetesIntegration:
         account = agent.add_account("k8s-cluster-prod", CloudProvider.KUBERNETES, "Test", "production", "owner")
         
         # Mock pod without security context (running as root)
-        insecure_pod = MagicMock(
-            metadata=MagicMock(name='insecure-pod', namespace='default'),
-            spec=MagicMock(containers=[
-                MagicMock(
-                    name='app',
-                    securityContext=MagicMock(runAsNonRoot=False, runAsUser=0),
-                )
-            ]),
-        )
+        insecure_container = MagicMock()
+        insecure_container.name = 'app'
+        insecure_container.security_context = MagicMock()
+        insecure_container.security_context.runAsNonRoot = False
+        insecure_container.security_context.runAsUser = 0
+
+        insecure_pod = MagicMock()
+        insecure_pod.metadata = MagicMock()
+        insecure_pod.metadata.name = 'insecure-pod'
+        insecure_pod.metadata.namespace = 'default'
+        insecure_pod.spec = MagicMock()
+        insecure_pod.spec.containers = [insecure_container]
         
         resource = agent.add_resource(
             ResourceType.K8S_POD, account.account_id, "default", "insecure-pod",

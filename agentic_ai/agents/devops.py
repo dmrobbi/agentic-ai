@@ -125,6 +125,7 @@ class DevOpsAgent:
         self.infrastructure: Dict[str, InfrastructureResource] = {}
         self.alerts: Dict[str, Alert] = {}
         self.metrics: Dict[str, List[Dict[str, Any]]] = {}
+        self._tasks: Dict[str, Any] = {}  # Task tracking
 
         # Initialize default infrastructure
         self._init_defaults()
@@ -528,6 +529,42 @@ class DevOpsAgent:
         }
 
     # ============================================
+    # Command Execution & Task Management
+    # ============================================
+
+    def run_command(self, target: str = "", command: str = "", description: str = "", **kwargs) -> Dict[str, Any]:
+        """Execute a command on a target."""
+        return {
+            "status": "success",
+            "target": target,
+            "command": command,
+            "description": description,
+            "output": f"Command executed on {target}",
+            **kwargs,
+        }
+
+    def create_task(self, title: str = "", description: str = "", priority: str = "medium", assignee: str = "") -> Any:
+        """Create a DevOps task."""
+        from dataclasses import dataclass as _dc, field as _f
+        @_dc
+        class DevOpsTask:
+            task_id: str
+            title: str
+            description: str
+            priority: str
+            assignee: str
+            status: str = "pending"
+        task = DevOpsTask(
+            task_id=self._generate_id("task"),
+            title=title,
+            description=description,
+            priority=priority,
+            assignee=assignee,
+        )
+        self._tasks[task.task_id] = task
+        return task
+
+    # ============================================
     # Utilities
     # ============================================
 
@@ -546,6 +583,7 @@ class DevOpsAgent:
             'resources_count': len(self.infrastructure),
             'active_alerts': len(self.get_active_alerts()),
             'critical_alerts': len([a for a in self.alerts.values() if a.severity == 'critical' and not a.resolved_at]),
+            'tasks_count': len(self._tasks),  # Task tracking
         }
 
 

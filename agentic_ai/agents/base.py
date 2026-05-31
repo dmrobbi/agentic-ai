@@ -49,6 +49,7 @@ class Tool:
     description: str = ""
     func: Callable = None
     parameters: Dict[str, Any] = field(default_factory=dict)
+    requires_permission: Permission = Permission.STANDARD
 
     def __call__(self, **kwargs):
         if self.func:
@@ -62,6 +63,13 @@ class AgentMemory:
     def __init__(self, max_entries: int = 100):
         self.max_entries = max_entries
         self._entries: OrderedDict = OrderedDict()
+        self._conversation: List[Dict[str, str]] = []
+
+    def add(self, role: str, content: str) -> None:
+        """Add a conversation entry (role, content)."""
+        self._conversation.append({"role": role, "content": content})
+        # Also store in entries for retrieval
+        self.store(role, content)
 
     def store(self, key: str, value: Any) -> None:
         """Store a value in memory."""
@@ -89,10 +97,24 @@ class AgentMemory:
     def clear(self) -> None:
         """Clear all memory."""
         self._entries.clear()
+        self._conversation.clear()
 
     def keys(self) -> List[str]:
         """List all keys."""
         return list(self._entries.keys())
+
+    @property
+    def entries(self) -> OrderedDict:
+        """Access to entries dict."""
+        return self._entries
+
+    def get_recent(self, count: int = 1) -> List[Dict[str, str]]:
+        """Get recent conversation entries."""
+        return self._conversation[-count:]
+
+    def to_messages(self) -> List[Dict[str, str]]:
+        """Convert conversation to message list."""
+        return list(self._conversation)
 
     def __len__(self):
         return len(self._entries)
@@ -123,6 +145,46 @@ class BaseAgent:
         # Register default tools
         self._register_default_tools()
 
+    # ============================================
+    # Permission helpers
+    # ============================================
+
+    def can_read(self, resource: str = "") -> bool:
+        """Check if agent has read permission."""
+        return self.permission.value in (
+            Permission.READ_ONLY.value,
+            Permission.STANDARD.value,
+            Permission.ELEVATED.value,
+            Permission.ADMIN.value,
+            Permission.SUPERUSER.value,
+        )
+
+    def can_write(self, resource: str = "") -> bool:
+        """Check if agent has write permission."""
+        return self.permission.value not in (Permission.READ_ONLY.value,)
+
+    def can_create_project(self) -> bool:
+        """Check if agent can create projects."""
+        return self.permission.value in (
+            Permission.ADMIN.value,
+            Permission.SUPERUSER.value,
+        )
+
+    def can_manage_agents(self) -> bool:
+        """Check if agent can manage other agents."""
+        return self.permission.value in (
+            Permission.ADMIN.value,
+            Permission.SUPERUSER.value,
+        )
+
+    def register_tool(self, tool: Tool) -> None:
+        """Register a tool with the agent."""
+        self._tools[tool.name] = tool
+
+    def get_transparency_log(self) -> List[Dict[str, Any]]:
+        """Get the transparency log entries."""
+        return list(self._transparency_log)
+
     def _register_default_tools(self):
         """Register default tools available to all agents."""
         self._tools["get_status"] = self.get_status
@@ -137,12 +199,24 @@ class BaseAgent:
     def memory(self):
         return self._memory
 
+    @property
+    def inference(self):
+        """Alias for inference_engine."""
+        return self.inference_engine
+
+    @inference.setter
+    def inference(self, value):
+        """Alias for inference_engine."""
+        self.inference_engine = value
+
     def log(self, action: str, details: Dict[str, Any] = None):
         """Log an action for transparency."""
         entry = {
             "timestamp": datetime.now().isoformat(),
             "agent_id": self.agent_id,
+            "event": action,
             "action": action,
+            "data": details or {},
             "details": details or {},
         }
         self._transparency_log.append(entry)
@@ -152,12 +226,16 @@ class BaseAgent:
         """Use LLM inference to reason about something."""
         if self.inference_engine:
             try:
-                result = await self.inference_engine.generate(prompt, context or {})
+                gen = self.inference_engine.generate
+                if asyncio.iscoroutinefunction(gen):
+                    result = await gen(prompt, context or {})
+                else:
+                    result = gen(prompt, context or {})
                 return result
             except Exception as e:
                 logger.error(f"Inference failed: {e}")
                 return f"Error: {e}"
-        return f"Thought about: {prompt}"
+        return f"Generated response"
 
     async def call_tool(self, tool_name: str, **kwargs) -> Dict[str, Any]:
         """Call a tool by name with keyword arguments."""

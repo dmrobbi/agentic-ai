@@ -229,6 +229,23 @@ class CommunicationsAgent:
     # Message Sending
     # ============================================
 
+    def send_email(self, to: List[str], subject: str, body: str, priority: str = "normal", **kwargs) -> Any:
+        """Send an email (convenience method wrapping send_message)."""
+        priority_map = {
+            "low": Priority.LOW,
+            "normal": Priority.NORMAL,
+            "high": Priority.HIGH,
+            "critical": Priority.URGENT,
+        }
+        msg_priority = priority_map.get(priority, Priority.NORMAL)
+        return self.send_message(
+            channel=ChannelType.EMAIL,
+            subject=subject,
+            content=body,
+            recipients=to,
+            priority=msg_priority,
+        )
+
     def send_message(
         self,
         channel: ChannelType,

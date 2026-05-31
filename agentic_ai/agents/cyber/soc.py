@@ -42,6 +42,10 @@ class IncidentSeverity(Enum):
     SEV2 = "sev2"  # High - Confirmed compromise
     SEV3 = "sev3"  # Medium - Suspicious activity
     SEV4 = "sev4"  # Low - Policy violation
+    critical = "critical"  # Alias for SEV1
+    high = "high"  # Alias for SEV2
+    medium = "medium"  # Alias for SEV3
+    low = "low"  # Alias for SEV4
 
 
 class IncidentStatus(Enum):
@@ -93,7 +97,8 @@ class Incident:
     title: str
     severity: IncidentSeverity
     status: IncidentStatus
-    category: str  # malware, phishing, data_breach, unauthorized_access, etc.
+    category: str = ""  # malware, phishing, data_breach, unauthorized_access, etc.
+    description: str = ""
     threat_actor: Optional[ThreatActor] = None
     detected_at: datetime = field(default_factory=datetime.utcnow)
     contained_at: Optional[datetime] = None
@@ -313,6 +318,44 @@ class SecurityOperationsAgent:
     # Incident Management
     # ============================================
 
+    def report_security_incident(self, title: str, description: str = "", severity: str = "high", incident_type: str = "", affected_systems: Optional[List[str]] = None, source_ip: str = "", target_user: str = "", **kwargs) -> Any:
+        """Report a security incident. Convenience method that maps to create_incident.
+        Returns the incident with string severity preserved."""
+        from types import SimpleNamespace
+        severity_map = {
+            "critical": IncidentSeverity.SEV1,
+            "high": IncidentSeverity.SEV2,
+            "medium": IncidentSeverity.SEV3,
+            "low": IncidentSeverity.SEV4,
+        }
+        incident_severity = severity_map.get(severity, IncidentSeverity.SEV3)
+        incident = self.create_incident(
+            title=title,
+            severity=incident_severity,
+            category=incident_type or "unauthorized_access",
+            affected_systems=affected_systems or [],
+        )
+        incident.description = description
+        if source_ip:
+            incident.source_ip = source_ip
+        if target_user:
+            incident.affected_users = [target_user]
+        # Return a wrapper that preserves the string severity
+        result = SimpleNamespace(
+            incident_id=incident.incident_id,
+            title=incident.title,
+            severity=severity,
+            status=incident.status,
+            category=incident.category,
+            description=description,
+            affected_systems=incident.affected_systems,
+            affected_users=incident.affected_users,
+            source_ip=source_ip or None,
+            detected_at=incident.detected_at,
+            _incident=incident,
+        )
+        return result
+
     def create_incident(
         self,
         title: str,
@@ -341,12 +384,17 @@ class SecurityOperationsAgent:
     def update_incident_status(
         self,
         incident_id: str,
-        status: IncidentStatus,
+        status,
         notes: str = "",
     ) -> bool:
-        """Update incident status."""
+        """Update incident status. Accepts IncidentStatus enum or string."""
         if incident_id not in self.incidents:
             return False
+
+        # Convert string to IncidentStatus if needed
+        if isinstance(status, str):
+            status_map = {s.value: s for s in IncidentStatus}
+            status = status_map.get(status, IncidentStatus.CLOSED)
 
         incident = self.incidents[incident_id]
         old_status = incident.status

@@ -17,10 +17,10 @@ from agentic_ai.agents.vendor_risk import VendorRiskAgent, VendorTier
 from agentic_ai.agents.cloud_security import CloudSecurityAgent, CloudProvider, Severity
 from agentic_ai.agents.audit import AuditAgent, AuditType, ControlType
 from agentic_ai.agents.data_governance import DataGovernanceAgent, DataType, DataClassification
-from agentic_ai.agents.privacy import PrivacyAgent, DataSubjectRight
+from agentic_ai.agents.privacy import PrivacyAgent, DataSubjectRight, ProcessingPurpose
 from agentic_ai.agents.security import SecurityAgent
 from agentic_ai.agents.compliance import ComplianceAgent
-from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, TargetType
+from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, TargetType, AbortCondition
 from agentic_ai.agents.ml_ops import MLOpsAgent
 
 
@@ -311,7 +311,7 @@ class TestAuditPreparation:
         # Phase 4: Privacy Evidence
         processing_activity = privacy.register_processing_activity(
             name="Customer Account Management",
-            purpose=privacy.ProcessingPurpose.SERVICE_DELIVERY,
+            purpose=ProcessingPurpose.SERVICE_DELIVERY,
             data_categories=[DataType.PII],
             legal_basis="contract",
         )
@@ -445,7 +445,7 @@ class TestChaosMonitoring:
             severity="medium",
             blast_radius="limited",
             duration_minutes=15,
-            abort_conditions=[chaos.AbortCondition.LATENCY_THRESHOLD],
+            abort_conditions=[AbortCondition.LATENCY_THRESHOLD],
             abort_thresholds={'latency_p99': 500},
         )
         
