@@ -39,6 +39,7 @@ setup(
         "passlib[bcrypt]>=1.7.4",
         "typing-extensions>=4.9.0",
         "simpleeval>=1.0.0",
+        "litellm>=1.0.0",
     ],
     extras_require={
         "dev": [

@@ -84,7 +84,7 @@ class TestSecurityOperationsAgent:
         """Test creating security incident."""
         incident = soc.create_incident(
             title="Ransomware Infection",
-            severity=IncidentSeverity.SEV1,
+            severity=IncidentSeverity.CRITICAL,
             category="malware",
             threat_actor=ThreatActor.CYBERCRIMINAL,
             affected_systems=["workstation-42", "file-server-01"],
@@ -92,13 +92,13 @@ class TestSecurityOperationsAgent:
         
         assert incident.incident_id.startswith("inc-")
         assert incident.status == IncidentStatus.DETECTED
-        assert incident.severity == IncidentSeverity.SEV1
+        assert incident.severity == IncidentSeverity.CRITICAL
     
     def test_update_incident_status(self, soc):
         """Test incident status updates."""
         incident = soc.create_incident(
             "Test Incident",
-            IncidentSeverity.SEV2,
+            IncidentSeverity.HIGH,
             "unauthorized_access",
         )
         
@@ -113,7 +113,7 @@ class TestSecurityOperationsAgent:
         """Test adding IOC to incident."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV2,
+            IncidentSeverity.HIGH,
             "malware",
         )
         
@@ -131,7 +131,7 @@ class TestSecurityOperationsAgent:
         """Test adding timeline entries."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV2,
+            IncidentSeverity.HIGH,
             "malware",
         )
         
@@ -149,7 +149,7 @@ class TestSecurityOperationsAgent:
         """Test closing incident with documentation."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV3,
+            IncidentSeverity.MEDIUM,
             "phishing",
         )
         
@@ -234,7 +234,7 @@ class TestSecurityOperationsAgent:
         """Test MITRE ATT&CK mapping."""
         incident = soc.create_incident(
             "Test",
-            IncidentSeverity.SEV2,
+            IncidentSeverity.HIGH,
             "malware",
         )
         

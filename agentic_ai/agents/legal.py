@@ -14,6 +14,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.agents.schemas import LegalMatter
 
 
 logger = logging.getLogger(__name__)
@@ -505,7 +506,6 @@ These Terms are governed by applicable law.
 
     def create_legal_matter(self, title: str, matter_type: str = "", description: str = "", priority: str = "medium", **kwargs) -> Any:
         """Create a legal matter (tracked as a legal document)."""
-        from types import SimpleNamespace
         matter_id = self._generate_id("legal")
         matter_type_map = {
             "data_breach": DocumentType.COMPLIANCE_REPORT,
@@ -518,15 +518,14 @@ These Terms are governed by applicable law.
             document_type=doc_type,
             parties=[],
         )
-        # Return a namespace-like object with matter_id
-        return SimpleNamespace(
+        return LegalMatter(
             matter_id=matter_id,
             title=title,
             matter_type=matter_type,
             description=description,
             priority=priority,
             status=document.status,
-            created_at=document.created_at,
+            created_at=str(document.created_at),
         )
 
 

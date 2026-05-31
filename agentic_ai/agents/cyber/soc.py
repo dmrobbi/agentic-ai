@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.agents.schemas import IncidentReport
 
 
 logger = logging.getLogger(__name__)
@@ -39,14 +40,27 @@ class AlertStatus(Enum):
 
 class IncidentSeverity(Enum):
     """Incident severity levels."""
-    SEV1 = "sev1"  # Critical - Active breach
-    SEV2 = "sev2"  # High - Confirmed compromise
-    SEV3 = "sev3"  # Medium - Suspicious activity
-    SEV4 = "sev4"  # Low - Policy violation
-    critical = "critical"  # Alias for SEV1
-    high = "high"  # Alias for SEV2
-    medium = "medium"  # Alias for SEV3
-    low = "low"  # Alias for SEV4
+    CRITICAL = "critical"  # Active breach
+    HIGH = "high"  # Confirmed compromise
+    MEDIUM = "medium"  # Suspicious activity
+    LOW = "low"  # Policy violation
+
+    # Backward compatibility properties
+    @property
+    def sev1(self):
+        return IncidentSeverity.CRITICAL
+
+    @property
+    def sev2(self):
+        return IncidentSeverity.HIGH
+
+    @property
+    def sev3(self):
+        return IncidentSeverity.MEDIUM
+
+    @property
+    def sev4(self):
+        return IncidentSeverity.LOW
 
 
 class IncidentStatus(Enum):
@@ -323,14 +337,13 @@ class SecurityOperationsAgent(BaseAgent):
     def report_security_incident(self, title: str, description: str = "", severity: str = "high", incident_type: str = "", affected_systems: Optional[List[str]] = None, source_ip: str = "", target_user: str = "", **kwargs) -> Any:
         """Report a security incident. Convenience method that maps to create_incident.
         Returns the incident with string severity preserved."""
-        from types import SimpleNamespace
         severity_map = {
-            "critical": IncidentSeverity.SEV1,
-            "high": IncidentSeverity.SEV2,
-            "medium": IncidentSeverity.SEV3,
-            "low": IncidentSeverity.SEV4,
+            "critical": IncidentSeverity.CRITICAL,
+            "high": IncidentSeverity.HIGH,
+            "medium": IncidentSeverity.MEDIUM,
+            "low": IncidentSeverity.LOW,
         }
-        incident_severity = severity_map.get(severity, IncidentSeverity.SEV3)
+        incident_severity = severity_map.get(severity, IncidentSeverity.MEDIUM)
         incident = self.create_incident(
             title=title,
             severity=incident_severity,
@@ -343,7 +356,7 @@ class SecurityOperationsAgent(BaseAgent):
         if target_user:
             incident.affected_users = [target_user]
         # Return a wrapper that preserves the string severity
-        result = SimpleNamespace(
+        result = IncidentReport(
             incident_id=incident.incident_id,
             title=incident.title,
             severity=severity,
@@ -353,7 +366,7 @@ class SecurityOperationsAgent(BaseAgent):
             affected_systems=incident.affected_systems,
             affected_users=incident.affected_users,
             source_ip=source_ip or None,
-            detected_at=incident.detected_at,
+            detected_at=str(incident.detected_at),
             _incident=incident,
         )
         return result
@@ -765,7 +778,7 @@ if __name__ == "__main__":
     # Create incident
     incident = agent.create_incident(
         title="Ransomware Infection",
-        severity=IncidentSeverity.SEV1,
+        severity=IncidentSeverity.CRITICAL,
         category="malware",
         threat_actor=ThreatActor.CYBERCRIMINAL,
         affected_systems=["workstation-42", "file-server-01"],

@@ -18,6 +18,7 @@ from datetime import datetime, timedelta, timezone
 from enum import Enum
 from typing import Any, Dict, List, Optional, Tuple
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.agents.schemas import SecurityAssessment, SecurityControl
 
 
 logger = logging.getLogger(__name__)
@@ -324,9 +325,7 @@ class SecurityAgent(BaseAgent):
         assessments = self.state_store.get(f"agent:{self.agent_id}:assessments", [])
         assessments.append(assessment)
         self.state_store.set(f"agent:{self.agent_id}:assessments", assessments)
-        # Simple namespace-style object
-        from types import SimpleNamespace
-        return SimpleNamespace(**assessment)
+        return SecurityAssessment(**assessment)
 
     def add_control(self, assessment_id: str = "", name: str = "", description: str = "", control_type: str = "", category: str = "", status: str = "effective", **kwargs) -> Any:
         """Add a control to a security assessment."""
@@ -344,8 +343,7 @@ class SecurityAgent(BaseAgent):
         controls = self.state_store.get(f"agent:{self.agent_id}:controls", [])
         controls.append(control)
         self.state_store.set(f"agent:{self.agent_id}:controls", controls)
-        from types import SimpleNamespace
-        return SimpleNamespace(**control)
+        return SecurityControl(**control)
 
     # ============================================
     # Vulnerability Scanning

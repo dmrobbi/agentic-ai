@@ -5,12 +5,14 @@ Base agent classes and shared types for the agentic-ai framework.
 from enum import Enum
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, Any, Optional, List, Callable
+from typing import Dict, Any, Optional, List, Callable, Tuple
 from collections import OrderedDict
 import logging
 import asyncio
 import secrets
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.agents.reasoning import ReActLoop, ReActTrace, ReasoningStatus, ReflectionResult
+from agentic_ai.guardrails import PIIFilter, ContentPolicyFilter, ToolAllowlist, MaxLengthGuardrail
 
 
 logger = logging.getLogger(__name__)
@@ -144,6 +146,7 @@ class BaseAgent:
         self._history: List[Dict[str, Any]] = []
         self._memory = AgentMemory()
         self._transparency_log: List[Dict[str, Any]] = []
+        self.guardrails: List = []  # Configurable guardrail pipeline
 
         # Register default tools
         self._register_default_tools()
@@ -248,23 +251,86 @@ class BaseAgent:
         self._transparency_log.append(entry)
         logger.info(f"Agent {self.agent_id}: {action} - {details}")
 
-    async def think(self, prompt: str, context: Dict[str, Any] = None) -> str:
-        """Use LLM inference to reason about something."""
+    def input_guardrail(self, prompt: str) -> Tuple[str, bool]:
+        """Validate/sanitize input through guardrail pipeline. Returns (sanitized_prompt, is_safe)."""
+        sanitized = prompt
+        is_safe = True
+        for guardrail in self.guardrails:
+            if hasattr(guardrail, 'check'):
+                if isinstance(guardrail, (PIIFilter, ContentPolicyFilter, MaxLengthGuardrail)):
+                    result = guardrail.check(sanitized)
+                    sanitized = result.sanitized
+                    if not result.is_safe:
+                        is_safe = False
+                        logger.warning(f"Input guardrail blocked: {result.reason}")
+                        break
+        return sanitized, is_safe
+
+    def output_guardrail(self, response: str) -> Tuple[str, bool]:
+        """Validate/sanitize output through guardrail pipeline. Returns (sanitized_response, is_safe)."""
+        sanitized = response
+        is_safe = True
+        for guardrail in self.guardrails:
+            if hasattr(guardrail, 'check'):
+                if isinstance(guardrail, (PIIFilter, ContentPolicyFilter, MaxLengthGuardrail)):
+                    result = guardrail.check(sanitized)
+                    sanitized = result.sanitized
+                    if not result.is_safe:
+                        is_safe = False
+                        logger.warning(f"Output guardrail blocked: {result.reason}")
+                        break
+        return sanitized, is_safe
+
+    def tool_guardrail(self, tool_name: str, kwargs: dict) -> bool:
+        """Check if tool call is permitted. Returns is_allowed."""
+        for guardrail in self.guardrails:
+            if isinstance(guardrail, ToolAllowlist):
+                result = guardrail.check(tool_name, kwargs)
+                if not result.is_safe:
+                    logger.warning(f"Tool guardrail blocked: {result.reason}")
+                    return False
+        return True
+
+    async def think(self, prompt: str, context: Dict[str, Any] = None, response_model=None) -> str:
+        """Use LLM inference to reason about something. Optionally validate against a Pydantic model."""
+        # Input guardrail
+        sanitized, is_safe = self.input_guardrail(prompt)
+        if not is_safe:
+            return f"Error: Input blocked by guardrail"
+
         if self.inference_engine:
             try:
                 gen = self.inference_engine.generate
                 if asyncio.iscoroutinefunction(gen):
-                    result = await gen(prompt, context or {})
+                    result = await gen(sanitized, context or {})
                 else:
-                    result = gen(prompt, context or {})
-                return result
+                    result = gen(sanitized, context or {})
             except Exception as e:
                 logger.error(f"Inference failed: {e}")
                 return f"Error: {e}"
-        return f"Generated response"
+        else:
+            result = "Generated response"
+
+        # Output guardrail
+        result, is_safe = self.output_guardrail(result)
+        if not is_safe:
+            return f"Error: Output blocked by guardrail"
+        # If response_model requested, try to parse and serialize
+        if response_model and result:
+            try:
+                import json
+                parsed = response_model(**json.loads(result))
+                return parsed.model_dump_json()
+            except Exception:
+                pass  # Return raw result if parsing fails
+        return result
 
     async def call_tool(self, tool_name: str, **kwargs) -> Dict[str, Any]:
         """Call a tool by name with keyword arguments."""
+        # Tool guardrail
+        if not self.tool_guardrail(tool_name, kwargs):
+            return {"error": f"Tool '{tool_name}' blocked by guardrail"}
+
         if tool_name not in self._tools:
             return {"error": f"Tool '{tool_name}' not found", "available_tools": list(self._tools.keys())}
         try:
@@ -288,15 +354,20 @@ class BaseAgent:
 
     def send_message(self, recipient: str = "", content: str = "", msg_type: str = "info", **kwargs):
         """Send a message to another agent."""
+        # Output guardrail — log warning but still send
+        sanitized, is_safe = self.output_guardrail(content)
+        if not is_safe:
+            logger.warning(f"Output guardrail warning on send_message: content flagged but still sent")
+
         if self.bus:
             msg = AgentMessage(
                 sender=self.agent_id,
                 recipient=recipient,
-                content=content,
+                content=sanitized,
                 msg_type=msg_type,
             )
             self.bus.publish(msg)
-        self._history.append({"action": "send_message", "to": recipient, "content": content})
+        self._history.append({"action": "send_message", "to": recipient, "content": sanitized})
 
     def receive_message(self, message: AgentMessage):
         """Receive a message from another agent."""
@@ -316,6 +387,85 @@ class BaseAgent:
     async def process_message(self, message):
         """Process an incoming message. Override in subclasses."""
         return None
+
+    async def reason(self, prompt: str, context: Dict[str, Any] = None,
+                     max_iterations: int = 5) -> Dict[str, Any]:
+        """Iterative ReAct reasoning loop: think→act→observe."""
+        loop = ReActLoop(max_iterations=max_iterations)
+        trace = ReActTrace()
+
+        current_prompt = prompt
+        for i in range(max_iterations):
+            # Think
+            thought_text = await self.think(
+                loop.format_prompt(current_prompt, trace, context),
+                context or {}
+            )
+
+            # Parse step
+            step = loop.parse_step(thought_text, i + 1)
+            trace.add_step(step)
+
+            # Check if finished
+            if loop.is_finished(step):
+                trace.final_answer = step.action_input.get("final_answer", step.thought) if step.action_input else step.thought
+                trace.status = ReasoningStatus.FINISHED
+                break
+
+            # Act — execute tool if specified
+            if step.action and step.action != loop.finish_keyword:
+                try:
+                    result = await self.call_tool(step.action, **(step.action_input or {}))
+                    observation = str(result)
+                except Exception as e:
+                    observation = f"Error executing {step.action}: {e}"
+
+                step.observation = observation
+                step.status = ReasoningStatus.OBSERVING
+        else:
+            # Max iterations reached
+            trace.status = ReasoningStatus.FAILED
+            trace.final_answer = trace.steps[-1].thought if trace.steps else "Max iterations reached"
+
+        return trace.to_dict()
+
+    async def reflect(self, response: str, context: Dict[str, Any] = None) -> Dict[str, Any]:
+        """Self-critique: evaluate response quality and suggest improvements."""
+        reflection_prompt = f"""Evaluate the following response on a scale of 0.0 to 1.0.
+Provide a score, critique, and improved version if applicable.
+
+Response to evaluate:
+{response}
+
+Context: {context or {}}
+
+Format your response as:
+Score: <float between 0.0 and 1.0>
+Critique: <what could be improved>
+Improved: <better version of the response, or "N/A" if good enough>"""
+
+        result = await self.think(reflection_prompt, context or {})
+
+        # Parse reflection
+        score = 0.5
+        critique = ""
+        improved = None
+
+        for line in result.split("\n"):
+            line = line.strip()
+            if line.startswith("Score:"):
+                try:
+                    score = float(line.split(":", 1)[1].strip())
+                except ValueError:
+                    pass
+            elif line.startswith("Critique:"):
+                critique = line.split(":", 1)[1].strip()
+            elif line.startswith("Improved:"):
+                improved = line.split(":", 1)[1].strip()
+                if improved == "N/A":
+                    improved = None
+
+        return ReflectionResult(score=score, critique=critique, improved_response=improved).to_dict()
 
     async def perform_task(self, task_type: str, payload: Dict[str, Any] = None) -> Dict[str, Any]:
         """Perform a task. Override in subclasses."""

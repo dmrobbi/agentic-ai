@@ -13,6 +13,7 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.agents.schemas import ComplianceAssessment
 
 
 logger = logging.getLogger(__name__)
@@ -544,8 +545,7 @@ class ComplianceAgent(BaseAgent):
     def create_assessment(self, name: str = "", assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
         """Create a compliance assessment."""
         assessment_id = self._generate_id("assess")
-        from types import SimpleNamespace
-        assessment = SimpleNamespace(
+        assessment = ComplianceAssessment(
             assessment_id=assessment_id,
             name=name,
             assessment_type=assessment_type,
@@ -668,9 +668,8 @@ class ComplianceAgent(BaseAgent):
 
     def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
         """Create a compliance assessment."""
-        from types import SimpleNamespace
         assessment_id = self._generate_id("assess")
-        assessment = SimpleNamespace(
+        assessment = ComplianceAssessment(
             assessment_id=assessment_id,
             name=name,
             assessment_type=assessment_type,
