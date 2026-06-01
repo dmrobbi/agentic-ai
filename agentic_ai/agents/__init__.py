@@ -9,7 +9,15 @@ from .chaos_monkey import ChaosMonkeyAgent
 from .cloud_security import CloudSecurityAgent
 from .communications import CommunicationsAgent
 from .compliance import ComplianceAgent
-from .cyber import CyberAgent
+from .cyber import (
+    SecurityOperationsAgent,
+    VulnerabilityManagementAgent,
+    RedTeamAgent,
+    RedTeamAgentV2,
+    MalwareAnalysisAgent,
+    KaliAgent,
+    KaliAgentV2,
+)
 from .data_analyst import DataAnalystAgent
 from .data_governance import DataGovernanceAgent
 from .developer import DeveloperAgent
@@ -21,7 +29,7 @@ from .integration import IntegrationAgent
 from .lead import LeadAgent
 from .legal import LegalAgent
 from .marketing import MarketingAgent
-from .ml_ops import MLAgent
+from .ml_ops import MLOpsAgent
 from .privacy import PrivacyAgent
 from .qa import QAAgent
 from .research import ResearchAgent
@@ -46,7 +54,13 @@ __all__ = [
     "CloudSecurityAgent",
     "CommunicationsAgent",
     "ComplianceAgent",
-    "CyberAgent",
+    "SecurityOperationsAgent",
+    "VulnerabilityManagementAgent",
+    "RedTeamAgent",
+    "RedTeamAgentV2",
+    "MalwareAnalysisAgent",
+    "KaliAgent",
+    "KaliAgentV2",
     "DataAnalystAgent",
     "DataGovernanceAgent",
     "DeveloperAgent",
@@ -58,7 +72,7 @@ __all__ = [
     "LeadAgent",
     "LegalAgent",
     "MarketingAgent",
-    "MLAgent",
+    "MLOpsAgent",
     "PrivacyAgent",
     "QAAgent",
     "ResearchAgent",

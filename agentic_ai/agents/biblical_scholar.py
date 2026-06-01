@@ -240,7 +240,6 @@ class BiblicalScholarAgent:
             translation_used="Thanissaro Bhikkhu",
             author_attributed="Buddha",
             date_written="c. 3rd century BC",
-            content="Mind precedes all mental states. Mind is their chief; they are all mind-wrought. If with an impure mind a person speaks or acts suffering follows him like the wheel that follows the foot of the ox.",
             themes=["mindfulness", "karma", "cause and effect", "mental purity"],
             keywords=["mind", "mental states", "speaks", "acts", "suffering", "follows"]
         )
