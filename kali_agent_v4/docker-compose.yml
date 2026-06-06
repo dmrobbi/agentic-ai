@@ -36,13 +36,13 @@ services:
     image: forge-container.wezzel.com:8443/library/redis:7-alpine
     container_name: kaliagent-redis
     restart: unless-stopped
-    ports:
-      - "6379:6379"
+    expose:
+      - "6379"
     volumes:
       - redis-data:/data
     networks:
       - kaliagent-network
-    command: redis-server --appendonly yes
+    command: redis-server --appendonly yes --bind 0.0.0.0 --protected-mode yes
 
   # Ollama for local LLM (AI features)
   ollama:
