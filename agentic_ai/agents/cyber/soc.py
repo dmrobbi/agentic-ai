@@ -13,6 +13,12 @@ from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.infrastructure.wazuh_client import (
+    WazuhPoller,
+    WazuhPollerConfig,
+    SeenStore,
+    alert_to_soc_kwargs,
+)
 from agentic_ai.agents.schemas import IncidentReport
 
 
@@ -165,13 +171,18 @@ class SecurityOperationsAgent(BaseAgent):
     incident response, and threat hunting.
     """
 
-    def __init__(self, agent_id: str = "soc-agent"):
+    def __init__(
+        self,
+        agent_id: str = "soc-agent",
+        wazuh_poller: Optional[WazuhPoller] = None,
+    ):
         super().__init__(agent_id=agent_id)
         self.agent_id = agent_id
         self.alerts: Dict[str, SecurityAlert] = {}
         self.incidents: Dict[str, Incident] = {}
         self.threat_intel: Dict[str, ThreatIntel] = {}
         self.hunts: Dict[str, HuntQuery] = {}
+        self.wazuh_poller: Optional[WazuhPoller] = wazuh_poller
 
         # MITRE ATT&CK mapping
         self.attack_tactics = {
@@ -718,6 +729,97 @@ class SecurityOperationsAgent(BaseAgent):
             'active_incidents': len([i for i in self.incidents.values() if i.status != IncidentStatus.CLOSED]),
             'threat_intel_count': len(self.threat_intel),
             'hunts_count': len(self.hunts),
+            'wazuh_poller': self.wazuh_poller.status() if self.wazuh_poller else None,
+        }
+
+    # ============================================
+    # Wazuh integration
+    # ============================================
+
+    def ingest_wazuh_alert(self, wazuh_alert: Dict[str, Any]) -> SecurityAlert:
+        """Convert one Wazuh alert JSON into a SecurityAlert and add to local state.
+
+        Returns the SecurityAlert. The caller can decide whether to escalate to
+        an incident based on severity.
+        """
+        kw = alert_to_soc_kwargs(wazuh_alert)
+        try:
+            severity_enum = AlertSeverity(kw["severity"])
+        except ValueError:
+            severity_enum = AlertSeverity.INFORMATIONAL
+        alert = self.create_alert(
+            title=kw["title"][:200],
+            description=kw["description"][:500],
+            severity=severity_enum,
+            source=kw["source"],
+            rule_name=str(kw["rule_name"]),
+            affected_asset=str(kw["affected_asset"])[:200],
+            source_ip=kw.get("source_ip"),
+        )
+        # Auto-escalate high/critical to incidents
+        if severity_enum in (AlertSeverity.HIGH, AlertSeverity.CRITICAL):
+            self.escalate_alert(alert.alert_id, "")
+            try:
+                incident = self.create_incident(
+                    title=f"Wazuh {kw['rule_name']} on {kw['affected_asset']}",
+                    description=kw["description"],
+                    severity=IncidentSeverity.HIGH if severity_enum == AlertSeverity.HIGH else IncidentSeverity.CRITICAL,
+                    category="wazuh_alert",
+                    threat_actor=ThreatActor.UNKNOWN,
+                )
+                # Link alert to incident by stamping note
+                alert.investigation_notes.append(
+                    f"[{utcnow().isoformat()}] auto-escalated to incident {incident.incident_id}"
+                )
+            except Exception as exc:
+                logger.warning("auto-escalate failed: %s", exc)
+        return alert
+
+    def ingest_wazuh_alerts(self, alerts: List[Dict[str, Any]]) -> List[SecurityAlert]:
+        """Ingest a batch of Wazuh alerts."""
+        out = []
+        for a in alerts:
+            try:
+                out.append(self.ingest_wazuh_alert(a))
+            except Exception as exc:
+                logger.warning("ingest failed for one alert: %s", exc)
+        return out
+
+    def start_wazuh_poller(
+        self,
+        base_url: str = "https://192.168.1.106:55000",
+        username: str = "wazuh-wui",
+        password: Optional[str] = None,
+        poll_interval_sec: int = 15,
+    ) -> WazuhPoller:
+        """Build a WazuhPoller that calls ingest_wazuh_alerts on each poll.
+
+        Returns the running poller (also stored on self.wazuh_poller).
+        """
+        cfg = WazuhPollerConfig(
+            base_url=base_url,
+            username=username,
+            password=password,
+            poll_interval_sec=poll_interval_sec,
+            on_alerts=self.ingest_wazuh_alerts,
+        )
+        self.wazuh_poller = WazuhPoller(cfg)
+        self.wazuh_poller.start()
+        return self.wazuh_poller
+
+    def stop_wazuh_poller(self) -> None:
+        if self.wazuh_poller:
+            self.wazuh_poller.stop()
+            self.wazuh_poller = None
+
+    def get_wazuh_metrics(self) -> Dict[str, Any]:
+        """Combined local+poller status, suitable for a daily report."""
+        local = self.get_soc_metrics()
+        poller = self.wazuh_poller.status() if self.wazuh_poller else None
+        return {
+            "agent_id": self.agent_id,
+            "soc": local,
+            "wazuh_poller": poller,
         }
 
 
