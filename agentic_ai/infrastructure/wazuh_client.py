@@ -422,12 +422,20 @@ class WazuhPollerConfig:
     poll_interval_sec: int = POLL_INTERVAL_SEC
     page_limit: int = DEFAULT_PAGE_LIMIT
     on_alerts: Optional[Callable[[List[Dict[str, Any]]], None]] = None
+    # Optional indexer (OpenSearch) — Wazuh 4.x removed the /alerts REST
+    # endpoint, so the poller prefers the indexer when configured.
+    indexer: Optional["WazuhIndexerClient"] = None
 
 
 class WazuhPoller:
     """Background poller: fetch alerts, diff against seen-set, call on_alerts.
 
     Thread-safe; stop() cleanly joins the worker thread.
+
+    On Wazuh 4.14 the manager REST /alerts endpoint is not exposed (returns
+    404). Pass an `indexer` (WazuhIndexerClient) in the config; if absent, the
+    poller falls back to the REST API (which will return [] on 4.x) and logs
+    a warning so the operator notices.
     """
 
     def __init__(self, config: WazuhPollerConfig, seen_store: Optional[SeenStore] = None):
@@ -438,6 +446,12 @@ class WazuhPoller:
             username=config.username,
             password=config.password,
         )
+        self.indexer = config.indexer
+        if not self.indexer:
+            logger.warning(
+                "WazuhPoller has no indexer; /alerts REST endpoint is missing "
+                "on Wazuh 4.x. Pass config.indexer=WazuhIndexerClient(...)."
+            )
         self._stop = threading.Event()
         self._thread: Optional[threading.Thread] = None
         self._last_poll: Optional[datetime] = None
@@ -448,10 +462,29 @@ class WazuhPoller:
 
     def fetch_new_alerts(self, since_ts: Optional[datetime] = None) -> List[Dict[str, Any]]:
         """Single-shot poll: return alerts we haven't seen before."""
+        ts = since_ts or (self._last_poll or (utcnow() - timedelta(minutes=10)))
+        since_iso = ts.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
         try:
-            ts = since_ts or (self._last_poll or (utcnow() - timedelta(minutes=10)))
-            since_iso = ts.astimezone(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-            alerts = self.client.list_alerts(limit=self.config.page_limit, since_ts=since_iso)
+            if self.indexer is not None:
+                # Wazuh 4.x canonical path: query the OpenSearch indexer.
+                # We use a range query on @timestamp so the indexer filters
+                # server-side (cheaper than fetching the page_limit blindly).
+                size = self.config.page_limit
+                body = {
+                    "size": size,
+                    "sort": [{"@timestamp": {"order": "asc"}}],
+                    "query": {
+                        "range": {"@timestamp": {"gte": since_iso}}
+                    },
+                }
+                resp = self.indexer._request("POST", "/wazuh-alerts-*/_search", json_body=body)
+                hits = (resp.get("hits") or {}).get("hits") or []
+                alerts = [h.get("_source", {}) for h in hits]
+            else:
+                # Legacy path: Wazuh REST /alerts. Returns [] on 4.x.
+                alerts = self.client.list_alerts(
+                    limit=self.config.page_limit, since_ts=since_iso
+                )
         except WazuhHTTPError as e:
             logger.warning("Wazuh fetch failed: %s", e)
             return []

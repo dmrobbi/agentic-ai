@@ -8,6 +8,7 @@ threat hunting, and security operations center automation.
 
 from agentic_ai.agents.base import BaseAgent
 import logging
+import os
 from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from enum import Enum
@@ -16,6 +17,7 @@ from agentic_ai.infrastructure.utils import utcnow
 from agentic_ai.infrastructure.wazuh_client import (
     WazuhPoller,
     WazuhPollerConfig,
+    WazuhIndexerClient,
     SeenStore,
     alert_to_soc_kwargs,
 )
@@ -791,17 +793,33 @@ class SecurityOperationsAgent(BaseAgent):
         username: str = "wazuh-wui",
         password: Optional[str] = None,
         poll_interval_sec: int = 15,
+        indexer_url: str = "https://127.0.0.1:9200",
+        indexer_username: str = "admin",
+        indexer_password: Optional[str] = None,
     ) -> WazuhPoller:
         """Build a WazuhPoller that calls ingest_wazuh_alerts on each poll.
 
         Returns the running poller (also stored on self.wazuh_poller).
+
+        On Wazuh 4.x the manager REST /alerts endpoint is not exposed, so the
+        poller must read from the OpenSearch indexer (wazuh-alerts-*). Pass
+        `indexer_password` (or set WAZUH_INDEXER_PASSWORD). The default
+        `admin/SecretPassword` matches the single-node stack at thing1.
         """
+        indexer_pwd = indexer_password or os.environ.get("WAZUH_INDEXER_PASSWORD", "SecretPassword")
+        indexer = WazuhIndexerClient(
+            base_url=indexer_url,
+            username=indexer_username,
+            password=indexer_pwd,
+            verify_ssl=False,
+        )
         cfg = WazuhPollerConfig(
             base_url=base_url,
             username=username,
             password=password,
             poll_interval_sec=poll_interval_sec,
             on_alerts=self.ingest_wazuh_alerts,
+            indexer=indexer,
         )
         self.wazuh_poller = WazuhPoller(cfg)
         self.wazuh_poller.start()
