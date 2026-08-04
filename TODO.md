@@ -1,3 +1,399 @@
+# Agentic AI SOC — Build a Fully Automated & Intelligent SOC
+
+> **Project:** Autonomous SOC on top of Wazuh 4.14.1
+> **Owner:** Wesley Robbins
+> **Driver:** Ciceron
+> **Created:** 2026-08-04 16:50 UTC
+> **Source-of-truth design doc:** [`/home/wez/repos/stsgym-work/docs/soc/agentic-soc-roadmap-2026-08-04.md`](file:///home/wez/repos/stsgym-work/docs/soc/agentic-soc-roadmap-2026-08-04.md) — read that first for context. This file is the *task list*.
+
+---
+
+## North-star statement
+
+**Goal:** a SOC that detects, triages, narrates, escalates, and (under human confirmation) **remediates** threats across the 5 hosts we monitor — autonomously, without anyone watching logs in real-time — and that produces a daily digest a non-technical executive can read and trust.
+
+**Definition of done (whole project):**
+
+- ⏱ p95 time-to-first-email after a real critical (L≥12) alert **< 60 s**
+- ⏱ p95 time-to-incident-creation in dashboard **< 30 s**
+- 📬 100% of L≥13 alerts produce an email to `wlrobbi@gmail.com` within 60 s
+- 🧠 Every recurring rule has a playbook the agent reads before narrating
+- 🧯 A safety-gated auto-remediation pipeline runs in test mode for ≥ 30 days before any production auto-action
+- 💯 Quarterly fire drills (benign SSH brute force) pass end-to-end
+- 🟢 Zero alerts with no owner for > 4 hours during business hours
+- 📚 Runbook file exists for every pattern in Tier A + Tier B
+
+---
+
+## Phase overview (Gantt chart)
+
+```mermaid
+gantt
+    title Agentic AI SOC — Phase Schedule (2026-08-04 → 2026-09-22)
+    dateFormat  YYYY-MM-DD
+    axisFormat  %m-%d
+
+    section Phase 1 — Close the basics
+    P1.1 Darth enrollment + threshold tune        :p1a, 2026-08-05, 2d
+    P1.2 Real-time alert → SOC pipeline          :p1b, after p1a, 3d
+    P1.3 "Clean morning" GREEN/YELLOW/RED status  :p1c, 2026-08-07, 1d
+    P1.4 Add selftest to morning-highlights cron  :p1d, 2026-08-07, 1d
+
+    section Phase 2 — Smarter agent
+    P2.1 Per-rule playbook KB (5 first)          :p2a, after p1b, 3d
+    P2.2 MITRE ATT&CK mapping on every alert     :p2b, after p2a, 2d
+    P2.3 Alert correlation / dedup                :p2c, after p2b, 3d
+    P2.4 Suppression of known-noisy rules         :p2d, after p1c, 2d
+    P2.5 Weekly digest                            :p2e, after p1c, 2d
+
+    section Phase 3 — Close the loop
+    P3.1 Reply handling for reports@              :p3a, after p1b, 4d
+    P3.2 Auto-remediation scaffolding + safety    :p3b, after p2c, 5d
+    P3.3 First auto-pattern: brute-force block    :p3c, after p3b, 3d
+    P3.4 First auto-pattern: CVE host quarantine :p3d, after p3c, 3d
+
+    section Phase 4 — Infra & resilience
+    P4.1 Secret rotation runbook                  :p4a, 2026-08-18, 3d
+    P4.2 Indexer ILM + disk budget                :p4b, after p4a, 3d
+    P4.3 Nightly Wazuh backup + restore drill     :p4c, after p4a, 4d
+    P4.4 HA Wazuh manager on darth (cluster)      :p4d, after p4c, 5d
+
+    section Phase 5 — Self-improvement
+    P5.1 LLM narrative eval set (20 rows)         :p5a, after p2e, 3d
+    P5.2 Incident→playbook auto-draft             :p5b, after p3a, 4d
+    P5.3 OpenClaw /soc skill                      :p5c, after p4b, 4d
+    P5.4 Quarterly fire drill automation           :p5d, after p5a, 2d
+
+    section Phase 6 — Polish (stretch)
+    P6.1 Slack/Telegram bridge                   :p6a, after p5c, 4d
+    P6.2 Per-host morning status page             :p6b, after p5a, 3d
+    P6.3 Geo-enrichment on brute-force            :p6c, after p5c, 4d
+```
+
+---
+
+## Phase 1 — Close the basics (2026-08-05 → 2026-08-11) 🔴‼️
+
+**Exit criteria:** every real L≥12 alert produces an email within 60 s; every morning has a status email even when zero highs.
+
+### Task 1.1 — Darth enrollment (currently dead)
+- [ ] **1.1.1** Install `wazuh-agent` on darth (10.0.0.114). Method: `apt-get install wazuh-agent=4.14.1-1` after adding the Wazuh 4.x repo.
+- [ ] **1.1.2** Run `manage_agents -i` on darth, generate key. Or `curl -sk -u "wazuh-wui:<pw>" "https://192.168.1.106:55000/agents?status=never_connected"` to see darth's pending id (002).
+- [ ] **1.1.3** Run `agent-auth -m thing1:1514` on darth (LAN preferred over Tailscale to avoid IPv6 weirdness).
+- [ ] **1.1.4** Verify: `agents?id=002&select=lastKeepAlive,status` returns `lastKeepAlive` within 60 s and `status=active`.
+- [ ] **1.1.5** If darth can't reach thing1:1514 over LAN, fall back to Tailscale `100.94.13.51:1514` and document the choice.
+- [ ] **1.1.6** Add a small **agentic_soc_dashboard** HTML page (or extend the OpenClaw `/soc` skill) showing all 6 agents status (last_keepalive, IP, alert count today).
+- **Acceptance:** darth shows up in the dashboard with a recent last_keepalive; alert count for darth goes up after running `benign_ssh_bruteforce_test.py` against it.
+
+### Task 1.2 — Real-time alert → SOC pipeline
+- [ ] **1.2.1** Read `agentic_ai/agents/cyber/soc.py` and confirm `SecurityOperationsAgent.ingest_wazuh_alert()` exists. (Confirm: `M agentic_ai/agents/cyber/soc.py` already in working tree from 2026-08-03 — adds `description` param. Don't break it.)
+- [ ] **1.2.2** Modify `/home/wez/wazuh-stack/integrations/agentic-soc-send.py` so that after mailing the alert, it also calls a local endpoint (HTTP POST to `127.0.0.1:8089/soc/ingest`) carrying the alert JSON. The endpoint is the OpenClaw skill below.
+- [ ] **1.2.3** Add a tiny OpenClaw skill at `/home/wez/.openclaw/workspace/skills/soc-ingest/` exposing `POST /ingest` that calls `SecurityOperationsAgent.ingest_wazuh_alert()` and returns 200 OK + the new incident id.
+- [ ] **1.2.4** Make sure the Wazuh manager container can reach the host: in `run-manager.sh` add `--add-host=host.docker.internal:host-gateway` so `host.docker.internal` resolves to the bridge interface. Update `agentic-soc-send.py` to POST there.
+- [ ] **1.2.5** Test with a synthetic alert (already done today). Verify `security_alerts` and `incidents` collections in the local SOC DB get a new row.
+- [ ] **1.2.6** Make sure **incident creation** also pings a webhook (mail gateway, dashboard websocket) so the dashboard updates in real-time.
+- [ ] **1.2.7** Add latency instrumentation: from `agentic-soc-send.py` to SOC ingest, log `event_latency_seconds`; alert if > 30 s.
+- **Acceptance:** firing the SSH brute-force test produces an email **and** an `IncidentReport` row in the SOC DB within ~30 s of the alert firing.
+
+### Task 1.3 — "Clean morning" status email
+- [ ] **1.3.1** Open `/home/wez/bin/wazuh-morning-highlights.sh`. Locate the `if [[ "$TOTAL" == "0" ]]` early-exit block.
+- [ ] **1.3.2** Replace it with: still log-rolling, still always save snapshot, but **always send a brief email** with subject `[Wazuh morning YYYY-MM-DD] GREEN — 0 high alerts` (or YELLOW/RED based on count).
+- [ ] **1.3.3** Test: temporarily lower threshold to 0 to force a populated summary, then restore to 10.
+- **Acceptance:** on a no-highs day, an email still arrives at 08:00 UTC with the status word in the subject.
+
+### Task 1.4 — Selftest on morning-highlights cron
+- [ ] **1.4.1** Add a pre-send selftest in `wazuh-morning-highlights.sh`: try the indexer query first; if it fails (timeout, auth, no hits where there should be), send an email with subject `[Wazuh morning FAILURE] selftest: <reason>` and **exit non-zero** so the cron sends the alert path.
+- [ ] **1.4.2** Add the same selftest to `wazuh-daily-digest.sh`.
+- [ ] **1.4.3** Document the failure-mode in the cron comment block.
+- **Acceptance:** deliberately break the indexer password; verify a "selftest FAILED" email arrives within 60 s.
+
+### Task 1.5 — Threshold tuning
+- [ ] **1.5.1** In `/home/wez/wazuh-stack/config/wazuh_cluster/wazuh_manager.conf` change `<level>10</level>` to `<level>12</level>` inside the `<integration name="agentic-soc-send">` block. (Keep cron summaries at 10.)
+- [ ] **1.5.2** `bash /home/wez/bin/wazuh-stack/run-manager.sh` to restart the manager.
+- [ ] **1.5.3** Verify a level-12 alert still fires the email; level-10 does not.
+- **Acceptance:** reducing noise from 500 → ~50 alerts/day in the live mail path while keeping the morning summary informative.
+
+---
+
+## Phase 2 — Smarter agent (2026-08-12 → 2026-08-18)
+
+**Exit criteria:** the daily digest groups by MITRE tactic; correlated events roll up; weekly digest exists.
+
+### Task 2.1 — Per-rule playbook KB (first 5)
+- [ ] **2.1.1** Identify the top 5 most-firing rules in the last 30 days from the indexer: `SELECT rule.id, rule.description, count(*) FROM wazuh-alerts-* GROUP BY rule.id ORDER BY count(*) DESC LIMIT 5`.
+- [ ] **2.1.2** Create `/home/wez/.openclaw/workspace/agentic-ai/knowledge/wazuh/playbooks/<rule_id>.md` for each. Template:
+  ```
+  # Rule <id>: <description>
+  **What it means:** one paragraph, plain English.
+  **Severity rationale:** why this level?
+  **Investigation:** 3–5 bullet steps.
+  **Remediation:** 2–4 bullet steps.
+  **References:** CVE / MITRE links.
+  ```
+- [ ] **2.1.3** Create `agentic_ai/agents/cyber/playbook_loader.py` with `load_playbook(rule_id) -> Optional[str]`.
+- [ ] **2.1.4** In `agentic_ai/agents/cyber/soc.py`, modify `narrate_alert()` to inject the playbook text into the LLM system prompt when present.
+- [ ] **2.1.5** Write 5 starter playbooks: rule 503 (agent started), 5760 (sshd auth failed), 5763 (sshd brute force), 5551 (PAM brute force), 5503 (login session opened).
+- [ ] **2.1.6** Add a `playbook_missing` log line when a rule fires that has no playbook; queue it for the agent to draft one.
+- **Acceptance:** digest narrative for rule 5763 mentions "investigation step: check `last -n 50` for the source IP" or similar.
+
+### Task 2.2 — MITRE ATT&CK mapping
+- [ ] **2.2.1** In `/home/wez/bin/wazuh-daily-digest.sh` and `wazuh-morning-highlights.sh`, extend the `_source` list to include `rule.mitre.tactic`, `rule.mitre.technique`.
+- [ ] **2.2.2** In the same scripts, build a `tactic_counts` counter alongside `by_level` and render it in the email body.
+- [ ] **2.2.3** Add a "MITRE ATT&CK coverage" section between the severity distribution and the top rules.
+- **Acceptance:** the daily email contains a section like `MITRE tactics: Initial Access 3, Credential Access 12, Persistence 1, …`.
+
+### Task 2.3 — Alert correlation / dedup
+- [ ] **2.3.1** Write `agentic_ai/infrastructure/alert_correlator.py` with `correlate(alerts: list[dict]) -> list[dict]` that:
+  - groups by `(agent.id, data.srcip, 5-min bucket)`,
+  - keeps the highest-severity alert per group,
+  - sums the level, attaches `related_rule_ids: list[str]`.
+- [ ] **2.3.2** Hook it into `wazuh-daily-digest.sh` between the indexer query and the snapshot save.
+- [ ] **2.3.3** In the email body, add a "Composite incidents" section showing the correlated groups with their summed severity.
+- [ ] **2.3.4** Make sure the **morning summary uses the same correlator** so a brute-force storm produces 1 incident, not 12.
+- **Acceptance:** with 500 alerts/day, the digest shows ~20 composite incidents but the totals still match the raw alert count.
+
+### Task 2.4 — Suppression of known-noisy rules
+- [ ] **2.4.1** Pull the top 10 rules by count over the last 7 days from the indexer.
+- [ ] **2.4.2** Create `/home/wez/.openclaw/workspace/agentic-ai/config/soc_suppression.yaml` with format:
+  ```yaml
+  - rule_id: 503
+    description: "Wazuh agent started"  # noise, agent restart storms
+    suppress_in_digest: true
+    suppress_in_morning: true
+    suppress_for_agents: []   # empty = all
+    until: 2026-09-04
+  ```
+- [ ] **2.4.3** Loader: `agentic_ai/agents/cyber/suppression.py` with `should_suppress(rule_id, agent, channel) -> bool`.
+- [ ] **2.4.4** Both digest scripts consult the suppression list before counting toward totals.
+- **Acceptance:** the digest's severity distribution is no longer dominated by `503 Wazuh agent started`.
+
+### Task 2.5 — Weekly digest
+- [ ] **2.5.1** Copy `wazuh-daily-digest.sh` → `wazuh-weekly-digest.sh`.
+- [ ] **2.5.2** Change the time window from 24 h → 168 h.
+- [ ] **2.5.3** Add a trend section: `last week vs this week` total alerts by level, by agent, by rule.
+- [ ] **2.5.4** Add a cron entry: `0 9 * * 1 /home/wez/bin/wazuh-weekly-digest.sh` (Monday 9:00 UTC).
+- **Acceptance:** Monday 9 AM UTC, the weekly digest arrives showing last-week vs this-week trend.
+
+---
+
+## Phase 3 — Close the loop (2026-08-19 → 2026-08-26)
+
+**Exit criteria:** replies to `reports@bedimsecurity.com` are processed; auto-remediation is in dry-run mode with a 30-day safety record.
+
+### Task 3.1 — Reply handling for `reports@`
+- [ ] **3.1.1** Write `agentic_ai/infrastructure/mailcow_imap.py` exposing `fetch_unread_from(sender_allowlist: list[str]) -> list[Mail]`.
+- [ ] **3.1.2** Add `agentic_ai/agents/cyber/soc_email.py` with `triage_inbound_email(mail) -> Optional[Reply]`.
+- [ ] **3.1.3** New script `/home/wez/bin/wazuh-mailbox-watcher.sh` runs every 30 s via systemd timer (not cron, since we need seconds-resolution).
+- [ ] **3.1.4** Allowlist: `wlrobbi@gmail.com`, `*@stsgym.com`, `*@bedimsecurity.com`. Anything else: move to `INBOX/_review` flag, do not auto-reply.
+- [ ] **3.1.5** Reply template: 3–5 sentence answer, signed `— Bedim Security LLC SOC`, log to the incident timeline if the email matches a recent incident.
+- **Acceptance:** sending `wlrobbi@gmail.com → reports@bedimsecurity.com` with a question about incident X gets a coherent reply within 30 s.
+
+### Task 3.2 — Auto-remediation scaffolding + safety
+- [ ] **3.2.1** Define `agentic_ai/agents/cyber/remediation.py` with:
+  ```python
+  class RemediationAction:
+    name: str
+    risk: Literal["low","medium","high","critical"]
+    commands: list[str]           # idempotent shell commands
+    rollback: list[str]           # how to undo
+    requires_confirmation: bool
+    confidence_threshold: float   # 0.0–1.0
+  ```
+- [ ] **3.2.2** Action registry. All actions default to `requires_confirmation=True`.
+- [ ] **3.2.3** Confirmation flow: the agent emails the action proposal to the recipient; recipient replies `confirm: yes <token>`; on receipt, the agent executes.
+- [ ] **3.2.4** Audit log: every action and every confirmation in `/home/wez/.openclaw/workspace/memory/remediation-audit.jsonl`, mode 600.
+- [ ] **3.2.5** Dry-run mode flag in the env file: `WAZUH_REMEDIATION_MODE=dry-run` (default). Switch to `enforce` only after a 30-day clean dry-run period.
+- **Acceptance:** a synthetic incident that *would* trigger `iptables -I INPUT -s <ip> -j DROP` produces an email "do you want to block IP x.x.x.x?" with `confirm: yes <token>`. No execution happens.
+
+### Task 3.3 — Auto-pattern 1: brute-force block
+- [ ] **3.3.1** Add `BruteForceBlock` action in `remediation.py`. Targets Wazuh rules 5763, 5720, 5551 (configurable).
+- [ ] **3.3.2** Pre-flight: check the source IP is not on a known-good list (`agentic_ai/config/known_good_ips.yaml`).
+- [ ] **3.3.3** Commands: `iptables -I INPUT -s <ip> -j DROP` and persist via `iptables-save` or `netfilter-persistent`.
+- [ ] **3.3.4** Rollback: `iptables -D INPUT -s <ip> -j DROP`. Auto-expire after 24 h (cron reaper).
+- [ ] **3.3.5** Wire into the SOC pipeline: when an incident of severity ≥ high has all rules in the brute-force set, propose the block.
+- **Acceptance:** a deliberate synthetic brute-force from a fresh IP triggers an email with the block proposal. The block is **not** executed (dry-run mode). After 30 days, switch to enforce.
+
+### Task 3.4 — Auto-pattern 2: CVE host quarantine
+- [ ] **3.4.1** Add `HostQuarantine` action. Target: any rule with `rule.cve` populated.
+- [ ] **3.4.2** Mechanism: Wazuh active-response `firewall-drop` from the manager → blocks outbound from the agent for N minutes (configurable, default 60 min).
+- [ ] **3.4.3** Rollback: de-register the active-response, allow traffic again.
+- [ ] **3.4.4** Confidence floor: 0.85 from the LLM (model must say "this is a real CVE exploit attempt, not a noisy signature").
+- **Acceptance:** a synthetic CVE alert triggers a quarantine-proposal email; rollback is verified.
+
+---
+
+## Phase 4 — Infra & resilience (2026-08-27 → 2026-09-08)
+
+**Exit criteria:** secret rotation runs quarterly without ceremony; backups restore in ≤ 30 min; Wazuh survives one node going down.
+
+### Task 4.1 — Secret rotation runbook
+- [ ] **4.1.1** Author `/home/wez/.openclaw/workspace/agentic-ai/ops/rotate-secrets.sh`.
+- [ ] **4.1.2** It rotates, in order:
+  - Wazuh `wazuh-wui` API password (push to manager, update `secrets/wazuh-agent-keys.env`).
+  - `reports@bedimsecurity.com` mailbox password (mailcow API).
+  - GitLab group-bot tokens (manual step — document why).
+  - Cloudflare API token (manual step — document why).
+- [ ] **4.1.3** Update `MEMORY.md` with new creds and the timestamp.
+- [ ] **4.1.4** Add a `~/last-rotation.txt` stamp.
+- [ ] **4.1.5** Quarterly cron reminder: 1st of Jan/Apr/Jul/Oct at 09:00 UTC, email Wes.
+- **Acceptance:** running the script fresh on a clean env produces no errors; all subsequent cron entries still work.
+
+### Task 4.2 — Indexer retention / disk budget
+- [ ] **4.2.1** Apply an ILM policy on the OpenSearch indexer: 7-day hot, 30-day warm, 365-day cold, then delete. Either via the `/_ilm/policy/wazuh-alerts` API or the dashboard UI.
+- [ ] **4.2.2** Cron `0 * * * * /home/wez/bin/wazuh-indexer-disk-check.sh` that emails if indexer disk usage > 80%.
+- [ ] **4.2.3** Document in `agentic-ai/ops/wazuh-indexer-retention.md`.
+- **Acceptance:** the indexer self-cleans after 1 year; an alert fires when disk exceeds 80%.
+
+### Task 4.3 — Nightly Wazuh backup + restore drill
+- [ ] **4.3.1** `agentic-ai/ops/backup-wazuh.sh` runs nightly at 03:00 UTC, tars:
+  - `/home/wez/wazuh-stack/config/`
+  - `/home/wez/.openclaw/workspace/secrets/wazuh-agent-keys.env`
+  - `docker run --rm wazuh/wazuh-indexer:4.14.1` snapshot of the index.
+- [ ] **4.4.2** Upload to mailcow self-mail: `Subject: Wazuh backup YYYY-MM-DD`, attachment via `mutt -a backup.tar.gz`.
+- [ ] **4.4.3** Quarterly restore drill: delete a sample alert index, restore from a backup, verify it loads.
+- **Acceptance:** backups arrive in `reports@bedimsecurity.com` (loop folder) every night; a restore takes < 30 min.
+
+### Task 4.4 — HA Wazuh manager on darth
+- [ ] **4.4.1** Provision darth with `wazuh-manager` (same 4.14.1 image).
+- [ ] **4.4.2** Set up cluster mode in `ossec.conf` on both managers (`<cluster>` block, shared key).
+- [ ] **4.4.3** All agents enrolled to **both** managers via `<client><server><address>thing1:1514</address></server><server><address>darth:1514</address></server>` block.
+- [ ] **4.4.4** Verify: kill the manager container on thing1; agents re-connect to darth; alerts still flow.
+- **Acceptance:** killing one manager container doesn't drop alert visibility; restoring it re-syncs state within ~60 s.
+
+---
+
+## Phase 5 — Self-improvement (2026-09-09 → 2026-09-15)
+
+**Exit criteria:** the LLM narrative quality is measured and trending up; closed incidents auto-generate playbooks.
+
+### Task 5.1 — LLM narrative eval set
+- [ ] **5.1.1** Author `/home/wez/.openclaw/workspace/agentic-ai/tests/soc_narratives.json` — 20 rows. Each row: `{alert_json, expected_themes: [...], forbidden_phrases: [...], reference_narrative: "..."}`.
+- [ ] **5.1.2** Build the scorer: for each row, run the agent, score 1 if all `expected_themes` are present in the narrative and 0 if any `forbidden_phrases` are present. Total /20 = score.
+- [ ] **5.1.3** Add to `.gitlab-ci.yml`: weekly run, post score to MR comments.
+- [ ] **5.1.4** Track scores over time; alert if a regression drops score > 10%.
+- **Acceptance:** the eval set exists, runs cleanly locally with `pytest tests/test_soc_narratives.py`, and CI is wired.
+
+### Task 5.2 — Incident → playbook auto-draft
+- [ ] **5.2.1** Hook into `SecurityOperationsAgent.mark_resolved(incident_id)`.
+- [ ] **5.2.2** After resolution, call LLM with the incident timeline and ask: "Write a 1-page runbook describing the investigation and remediation steps, suitable for reuse on similar future incidents."
+- [ ] **5.2.3** Save draft to `agentic-ai/knowledge/incidents/YYYY-MM-DD-<id>.md`.
+- [ ] **5.2.4** Friday 16:00 UTC digest: email Wes a list of new drafts to review.
+- [ ] **5.2.5** Wes approves/edits → file moves to `playbooks/` if it matches a rule_id.
+- **Acceptance:** after marking an incident resolved, a draft playbook exists within ~60 s.
+
+### Task 5.3 — OpenClaw `/soc` skill
+- [ ] **5.3.1** Create `/home/wez/.openclaw/workspace/skills/soc/` with `SKILL.md`, `qna.py`, `agentic_ai_query.py`.
+- [ ] **5.3.2** Commands: `/soc status`, `/soc today`, `/soc last <N>`, `/soc search <query>`, `/soc high`, `/soc by-agent <name>`.
+- [ ] **5.3.3** Backed by the same indexer queries the digest uses.
+- [ ] **5.3.4** Add `soc-ingest` skill from 1.2.3 here too if it makes sense.
+- **Acceptance:** `/soc today` returns a markdown summary of today's alerts within 5 s.
+
+### Task 5.4 — Quarterly fire drill automation
+- [ ] **5.4.1** Cron `0 12 1 */3 * /home/wez/bin/wazuh-fire-drill.sh` (every 3 months, on the 1st at noon UTC).
+- [ ] **5.4.2** Runs `benign_ssh_bruteforce_test.py` against all agents in turn.
+- [ ] **5.4.3** Reports pass/fail to `wlrobbi@gmail.com`.
+- [ ] **5.4.4** Updates a `fire-drill-history.md` log.
+- **Acceptance:** every quarter, an email arrives confirming the SOC still catches live attacks.
+
+---
+
+## Phase 6 — Polish (stretch, after 2026-09-15)
+
+### Task 6.1 — Slack/Telegram bridge
+- [ ] **6.1.1** New env vars in `reports-bedimsecurity-mailbox.env`: `SLACK_WEBHOOK_URL`, `TELEGRAM_BOT_TOKEN`.
+- [ ] **6.1.2** Both digest scripts also POST a Slack message + Telegram message with the same body.
+- [ ] **6.1.3** Per-severity rules: L≥13 → both, L≥10 → Slack only.
+
+### Task 6.2 — Per-host morning status page
+- [ ] **6.2.1** `agentic-ai/scripts/soc/host_status.py` queries the indexer for each known agent's last 24 h.
+- [ ] **6.2.2** Render an HTML table and write to `/var/www/soc/hosts-<date>.html`.
+- [ ] **6.2.3** Link in the daily digest email.
+
+### Task 6.3 — Geo-enrichment on brute-force
+- [ ] **6.3.1** Use MaxMind GeoLite2 (free, requires signup) to map source IPs to countries.
+- [ ] **6.3.2** Render a tiny SVG world map in the digest email.
+- [ ] **6.3.3** Highlight countries with first-time-observed traffic.
+
+---
+
+## Test plans
+
+### Unit tests
+- `tests/test_wazuh_soc_auto_escalate.py` — already in working tree, locks in auto-escalate for L≥10.
+- `tests/test_soc_narratives.py` — eval set from 5.1.
+- `tests/test_soc_suppression.py` — suppression filter.
+- `tests/test_soc_correlator.py` — correlation correctness.
+- `tests/test_remediation.py` — dry-run mode never executes.
+- `tests/test_mailbox_watcher.py` — allowlist filtering.
+
+### Integration tests (opt-in, like `test_ssh_bruteforce_e2e.py`)
+- `tests/integration/test_real_alert_to_soc.py` — fire a real alert, verify the SOC pipeline picks it up within 60 s.
+- `tests/integration/test_real_alert_to_email.py` — fire a real alert, verify email lands in `reports@bedimsecurity.com` inbox within 60 s.
+- `tests/integration/test_remediation_proposal.py` — fire a synthetic brute-force, verify a remediation proposal is emailed.
+
+### Quarterly drills
+- **Fire drill:** run `benign_ssh_bruteforce_test.py` against each agent in turn; verify SOC catches each.
+- **Mail drill:** send a message to `reports@bedimsecurity.com`; verify the IMAP watcher picks it up and replies.
+- **Restore drill:** delete a known alert from the indexer; restore from last night's backup.
+
+---
+
+## Open questions
+
+1. **OpenClaw vs custom FastAPI for `/soc` skill** — both viable. Custom FastAPI is simpler to deploy but loses OpenClaw's natural-language plumbing. → *Default: OpenClaw skill; revisit if OpenClaw is too heavy.*
+2. **Mailcow DKIM key rotation cadence** — currently no plan. *Acceptable to leave as-is until 2027 cert renewal.*
+3. **Where to host the weekly narrative eval CI** — GitLab CI on `idm.wezzel.com`, but we have token-rotation issues there. *Tie with Phase 4.1 secret-rotation work.*
+4. **Auto-remediation target list** — first three (brute-force block, CVE quarantine, service restart). What else? *Capture from real incidents over the next 30 days.*
+
+---
+
+## Progress tracker
+
+| Phase | Status | Started | Finished | Lead |
+|---|---|---|---|---|
+| 1 — Close the basics | 🔵 in progress | 2026-08-05 | — | Ciceron |
+| 2 — Smarter agent | ⏸ pending | — | — | Ciceron |
+| 3 — Close the loop | ⏸ pending | — | — | Ciceron |
+| 4 — Infra & resilience | ⏸ pending | — | — | Ciceron |
+| 5 — Self-improvement | ⏸ pending | — | — | Ciceron |
+| 6 — Polish | ⏸ pending | — | — | Ciceron |
+
+---
+
+## Definitions / glossary
+
+- **L (level):** Wazuh alert severity. 0=noise, 3–6=low, 7–9=mid, 10–11=mid-high, 12–14=high, 15=critical.
+- **Indexer:** the OpenSearch backend that stores all Wazuh alerts (`wazuh-alerts-4.x-YYYY.MM.DD`).
+- **Manager:** the Wazuh server daemon that runs rules and the REST API.
+- **Agent:** the Wazuh client installed on each monitored host.
+- **Playbook:** a markdown note describing a rule's meaning and recommended response.
+- **Correlation key:** `(agent.id, source_ip, 5-min-window)` used to roll up bursts.
+- **Dry-run mode:** the auto-remediation subsystem emails proposals but never executes them. Default.
+- **Index:** the OpenSearch data store.
+- **Selftest:** a programmatic check that the SOC pipeline is alive; run daily as part of the digest cron.
+
+---
+
+## Files / paths cheat sheet
+
+| Path | What |
+|---|---|
+| `/home/wez/.openclaw/workspace/agentic-ai/scripts/soc/` | existing SOC scripts (RUNBOOK.md, soc_daily_report.py, benign_ssh_bruteforce_test.py) |
+| `/home/wez/.openclaw/workspace/agentic-ai/agentic_ai/agents/cyber/soc.py` | SecurityOperationsAgent (working tree has WIP from 2026-08-03) |
+| `/home/wez/.openclaw/workspace/agentic-ai/agentic_ai/infrastructure/wazuh_client.py` | WazuhIndexerClient used by everything |
+| `/home/wez/.openclaw/workspace/agentic-ai/knowledge/wazuh/playbooks/` | new — playbook KB |
+| `/home/wez/.openclaw/workspace/agentic-ai/knowledge/incidents/` | new — incident→playbook drafts |
+| `/home/wez/.openclaw/workspace/agentic-ai/config/soc_suppression.yaml` | new — suppression list |
+| `/home/wez/.openclaw/workspace/agentic-ai/ops/` | new — runbooks for backup, retention, secret rotation |
+| `/home/wez/repos/stsgym-work/docs/soc/agentic-soc-roadmap-2026-08-04.md` | the source-of-truth design doc |
+| `/home/wez/repos/stsgym-work/scripts/wazuh-integrations/` | the live mail pipeline (4 commits today) |
+| `/home/wez/bin/wazuh-{morning-highlights,daily-digest}.sh` | the cron jobs we'll keep modifying |
+
+---
+
+*Last updated:* 2026-08-04 16:50 UTC by Ciceron.
+---
+
 # KaliAgent v3: Complete Task List
 
 **Project:** Native Kali Linux Integration  
