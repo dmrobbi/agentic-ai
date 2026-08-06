@@ -392,6 +392,7 @@ class SecurityOperationsAgent(BaseAgent):
         threat_actor: Optional[ThreatActor] = None,
         affected_systems: Optional[List[str]] = None,
         affected_users: Optional[List[str]] = None,
+        description: str = "",
     ) -> Incident:
         """Create a security incident."""
         incident = Incident(
@@ -403,6 +404,7 @@ class SecurityOperationsAgent(BaseAgent):
             threat_actor=threat_actor,
             affected_systems=affected_systems or [],
             affected_users=affected_users or [],
+            description=description,
         )
 
         self.incidents[incident.incident_id] = incident
@@ -839,6 +841,125 @@ class SecurityOperationsAgent(BaseAgent):
             "soc": local,
             "wazuh_poller": poller,
         }
+
+    # ------------------------------------------------------------------
+    # SOC 1.2 (2026-08-06): Inbound IMAP reply loop
+    # ------------------------------------------------------------------
+    def triage_inbound_email(
+        self,
+        message_id: str,
+        from_addr: str,
+        subject: str,
+        body: str,
+        in_reply_to: Optional[str] = None,
+        references: Optional[List[str]] = None,
+        headers: Optional[Dict[str, str]] = None,
+    ) -> Dict[str, Any]:
+        """Process one inbound email addressed to a SOC inbox (reports@).
+
+        Behaviour (matches the roadmap spec):
+          - Allowlist check on from_addr. Non-allowlisted senders
+            are returned with action="review_later" so the watcher
+            can move them to a holding folder.
+          - If ``in_reply_to`` matches a recent incident_id we sent out
+            (see module-level _RECENT_OUTBOUND populated by
+            record_outbound_subject) then this is a thread reply; the
+            watcher should call the LLM with incident context for a
+            coherent answer.
+          - Otherwise it's a free-form question → action="respond"
+            (the watcher will call the LLM with general SOC context).
+
+        This method does NOT call the LLM itself — that keeps the SOC
+        agent free of external dependencies. The watcher is responsible
+        for actually invoking Ollama with the returned context and
+        sending the reply.
+
+        Returns a dict with: {action, matched_incident_id?, from_allowed,
+        reason}.
+        """
+        from_re = (from_addr or "").lower()
+
+        # Allowlist: explicit addresses OR @domain
+        at = from_re.rfind("@")
+        domain = from_re[at + 1:] if at >= 0 else ""
+        from_allowed = (
+            from_re in _ALLOWLIST_ADDRESSES
+            or domain in _ALLOWLIST_DOMAINS
+        )
+
+        matched_incident_id: Optional[str] = None
+        reply_to_incident = False
+        ref_candidates: List[str] = []
+        if in_reply_to:
+            ref_candidates.append(in_reply_to)
+        if references:
+            ref_candidates.extend(references)
+        for ref in ref_candidates:
+            if not ref:
+                continue
+            inner = ref.strip().lstrip("<").rstrip(">")
+            tag = inner.split("@", 1)[0]
+            if tag in _RECENT_OUTBOUND:
+                matched_incident_id = tag
+                reply_to_incident = True
+                break
+
+        if not from_allowed:
+            return {
+                "action": "review_later",
+                "from_allowed": False,
+                "reason": f"sender {from_re!r} not in allowlist",
+                "message_id": message_id,
+            }
+
+        if reply_to_incident:
+            return {
+                "action": "respond_thread",
+                "from_allowed": True,
+                "matched_incident_id": matched_incident_id,
+                "reason": f"reply to incident {matched_incident_id}",
+                "message_id": message_id,
+            }
+
+        return {
+            "action": "respond",
+            "from_allowed": True,
+            "matched_incident_id": None,
+            "reason": "allowlisted sender, not part of an existing thread",
+            "message_id": message_id,
+        }
+
+    def record_outbound_subject(self, incident_id: str, message_id: str) -> None:
+        """Record that an incident was emailed out, so a future reply can
+        be cross-referenced. Called by the SMTP path or by the watcher
+        right after sending a reply.
+        """
+        if not incident_id or not message_id:
+            return
+        _RECENT_OUTBOUND[incident_id] = message_id
+        # Evict oldest by insertion order if we exceed the cap. dicts in
+        # Python 3.7+ preserve insertion order, so this is a sane LRU-ish.
+        while len(_RECENT_OUTBOUND) > _RECENT_OUTBOUND_MAX:
+            oldest = next(iter(_RECENT_OUTBOUND))
+            _RECENT_OUTBOUND.pop(oldest, None)
+
+
+# ---------------------------------------------------------------------------
+# SOC 1.2 module-level state
+# ---------------------------------------------------------------------------
+# Allowlist for inbound triage. Anyone else → review_later folder.
+_ALLOWLIST_ADDRESSES = frozenset({
+    "wlrobbi@gmail.com",
+})
+_ALLOWLIST_DOMAINS = frozenset({
+    "stsgym.com",
+    "bedimsecurity.com",
+})
+
+# incident_id (string) -> message_id of the outbound email we sent for it.
+# Bounded size; LRU-ish via insert-order overflow drop to keep memory safe.
+_RECENT_OUTBOUND: "Dict[str, str]" = {}
+_RECENT_OUTBOUND_MAX = 1024
 
 
 def get_capabilities() -> Dict[str, Any]:
