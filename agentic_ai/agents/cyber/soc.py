@@ -111,6 +111,21 @@ class SecurityAlert:
     assigned_to: Optional[str] = None
     investigation_notes: List[str] = field(default_factory=list)
     related_alerts: List[str] = field(default_factory=list)
+    # SOC A1 (2026-08-06): agent-enriched narrative fields. Populated by
+    # the wazuh integration's maybe_enrich() via the openclaw agent
+    # harness. None means "no narrative was generated" (the email path
+    # handles the fallback).
+    agentic_narrative: Optional[str] = None
+    agentic_run_id: Optional[str] = None
+    agentic_model: Optional[str] = None
+    agentic_duration_ms: Optional[int] = None
+    agentic_narrative_error: Optional[str] = None
+    # SOC Track B / B1 (2026-08-07): agent-decision fields populated by
+    # wazuh-integrations/agentic-soc-send.py's maybe_decide() via the
+    # soc-triage decision tool. The dict shape mirrors the Decision
+    # dataclass from scripts/soc/soc_decision.py.
+    agentic_decision: Optional[Dict[str, Any]] = None
+    agentic_decision_error: Optional[str] = None
 
 
 @dataclass
@@ -267,6 +282,19 @@ class SecurityOperationsAgent(BaseAgent):
         source_ip: Optional[str] = None,
         dest_ip: Optional[str] = None,
         user: Optional[str] = None,
+        # SOC A1 (2026-08-06): pass-through agentic narrative fields
+        # populated by wazuh-integrations/agentic-soc-send.py via the
+        # openclaw agent harness. Optional; None means no narrative was
+        # produced (the email path still fires).
+        agentic_narrative: Optional[str] = None,
+        agentic_run_id: Optional[str] = None,
+        agentic_model: Optional[str] = None,
+        agentic_duration_ms: Optional[int] = None,
+        agentic_narrative_error: Optional[str] = None,
+        # SOC Track B / B1 (2026-08-07): pass-through decision dict populated
+        # by wazuh-integrations/agentic-soc-send.py's maybe_decide().
+        agentic_decision: Optional[Dict[str, Any]] = None,
+        agentic_decision_error: Optional[str] = None,
     ) -> SecurityAlert:
         """Create a security alert."""
         alert = SecurityAlert(
@@ -281,6 +309,13 @@ class SecurityOperationsAgent(BaseAgent):
             source_ip=source_ip,
             dest_ip=dest_ip,
             user=user,
+            agentic_narrative=agentic_narrative,
+            agentic_run_id=agentic_run_id,
+            agentic_model=agentic_model,
+            agentic_duration_ms=agentic_duration_ms,
+            agentic_narrative_error=agentic_narrative_error,
+            agentic_decision=agentic_decision,
+            agentic_decision_error=agentic_decision_error,
         )
 
         self.alerts[alert.alert_id] = alert
@@ -751,6 +786,9 @@ class SecurityOperationsAgent(BaseAgent):
             severity_enum = AlertSeverity(kw["severity"])
         except ValueError:
             severity_enum = AlertSeverity.INFORMATIONAL
+        # SOC A1 (2026-08-06): pull agentic narrative fields off the
+        # enriched alert dict (set by maybe_enrich() in the wazuh
+        # integration) so the realtime SOC JSONL record carries them.
         alert = self.create_alert(
             title=kw["title"][:200],
             description=kw["description"][:500],
@@ -759,6 +797,18 @@ class SecurityOperationsAgent(BaseAgent):
             rule_name=str(kw["rule_name"]),
             affected_asset=str(kw["affected_asset"])[:200],
             source_ip=kw.get("source_ip"),
+            agentic_narrative=wazuh_alert.get("agentic_narrative"),
+            agentic_run_id=wazuh_alert.get("agentic_run_id"),
+            agentic_model=wazuh_alert.get("agentic_model"),
+            agentic_duration_ms=wazuh_alert.get("agentic_duration_ms"),
+            agentic_narrative_error=wazuh_alert.get("agentic_narrative_error"),
+            # SOC Track B / B1 (2026-08-07): pass the decision through.
+            # The realtime server doesn't run soc-triage itself — that
+            # happens in agentic-soc-send.py's maybe_decide() — but
+            # the decision dict must survive the JSONL write so the
+            # D1 report, B5 curator, and audit log can find it.
+            agentic_decision=wazuh_alert.get("agentic_decision"),
+            agentic_decision_error=wazuh_alert.get("agentic_decision_error"),
         )
         # Auto-escalate high/critical to incidents
         if severity_enum in (AlertSeverity.HIGH, AlertSeverity.CRITICAL):

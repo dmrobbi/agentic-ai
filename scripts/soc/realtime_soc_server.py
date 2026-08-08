@@ -81,6 +81,13 @@ def _safe_asdict(obj) -> Dict[str, Any]:
             "alert_id", "incident_id", "title", "description", "severity",
             "status", "source", "rule_name", "affected_asset", "source_ip",
             "timestamp", "detected_at", "category",
+            # SOC A1 (2026-08-06): agentic narrative fields populated by
+            # wazuh-integrations/agentic-soc-send.py via the openclaw
+            # agent harness. Without these the JSONL drops them.
+            "agentic_narrative", "agentic_run_id", "agentic_model",
+            "agentic_duration_ms", "agentic_narrative_error",
+            # SOC Track B / B1 (2026-08-07): agent decision fields.
+            "agentic_decision", "agentic_decision_error",
         )}
 
 

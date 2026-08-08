@@ -39,4 +39,12 @@ htmlcov/
 
 # SQLite databases
 *.db
+*.sqlite
 *.sqlite3
+# SOC runtime state (NOT source)
+data/*.jsonl
+data/*.offset
+data/*.bak.*
+
+# Recorded demo artifacts (regenerate per session; see RUNBOOK for how to capture)
+data/demos/

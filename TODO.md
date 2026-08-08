@@ -1,5 +1,17 @@
 # Agentic AI SOC — Build a Fully Automated & Intelligent SOC
 
+> **🚨 SUPERSEDED 2026-08-07 17:45 UTC.** This document is kept for
+> provenance. The live task tracker is
+> [`/home/wez/.openclaw/workspace/memory/soc-agentic-tasks-2026-08-06.md`](../memory/soc-agentic-tasks-2026-08-06.md)
+> (Tracks A–E, 23 tasks). The cross-project index is
+> [`/home/wez/.openclaw/workspace/OPEN-ITEMS.md`](../OPEN-ITEMS.md).
+> The master roadmap (with diagrams) is
+> `stsgym-work/docs/soc/agentic-soc-agentic-2026-08-06.md`.
+>
+> Status as of 2026-08-07 13:50 UTC: **Track B + C1 SHIPPED** on
+> `feature/soc-track-B` in `crab-meat-repos/stsgym-work`. Other tracks
+> (A, D, E, C2/C3/C4) live in the new tracker.
+
 > **Project:** Autonomous SOC on top of Wazuh 4.14.1
 > **Owner:** Wesley Robbins
 > **Driver:** Ciceron

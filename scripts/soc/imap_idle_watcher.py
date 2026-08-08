@@ -314,7 +314,7 @@ def send_reply(
 
 
 # ---------------------------------------------------------------------------
-# Ollama prompt
+# LLM helper (SOC A1: now goes through openclaw agent harness)
 # ---------------------------------------------------------------------------
 def prompt_ollama(
     system: str,
@@ -323,13 +323,72 @@ def prompt_ollama(
     timeout: float = OLLAMA_PROMPT_TIMEOUT,
     base_url: Optional[str] = None,
 ) -> Optional[str]:
-    """Invoke Ollama directly via HTTP (the openclaw `ask` subcommand
-    is not present in 2026.7.1). Returns the assistant message text or
-    None on failure.
+    """SOC A1 (2026-08-06): routed through llm_runtime.call_llm.
 
-    Base URL is OLLAMA_HOST env or http://127.0.0.1:11434. The model
-    id is the Ollama-local name (e.g. 'minimax-m3:cloud', not the
-    openclaw-shaped 'ollama/...' prefix).
+    Default runtime is "openclaw" using the `soc-replier` agent id.
+    Falls back to direct Ollama HTTP when `SOC_LLM_RUNTIME=ollama`
+    is forced (legacy / tests).
+
+    Returns the assistant message text or None on failure.
+    """
+    runtime = os.environ.get("SOC_LLM_RUNTIME", "openclaw").lower()
+    agent_id = os.environ.get("SOC_REPLIER_AGENT", "soc-replier")
+    try:
+        from llm_runtime import call_llm  # type: ignore
+    except ImportError:
+        # Fallback to direct Ollama HTTP if llm_runtime isn't importable
+        # (e.g. running the watcher before llm_runtime is deployed).
+        candidates = [
+            "/home/wez/repos/stsgym-work/scripts/soc/llm_runtime.py",
+        ]
+        import importlib.util
+        loaded = False
+        for c in candidates:
+            if os.path.exists(c):
+                spec = importlib.util.spec_from_file_location("llm_runtime", c)
+                mod = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(mod)
+                sys.modules["llm_runtime"] = mod
+                loaded = True
+                break
+        if not loaded:
+            # Last-resort: inline Ollama HTTP path (preserves prior
+            # behaviour if llm_runtime can't be located).
+            return _ollama_http_fallback(
+                system, user, model=model, timeout=timeout, base_url=base_url,
+            )
+        from llm_runtime import call_llm  # type: ignore
+
+    resp = call_llm(
+        runtime=runtime,
+        agent_id=agent_id,
+        message=user,
+        system=system,
+        timeout=timeout,
+        model=model,
+        base_url=base_url,
+    )
+    if resp.ok and resp.text:
+        return resp.text
+    _log(
+        "WARN",
+        f"llm_runtime call failed (runtime={resp.runtime} "
+        f"agent={agent_id}): {resp.error}",
+    )
+    return None
+
+
+def _ollama_http_fallback(
+    system: str,
+    user: str,
+    *,
+    model: str,
+    timeout: float,
+    base_url: Optional[str],
+) -> Optional[str]:
+    """Inline Ollama HTTP path used only when llm_runtime is unavailable.
+    Preserved so the watcher still works in environments that don't yet
+    have the helper deployed.
     """
     base_url = (
         base_url
@@ -354,7 +413,7 @@ def prompt_ollama(
         out = (data.get("response") or "").strip()
         return out or None
     except Exception as e:
-        _log("WARN", f"ollama http call failed: {e!r}")
+        _log("WARN", f"ollama http fallback failed: {e!r}")
         return None
 
 
