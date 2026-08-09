@@ -124,76 +124,79 @@ def run_pipeline_selftest(
     attempts: int = 10,
     timeout_sec: int = 90,
 ) -> Dict[str, Any]:
-    """Invoke the benign SSH brute-force end-to-end test as a self-check.
+    """Invoke the SOC pipeline self-test as a smoke check.
 
-    Runs the script in a subprocess (so we share its exact logic) and parses
-    the structured output. Returns a dict with:
+    Delegates to `soc_pipeline_selftest.py` (the synthetic-injection
+    harness installed 2026-08-09 by Ciceron). That harness uses the
+    *real* integration daemon in the Wazuh manager container, which
+    is the only thing the SOC actually depends on — it doesn't need
+    password auth on any host.
+
+    Returns a dict with:
       - ok (bool): did it end-to-end succeed?
       - rc (int): subprocess exit code
-      - attempts (int)
-      - failures_seen (int)
-      - wazuh_rule_id (str|None)
-      - wazuh_level (int|None)
-      - soc_alert_created (bool)
-      - soc_incident_created (bool)
+      - soc_severity (str|None): severity the SOC agent assigned
+      - soc_alert_created (bool): was a SecurityAlert created?
+      - soc_incident_created (bool): was an IncidentReport created?
+      - soc_narrative_present (bool): did soc-narrator fill the narrative?
+      - soc_decision_present (bool): did soc-triage fill the decision?
       - tag (str|None): run identifier
       - stderr_excerpt (str): last 600 chars of stderr for debugging
+      - stdout_excerpt (str): last 600 chars of stdout
       - duration_sec (float)
       - note (str): human summary line for the report
 
-    This is meant to be optional (`--selftest` flag). We DON'T fail the daily
-    report if the selftest fails — we just attach the result so an operator
-    can see "the alert pipeline is broken" alongside the alerts that
-    supposedly flowed through it.
+    We DON'T fail the daily report if the selftest fails — we just
+    attach the result so an operator can see "the alert pipeline is
+    broken" alongside the alerts that supposedly flowed through it.
     """
     import subprocess as _sp
-    script = Path(__file__).parent / "benign_ssh_bruteforce_test.py"
+    script = Path(__file__).parent / "soc_pipeline_selftest.py"
     started = time.time()
     try:
         proc = _sp.run(
             [sys.executable, str(script),
-             "--target", target, "--attempts", str(attempts),
+             "--mode", "synthetic",
              "--timeout", str(timeout_sec)],
             capture_output=True, text=True,
-            timeout=timeout_sec + 60,
+            timeout=timeout_sec + 90,  # integration daemon + JSONL wait
         )
         duration = time.time() - started
         out = proc.stdout or ""
         err = proc.stderr or ""
 
-        # Parse the structured markers the script prints.
         def _grep(pattern: str, text: str = out) -> str | None:
             import re as _re
             m = _re.search(pattern, text)
             return m.group(1) if m else None
 
-        failures = _grep(r"(\d+)/\d+ attempts failed")
         tag = _grep(r"tag\s+=\s+(\S+)")
-        rule_id = _grep(r"rule=(\d+)\s+level=(\d+)")
-        level = _grep(r"rule=\d+\s+level=(\d+)")
-        sev = _grep(r"severity=(\w+)")
-        incident_marker = "+1 incident(s)" in out
-        alert_marker = "+1 alert(s)" in out
+        alert_id = _grep(r"alert_id\s+=\s+(\S+)")
+        incident_id = _grep(r"incident_id\s+=\s+(\S+)")
+        severity = _grep(r"severity\s+=\s+(\S+)")
         all_good = "[ALL GOOD]" in out
 
         ok = proc.returncode == 0 and all_good
+        # NOTE: don't include the emoji in the note text — the rendered
+        # section adds one before the bold so we don't get "✅ **✅ ...**".
         note = (
-            f"✅ pipeline self-test PASSED (rule={rule_id} lvl={level} "
-            f"→ SOC alert={alert_marker} incident={incident_marker})"
+            f"pipeline self-test PASSED "
+            f"(alert={alert_id} incident={incident_id} sev={severity})"
             if ok else
-            f"⚠️ pipeline self-test FAILED (rc={proc.returncode}, "
-            f"rule={rule_id}, see stderr)"
+            f"pipeline self-test FAILED (rc={proc.returncode}, "
+            f"alert={alert_id}, see stderr)"
         )
         return {
             "ok": ok,
             "rc": proc.returncode,
             "attempts": attempts,
-            "failures_seen": int(failures) if failures else 0,
-            "wazuh_rule_id": rule_id,
-            "wazuh_level": int(level) if level and level.isdigit() else None,
-            "soc_severity": sev,
-            "soc_alert_created": alert_marker,
-            "soc_incident_created": incident_marker,
+            "wazuh_rule_id": str(SYNTHETIC_RULE_ID),  # 40112
+            "wazuh_level": SYNTHETIC_RULE_LEVEL,
+            "soc_severity": severity,
+            "soc_alert_created": alert_id is not None,
+            "soc_incident_created": incident_id is not None,
+            "soc_narrative_present": "agentic_narrative" in out,
+            "soc_decision_present": "agentic_decision" in out,
             "tag": tag,
             "stderr_excerpt": err[-600:] if err else "",
             "stdout_excerpt": out[-600:] if out else "",
@@ -204,16 +207,21 @@ def run_pipeline_selftest(
         return {
             "ok": False,
             "rc": -1,
-            "note": f"⚠️ pipeline self-test TIMED OUT after {timeout_sec+60}s",
+            "note": f"pipeline self-test TIMED OUT after {timeout_sec+90}s",
             "duration_sec": round(time.time() - started, 1),
         }
     except Exception as e:
         return {
             "ok": False,
             "rc": -1,
-            "note": f"⚠️ pipeline self-test crashed: {type(e).__name__}: {e}",
+            "note": f"pipeline self-test crashed: {type(e).__name__}: {e}",
             "duration_sec": round(time.time() - started, 1),
         }
+
+# Synthetic-alert constants used by the new self-test harness
+# (also referenced by the rendered note so the report stays readable).
+SYNTHETIC_RULE_ID = 40112
+SYNTHETIC_RULE_LEVEL = 12
 
 
 def render_markdown(s: Dict[str, Any], when: datetime, selftest: Optional[Dict[str, Any]] = None) -> str:
@@ -275,7 +283,7 @@ def render_markdown(s: Dict[str, Any], when: datetime, selftest: Optional[Dict[s
         lines.append("## High/Critical (level ≥ 10): none")
         lines.append("")
     if selftest:
-        lines.append("## Pipeline self-test (benign SSH brute-force → Wazuh → SOC)")
+        lines.append("## Pipeline self-test (synthetic Wazuh alert → integration daemon → SOC)")
         lines.append("")
         emoji = "✅" if selftest.get("ok") else "⚠️"
         lines.append(f"{emoji} **{selftest.get('note', 'no result')}**")
@@ -284,10 +292,13 @@ def render_markdown(s: Dict[str, Any], when: datetime, selftest: Optional[Dict[s
         lines.append(f"- tag: `{selftest.get('tag', '?')}`")
         if selftest.get("wazuh_rule_id"):
             lines.append(f"- Wazuh alert: rule={selftest.get('wazuh_rule_id')} "
-                         f"level={selftest.get('wazuh_level')}")
+                         f"level={selftest.get('wazuh_level')} (synthetic, via "
+                         f"agentic-soc-send.py in {os.environ.get('WAZUH_MANAGER_CONTAINER', 'wazuh-stack-wazuh.manager-1')})")
         lines.append(f"- SOC ingested: alert={selftest.get('soc_alert_created')}, "
                      f"incident={selftest.get('soc_incident_created')}, "
                      f"severity={selftest.get('soc_severity')}")
+        lines.append(f"- SOC enrichment: narrative={selftest.get('soc_narrative_present')}, "
+                     f"decision={selftest.get('soc_decision_present')}")
         if not selftest.get("ok") and selftest.get("stderr_excerpt"):
             lines.append("")
             lines.append("<details><summary>stderr excerpt</summary>")
@@ -323,7 +334,10 @@ def render_short_summary(s: Dict[str, Any], when: datetime, selftest: Optional[D
         parts.append(f"  ✅ no high/critical alerts")
     if selftest:
         emoji = "✅" if selftest.get("ok") else "⚠️"
-        parts.append(f"  {emoji} pipeline self-test: {selftest.get('note', '?')}")
+        # short note for webchat — strip leading emoji if present (the
+        # emoji we add here is the only one we want).
+        short_note = (selftest.get("note") or "?").lstrip("✅⚠️ ").strip()
+        parts.append(f"  {emoji} pipeline self-test: {short_note}")
     return "\n".join(parts)
 
 

@@ -1,5 +1,16 @@
 #!/usr/bin/env python3
-"""End-to-end benign SSH brute-force test for the Wazuh → SOC pipeline.
+"""End-to-end benign SSH brute-force test (LIVE FIRE ONLY).
+
+⚠️  DEPRECATED for daily selftest (2026-08-09).
+    The daily report now uses `soc_pipeline_selftest.py` (synthetic
+    injection via the manager container's integration daemon), which
+    works regardless of fleet sshd config.
+
+    This script remains useful as a `--mode live` option in the new
+    harness and as a one-off validation against a staging host that
+    has PasswordAuthentication=yes.  Run it directly:
+
+        python3 scripts/soc/benign_ssh_bruteforce_test.py --target STAGING --user wez
 
 What this does:
   1. Fires N bad-password attempts from this host at a target where sshd
