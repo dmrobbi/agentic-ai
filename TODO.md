@@ -49,7 +49,7 @@ gantt
     P1.1 Darth enrollment + threshold tune        :p1a, 2026-08-05, 2d
     P1.2 Real-time alert → SOC pipeline          :p1b, after p1a, 3d
     P1.3 "Clean morning" GREEN/YELLOW/RED status  :p1c, 2026-08-07, 1d
-    P1.4 Add selftest to morning-highlights cron  :p1d, 2026-08-07, 1d
+    P1.4 Selftest on morning-highlights cron  :p1d, 2026-08-07, 1d  ✓ DONE 2026-08-11
 
     section Phase 2 — Smarter agent
     P2.1 Per-rule playbook KB (5 first)          :p2a, after p1b, 3d
@@ -114,10 +114,10 @@ gantt
 - **Acceptance:** on a no-highs day, an email still arrives at 08:00 UTC with the status word in the subject.
 
 ### Task 1.4 — Selftest on morning-highlights cron
-- [ ] **1.4.1** Add a pre-send selftest in `wazuh-morning-highlights.sh`: try the indexer query first; if it fails (timeout, auth, no hits where there should be), send an email with subject `[Wazuh morning FAILURE] selftest: <reason>` and **exit non-zero** so the cron sends the alert path.
-- [ ] **1.4.2** Add the same selftest to `wazuh-daily-digest.sh`.
-- [ ] **1.4.3** Document the failure-mode in the cron comment block.
-- **Acceptance:** deliberately break the indexer password; verify a "selftest FAILED" email arrives within 60 s.
+- [x] **1.4.1** ~~Add a pre-send selftest~~ **DONE 2026-08-11 03:00 UTC** — shared selftest at `/home/wez/bin/wazuh-indexer-selftest.sh` (~170 lines, bash + python3) checks indexer auth (401/403), reachability (timeout), SSL handshake, and "≥1 hit in 24h" sanity. On FAIL: sends `[Wazuh selftest FAILURE]` email with diagnostic hint and exits 1/2/3/4/5 (one per failure class). Both morning-highlights and daily-digest call it before their main job.
+- [x] **1.4.2** ~~Add the same selftest to `wazuh-daily-digest.sh`~~ **DONE 2026-08-11 03:00 UTC** — same hook at line 38 (`LOG_TAG=wazuh-daily-digest`).
+- [x] **1.4.3** ~~Document the failure-mode in the cron comment block~~ **DONE 2026-08-11 03:00 UTC** — both script headers now include a "Failure mode (SOC 1.4)" section pointing at the selftest.
+- **Acceptance:** verified by deliberately setting `WAZUH_INDEXER_PASSWORD=wrong-password-deliberately` and running the selftest: detected 401 in 350ms, sent failure email, exited 4 (auth_failed). Cron `||` alert path will also fire.
 
 ### Task 1.5 — Threshold tuning
 - [ ] **1.5.1** In `/home/wez/wazuh-stack/config/wazuh_cluster/wazuh_manager.conf` change `<level>10</level>` to `<level>12</level>` inside the `<integration name="agentic-soc-send">` block. (Keep cron summaries at 10.)
