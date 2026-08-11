@@ -48,4 +48,10 @@ data/*.bak.*
 
 # Recorded demo artifacts (regenerate per session; see RUNBOOK for how to capture)
 data/demos/
-scripts/soc/realtime-soc-server-pre-start.sh  # runtime artifact, mode 0700
+
+# Runtime artifacts (NOT source): created by soc-manager-mcp /
+# realtime-soc-server systemd units' ExecStartPre, mode 0700,
+# owned by wez. Tracking would create noise on every re-deploy.
+scripts/soc/realtime-soc-server-pre-start.sh
+scripts/soc/soc-manager-mcp/pre-start.sh
+scripts/soc/*-pre-start.sh
