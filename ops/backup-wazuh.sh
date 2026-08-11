@@ -32,8 +32,14 @@
 #   2 = one or more backup sources missing (warns but doesn't fail)
 #   3 = tar/zstd failed
 #   4 = INDEX write failed
+#   5 = BOTH indexer + manager container state missing (silent-failure guard)
 
 set -euo pipefail
+
+# log/bail helpers must be defined before the auto-detect block
+# (which uses `log` to report detected container names).
+log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG" >&2; }
+bail() { log "ERROR: $*"; exit "${2:-1}"; }
 
 # Configuration
 BACKUP_ROOT="${BACKUP_ROOT:-/home/wez/wazuh-stack-backups}"
@@ -45,9 +51,30 @@ INDEX="$BACKUP_DIR/INDEX"
 LOG="${LOG:-/home/wez/wazuh-stack-backups/backup.log}"
 KEEP_DAYS="${KEEP_DAYS:-30}"
 
-INDEXER_CONTAINER="${INDEXER_CONTAINER:-wazuh-stack_wazuh.indexer_1}"
-MANAGER_CONTAINER="${MANAGER_CONTAINER:-wazuh-stack_wazuh.manager_1}"
-DASHBOARD_CONTAINER="${DASHBOARD_CONTAINER:-wazuh-stack_wazuh.dashboard_1}"
+# Container names: auto-detect from docker if not set explicitly.
+# Compose v2 names with hyphens (e.g. wazuh-stack-wazuh.manager-1);
+# compose v1 / legacy stacks use underscores + dots
+# (e.g. wazuh-stack_wazuh.manager_1). Resolve once up-front so the
+# rest of the script can rely on a single canonical name.
+DOCKER_PROJECT="${DOCKER_PROJECT:-wazuh-stack}"
+detect_container() {
+  local svc="$1" hint="$2"
+  local found
+  found=$(docker ps --format '{{.Names}}' \
+    | grep -E "^${DOCKER_PROJECT}[-_]${svc}[-_]1$" \
+    | head -1)
+  if [ -z "$found" ]; then
+    log "  ! no running container matching ${DOCKER_PROJECT}[-_]${svc}[-_]1 (skipping)"
+    echo ""
+    return
+  fi
+  log "  detected ${svc} container: $found (hint was $hint)"
+  echo "$found"
+}
+
+INDEXER_CONTAINER="${INDEXER_CONTAINER:-$(detect_container wazuh.indexer wazuh-stack_wazuh.indexer_1)}"
+MANAGER_CONTAINER="${MANAGER_CONTAINER:-$(detect_container wazuh.manager wazuh-stack_wazuh.manager_1)}"
+DASHBOARD_CONTAINER="${DASHBOARD_CONTAINER:-$(detect_container wazuh.dashboard wazuh-stack_wazuh.dashboard_1)}"
 
 # Source paths to back up
 HOST_SOURCES=(
@@ -65,9 +92,6 @@ HOST_SOURCES=(
   "/home/wez/repos/stsgym-work/docs/infrastructure/wazuh-indexer-auth-pipeline.md"
   "/home/wez/.openclaw/workspace/runbooks/wazuh-indexer-auth-pipeline.md"
 )
-
-log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG" >&2; }
-bail() { log "ERROR: $*"; exit "${2:-1}"; }
 
 command -v docker >/dev/null 2>&1 || bail "docker not on PATH" 1
 command -v zstd >/dev/null 2>&1 || bail "zstd not on PATH" 1
@@ -101,7 +125,7 @@ fi
 log "Tarring indexer data from container $INDEXER_CONTAINER (via python tarfile)"
 INDEXER_RAW=$(mktemp /tmp/wazuh-indexer-raw-XXXXXX.tar)
 INDEXER_EXTRACT=$(mktemp -d /tmp/wazuh-indexer-extract-XXXXXX)
-trap 'rm -rf "$INDEXER_RAW" "$INDEXER_EXTRACT" "$TARBALL_TMP" "$MGR_TARBALL_TMP"' EXIT
+trap 'rm -rf "$INDEXER_RAW" "$INDEXER_EXTRACT"' EXIT
 docker exec "$INDEXER_CONTAINER" python3 -c "
 import tarfile, sys, os
 buf = sys.stdout.buffer
@@ -175,10 +199,24 @@ ARCHIVE_SIZE=$(du -h "$ARCHIVE" | awk '{print $1}')
 ARCHIVE_SHA=$(sha256sum "$ARCHIVE" | awk '{print $1}')
 log "Archive: $ARCHIVE ($ARCHIVE_SIZE) sha256=$ARCHIVE_SHA"
 
+# Silent-failure guard: if NEITHER the indexer NOR the manager container
+# state was captured, the backup is useless for restoration. Hard-fail
+# loudly so we notice immediately rather than discovering it post-mortem
+# when the stack is already dead.
+if [ -z "$INDEXER_SRC" ] && [ -z "$MGR_SRC" ]; then
+  bail "BOTH indexer and manager container state are missing — backup would not be restorable" 5
+fi
+if [ -z "$INDEXER_SRC" ]; then
+  log "  ⚠️  WARNING: indexer data not captured (cluster alerts + security config at risk)"
+fi
+if [ -z "$MGR_SRC" ]; then
+  log "  ⚠️  WARNING: manager state not captured (rules + agent keys at risk)"
+fi
+
 # Write the INDEX
 log "Writing INDEX"
 INDEX_TMP=$(mktemp)
-trap 'rm -f "$TARBALL_TMP" "$MGR_TARBALL_TMP" "$INDEX_TMP"' EXIT
+trap 'rm -f "$INDEX_TMP"' EXIT
 
 cat > "$INDEX_TMP" <<EOF
 Wazuh stack backup — $DATE
@@ -250,7 +288,7 @@ mv "$INDEX_TMP" "$INDEX"
 log "INDEX written: $INDEX"
 
 # Cleanup the inner tarballs (they're now inside the .tar.zst)
-rm -f "$TARBALL_TMP" "$MGR_TARBALL_TMP"
+# (no inner tarballs to clean up; they're now inside the .tar.zst)
 
 # Retention: remove backups older than KEEP_DAYS
 if [ -d "$BACKUP_ROOT" ]; then
