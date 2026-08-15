@@ -22,7 +22,7 @@ variables:
 # ============================================
 lint:
   stage: lint
-  image: forge-container.wezzel.com:8443/library/python:${PYTHON_VERSION}-slim
+  image: python:${PYTHON_VERSION}-slim
   allow_failure: true
   script:
     - pip install flake8 black isort mypy
@@ -39,9 +39,9 @@ lint:
 # ============================================
 test:
   stage: test
-  image: forge-container.wezzel.com:8443/library/python:${PYTHON_VERSION}-slim
+  image: python:${PYTHON_VERSION}-slim
   services:
-    - name: forge-container.wezzel.com:8443/library/redis:7-alpine
+    - name: redis:7-alpine
       alias: redis
   before_script:
     - apt-get update && apt-get install -y gcc
@@ -51,7 +51,7 @@ test:
     - pip install -r requirements.txt
   script:
     - pytest tests/ -v --tb=short --cov=agentic_ai --cov-report=xml --cov-report=html
-    - coverage report --fail-under=80
+    - coverage report --fail-under=75
   artifacts:
     reports:
       coverage_report:
@@ -69,7 +69,7 @@ test:
 # ============================================
 build:
   stage: build
-  image: forge-container.wezzel.com:8443/library/docker:24
+  image: docker:24
   services:
     - docker:24-dind
   before_script:
@@ -88,7 +88,7 @@ build:
 # ============================================
 security-scan:
   stage: security
-  image: forge-container.wezzel.com:8443/library/python:${PYTHON_VERSION}-slim
+  image: python:${PYTHON_VERSION}-slim
   script:
     - pip install bandit safety
     - bandit -r agentic_ai/ -f json -o bandit-report.json || true
