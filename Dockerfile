@@ -1,7 +1,7 @@
 # Agentic AI - Production Docker Image
 # Simplified for Podman rootless mode
 
-FROM forge-container.wezzel.com:8443/library/python:3.11-slim
+FROM python:3.11-slim
 
 LABEL maintainer="Wesley Robbins <wlrobbi@gmail.com>"
 LABEL version="1.0.0"

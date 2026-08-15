@@ -1,5 +1,5 @@
 # Agentic AI Dashboard v2.0 - Backend Dockerfile
-FROM forge-container.wezzel.com:8443/library/python:3.12-slim
+FROM python:3.12-slim
 
 WORKDIR /app
 
