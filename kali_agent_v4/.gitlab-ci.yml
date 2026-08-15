@@ -68,7 +68,7 @@ e2e-tests:
 # Build Docker Image
 build-docker:
   stage: build
-  image: docker:24
+  image: docker:29
   services:
     - docker:dind
   before_script:
