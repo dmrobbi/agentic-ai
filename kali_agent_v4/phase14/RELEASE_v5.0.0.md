@@ -422,7 +422,7 @@ python3 phase14/serving/security.py
 
 **Issues:**
 - GitHub: https://github.com/wezzels/kaliagent-v4/issues
-- GitLab: https://gitlab.idm.wezzel.com/crab-meat-repos/agentic-ai/issues
+- GitLab: https://gitlab.gitlab.example.internal/crab-meat-repos/agentic-ai/issues
 
 **Community:**
 - Discord: https://discord.com/invite/clawd

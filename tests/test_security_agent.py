@@ -212,7 +212,7 @@ class TestIncidentResponse:
             description="Detected SQL injection in login endpoint",
             severity=SeverityLevel.CRITICAL,
             threat_type=ThreatType.SQL_INJECTION,
-            source_ip="192.168.1.100",
+            source_ip="192.0.2.100",
             target_resource="/api/login",
             user_id="attacker",
         )
@@ -421,7 +421,7 @@ class TestPolicyEnforcement:
                 user_id="attacker",
                 resource="/login",
                 action="login",
-                source_ip="192.168.1.100",
+                source_ip="192.0.2.100",
                 success=False,
             )
         
@@ -458,7 +458,7 @@ class TestAccessLogAnalysis:
             user_id="user123",
             resource="/api/data",
             action="read",
-            source_ip="10.0.0.1",
+            source_ip="198.51.100.1",
             success=True,
             metadata={'user_agent': 'Mozilla/5.0'},
         )
@@ -475,7 +475,7 @@ class TestAccessLogAnalysis:
                 user_id="victim",
                 resource="/login",
                 action="login",
-                source_ip="192.168.1.100",
+                source_ip="192.0.2.100",
                 success=False,
             )
         
@@ -492,7 +492,7 @@ class TestAccessLogAnalysis:
                 user_id="problematic_user",
                 resource="/login",
                 action="login",
-                source_ip="10.0.0.50",
+                source_ip="198.51.100.50",
                 success=False,
             )
         
@@ -512,7 +512,7 @@ class TestAccessLogAnalysis:
             'user_id': "night_owl",
             'resource': "/admin/users",
             'action': "user_delete",
-            'source_ip': "10.0.0.100",
+            'source_ip': "198.51.100.100",
             'success': True,
             'metadata': {},
         })

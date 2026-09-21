@@ -33,7 +33,7 @@ services:
 
   # Redis for WebSocket clustering and caching
   redis:
-    image: forge-container.wezzel.com:8443/library/redis:7-alpine
+    image: registry.example.internal:8443/library/redis:7-alpine
     container_name: kaliagent-redis
     restart: unless-stopped
     expose:
@@ -95,7 +95,7 @@ services:
 
   # Nginx Reverse Proxy (Optional - for HTTPS)
   nginx:
-    image: forge-container.wezzel.com:8443/library/nginx:alpine
+    image: registry.example.internal:8443/library/nginx:alpine
     container_name: kaliagent-nginx
     restart: unless-stopped
     ports:
@@ -116,12 +116,12 @@ networks:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.0.100.0/24
+        - subnet: 198.51.100.0/24
   attack-network:
     driver: bridge
     ipam:
       config:
-        - subnet: 10.0.101.0/24
+        - subnet: 198.51.100.0/24
     labels:
       - "kaliagent.isolated=true"
 

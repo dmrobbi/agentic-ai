@@ -51,7 +51,7 @@ data/demos/
 
 # Runtime artifacts (NOT source): created by soc-manager-mcp /
 # realtime-soc-server systemd units' ExecStartPre, mode 0700,
-# owned by wez. Tracking would create noise on every re-deploy.
+# owned by demo-user. Tracking would create noise on every re-deploy.
 scripts/soc/realtime-soc-server-pre-start.sh
 scripts/soc/soc-manager-mcp/pre-start.sh
 scripts/soc/*-pre-start.sh

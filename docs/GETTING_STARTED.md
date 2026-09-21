@@ -16,7 +16,7 @@ Quick start guide for setting up and using Agentic AI.
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 
 # Create virtual environment
@@ -201,7 +201,7 @@ capabilities = agent.get_capabilities()
 # Execute capability
 result = agent.execute(
     action="scan_vulnerabilities",
-    params={"target": "192.168.1.1", "scan_type": "full"},
+    params={"target": "192.0.2.1", "scan_type": "full"},
 )
 ```
 
@@ -220,7 +220,7 @@ bus.publish(Message(
     message_id="msg-1",
     message_type=MessageType.EVENT,
     topic="agent.security",
-    payload={"action": "scan", "target": "192.168.1.1"},
+    payload={"action": "scan", "target": "192.0.2.1"},
 ))
 
 # Subscribe to topic
@@ -480,11 +480,11 @@ redis-cli
 
 ## Resources
 
-- **Documentation**: https://github.com/wezzels/agentic-ai/tree/main/docs
-- **Examples**: https://github.com/wezzels/agentic-ai/tree/main/examples
+- **Documentation**: https://github.com/dmrobbi/agentic-ai/tree/main/docs
+- **Examples**: https://github.com/dmrobbi/agentic-ai/tree/main/examples
 - **API Reference**: http://localhost:8000/docs (when server running)
-- **Issues**: https://github.com/wezzels/agentic-ai/issues
-- **Discussions**: https://github.com/wezzels/agentic-ai/discussions
+- **Issues**: https://github.com/dmrobbi/agentic-ai/issues
+- **Discussions**: https://github.com/dmrobbi/agentic-ai/discussions
 
 ---
 

@@ -1,8 +1,8 @@
-# papers.stsgym.com Security Audit Report
+# papers.example.internal Security Audit Report
 
 **Audit Date:** April 18, 2026  
 **Auditor:** Lucky 🍀  
-**Scope:** Full security review of papers.stsgym.com  
+**Scope:** Full security review of papers.example.internal  
 
 ---
 
@@ -57,7 +57,7 @@ These files mention credentials in documentation context (NOT exposing actual va
 ### Current Navigation Structure
 
 ```
-papers.stsgym.com
+papers.example.internal
 ├── Navigation Menu:
 │   ├── Missile Defense (#vimi)
 │   ├── Seismic Analysis (#seismic)
@@ -347,7 +347,7 @@ Move agentic AI papers to top of AI & Machine Learning section with special high
 
 ## ✅ Conclusion
 
-**papers.stsgym.com is SECURE and PRODUCTION-READY**
+**papers.example.internal is SECURE and PRODUCTION-READY**
 
 - ✅ No credentials exposed
 - ✅ No tokens leaked

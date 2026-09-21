@@ -31,7 +31,7 @@ Complete step-by-step guide for using KaliAgent with screenshots and examples.
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 
 # Install Python dependencies
@@ -422,8 +422,8 @@ Settings → Safety → Whitelist → Add IP
 
 | Format | Example | Description |
 |--------|---------|-------------|
-| **Single IP** | `192.168.1.1` | Specific host |
-| **CIDR Range** | `192.168.1.0/24` | Subnet range |
+| **Single IP** | `192.0.2.1` | Specific host |
+| **CIDR Range** | `192.0.2.0/24` | Subnet range |
 | **Domain** | `example.com` | Domain name |
 | **Wildcard** | `*.example.com` | Subdomains |
 
@@ -447,7 +447,7 @@ Settings → Safety → Whitelist → Add IP
 ```bash
 curl -X POST http://localhost:8001/api/settings/blacklist \
   -H "Content-Type: application/json" \
-  -d '{"ip": "10.0.0.1"}'
+  -d '{"ip": "198.51.100.1"}'
 ```
 
 ---
@@ -683,7 +683,7 @@ graph LR
 | **Video Tutorials** | `/VIDEO_TUTORIALS.md` | 6 video scripts (50 min) |
 | **Demo Examples** | `/DEMO_EXAMPLES.md` | Ready-to-run demos |
 | **API Reference** | `http://localhost:8001/docs` | Interactive Swagger UI |
-| **GitHub** | `github.com/wezzels/agentic-ai` | Source code & issues |
+| **GitHub** | `github.com/dmrobbi/agentic-ai` | Source code & issues |
 | **Discord** | `discord.gg/clawd` | Community support |
 
 ---

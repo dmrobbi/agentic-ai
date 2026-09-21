@@ -688,7 +688,7 @@ def main():
     """)
     
     import sys
-    host = sys.argv[1] if len(sys.argv) > 1 else "192.168.1.100"
+    host = sys.argv[1] if len(sys.argv) > 1 else "192.0.2.100"
     port = int(sys.argv[2]) if len(sys.argv) > 2 else 5683
     
     # Initialize client

@@ -912,7 +912,7 @@ if __name__ == "__main__":
         name="Q2 Red Team Exercise",
         engagement_type=EngagementType.RED_TEAM,
         start_date=utcnow(),
-        scope=["10.0.0.0/24", "example.com"],
+        scope=["198.51.100.0/24", "example.com"],
         objectives=["Gain domain admin", "Access sensitive data", "Test detection"],
         rules_of_engagement=["No production impact", "Business hours only"],
         team_members=["red1", "red2"],
@@ -924,7 +924,7 @@ if __name__ == "__main__":
     target1 = agent.add_target(
         name="Web Server",
         target_type=TargetType.WEB_APP,
-        ip_address="10.0.1.10",
+        ip_address="198.51.100.10",
         domain="web.example.com",
         os="Ubuntu 22.04",
         engagement_id=engagement.engagement_id,

@@ -582,9 +582,9 @@ def main():
     
     # Test simulated HMIs
     hmis = [
-        {'ip': '192.168.10.200', 'vendor': 'Wonderware', 'model': 'InTouch'},
-        {'ip': '192.168.10.201', 'vendor': 'Siemens', 'model': 'WinCC'},
-        {'ip': '192.168.10.202', 'vendor': 'Rockwell', 'model': 'FactoryTalk'},
+        {'ip': '192.0.2.200', 'vendor': 'Wonderware', 'model': 'InTouch'},
+        {'ip': '192.0.2.201', 'vendor': 'Siemens', 'model': 'WinCC'},
+        {'ip': '192.0.2.202', 'vendor': 'Rockwell', 'model': 'FactoryTalk'},
     ]
     
     for hmi in hmis:

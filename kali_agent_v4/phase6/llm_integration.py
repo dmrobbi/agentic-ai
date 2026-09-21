@@ -197,7 +197,7 @@ if __name__ == "__main__":
     # Test Nmap analysis
     nmap_sample = """
     Starting Nmap 7.94
-    Nmap scan report for 10.0.100.10
+    Nmap scan report for 198.51.100.10
     Host is up (0.0023s latency).
     Not shown: 997 closed ports
     PORT   STATE SERVICE VERSION
@@ -213,7 +213,7 @@ if __name__ == "__main__":
     # Test attack planning
     print("\n📋 Generating attack plan...")
     target_info = {
-        "ip": "10.0.100.10",
+        "ip": "198.51.100.10",
         "os": "Ubuntu 16.04",
         "services": ["ssh", "http", "https"],
         "vulnerabilities": ["Apache 2.4.18 (outdated)"]
@@ -224,5 +224,5 @@ if __name__ == "__main__":
     # Test natural language parsing
     print("\n🗣️ Parsing natural language command...")
     nl_cmd = NaturalLanguageCommand(llm)
-    parsed = nl_cmd.parse("Scan the 10.0.100.0/24 network for web servers and check for SQL injection")
+    parsed = nl_cmd.parse("Scan the 198.51.100.0/24 network for web servers and check for SQL injection")
     print(json.dumps(parsed, indent=2))

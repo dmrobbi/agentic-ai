@@ -45,7 +45,7 @@
 
 ```bash
 # Clone repository
-git clone https://idm.wezzel.com/crab-meat-repos/agentic-ai.git
+git clone https://gitlab.example.internal/crab-meat-repos/agentic-ai.git
 cd agentic-ai
 
 # Start full stack (app + Redis + Ollama + Prometheus + Grafana)
@@ -74,7 +74,7 @@ docker-compose logs -f agentic-ai
 docker build -t agentic-ai:latest .
 
 # Tag for registry
-docker tag agentic-ai:latest idm.wezzel.com:5050/crab-meat-repos/agentic-ai:0.7.0
+docker tag agentic-ai:latest gitlab.example.internal:5050/crab-meat-repos/agentic-ai:0.7.0
 ```
 
 ### Run Container

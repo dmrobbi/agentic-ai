@@ -161,7 +161,7 @@ binwalk>=2.3.0        # Firmware analysis
 from phase9.iot_agent import IoTAgent
 
 # Initialize agent
-iot = IoTAgent(target_network="192.168.1.0/24")
+iot = IoTAgent(target_network="192.0.2.0/24")
 
 # Discover IoT devices
 devices = iot.discover_devices()
@@ -177,7 +177,7 @@ for device in devices:
 ```python
 from phase9.iot_protocols.mqtt_client import MQTTClient
 
-mqtt = MQTTClient(broker="192.168.1.100", port=1883)
+mqtt = MQTTClient(broker="192.0.2.100", port=1883)
 
 # Test anonymous access
 if mqtt.connect_anonymous():

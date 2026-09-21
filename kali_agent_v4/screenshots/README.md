@@ -80,7 +80,7 @@ All screenshots are real execution logs from Phase 8 agents.
 
 **To verify:**
 ```bash
-cd ~/stsgym-work/agentic_ai/kaliagent-v4
+cd ~/agentic-ai/agentic_ai/kaliagent-v4
 ./scripts/generate_phase8_evidence.sh
 sha256sum -c evidence/phase8/CHECKSUMS.txt
 ```

@@ -25,25 +25,25 @@ This script verifies the full **Wazuh → OpenSearch indexer → SecurityOperati
 ## Run it
 
 ```bash
-# Default target = rpi42 (192.168.1.151, agent 004)
+# Default target = target-host (192.0.2.151, agent 004)
 python3 scripts/soc/benign_ssh_bruteforce_test.py --attempts 12 --timeout 120
 
 # Custom target
 python3 scripts/soc/benign_ssh_bruteforce_test.py \
-    --target 192.168.1.151 \
-    --user wez \
+    --target 192.0.2.151 \
+    --user demo-user \
     --attempts 10 \
     --timeout 90
 ```
 
 Expected output:
 ```
-[*] firing 12 bad-password attempts at 192.168.1.151 as user=wez
+[*] firing 12 bad-password attempts at 192.0.2.151 as user=demo-user
 [*] 12/12 attempts failed-as-expected
-[*] polling Wazuh indexer for level>=10 SSH alert from 192.168.1.151 as user=wez ...
+[*] polling Wazuh indexer for level>=10 SSH alert from 192.0.2.151 as user=demo-user ...
 [OK]   Wazuh alert seen: rule=5551 level=10 PAM: Multiple failed logins in a small period of time.
        timestamp=2026-08-03T20:19:15.118Z
-       agent=rpi42
+       agent=target-host
 [*] running SecurityOperationsAgent.ingest_wazuh_alert on the alert...
 [OK]   ingested: +1 alert(s), +1 incident(s), severity=high
 [ALL GOOD] benign brute-force → Wazuh → SOC pipeline verified end-to-end.
@@ -61,7 +61,7 @@ python3 -m pytest tests/integration/test_ssh_bruteforce_e2e.py -v
 BRUTEFORCE_E2E=0 python3 -m pytest tests/integration/test_ssh_bruteforce_e2e.py -v
 
 # Custom target / attempts / timeout via env
-BRUTEFORCE_TARGET=192.168.1.151 \
+BRUTEFORCE_TARGET=192.0.2.151 \
 BRUTEFORCE_ATTEMPTS=12 \
 BRUTEFORCE_TIMEOUT=120 \
   python3 -m pytest tests/integration/test_ssh_bruteforce_e2e.py -v
@@ -92,7 +92,7 @@ Either:
 
 **Most likely cause:** rule 5763 is in its `ignore="60"` window. Check:
 ```bash
-curl -ks -u admin:SecretPassword \
+curl -ks -u admin:CHANGE_ME \
   "https://127.0.0.1:9200/wazuh-alerts*/_search?size=3&q=rule.id:5763&sort=@timestamp:desc" | jq .
 ```
 If the latest 5763 is < 60s old, wait it out.

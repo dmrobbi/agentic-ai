@@ -48,7 +48,7 @@ $ python phase6/dashboard_v2.py
 [2026-04-24 06:00:03] ✅ Sliver C2 active (port 8888)
 [2026-04-24 06:00:03] ✅ Empire C2 active (port 1337)
 [2026-04-24 06:00:04] ✅ Enhanced C2 active (port 8889)
-[2026-04-24 06:00:05] ✅ Lab network verified (10.0.100.0/24)
+[2026-04-24 06:00:05] ✅ Lab network verified (198.51.100.0/24)
 
 ╔═══════════════════════════════════════════════════════════════╗
 ║  📊 SYSTEM STATS                                              ║
@@ -72,18 +72,18 @@ def demo_network_scan():
 ║  🔍 KALIAGENT V4 - NETWORK SCAN                               ║
 ╚═══════════════════════════════════════════════════════════════╝
 
-$ ./kaliagent scan -t 10.0.100.0/24 --type nmap
+$ ./kaliagent scan -t 198.51.100.0/24 --type nmap
 
-🔍 Starting nmap scan on 10.0.100.0/24...
+🔍 Starting nmap scan on 198.51.100.0/24...
 
 Scan Progress:
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 [████░░░░░░░░░░░░░░░░░░░░] 20% - Host discovery
-  → 10.0.100.1 (Gateway)
-  → 10.0.100.10 (Juice Shop)
-  → 10.0.100.20 (Windows Target)
-  → 10.0.100.30 (Linux Target)
+  → 198.51.100.1 (Gateway)
+  → 198.51.100.10 (Juice Shop)
+  → 198.51.100.20 (Windows Target)
+  → 198.51.100.30 (Linux Target)
 
 [████████░░░░░░░░░░░░░░░░] 40% - Port scanning
   → 23 open ports discovered
@@ -93,9 +93,9 @@ Scan Progress:
   → SMB (445), RDP (3389)
 
 [████████████████░░░░░░░░] 80% - OS detection
-  → Ubuntu 16.04 (10.0.100.10)
-  → Windows Server 2016 (10.0.100.20)
-  → Ubuntu 14.04 (10.0.100.30)
+  → Ubuntu 16.04 (198.51.100.10)
+  → Windows Server 2016 (198.51.100.20)
+  → Ubuntu 14.04 (198.51.100.30)
 
 [████████████████████████] 100% - Complete!
 
@@ -109,9 +109,9 @@ Scan Progress:
   Vulnerabilities:      12
 
 ⚠️  CRITICAL FINDINGS:
-  • MS17-010 (EternalBlue) - 10.0.100.20
-  • SQL Injection - 10.0.100.10:3000
-  • Outdated Apache 2.4.18 - 10.0.100.10
+  • MS17-010 (EternalBlue) - 198.51.100.20
+  • SQL Injection - 198.51.100.10:3000
+  • Outdated Apache 2.4.18 - 198.51.100.10
 
 💾 Results saved to: scans/scan_20260424_060500.json
 """
@@ -125,9 +125,9 @@ def demo_sql_injection():
 ║  💉 KALIAGENT V4 - SQL INJECTION ATTACK                       ║
 ╚═══════════════════════════════════════════════════════════════╝
 
-$ ./kaliagent attack -t 10.0.100.10 -a web --method sql_injection
+$ ./kaliagent attack -t 198.51.100.10 -a web --method sql_injection
 
-⚔️  Launching web attack on 10.0.100.10...
+⚔️  Launching web attack on 198.51.100.10...
 🎯 Target: OWASP Juice Shop (port 3000)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -182,7 +182,7 @@ STEP 5/5: Evidence Collection
 🎉 ATTACK SUCCESSFUL!
 
 Summary:
-  • Target: 10.0.100.10:3000
+  • Target: 198.51.100.10:3000
   • Vulnerability: SQL Injection (CVSS 9.8)
   • Access Gained: Administrator
   • Data Exfiltrated: 127 user records
@@ -282,7 +282,7 @@ def demo_ai_command():
 ║  🤖 KALIAGENT V4 - AI NATURAL LANGUAGE COMMAND                ║
 ╚═══════════════════════════════════════════════════════════════╝
 
-$ ./kaliagent ai "Find all web servers in 10.0.100.0/24 and check for SQL injection"
+$ ./kaliagent ai "Find all web servers in 198.51.100.0/24 and check for SQL injection"
 
 🤖 Processing natural language command...
 
@@ -290,16 +290,16 @@ $ ./kaliagent ai "Find all web servers in 10.0.100.0/24 and check for SQL inject
 
 🧠 AI ANALYSIS:
 
-Input: "Find all web servers in 10.0.100.0/24 and check for SQL injection"
+Input: "Find all web servers in 198.51.100.0/24 and check for SQL injection"
 
 Parsed Intent:
   • Action: scan + attack
-  • Target Range: 10.0.100.0/24
+  • Target Range: 198.51.100.0/24
   • Filter: Web servers (port 80, 443)
   • Attack Type: SQL injection
 
 Recommended Plan:
-  1. Scan 10.0.100.0/24 for ports 80,443
+  1. Scan 198.51.100.0/24 for ports 80,443
   2. Identify web servers
   3. Run SQLMap on each target
   4. Prioritize by vulnerability severity
@@ -309,9 +309,9 @@ Recommended Plan:
 Executing Plan...
 
 [1/4] Scanning for web servers...
-  ✓ Found: 10.0.100.10:3000 (Juice Shop)
-  ✓ Found: 10.0.100.10:80 (Apache)
-  ✓ Found: 10.0.100.20:80 (IIS)
+  ✓ Found: 198.51.100.10:3000 (Juice Shop)
+  ✓ Found: 198.51.100.10:80 (Apache)
+  ✓ Found: 198.51.100.20:80 (IIS)
 
 [2/4] Analyzing technologies...
   ✓ Juice Shop: Angular + SQLite (High probability of SQLi)
@@ -319,10 +319,10 @@ Executing Plan...
   ✓ IIS: ASP.NET (Low probability)
 
 [3/4] Running SQLMap on high-priority targets...
-  ✓ Testing 10.0.100.10:3000...
+  ✓ Testing 198.51.100.10:3000...
   [!] VULNERABLE! Boolean-based SQL injection confirmed
   
-  ✓ Testing 10.0.100.10:80...
+  ✓ Testing 198.51.100.10:80...
   [!] VULNERABLE! Error-based SQL injection confirmed
 
 [4/4] Generating report...
@@ -340,7 +340,7 @@ Results:
   • Risk Level: CRITICAL
 
 AI Recommendation:
-  "Immediate patching required for 10.0.100.10. Both web 
+  "Immediate patching required for 198.51.100.10. Both web 
    applications are vulnerable to SQL injection, allowing 
    complete database compromise."
 

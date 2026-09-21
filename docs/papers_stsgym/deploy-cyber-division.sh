@@ -1,22 +1,22 @@
 #!/bin/bash
 # =============================================================================
-# Deploy Cyber Division to papers.stsgym.com
+# Deploy Cyber Division to papers.example.internal
 # =============================================================================
 
 set -e
 
 echo "╔═══════════════════════════════════════════════════════════╗"
-echo "║   🚀 Deploying Cyber Division to papers.stsgym.com        ║"
+echo "║   🚀 Deploying Cyber Division to papers.example.internal        ║"
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
 
 # Configuration
-SSH_KEY="/home/wez/.openclaw/workspace/crackers"
-SSH_USER="crackers"
-SSH_HOST="wezzel.com"
-SSH_PORT="23"
-REMOTE_PATH="/home/crackers/stsgym-joined/static/papers"
-LOCAL_DOCS="/home/wez/stsgym-work/agentic_ai/docs/papers_stsgym"
+SSH_KEY="${SSH_KEY:-$HOME/.ssh/deploy_key}"
+SSH_USER="${SSH_USER:-deploy}"
+SSH_HOST="${SSH_HOST:-jump.example.internal}"
+SSH_PORT="${SSH_PORT:-2222}"
+REMOTE_PATH="${REMOTE_PATH:-/home/deploy/app-portal/static/papers}"
+LOCAL_DOCS="${LOCAL_DOCS:-$PWD/docs/papers_stsgym}"
 
 echo "📁 Step 1/4: Uploading main index.html with Cyber Division links..."
 scp -i ${SSH_KEY} -P ${SSH_PORT} \
@@ -46,19 +46,19 @@ echo ""
 echo "📄 Cyber Division is now live at:"
 echo ""
 echo "   🏠 Main Page (with Cyber Division links):"
-echo "      https://papers.stsgym.com/"
+echo "      https://papers.example.internal/"
 echo ""
 echo "   🤖 Cyber Division Hub:"
-echo "      https://papers.stsgym.com/papers/cyber-division/index.html"
+echo "      https://papers.example.internal/papers/cyber-division/index.html"
 echo ""
 echo "   🚀 KaliAgent Documentation:"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/"
 echo ""
 echo "   ⚡ Quick Start:"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/quickstart/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/quickstart/"
 echo ""
 echo "   📊 Deployment Guide:"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/deployment/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/deployment/"
 echo ""
 echo "🎉 Cyber Division is now accessible from the main page!"
 echo ""

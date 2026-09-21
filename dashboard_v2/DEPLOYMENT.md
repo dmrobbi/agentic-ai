@@ -1,6 +1,6 @@
 # Agentic AI Dashboard v2.0 - Deployment Guide
 
-**Professional monitoring dashboard for agents.bedimsecurity.com**
+**Professional monitoring dashboard for agents.example.com**
 
 ---
 
@@ -10,7 +10,7 @@
 
 ```bash
 # 1. Install backend dependencies
-cd /home/wez/stsgym-work/agentic_ai/dashboard_v2/backend
+cd /home/user/agentic-ai/agentic_ai/dashboard_v2/backend
 pip install -r requirements.txt
 
 # 2. Start backend server
@@ -31,7 +31,7 @@ npm run dev
 
 ```bash
 # Build and run with Docker Compose
-cd /home/wez/stsgym-work/agentic_ai/dashboard_v2
+cd /home/user/agentic-ai/agentic_ai/dashboard_v2
 docker-compose up -d
 
 # View logs
@@ -41,19 +41,19 @@ docker-compose logs -f
 docker-compose down
 ```
 
-### Option 3: Deploy to agents.bedimsecurity.com
+### Option 3: Deploy to agents.example.com
 
 ```bash
 # SSH to server
-ssh crackers@wezzel.com -p 23 -i ~/.openclaw/workspace/crackers
+ssh deploy@example.internal -p 2222 -i ~/.ssh/deploy_key
 
 # Create deployment directory
 sudo mkdir -p /opt/agentic-dashboard
-sudo chown crackers:crackers /opt/agentic-dashboard
+sudo chown deploy:deploy /opt/agentic-dashboard
 cd /opt/agentic-dashboard
 
 # Clone repository
-git clone https://idm.wezzel.com/crab-meat-repos/stsgym-work.git .
+git clone https://gitlab.example.internal/crab-meat-repos/agentic-ai.git .
 cd agentic_ai/dashboard_v2
 
 # Install dependencies
@@ -73,7 +73,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=crackers
+User=deploy
 WorkingDirectory=/opt/agentic-dashboard/agentic_ai/dashboard_v2/backend
 ExecStart=/opt/agentic-dashboard/agentic_ai/venv/bin/python server.py
 Restart=always
@@ -99,10 +99,10 @@ sudo nano /etc/nginx/conf.d/agents.conf
 ```nginx
 server {
     listen 443 ssl;
-    server_name agents.bedimsecurity.com;
+    server_name agents.example.com;
 
-    ssl_certificate /etc/letsencrypt/live/bedimsecurity.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/bedimsecurity.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
 
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -143,7 +143,7 @@ server {
 # HTTP redirect
 server {
     listen 80;
-    server_name agents.bedimsecurity.com;
+    server_name agents.example.com;
     return 301 https://$server_name$request_uri;
 }
 ```
@@ -156,10 +156,10 @@ sudo nginx -t
 sudo systemctl reload nginx
 
 # Get SSL certificate (if not already done)
-sudo certbot --nginx -d agents.bedimsecurity.com
+sudo certbot --nginx -d agents.example.com
 
 # Verify deployment
-curl https://agents.bedimsecurity.com/api/health
+curl https://agents.example.com/api/health
 ```
 
 ---
@@ -168,7 +168,7 @@ curl https://agents.bedimsecurity.com/api/health
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│              agents.bedimsecurity.com                   │
+│              agents.example.com                   │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │  ┌──────────────┐     ┌──────────────┐                │
@@ -212,7 +212,7 @@ CYBER_AGENTS_ENABLED=true
 KALIAGENT_INTEGRATION=true
 
 # Security (for production)
-CORS_ORIGINS=https://agents.bedimsecurity.com
+CORS_ORIGINS=https://agents.example.com
 SECRET_KEY=your-secret-key-here
 ```
 
@@ -285,7 +285,7 @@ npx playwright test
 ### Health Check Endpoint
 
 ```bash
-curl https://agents.bedimsecurity.com/api/health
+curl https://agents.example.com/api/health
 ```
 
 **Response:**
@@ -301,14 +301,14 @@ curl https://agents.bedimsecurity.com/api/health
 ### Metrics Endpoint
 
 ```bash
-curl https://agents.bedimsecurity.com/api/metrics
+curl https://agents.example.com/api/metrics
 ```
 
 ### Agent Status
 
 ```bash
-curl https://agents.bedimsecurity.com/api/agents
-curl https://agents.bedimsecurity.com/api/cyber-agents
+curl https://agents.example.com/api/agents
+curl https://agents.example.com/api/cyber-agents
 ```
 
 ---
@@ -359,8 +359,8 @@ sudo systemctl reload nginx
 
 ## 📞 Support
 
-- **Documentation**: https://agents.bedimsecurity.com/docs
-- **GitHub**: https://github.com/wezzels/agentic-ai
+- **Documentation**: https://agents.example.com/docs
+- **GitHub**: https://github.com/dmrobbi/agentic-ai
 - **Discord**: https://discord.gg/clawd
 
 ---

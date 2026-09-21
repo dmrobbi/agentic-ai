@@ -78,7 +78,7 @@ incident = responder.create_incident(
     incident_type=IncidentType.MALWARE,
     severity=IncidentSeverity.HIGH,
     affected_systems=['WS-001'],
-    iocs=['192.168.1.100']
+    iocs=['192.0.2.100']
 )
 
 responder.triage_incident(incident.id)
@@ -107,7 +107,7 @@ from phase12.containment.network_containment import NetworkContainment
 containment = NetworkContainment()
 
 # Isolate host
-containment.isolate_host('WS-001', '192.168.1.100', method='vlan')
+containment.isolate_host('WS-001', '192.0.2.100', method='vlan')
 
 # Block C2 IP
 containment.block_ip('203.0.113.50', direction='both', reason='C2 server')
@@ -385,7 +385,7 @@ incident = responder.create_incident(
 triage = responder.triage_incident(incident.id)
 
 # Contain
-containment.isolate_host('FS-001', '192.168.1.50', method='vlan')
+containment.isolate_host('FS-001', '192.0.2.50', method='vlan')
 
 # Collect forensics
 forensics.create_case(incident.id, 'Ransomware Investigation')

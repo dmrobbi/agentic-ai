@@ -152,7 +152,7 @@ class TestPrivacyAgent:
             subject_id=subject.subject_id,
             purpose=ProcessingPurpose.MARKETING,
             method="web_form",
-            ip_address="192.168.1.100",
+            ip_address="192.0.2.100",
             expires_in_days=365,
         )
         

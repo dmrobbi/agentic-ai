@@ -191,7 +191,7 @@ Example: `step-03-execute-playbook.png`
 **Before:**
 ````markdown
 ```
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 pip install -r requirements.txt
 ```
@@ -201,7 +201,7 @@ pip install -r requirements.txt
 ````markdown
 ```bash
 # Step 1: Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 
 # Step 2: Navigate to directory
 cd agentic-ai/kali_dashboard
@@ -279,7 +279,7 @@ graph TD
 **Content:**
 - [ ] Replace ASCII charts with actual data visualizations
 - [ ] Add real screenshots from dashboard
-- [ ] Include QR code linking to https://agents.bedimsecurity.com
+- [ ] Include QR code linking to https://agents.example.com
 - [ ] Add speaker notes for each slide
 - [ ] Embed demo video (cyber_agents_demo.mp4)
 

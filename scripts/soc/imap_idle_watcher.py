@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """IMAP watcher for the agentic SOC (SOC roadmap 1.2).
 
-Polls the SOC inbox (default reports@bedimsecurity.com on
-mail.stsgym.com:993 IMAPS) every POLL_SEC seconds. For each unseen
+Polls the SOC inbox (default reports@example.com on
+smtp.example.internal:993 IMAPS) every POLL_SEC seconds. For each unseen
 message:
 
   1. Allowlist check via SecurityOperationsAgent.triage_inbound_email:
@@ -23,9 +23,9 @@ REPORTS_MAILBOX_PW. Optional: REALTIME_SOC_URL (used to fetch incident
 context), POLL_SEC (default 30), DB_PATH (default /var/tmp or workspace).
 
 Run as a service: scripts/wazuh-integrations/imap-watcher.service (added
-in this commit). Logs to /home/wez/logs/imap-watcher.log.
+in this commit). Logs to /home/user/logs/imap-watcher.log.
 
-Tested 2026-08-06 against mail.stsgym.com:993 (mailcow). Free-form
+Tested 2026-08-06 against smtp.example.internal:993 (mailcow). Free-form
 question → reply in ~6s; threaded reply in ~7s.
 """
 from __future__ import annotations
@@ -74,7 +74,7 @@ def _bootstrap_recent_outbound() -> int:
     log = Path(
         os.environ.get(
             "REALTIME_SOC_LOG",
-            "/home/wez/.openclaw/workspace/agentic-ai/data/realtime_soc.jsonl",
+            "/home/user/.openclaw/workspace/agentic-ai/data/realtime_soc.jsonl",
         )
     )
     if not log.exists():
@@ -95,7 +95,7 @@ def _bootstrap_recent_outbound() -> int:
         # We don't have the Message-ID we sent (the JSONL doesn't store it),
         # so synthesise a sentinel that includes the incident_id (which the
         # triage code already handles by exact match).
-        sentinel = f"<{inc_id}@bedimsecurity.com>"
+        sentinel = f"<{inc_id}@example.com>"
         _RECENT_OUTBOUND[inc_id] = sentinel
         seeded += 1
     # Apply cap
@@ -109,11 +109,11 @@ def _bootstrap_recent_outbound() -> int:
 # ---------------------------------------------------------------------------
 LOG_PATH = Path(os.environ.get(
     "IMAP_WATCHER_LOG",
-    "/home/wez/logs/imap-watcher.log",
+    "/home/user/logs/imap-watcher.log",
 ))
 DB_PATH = Path(os.environ.get(
     "IMAP_WATCHER_DB",
-    "/home/wez/.openclaw/workspace/agentic-ai/data/imap_watcher.sqlite",
+    "/home/user/.openclaw/workspace/agentic-ai/data/imap_watcher.sqlite",
 ))
 LOG_PATH.parent.mkdir(parents=True, exist_ok=True)
 DB_PATH.parent.mkdir(parents=True, exist_ok=True)
@@ -189,13 +189,13 @@ class MailConfig:
     imap_port: int
     mailbox: str
     mailbox_pw: str
-    recipient_default: str = "wlrobbi@gmail.com"
+    recipient_default: str = "user@example.com"
 
     @classmethod
     def load(cls) -> "MailConfig":
         envfile = os.environ.get(
             "WAZUH_REPORTS_ENV",
-            "/home/wez/.openclaw/workspace/secrets/reports-bedimsecurity-mailbox.env",
+            "/etc/agentic-soc/soc-mailbox.env",
         )
         d: Dict[str, str] = {}
         for line in open(envfile):
@@ -205,14 +205,14 @@ class MailConfig:
             k, v = line.split("=", 1)
             d[k.strip()] = v.strip()
         return cls(
-            smtp_host=d.get("SMTP_HOST", "mail.stsgym.com"),
+            smtp_host=d.get("SMTP_HOST", "smtp.example.internal"),
             smtp_port=int(d.get("SMTP_PORT", "587")),
-            imap_host=d.get("IMAP_HOST", "mail.stsgym.com"),
+            imap_host=d.get("IMAP_HOST", "smtp.example.internal"),
             imap_port=int(d.get("IMAP_PORT", "993")),
             mailbox=d["REPORTS_MAILBOX"],
             mailbox_pw=d["REPORTS_MAILBOX_PW"],
             recipient_default=d.get(
-                "WAZUH_REPORTS_RECIPIENT", "wlrobbi@gmail.com"
+                "WAZUH_REPORTS_RECIPIENT", "user@example.com"
             ),
         )
 
@@ -295,7 +295,7 @@ def send_reply(
     msg["To"] = to_addr
     msg["Subject"] = subject[:200]
     msg["Date"] = formatdate(localtime=True)
-    msg_id = make_msgid(domain="bedimsecurity.com")
+    msg_id = make_msgid(domain="example.com")
     msg["Message-ID"] = msg_id
     if in_reply_to:
         msg["In-Reply-To"] = in_reply_to
@@ -339,7 +339,7 @@ def prompt_ollama(
         # Fallback to direct Ollama HTTP if llm_runtime isn't importable
         # (e.g. running the watcher before llm_runtime is deployed).
         candidates = [
-            "/home/wez/repos/stsgym-work/scripts/soc/llm_runtime.py",
+            "/home/user/repos/agentic-ai/scripts/soc/llm_runtime.py",
         ]
         import importlib.util
         loaded = False
@@ -433,7 +433,7 @@ def fetch_incident_context(incident_id: str) -> Optional[Dict[str, Any]]:
     log = Path(
         os.environ.get(
             "REALTIME_SOC_LOG",
-            "/home/wez/.openclaw/workspace/agentic-ai/data/realtime_soc.jsonl",
+            "/home/user/.openclaw/workspace/agentic-ai/data/realtime_soc.jsonl",
         )
     )
     if not log.exists():
@@ -460,13 +460,13 @@ def fetch_recent_high_alerts(hours: int = 1) -> Optional[Dict[str, Any]]:
 
     Reads the same env as the rest of the SOC scripts:
       WAZUH_INDEXER_URL  (default https://127.0.0.1:9200)
-      WAZUH_INDEXER_USERNAME / PASSWORD  (admin / SecretPassword)
+      WAZUH_INDEXER_USERNAME / PASSWORD  (admin / CHANGE_ME)
     """
     base = os.environ.get(
         "WAZUH_INDEXER_URL", "https://127.0.0.1:9200"
     ).rstrip("/")
     user = os.environ.get("WAZUH_INDEXER_USERNAME", "admin")
-    pw = os.environ.get("WAZUH_INDEXER_PASSWORD", "SecretPassword")
+    pw = os.environ.get("WAZUH_INDEXER_PASSWORD", "CHANGE_ME")
 
     auth_header = "Basic " + __import__("base64").b64encode(
         f"{user}:{pw}".encode()
@@ -690,7 +690,7 @@ class ImapWatcher:
 
         from_addr = parseaddr(msg.get("From", ""))[1]
         subject = msg.get("Subject", "")[:200]
-        message_id = msg.get("Message-ID", "") or make_msgid(domain="bedimsecurity.com")
+        message_id = msg.get("Message-ID", "") or make_msgid(domain="example.com")
         in_reply_to = msg.get("In-Reply-To", "")
         references = msg.get("References", "")
         body = _extract_body(msg)

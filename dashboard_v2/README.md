@@ -1,6 +1,6 @@
 # Agentic AI Dashboard v2.0 - Professional Redesign
 
-**🌐 Live at: https://agents.bedimsecurity.com**
+**🌐 Live at: https://agents.example.com**
 
 Enterprise-grade monitoring dashboard for the Agentic AI Cyber Division with real-time graphs, interactive agent drill-downs, and comprehensive documentation.
 
@@ -38,7 +38,7 @@ Enterprise-grade monitoring dashboard for the Agentic AI Cyber Division with rea
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│         agents.bedimsecurity.com (Production)           │
+│         agents.example.com (Production)           │
 ├─────────────────────────────────────────────────────────┤
 │                                                         │
 │  ┌──────────────┐     ┌──────────────┐                │
@@ -94,7 +94,7 @@ Enterprise-grade monitoring dashboard for the Agentic AI Cyber Division with rea
 
 ```bash
 # 1. Clone and navigate
-cd /home/wez/stsgym-work/agentic_ai/dashboard_v2
+cd /home/user/agentic-ai/agentic_ai/dashboard_v2
 
 # 2. Install backend dependencies
 cd backend
@@ -276,10 +276,10 @@ python cyber_division_demo.py
 
 | Environment | URL | Credentials |
 |-------------|-----|-------------|
-| **Production** | https://agents.bedimsecurity.com | Public |
+| **Production** | https://agents.example.com | Public |
 | **Local Dev** | http://localhost:5173 | None |
-| **API Docs** | https://agents.bedimsecurity.com/docs | Public |
-| **Swagger UI** | https://agents.bedimsecurity.com/docs | Public |
+| **API Docs** | https://agents.example.com/docs | Public |
+| **Swagger UI** | https://agents.example.com/docs | Public |
 
 ---
 

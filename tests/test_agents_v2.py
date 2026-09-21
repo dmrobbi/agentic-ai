@@ -279,7 +279,7 @@ class TestRedTeamAgentV2:
             "t1": {
                 "target_id": "t1",
                 "engagement_id": "eng_test",
-                "ip_address": "192.168.1.10",
+                "ip_address": "192.0.2.10",
                 "accessed": True,
                 "services": [{"name": "smb", "port": 445}],
                 "credentials_found": [{"username": "admin", "password": "test"}],
@@ -287,7 +287,7 @@ class TestRedTeamAgentV2:
             "t2": {
                 "target_id": "t2",
                 "engagement_id": "eng_test",
-                "ip_address": "192.168.1.20",
+                "ip_address": "192.0.2.20",
                 "accessed": False,
                 "services": [],
             },
@@ -297,8 +297,8 @@ class TestRedTeamAgentV2:
         
         assert len(pivots) > 0
         pivot = pivots[0]
-        assert pivot.source_host == "192.168.1.10"
-        assert "192.168.1.20" in pivot.target_hosts
+        assert pivot.source_host == "192.0.2.10"
+        assert "192.0.2.20" in pivot.target_hosts
         assert pivot.method in ['psexec', 'wmi', 'ssh', 'rdp']
     
     def test_detection_testing(self):

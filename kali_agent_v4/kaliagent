@@ -162,7 +162,7 @@ def ai(command):
     # Simulate AI parsing
     parsed = {
         "type": "scan",
-        "target": "10.0.100.0/24",
+        "target": "198.51.100.0/24",
         "scan_type": "nmap"
     }
     
@@ -251,9 +251,9 @@ def list():
     console.print("[bold green]📡 Active C2 Agents[/bold green]\n")
     
     agents = [
-        ("agent-001", "10.0.100.10", "windows", "active"),
-        ("agent-002", "10.0.100.20", "linux", "active"),
-        ("agent-003", "10.0.100.30", "linux", "sleeping"),
+        ("agent-001", "198.51.100.10", "windows", "active"),
+        ("agent-002", "198.51.100.20", "linux", "active"),
+        ("agent-003", "198.51.100.30", "linux", "sleeping"),
     ]
     
     table = Table(show_header=True, header_style="bold cyan")

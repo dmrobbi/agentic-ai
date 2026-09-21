@@ -153,7 +153,7 @@ function AuthorizationSettings({ onSave }) {
 }
 
 function SafetySettings({ onSave }) {
-  const [whitelist, setWhitelist] = useState('192.168.1.0/24\n10.0.0.0/8');
+  const [whitelist, setWhitelist] = useState('192.0.2.0/24\n10.0.0.0/8');
   const [blacklist, setBlacklist] = useState('8.8.8.8\n1.1.1.1');
   const [safeMode, setSafeMode] = useState(true);
   const [dryRun, setDryRun] = useState(false);
@@ -173,7 +173,7 @@ function SafetySettings({ onSave }) {
           <textarea
             value={whitelist}
             onChange={(e) => setWhitelist(e.target.value)}
-            placeholder="192.168.1.0/24&#10;10.0.0.100"
+            placeholder="192.0.2.0/24&#10;198.51.100.100"
             rows={6}
           />
           <div className="whitelist-info">

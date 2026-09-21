@@ -839,7 +839,7 @@ def main():
     
     import sys
     
-    ip_address = sys.argv[1] if len(sys.argv) > 1 else "192.168.10.101"
+    ip_address = sys.argv[1] if len(sys.argv) > 1 else "192.0.2.101"
     
     # Initialize client
     enip = EtherNetIPClient(ip_address=ip_address, safety_mode=True, verbose=True)

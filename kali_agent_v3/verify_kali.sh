@@ -4,7 +4,7 @@ echo "  KaliAgent v3 - Quick Health Check"
 echo "========================================"
 echo
 
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3
 
 echo "1. Checking file count..."
 files=$(cd .. && git ls-files kali_agent_v3/ 2>/dev/null | wc -l)

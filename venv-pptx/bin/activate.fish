@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV /home/wez/stsgym-work/agentic_ai/venv-pptx
+set -gx VIRTUAL_ENV /home/user/agentic-ai/agentic_ai/venv-pptx
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/"bin $PATH

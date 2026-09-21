@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 # Load existing
-with open('/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_final.json', 'r') as f:
+with open('/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_final.json', 'r') as f:
     existing = json.load(f)
 
 # Final batch of tools
@@ -88,7 +88,7 @@ FINAL_BATCH = {
 ALL_TOOLS = {**existing, **FINAL_BATCH}
 
 # Save
-output_path = Path('/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json')
+output_path = Path('/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json')
 
 with open(output_path, 'w') as f:
     json.dump(ALL_TOOLS, f, indent=2)

@@ -200,7 +200,7 @@ Attach 3-4 of these to the post:
 **How to capture:**
 ```bash
 # Git history
-cd ~/stsgym-work/agentic_ai/kali_agent_v4
+cd ~/agentic-ai/agentic_ai/kali_agent_v4
 git log --oneline | head -20
 
 # Security audit

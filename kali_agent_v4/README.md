@@ -106,14 +106,14 @@ python phase6/dashboard_v2.py
 
 ```bash
 # IoT Exploitation (Phase 9)
-python phase9/discovery/device_discovery.py 192.168.1.0/24
+python phase9/discovery/device_discovery.py 192.0.2.0/24
 
 # SCADA/ICS Testing (Phase 10)
-python phase10/protocols/s7comm.py 192.168.10.100
-python phase10/protocols/ethernetip.py 192.168.10.101
-python phase10/protocols/dnp3.py 192.168.10.102
-python phase10/protocols/bacnet.py 192.168.10.103
-python phase10/protocols/opcua.py opc.tcp://192.168.10.104:4840
+python phase10/protocols/s7comm.py 192.0.2.100
+python phase10/protocols/ethernetip.py 192.0.2.101
+python phase10/protocols/dnp3.py 192.0.2.102
+python phase10/protocols/bacnet.py 192.0.2.103
+python phase10/protocols/opcua.py opc.tcp://192.0.2.104:4840
 python phase10/protocols/modbus_rtu.py /dev/ttyUSB0 9600
 ```
 

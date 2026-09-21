@@ -77,7 +77,7 @@ Phase 10 brings **comprehensive SCADA/ICS security testing** to KaliAgent v4.4.0
 
 **Usage:**
 ```bash
-python phase10/protocols/s7comm.py 192.168.10.100
+python phase10/protocols/s7comm.py 192.0.2.100
 ```
 
 ---
@@ -99,7 +99,7 @@ python phase10/protocols/s7comm.py 192.168.10.100
 
 **Usage:**
 ```bash
-python phase10/protocols/ethernetip.py 192.168.10.101
+python phase10/protocols/ethernetip.py 192.0.2.101
 ```
 
 ---
@@ -122,7 +122,7 @@ python phase10/protocols/ethernetip.py 192.168.10.101
 
 **Usage:**
 ```bash
-python phase10/protocols/dnp3.py 192.168.10.102
+python phase10/protocols/dnp3.py 192.0.2.102
 ```
 
 ---
@@ -145,7 +145,7 @@ python phase10/protocols/dnp3.py 192.168.10.102
 
 **Usage:**
 ```bash
-python phase10/protocols/bacnet.py 192.168.10.103
+python phase10/protocols/bacnet.py 192.0.2.103
 ```
 
 ---
@@ -168,7 +168,7 @@ python phase10/protocols/bacnet.py 192.168.10.103
 
 **Usage:**
 ```bash
-python phase10/protocols/opcua.py opc.tcp://192.168.10.104:4840
+python phase10/protocols/opcua.py opc.tcp://192.0.2.104:4840
 ```
 
 ---
@@ -212,13 +212,13 @@ All Phase 10 modules include safety mode enabled by default:
 ### Safety Mode Examples:
 ```python
 # Default: Safety mode ENABLED
-client = S7CommClient("192.168.10.100", safety_mode=True)
+client = S7CommClient("192.0.2.100", safety_mode=True)
 
 # Write operations will be BLOCKED
 client.write_memory('DB', 1, 0, data)  # ❌ Blocked
 
 # To enable writes (LAB ONLY!)
-client = S7CommClient("192.168.10.100", safety_mode=False)
+client = S7CommClient("192.0.2.100", safety_mode=False)
 client.write_memory('DB', 1, 0, data)  # ⚠️ Allowed with warnings
 ```
 
@@ -244,19 +244,19 @@ apt-get install python3-serial python3-pymodbus
 
 ```bash
 # Siemens S7 PLC
-python phase10/protocols/s7comm.py 192.168.10.100
+python phase10/protocols/s7comm.py 192.0.2.100
 
 # Allen-Bradley PLC
-python phase10/protocols/ethernetip.py 192.168.10.101
+python phase10/protocols/ethernetip.py 192.0.2.101
 
 # DNP3 (Utilities)
-python phase10/protocols/dnp3.py 192.168.10.102
+python phase10/protocols/dnp3.py 192.0.2.102
 
 # BACnet (Buildings)
-python phase10/protocols/bacnet.py 192.168.10.103
+python phase10/protocols/bacnet.py 192.0.2.103
 
 # OPC UA
-python phase10/protocols/opcua.py opc.tcp://192.168.10.104:4840
+python phase10/protocols/opcua.py opc.tcp://192.0.2.104:4840
 
 # Modbus RTU (Serial)
 python phase10/protocols/modbus_rtu.py /dev/ttyUSB0 9600
@@ -268,7 +268,7 @@ python phase10/protocols/modbus_rtu.py /dev/ttyUSB0 9600
 from phase10.scada_agent import SCADAAgent
 
 # Initialize with safety mode
-scada = SCADAAgent(target_network="192.168.10.0/24", safety_mode=True)
+scada = SCADAAgent(target_network="192.0.2.0/24", safety_mode=True)
 
 # Discover ICS devices
 devices = scada.discover_ics_devices()

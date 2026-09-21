@@ -177,8 +177,8 @@ _________________________ Date: _________
 ```python
 # Only these IPs can be scanned
 agent.set_ip_whitelist([
-    "192.168.1.0/24",
-    "10.0.0.100",
+    "192.0.2.0/24",
+    "198.51.100.100",
     "example.com"
 ])
 ```
@@ -203,7 +203,7 @@ agent.set_ip_whitelist([
 **Configuration:**
 ```python
 agent.add_to_blacklist("8.8.8.8")
-agent.add_to_blacklist("192.168.1.1")  # Gateway
+agent.add_to_blacklist("192.0.2.1")  # Gateway
 ```
 
 ### Target Validation
@@ -228,8 +228,8 @@ agent.add_to_blacklist("192.168.1.1")  # Gateway
   "user": "admin",
   "engagement_id": "eng-001",
   "tool": "nmap",
-  "command": "nmap -sV 192.168.1.100",
-  "target": "192.168.1.100",
+  "command": "nmap -sV 192.0.2.100",
+  "target": "192.0.2.100",
   "exit_code": 0,
   "duration": 45.3,
   "authorization_level": "BASIC"

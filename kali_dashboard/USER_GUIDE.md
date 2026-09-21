@@ -80,9 +80,9 @@ Comprehensive guide for using KaliAgent security automation platform.
 **Step 2: Scope Definition**
 - **Targets**: IP addresses, domains, CIDR ranges
   ```
-  192.168.1.0/24
+  192.0.2.0/24
   example.com
-  10.0.0.100
+  198.51.100.100
   ```
 - **Objectives**: What you want to achieve
   ```
@@ -243,7 +243,7 @@ curl -X POST http://localhost:8001/api/engagements/{id}/playbook \
   -H "Content-Type: application/json" \
   -d '{
     "playbook_type": "recon",
-    "target": "192.168.1.100",
+    "target": "192.0.2.100",
     "domain": "example.com"
   }'
 ```
@@ -327,9 +327,9 @@ curl -X POST http://localhost:8001/api/engagements/{id}/playbook \
 
 **Configuration:**
 ```
-192.168.1.0/24
-10.0.0.0/8
-172.16.0.0/12
+192.0.2.0/24
+198.51.100.0/8
+203.0.113.0/12
 example.com
 ```
 
@@ -346,7 +346,7 @@ example.com
 ```
 8.8.8.8
 1.1.1.1
-192.168.1.1  # Gateway
+192.0.2.1  # Gateway
 ```
 
 **Behavior:**
@@ -388,8 +388,8 @@ example.com
 {
   "timestamp": "2026-04-18T01:23:45.123Z",
   "tool_name": "nmap",
-  "command": "nmap -sV -p 1-1000 192.168.1.100",
-  "arguments": {"target": "192.168.1.100", "ports": "1-1000"},
+  "command": "nmap -sV -p 1-1000 192.0.2.100",
+  "arguments": {"target": "192.0.2.100", "ports": "1-1000"},
   "exit_code": 0,
   "duration_seconds": 45.3,
   "engagement_id": "eng-2026041801"
@@ -551,13 +551,13 @@ engagement = redteam.create_engagement(
     name="Auto Pentest",
     engagement_type="penetration_test",
     start_date=datetime.utcnow(),
-    scope=["192.168.1.0/24"],
+    scope=["192.0.2.0/24"],
     objectives=["Full assessment"]
 )
 
 result = redteam.execute_kali_full_engagement(
     engagement_id=engagement.engagement_id,
-    targets=["192.168.1.100", "192.168.1.101"]
+    targets=["192.0.2.100", "192.0.2.101"]
 )
 ```
 
@@ -573,10 +573,10 @@ agent.set_authorization(AuthorizationLevel.ADVANCED)
 
 # Custom sequence
 results = {}
-results['nmap'] = agent.nmap_scan('192.168.1.100', ports='1-65535')
-results['nikto'] = agent.nikto_scan('192.168.1.100', port=80)
-results['gobuster'] = agent.gobuster_scan('http://192.168.1.100')
-results['sqlmap'] = agent.sqlmap_scan('http://192.168.1.100/login.php')
+results['nmap'] = agent.nmap_scan('192.0.2.100', ports='1-65535')
+results['nikto'] = agent.nikto_scan('192.0.2.100', port=80)
+results['gobuster'] = agent.gobuster_scan('http://192.0.2.100')
+results['sqlmap'] = agent.sqlmap_scan('http://192.0.2.100/login.php')
 
 # Generate custom report
 report = agent.generate_playbook_report(

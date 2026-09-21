@@ -929,7 +929,7 @@ def create_closing_slide(prs):
     tf.clear()
     
     p = tf.paragraphs[0]
-    p.text = "🌐 https://agents.bedimsecurity.com"
+    p.text = "🌐 https://agents.example.com"
     p.font.size = Pt(24)
     p.font.color.rgb = COLORS['light']
     p.alignment = PP_ALIGN.CENTER

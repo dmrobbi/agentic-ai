@@ -47,7 +47,7 @@
 
 1. **ISOLATED LAB ONLY**
    - No internet access from attack network
-   - Physical/network isolation (10.0.100.0/24)
+   - Physical/network isolation (198.51.100.0/24)
    - Your own hardware only
 
 2. **LEGAL COMPLIANCE**

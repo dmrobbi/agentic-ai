@@ -414,7 +414,7 @@ Capabilities:
     containment = NetworkContainment()
     
     # Test isolation
-    containment.isolate_host('WS-001', '192.168.1.100', method='vlan')
+    containment.isolate_host('WS-001', '192.0.2.100', method='vlan')
     
     # Test IP block
     containment.block_ip('203.0.113.50', direction='both', reason='C2 server')

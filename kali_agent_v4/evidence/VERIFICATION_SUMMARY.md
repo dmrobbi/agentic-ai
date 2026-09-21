@@ -69,7 +69,7 @@ f54e2be Phase 7: Multi-Agent Orchestration COMPLETE
 - ✅ Telegram tokens: Clean
 
 **Warnings (Non-Critical):**
-- ⚠️ Internal IPs found (lab network 10.0.100.x - safe)
+- ⚠️ Internal IPs found (lab network 198.51.100.x - safe)
 - ⚠️ Internal domain names in documentation (can be removed)
 
 **Conclusion:** No exposed secrets or credentials. Code is safe for public release.
@@ -109,7 +109,7 @@ f54e2be Phase 7: Multi-Agent Orchestration COMPLETE
 ✅ Agent registered: agent-ghi789 (attacker)
 ✅ Agent registered: agent-jkl012 (analyst)
 🎯 Operation created: op-mno345
-   Target: 10.0.100.0/24
+   Target: 198.51.100.0/24
    Team: 3 agents
    Tasks: 6
 ```
@@ -223,7 +223,7 @@ sha256sum -c CHECKSUMS.txt
 
 ### Step 1: Start Dashboard
 ```bash
-cd ~/stsgym-work/agentic_ai/kali_agent_v4
+cd ~/agentic-ai/agentic_ai/kali_agent_v4
 python3 phase6/dashboard_v2.py &
 sleep 5
 ```

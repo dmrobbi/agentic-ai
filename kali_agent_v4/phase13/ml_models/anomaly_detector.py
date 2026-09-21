@@ -571,7 +571,7 @@ Capabilities:
     
     # Network anomaly
     detector.detect_network_anomaly(
-        '192.168.1.100',
+        '192.0.2.100',
         '203.0.113.50',
         4444,  # Suspicious port
         150_000_000

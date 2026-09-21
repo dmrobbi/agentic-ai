@@ -222,7 +222,7 @@ volumes:
 
 ```bash
 # Step 1: Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 
 # Step 2: Create .env file with secure passwords
@@ -490,7 +490,7 @@ provider "aws" {
 
 # VPC
 resource "aws_vpc" "kali" {
-  cidr_block = "10.0.0.0/16"
+  cidr_block = "198.51.100.0/16"
   
   tags = {
     Name = "kali-agent-vpc"
@@ -588,21 +588,21 @@ graph TB
     end
     
     subgraph "Active Nodes"
-        B[KaliAgent Node 1<br/>192.168.1.10]
-        C[KaliAgent Node 2<br/>192.168.1.11]
-        D[KaliAgent Node 3<br/>192.168.1.12]
+        B[KaliAgent Node 1<br/>192.0.2.10]
+        C[KaliAgent Node 2<br/>192.0.2.11]
+        D[KaliAgent Node 3<br/>192.0.2.12]
     end
     
     subgraph "Database Cluster"
-        E[PostgreSQL Primary<br/>192.168.1.20]
-        F[PostgreSQL Replica 1<br/>192.168.1.21]
-        G[PostgreSQL Replica 2<br/>192.168.1.22]
+        E[PostgreSQL Primary<br/>192.0.2.20]
+        F[PostgreSQL Replica 1<br/>192.0.2.21]
+        G[PostgreSQL Replica 2<br/>192.0.2.22]
     end
     
     subgraph "Redis Cluster"
-        H[Redis Master<br/>192.168.1.30]
-        I[Redis Slave 1<br/>192.168.1.31]
-        J[Redis Slave 2<br/>192.168.1.32]
+        H[Redis Master<br/>192.0.2.30]
+        I[Redis Slave 1<br/>192.0.2.31]
+        J[Redis Slave 2<br/>192.0.2.32]
     end
     
     A --> B

@@ -103,7 +103,7 @@ System Health: HEALTHY
 
 ### Play Asciinema Casts
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3/recordings
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3/recordings
 asciinema play tool_demo.cast
 ```
 

@@ -10,7 +10,7 @@
 
 ### 1. Verify Repository Structure
 ```bash
-cd /home/wez/stsgym-work/agentic_ai
+cd /home/user/agentic-ai/agentic_ai
 
 # Check all 50 files are present
 git ls-files kali_agent_v3/ | wc -l
@@ -119,7 +119,7 @@ python3 demo_security.py
 
 ### Full Weaponization Workflow
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3
 python3 -c "
 from weaponization.weaponization_engine import WeaponizationEngine
 from weaponization.payload_generator import Platform
@@ -139,7 +139,7 @@ print(f'Time: {report.total_time_seconds:.1f}s')
 
 ### Full C2 Workflow
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3
 python3 -c "
 from c2.orchestration import C2Orchestrator, C2FrameworkType, C2Server, C2Status
 from pathlib import Path
@@ -161,7 +161,7 @@ print(f'Healthy: {health[\"healthy_servers\"]}/{len(health[\"servers\"])}')
 
 ### Full Monitoring Workflow
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3
 python3 -c "
 from production.monitoring import SystemMonitor
 from pathlib import Path
@@ -287,7 +287,7 @@ with open(export_path) as f:
 
 ### View Asciinema Casts
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3/recordings
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3/recordings
 
 # Play recordings
 asciinema play tool_demo.cast
@@ -313,7 +313,7 @@ cat output_security.txt
 After running all tests, generate a report:
 
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3
 python3 tests/test_all_modules.py > /tmp/test_results.txt 2>&1
 
 # Generate summary
@@ -352,7 +352,7 @@ echo "  KaliAgent v3 - Quick Health Check"
 echo "========================================"
 echo
 
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3
 
 echo "1. Checking file count..."
 files=$(git ls-files kali_agent_v3/ 2>/dev/null | wc -l)

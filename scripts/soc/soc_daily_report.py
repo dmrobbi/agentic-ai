@@ -15,8 +15,8 @@ Writes:
 Configuration via env:
   WAZUH_INDEXER_URL       default https://127.0.0.1:9200
   WAZUH_INDEXER_USERNAME   default admin
-  WAZUH_INDEXER_PASSWORD   default SecretPassword (thing1 single-node)
-  REPORT_DIR               default /home/wez/.openclaw/workspace/memory
+  WAZUH_INDEXER_PASSWORD   default CHANGE_ME (manager-host single-node)
+  REPORT_DIR               default /home/user/.openclaw/workspace/memory
 
 Usage:
   python3 scripts/soc/soc_daily_report.py                # last 24h
@@ -47,7 +47,7 @@ from agentic_ai.infrastructure.wazuh_client import (
 
 REPORT_DIR = Path(os.environ.get(
     "REPORT_DIR",
-    "/home/wez/.openclaw/workspace/memory",
+    "/home/user/.openclaw/workspace/memory",
 ))
 
 
@@ -120,7 +120,7 @@ def summarize(alerts: List[Dict[str, Any]], hours: int) -> Dict[str, Any]:
 
 
 def run_pipeline_selftest(
-    target: str = "192.168.1.151",
+    target: str = "192.0.2.151",
     attempts: int = 10,
     timeout_sec: int = 90,
 ) -> Dict[str, Any]:
@@ -349,8 +349,8 @@ def main() -> int:
     p.add_argument("--selftest", action="store_true",
                    help="run the benign SSH brute-force end-to-end pipeline test "
                         "BEFORE generating the report, and include its result")
-    p.add_argument("--selftest-target", default="192.168.1.151",
-                   help="target host for the selftest (default: 192.168.1.151 = rpi42)")
+    p.add_argument("--selftest-target", default="192.0.2.151",
+                   help="target host for the selftest (default: 192.0.2.151 = target-host)")
     p.add_argument("--selftest-attempts", type=int, default=10,
                    help="bad-password attempts for the selftest (default: 10)")
     p.add_argument("--selftest-timeout", type=int, default=90,
@@ -371,7 +371,7 @@ def main() -> int:
     idx = WazuhIndexerClient(
         base_url=os.environ.get("WAZUH_INDEXER_URL", "https://127.0.0.1:9200"),
         username=os.environ.get("WAZUH_INDEXER_USERNAME", "admin"),
-        password=os.environ.get("WAZUH_INDEXER_PASSWORD", "SecretPassword"),
+        password=os.environ.get("WAZUH_INDEXER_PASSWORD", "CHANGE_ME"),
         verify_ssl=False,
     )
     now = utcnow()

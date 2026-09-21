@@ -29,11 +29,11 @@
 ```bash
 # Clone the repository
 cd /tmp
-git clone https://idm.wezzel.com/crab-meat-repos/agentic-ai.git
+git clone https://gitlab.example.internal/crab-meat-repos/agentic-ai.git
 cd agentic-ai/kali_agent_v3/install
 
 # Or from GitHub
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_agent_v3/install
 ```
 

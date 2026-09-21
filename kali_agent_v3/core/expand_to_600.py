@@ -10,7 +10,7 @@ import json
 from pathlib import Path
 
 # Load existing database
-with open('/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_complete.json', 'r') as f:
+with open('/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_complete.json', 'r') as f:
     existing_tools = json.load(f)
 
 # Additional categories to reach 600+ tools
@@ -246,7 +246,7 @@ NEW_CATEGORIES = {
 ALL_TOOLS = {**existing_tools, **NEW_CATEGORIES}
 
 # Save complete database
-output_path = Path('/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_600.json')
+output_path = Path('/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_600.json')
 
 with open(output_path, 'w') as f:
     json.dump(ALL_TOOLS, f, indent=2)

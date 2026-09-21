@@ -356,7 +356,7 @@ table ip exploit {
 }
 
 # Step 2: Add rule with verdict pointing to target_chain
-# nft add rule ip exploit base_chain ip daddr 10.0.0.1 jump target_chain
+# nft add rule ip exploit base_chain ip daddr 198.51.100.1 jump target_chain
 
 # Step 3: Trigger double NF_DROP
 # When the rule is deleted, nft_verdict_init() processes the verdict

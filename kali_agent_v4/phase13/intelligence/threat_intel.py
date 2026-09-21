@@ -709,7 +709,7 @@ Capabilities:
     
     # Extract IOCs from text
     sample_text = """
-    Malicious activity detected from IP 192.168.1.100 
+    Malicious activity detected from IP 192.0.2.100 
     connecting to evil-domain.com and malware.evil.net.
     Contact: attacker@evil.com
     File hash: 5d41402abc4b2a76b9719d911017c592

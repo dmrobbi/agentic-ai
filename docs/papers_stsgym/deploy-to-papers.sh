@@ -1,22 +1,22 @@
 #!/bin/bash
 # =============================================================================
-# Deploy KaliAgent Documentation to papers.stsgym.com
+# Deploy KaliAgent Documentation to papers.example.internal
 # =============================================================================
 
 set -e
 
 # Configuration
-JUMP_HOST="wezzel.com"
-JUMP_PORT="23"
-JUMP_USER="crackers"
-JUMP_KEY="/home/wez/.openclaw/workspace/crackers"
-MINER_HOST="miner"
-REMOTE_PATH="/home/crackers/stsgym-joined/static/papers/cyber-division"
-LOCAL_PATH="/home/wez/stsgym-work/agentic_ai/docs/papers_stsgym"
+JUMP_HOST="${JUMP_HOST:-jump.example.internal}"
+JUMP_PORT="${JUMP_PORT:-2222}"
+JUMP_USER="${JUMP_USER:-deploy}"
+JUMP_KEY="${JUMP_KEY:-$HOME/.ssh/deploy_key}"
+MINER_HOST="${MINER_HOST:-gpu-host}"
+REMOTE_PATH="${REMOTE_PATH:-/home/deploy/app-portal/static/papers/cyber-division}"
+LOCAL_PATH="${LOCAL_PATH:-$PWD/docs/papers_stsgym}"
 
 echo "╔═══════════════════════════════════════════════════════════╗"
 echo "║   🚀 KaliAgent Documentation Deployment                   ║"
-echo "║   Deploying to papers.stsgym.com                          ║"
+echo "║   Deploying to papers.example.internal                          ║"
 echo "╚═══════════════════════════════════════════════════════════╝"
 echo ""
 
@@ -96,7 +96,7 @@ echo ""
 echo "🔒 Step 5/5: Setting permissions..."
 
 ssh -i ${JUMP_KEY} -p ${JUMP_PORT} ${JUMP_USER}@${JUMP_HOST} \
-  "ssh ${MINER_HOST} 'chmod -R 755 ${REMOTE_PATH} && chown -R crackers:crackers ${REMOTE_PATH}'"
+  "ssh ${MINER_HOST} 'chmod -R 755 ${REMOTE_PATH} && chown -R deploy:deploy ${REMOTE_PATH}'"
 
 echo "   ✅ Permissions set"
 echo ""
@@ -109,21 +109,21 @@ echo ""
 echo "📄 Documentation is now live at:"
 echo ""
 echo "   🏠 Landing Page:"
-echo "      https://papers.stsgym.com/papers/cyber-division/"
+echo "      https://papers.example.internal/papers/cyber-division/"
 echo ""
 echo "   🚀 KaliAgent:"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/quickstart/"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/user-guide/"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/deployment/"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/integration/"
-echo "      https://papers.stsgym.com/papers/cyber-division/kaliagent/training/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/quickstart/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/user-guide/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/deployment/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/integration/"
+echo "      https://papers.example.internal/papers/cyber-division/kaliagent/training/"
 echo ""
 echo "   🤖 Cyber Agents:"
-echo "      https://papers.stsgym.com/papers/cyber-division/cyber-agents/"
+echo "      https://papers.example.internal/papers/cyber-division/cyber-agents/"
 echo ""
 echo "   📊 Resources:"
-echo "      https://papers.stsgym.com/papers/cyber-division/resources/"
+echo "      https://papers.example.internal/papers/cyber-division/resources/"
 echo ""
 echo "🎉 KaliAgent documentation is now publicly accessible!"
 echo ""

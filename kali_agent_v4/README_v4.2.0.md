@@ -22,7 +22,7 @@
 ## ✨ Features
 
 ### 🔬 Complete Attack Lab
-- Isolated network (10.0.100.0/24) with no internet leak
+- Isolated network (198.51.100.0/24) with no internet leak
 - Pre-configured vulnerable targets (Juice Shop, Metasploitable)
 - Real C2 servers (Sliver, Empire, Enhanced)
 - One-command deployment via Docker
@@ -36,7 +36,7 @@
 | **CVE Exploits** | EternalBlue, Log4Shell | ✅ |
 
 ### 🤖 AI-Powered Automation
-- Natural language commands ("Scan the 10.0.100.0/24 network")
+- Natural language commands ("Scan the 198.51.100.0/24 network")
 - LLM-powered attack planning (Ollama integration)
 - Automated vulnerability analysis
 - Smart report generation
@@ -106,8 +106,8 @@ chmod +x kaliagent
 # Run commands
 ./kaliagent --version
 ./kaliagent status
-./kaliagent scan -t 10.0.100.0/24
-./kaliagent attack -t 10.0.100.10 -a web
+./kaliagent scan -t 198.51.100.0/24
+./kaliagent attack -t 198.51.100.10 -a web
 ./kaliagent report -f pdf
 ```
 

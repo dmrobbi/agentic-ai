@@ -53,9 +53,9 @@ class TestPIIFilter:
 
     def test_ip_address_redaction(self):
         f = PIIFilter()
-        r = f.check("Server at 192.168.1.1 is down")
+        r = f.check("Server at 192.0.2.1 is down")
         assert "[REDACTED_IP]" in r.sanitized
-        assert "192.168.1.1" not in r.sanitized
+        assert "192.0.2.1" not in r.sanitized
 
     def test_no_false_positives(self):
         f = PIIFilter()

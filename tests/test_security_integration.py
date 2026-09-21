@@ -79,7 +79,7 @@ class TestSecurityLeadAgentOrchestration:
             description="Multiple SQL injection attempts detected",
             severity=SeverityLevel.CRITICAL,
             threat_type=ThreatType.SQL_INJECTION,
-            source_ip="10.0.0.100",
+            source_ip="198.51.100.100",
             target_resource="/api/users",
         )
         
@@ -143,7 +143,7 @@ class TestSecurityLeadAgentOrchestration:
                 user_id="user123",
                 resource="/api/login",
                 action="login",
-                source_ip="10.0.0.1",
+                source_ip="198.51.100.1",
                 success=False,
             )
         
@@ -277,7 +277,7 @@ class TestSecurityIncidentWorkflows:
                 user_id="victim",
                 resource="/api/login",
                 action="login",
-                source_ip="192.168.1.100",
+                source_ip="192.0.2.100",
                 success=False,
             )
         
@@ -305,7 +305,7 @@ class TestSecurityIncidentWorkflows:
                 user_id="normal_user",
                 resource="/api/data",
                 action="read",
-                source_ip="10.0.0.1",
+                source_ip="198.51.100.1",
                 success=True,
             )
         
@@ -315,7 +315,7 @@ class TestSecurityIncidentWorkflows:
                 user_id="suspicious_user",
                 resource="/api/login",
                 action="login",
-                source_ip="10.0.0.50",
+                source_ip="198.51.100.50",
                 success=False,
             )
         

@@ -66,7 +66,7 @@ class Phase6Orchestrator:
         
         # Demo 1: LLM Analysis
         print("\n[1/4] AI Target Analysis...")
-        analysis = self.analyze_target("10.0.100.10")
+        analysis = self.analyze_target("198.51.100.10")
         print(f"✅ Analysis complete: {len(str(analysis))} bytes")
         
         # Demo 2: Report Generation
@@ -105,7 +105,7 @@ class Phase6Orchestrator:
         
         # Demo 3: Natural Language Command
         print("\n[3/4] Natural Language Command Parsing...")
-        command = "Scan the 10.0.100.0/24 network for web servers and check for SQL injection vulnerabilities"
+        command = "Scan the 198.51.100.0/24 network for web servers and check for SQL injection vulnerabilities"
         parsed = self.parse_command(command)
         print(f"✅ Parsed: {parsed}")
         

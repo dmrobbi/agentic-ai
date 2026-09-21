@@ -322,7 +322,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### 🎉 ADDED - Complete Feature Set
 
 #### Phase 1: Attack Lab Infrastructure
-- Isolated network (10.0.100.0/24) with no internet leak
+- Isolated network (198.51.100.0/24) with no internet leak
 - OWASP Juice Shop deployment
 - Metasploitable2/3 vulnerable targets
 - Network topology visualization

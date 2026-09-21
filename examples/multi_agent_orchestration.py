@@ -34,7 +34,7 @@ def example_incident_response_workflow():
         description="Multiple SQL injection attempts on /api/users endpoint",
         severity=SeverityLevel.CRITICAL,
         threat_type=ThreatType.SQL_INJECTION,
-        source_ip="192.168.1.100",
+        source_ip="192.0.2.100",
         target_resource="/api/users",
     )
     print(f"   Incident ID: {security_incident.incident_id}")

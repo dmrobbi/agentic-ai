@@ -694,7 +694,7 @@ def run_scan(payload):
 # Enqueue task
 queue.enqueue(
     task_type='security.scan',
-    payload={'target': '192.168.1.1'},
+    payload={'target': '192.0.2.1'},
     priority=8,
 )
 ```

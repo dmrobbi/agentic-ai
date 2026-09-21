@@ -126,12 +126,12 @@ cat tool_demo_script.txt
 
 **GitHub:**
 ```
-https://github.com/wezzels/agentic-ai/tree/main/kali_agent_v3/recordings/media_output
+https://github.com/dmrobbi/agentic-ai/tree/main/kali_agent_v3/recordings/media_output
 ```
 
 **Direct Download:**
 ```bash
-wget https://github.com/wezzels/agentic-ai/raw/main/kali_agent_v3/recordings/media_output/tool_demo.png
+wget https://github.com/dmrobbi/agentic-ai/raw/main/kali_agent_v3/recordings/media_output/tool_demo.png
 ```
 
 ---

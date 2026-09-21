@@ -351,7 +351,7 @@ for opp in report['optimization_opportunities']:
 See `examples/devops_automation.py` for comprehensive examples:
 
 ```bash
-cd ~/stsgym-work/agentic_ai
+cd ~/agentic-ai/agentic_ai
 PYTHONPATH=. ./venv/bin/python examples/devops_automation.py
 ```
 

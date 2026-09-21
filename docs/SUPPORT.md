@@ -341,7 +341,7 @@ print(f"  SLA Breaches: {metrics['sla_breaches']}")
 See `examples/support_tickets.py` for comprehensive examples:
 
 ```bash
-cd ~/stsgym-work/agentic_ai
+cd ~/agentic-ai/agentic_ai
 PYTHONPATH=. ./venv/bin/python examples/support_tickets.py
 ```
 

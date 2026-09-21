@@ -1,6 +1,6 @@
 # KaliAgent Documentation Bundle
 
-Complete documentation package for papers.stsgym.com deployment.
+Complete documentation package for papers.example.internal deployment.
 
 ---
 
@@ -40,7 +40,7 @@ Complete documentation package for papers.stsgym.com deployment.
 ## Deployment Structure
 
 ```
-papers.stsgym.com/cyber-division/
+papers.example.internal/cyber-division/
 ├── index.html (Cyber Division landing page)
 ├── kaliagent/
 │   ├── index.html (KaliAgent overview)
@@ -164,108 +164,108 @@ papers.stsgym.com/cyber-division/
 ```bash
 #!/bin/bash
 # =============================================================================
-# Deploy KaliAgent Documentation to papers.stsgym.com
+# Deploy KaliAgent Documentation to papers.example.internal
 # =============================================================================
 
 set -e
 
 # Configuration
-REMOTE_HOST="miner"
-REMOTE_USER="crackers"
+REMOTE_HOST="gpu-host"
+REMOTE_USER="deploy"
 REMOTE_PORT="23"
-REMOTE_PATH="/home/crackers/stsgym-joined/static/papers/cyber-division"
-LOCAL_DOCS="/home/wez/stsgym-work/agentic_ai/docs/papers_stsgym"
+REMOTE_PATH="${REMOTE_PATH:-/home/deploy/app-portal/static/papers/cyber-division}"
+LOCAL_DOCS="${LOCAL_DOCS:-$PWD/docs/papers_stsgym}"
 
-echo "🚀 Deploying KaliAgent Documentation to papers.stsgym.com"
+echo "🚀 Deploying KaliAgent Documentation to papers.example.internal"
 echo ""
 
 # Create remote directory structure
 echo "📁 Creating directory structure..."
-ssh -i ~/.openclaw/workspace/crackers -p 23 crackers@wezzel.com \
+ssh -i ~/.ssh/deploy_key -p 2222 deploy@example.internal \
   "mkdir -p ${REMOTE_PATH}/{kaliagent/{quickstart,user-guide,deployment,integration,training,api-reference,examples,media/{screenshots,diagrams,videos}},cyber-agents/{soc-agent,vulnman-agent,redteam-agent,malware-agent,security-agent,cloudsec-agent},resources/{presentations,videos,downloads}}"
 
 # Copy documentation files
 echo "📄 Copying documentation files..."
 
 # KaliAgent core docs
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/README_IMPROVED.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/index.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/QUICKSTART.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/quickstart/index.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/quickstart/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/USER_GUIDE_IMPROVED.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/user-guide/index.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/user-guide/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/DEPLOYMENT_IMPROVED.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/deployment/index.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/deployment/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/INTEGRATION_GUIDES_IMPROVED.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/integration/index.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/integration/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/TRAINING_MATERIALS_IMPROVED.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/training/index.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/training/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/INSTALL.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/install.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/install.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/SECURITY.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/security.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/security.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/TESTING.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/testing.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/testing.md
 
 # Cyber Agents documentation
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   docs/presentations/CYBER_AGENTS_DEMO.md \
-  crackers@wezzel.com:${REMOTE_PATH}/cyber-agents/overview.md
+  deploy@example.internal:${REMOTE_PATH}/cyber-agents/overview.md
 
 # Presentations
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   docs/presentations/REDTEAM_AGENTS_PRESENTATION_UPGRADED.md \
-  crackers@wezzel.com:${REMOTE_PATH}/resources/presentations/redteam-agents.md
+  deploy@example.internal:${REMOTE_PATH}/resources/presentations/redteam-agents.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   docs/presentations/POWERPOINT_UPGRADE_GUIDE.md \
-  crackers@wezzel.com:${REMOTE_PATH}/resources/presentations/upgrade-guide.md
+  deploy@example.internal:${REMOTE_PATH}/resources/presentations/upgrade-guide.md
 
 # Additional resources
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/SOCIAL_MEDIA.md \
-  crackers@wezzel.com:${REMOTE_PATH}/resources/marketing.md
+  deploy@example.internal:${REMOTE_PATH}/resources/marketing.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/VIDEO_TUTORIALS.md \
-  crackers@wezzel.com:${REMOTE_PATH}/resources/videos/tutorials.md
+  deploy@example.internal:${REMOTE_PATH}/resources/videos/tutorials.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/DEMO_EXAMPLES.md \
-  crackers@wezzel.com:${REMOTE_PATH}/examples/index.md
+  deploy@example.internal:${REMOTE_PATH}/examples/index.md
 
-scp -i ~/.openclaw/workspace/crackers -P 23 \
+scp -i ~/.ssh/deploy_key -P 2222 \
   kali_dashboard/CHANGELOG.md \
-  crackers@wezzel.com:${REMOTE_PATH}/kaliagent/changelog.md
+  deploy@example.internal:${REMOTE_PATH}/kaliagent/changelog.md
 
 # Set permissions
 echo "🔒 Setting permissions..."
-ssh -i ~/.openclaw/workspace/crackers -p 23 crackers@wezzel.com \
-  "chmod -R 755 ${REMOTE_PATH} && chown -R crackers:crackers ${REMOTE_PATH}"
+ssh -i ~/.ssh/deploy_key -p 2222 deploy@example.internal \
+  "chmod -R 755 ${REMOTE_PATH} && chown -R deploy:deploy ${REMOTE_PATH}"
 
 echo ""
 echo "✅ Deployment complete!"
 echo ""
 echo "📄 Documentation available at:"
-echo "   https://papers.stsgym.com/papers/cyber-division/"
-echo "   https://papers.stsgym.com/papers/cyber-division/kaliagent/"
+echo "   https://papers.example.internal/papers/cyber-division/"
+echo "   https://papers.example.internal/papers/cyber-division/kaliagent/"
 echo ""
 echo "🎉 KaliAgent documentation is now live!"
 ```
@@ -472,7 +472,7 @@ echo "🎉 KaliAgent documentation is now live!"
             <div class="cta-buttons">
                 <a href="kaliagent/" class="btn btn-primary">🚀 Explore KaliAgent</a>
                 <a href="#agents" class="btn btn-secondary">📋 View All Agents</a>
-                <a href="https://agents.bedimsecurity.com" class="btn btn-primary" target="_blank">🎯 Live Demo</a>
+                <a href="https://agents.example.com" class="btn btn-primary" target="_blank">🎯 Live Demo</a>
             </div>
         </div>
 
@@ -589,9 +589,9 @@ echo "🎉 KaliAgent documentation is now live!"
         <footer>
             <p>🍀 Made with ❤️ by the Agentic AI Team</p>
             <p>
-                <a href="https://github.com/wezzels/agentic-ai" style="color: var(--primary);">GitHub</a> •
+                <a href="https://github.com/dmrobbi/agentic-ai" style="color: var(--primary);">GitHub</a> •
                 <a href="https://discord.gg/clawd" style="color: var(--primary);">Discord</a> •
-                <a href="https://agents.bedimsecurity.com" style="color: var(--primary);">Live Demo</a>
+                <a href="https://agents.example.com" style="color: var(--primary);">Live Demo</a>
             </p>
         </footer>
     </div>
@@ -603,14 +603,14 @@ echo "🎉 KaliAgent documentation is now live!"
 
 ## Deployment Checklist
 
-- [ ] Create directory structure on papers.stsgym.com
+- [ ] Create directory structure on papers.example.internal
 - [ ] Copy all documentation files
 - [ ] Deploy HTML landing page
 - [ ] Set correct permissions (755)
 - [ ] Test all links
 - [ ] Verify mobile responsiveness
 - [ ] Add to sitemap
-- [ ] Update navigation on papers.stsgym.com
+- [ ] Update navigation on papers.example.internal
 - [ ] Test SSL certificate
 - [ ] Announce on Discord/Twitter
 
@@ -619,26 +619,26 @@ echo "🎉 KaliAgent documentation is now live!"
 ## Access URLs (After Deployment)
 
 **Main Landing Page:**
-- https://papers.stsgym.com/papers/cyber-division/
+- https://papers.example.internal/papers/cyber-division/
 
 **KaliAgent Documentation:**
-- https://papers.stsgym.com/papers/cyber-division/kaliagent/
-- https://papers.stsgym.com/papers/cyber-division/kaliagent/quickstart/
-- https://papers.stsgym.com/papers/cyber-division/kaliagent/user-guide/
-- https://papers.stsgym.com/papers/cyber-division/kaliagent/deployment/
-- https://papers.stsgym.com/papers/cyber-division/kaliagent/integration/
-- https://papers.stsgym.com/papers/cyber-division/kaliagent/training/
+- https://papers.example.internal/papers/cyber-division/kaliagent/
+- https://papers.example.internal/papers/cyber-division/kaliagent/quickstart/
+- https://papers.example.internal/papers/cyber-division/kaliagent/user-guide/
+- https://papers.example.internal/papers/cyber-division/kaliagent/deployment/
+- https://papers.example.internal/papers/cyber-division/kaliagent/integration/
+- https://papers.example.internal/papers/cyber-division/kaliagent/training/
 
 **Cyber Agents:**
-- https://papers.stsgym.com/papers/cyber-division/cyber-agents/overview/
-- https://papers.stsgym.com/papers/cyber-division/cyber-agents/soc-agent/
-- https://papers.stsgym.com/papers/cyber-division/cyber-agents/vulnman-agent/
-- https://papers.stsgym.com/papers/cyber-division/cyber-agents/redteam-agent/
+- https://papers.example.internal/papers/cyber-division/cyber-agents/overview/
+- https://papers.example.internal/papers/cyber-division/cyber-agents/soc-agent/
+- https://papers.example.internal/papers/cyber-division/cyber-agents/vulnman-agent/
+- https://papers.example.internal/papers/cyber-division/cyber-agents/redteam-agent/
 
 **Resources:**
-- https://papers.stsgym.com/papers/cyber-division/resources/presentations/
-- https://papers.stsgym.com/papers/cyber-division/resources/videos/
-- https://papers.stsgym.com/papers/cyber-division/examples/
+- https://papers.example.internal/papers/cyber-division/resources/presentations/
+- https://papers.example.internal/papers/cyber-division/resources/videos/
+- https://papers.example.internal/papers/cyber-division/examples/
 
 ---
 

@@ -18,7 +18,7 @@
 - [ ] Recording software: OBS Studio / QuickTime / Camtasia
 
 ### Files to Have Open
-1. Terminal at `~/stsgym-work/agentic_ai/kali_agent_v4`
+1. Terminal at `~/agentic-ai/agentic_ai/kali_agent_v4`
 2. Browser: GitHub repo (https://github.com/wezzels/kaliagent-v4)
 3. Text editor with demo commands pre-loaded
 4. Evidence directory open in file browser
@@ -66,7 +66,7 @@
 **[Visual: Terminal showing project structure]**
 
 ```bash
-cd ~/stsgym-work/agentic_ai/kali_agent_v4
+cd ~/agentic-ai/agentic_ai/kali_agent_v4
 tree -L 2 -d
 ```
 
@@ -157,7 +157,7 @@ print(f'Incident created: {incident.id}')
 python -c "
 from containment.network_containment import NetworkContainment
 containment = NetworkContainment()
-containment.isolate_host('FS-001', '192.168.1.50', method='vlan')
+containment.isolate_host('FS-001', '192.0.2.50', method='vlan')
 containment.block_ip('203.0.113.50', direction='both', reason='C2 server')
 print(containment.generate_report())
 "

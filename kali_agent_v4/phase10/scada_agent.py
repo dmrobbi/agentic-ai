@@ -218,7 +218,7 @@ class SCADAAgent:
         
         simulated = [
             ICSDevice(
-                ip_address="192.168.10.100",
+                ip_address="192.0.2.100",
                 device_type="PLC",
                 vendor="Siemens",
                 model="S7-1200",
@@ -227,7 +227,7 @@ class SCADAAgent:
                 risk_score=7.5
             ),
             ICSDevice(
-                ip_address="192.168.10.101",
+                ip_address="192.0.2.101",
                 device_type="PLC",
                 vendor="Allen-Bradley",
                 model="ControlLogix",
@@ -486,7 +486,7 @@ def main():
     import sys
     
     # Initialize agent
-    target = sys.argv[1] if len(sys.argv) > 1 else "192.168.10.0/24"
+    target = sys.argv[1] if len(sys.argv) > 1 else "192.0.2.0/24"
     scada = SCADAAgent(target_network=target, verbose=True, safety_mode=True)
     
     # Discover devices

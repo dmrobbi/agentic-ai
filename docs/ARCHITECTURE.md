@@ -116,7 +116,7 @@ bus.publish(Message(
     message_id="msg-123",
     message_type=MessageType.EVENT,
     topic="agent.security",
-    payload={'action': 'scan', 'target': '192.168.1.1'},
+    payload={'action': 'scan', 'target': '192.0.2.1'},
 ))
 
 # Request/Response

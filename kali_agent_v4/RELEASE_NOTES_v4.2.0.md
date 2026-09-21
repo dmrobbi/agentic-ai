@@ -50,7 +50,7 @@ report = agent.generate_report()
 ```python
 from phase8.ad_agent import ADAgent
 
-agent = ADAgent(domain='CORP.LOCAL', dc_ip='192.168.1.10')
+agent = ADAgent(domain='CORP.LOCAL', dc_ip='192.0.2.10')
 agent.authenticate(username='pentester@CORP.LOCAL', password='...')
 
 users = agent.enumerate_users()

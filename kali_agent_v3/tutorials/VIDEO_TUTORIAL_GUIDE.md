@@ -192,7 +192,7 @@ Watch as I demonstrate each step..."
 
 [Show terminal commands]
 cd /tmp
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_agent_v3/install
 sudo ./install.sh --standard
 ```
@@ -279,7 +279,7 @@ In this episode:
 - Configuration
 - Verification
 
-GitHub: https://github.com/wezzels/agentic-ai
+GitHub: https://github.com/dmrobbi/agentic-ai
 Documentation: /opt/kaliagent_v3/docs/
 
 #KaliLinux #CyberSecurity #PenetrationTesting #SecurityAutomation

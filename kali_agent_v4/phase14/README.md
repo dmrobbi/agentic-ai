@@ -153,7 +153,7 @@ Use CPU mode for now - performance is still excellent for development:
 - Training: ~2-3 seconds/epoch (500 samples)
 - Inference: ~10ms per prediction
 
-## Performance Benchmarks (darth/10.0.0.117)
+## Performance Benchmarks (managed-host/198.51.100.117)
 
 | Model | Training Time | Inference Time | Accuracy |
 |-------|--------------|----------------|----------|

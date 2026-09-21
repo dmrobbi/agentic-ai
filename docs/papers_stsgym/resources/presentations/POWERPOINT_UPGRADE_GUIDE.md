@@ -54,7 +54,7 @@ Text Colors:
 ║         Presented by: [Your Name]                         ║
 ║         Date: [Presentation Date]                         ║
 ║                                                           ║
-║         https://github.com/wezzels/agentic-ai             ║
+║         https://github.com/dmrobbi/agentic-ai             ║
 ║                                                           ║
 ║   [Footer: KaliAgent | v1.0.0 | Slide 1 of 15]           ║
 ╚═══════════════════════════════════════════════════════════╝
@@ -331,7 +331,7 @@ collaboration."
 
 **Live Demo QR Code:**
 ```
-URL: https://agents.bedimsecurity.com
+URL: https://agents.example.com
 Size: 200×200px
 Format: PNG
 Error Correction: High (30%)
@@ -341,7 +341,7 @@ Background: #ffffff (white)
 
 **GitHub QR Code:**
 ```
-URL: https://github.com/wezzels/agentic-ai
+URL: https://github.com/dmrobbi/agentic-ai
 Size: 150×150px
 Format: PNG
 Error Correction: High

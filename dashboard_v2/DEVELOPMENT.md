@@ -17,7 +17,7 @@
 
 ```bash
 # Clone repository
-cd /home/wez/stsgym-work/agentic_ai/dashboard_v2
+cd /home/user/agentic-ai/agentic_ai/dashboard_v2
 
 # Create Python virtual environment
 cd backend

@@ -450,10 +450,10 @@ MITRE ATT&CK: TA0010 (Exfiltration)
     # Simulated logs
     logs = [
         {'bytes_out': 500_000_000, 'dest_ip': '203.0.113.50', 'protocol': 'HTTPS'},
-        {'destination': 'mega.nz', 'bytes_out': 100_000_000, 'source_ip': '192.168.1.100'},
-        {'protocol': 'DNS', 'source_ip': '192.168.1.101', 'query': 'aGVsbG8gd29ybGQ.evil.com', 'query_type': 'TXT'},
-        {'filename': 'database.sql', 'source_ip': '192.168.1.102', 'user': 'admin'},
-        {'filename': 'backup.zip', 'source_ip': '192.168.1.102', 'user': 'admin'},
+        {'destination': 'mega.nz', 'bytes_out': 100_000_000, 'source_ip': '192.0.2.100'},
+        {'protocol': 'DNS', 'source_ip': '192.0.2.101', 'query': 'aGVsbG8gd29ybGQ.evil.com', 'query_type': 'TXT'},
+        {'filename': 'database.sql', 'source_ip': '192.0.2.102', 'user': 'admin'},
+        {'filename': 'backup.zip', 'source_ip': '192.0.2.102', 'user': 'admin'},
         {'event_id': 4663, 'object_name': 'USB Drive (E:)', 'user': 'user1'},
     ]
     

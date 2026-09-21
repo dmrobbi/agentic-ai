@@ -141,8 +141,8 @@ class TestApiBaseFromEnvVars:
 
     def test_api_base_fallback_to_base_url(self, monkeypatch):
         monkeypatch.delenv("LLM_API_BASE", raising=False)
-        server = InferenceServer(host="10.0.0.117", port=11434, stub=True)
-        assert server._api_base == "http://10.0.0.117:11434"
+        server = InferenceServer(host="198.51.100.117", port=11434, stub=True)
+        assert server._api_base == "http://198.51.100.117:11434"
 
     def test_api_key_from_env(self, monkeypatch):
         monkeypatch.setenv("LLM_API_KEY", "sk-test-key")

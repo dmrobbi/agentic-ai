@@ -96,7 +96,7 @@ class ProfileManager:
     
     def load_tool_database(self):
         """Load the 600+ tool database."""
-        db_path = Path('/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json')
+        db_path = Path('/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json')
         
         if db_path.exists():
             with open(db_path, 'r') as f:

@@ -119,7 +119,7 @@ class CyberDivisionDemo:
         print("\n⚔️  RedTeam Agent - Autonomous Penetration Test")
         print("=" * 60)
         
-        target = "192.168.1.100"
+        target = "192.0.2.100"
         print(f"\n🎯 Target: {target}")
         print("📜 Rules of Engagement: Network penetration test")
         print("⏱️  Duration: 2 hours")
@@ -283,8 +283,8 @@ class CyberDivisionDemo:
         print("🚀 Interactive Demonstration")
         print("=" * 60)
         print(f"\n⏰ Started: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
-        print(f"🌐 Dashboard: https://agents.bedimsecurity.com")
-        print(f"📚 Docs: https://agents.bedimsecurity.com/docs")
+        print(f"🌐 Dashboard: https://agents.example.com")
+        print(f"📚 Docs: https://agents.example.com/docs")
         
         demos = [
             self.simulate_soc_monitoring,
@@ -308,8 +308,8 @@ class CyberDivisionDemo:
         print(f"  • 52 Kali Tools Available")
         print(f"  • 92% Test Coverage")
         print(f"  • Quality Score: 9.0/10")
-        print(f"\n🎯 Try it yourself: https://agents.bedimsecurity.com")
-        print(f"📖 Documentation: https://agents.bedimsecurity.com/docs")
+        print(f"\n🎯 Try it yourself: https://agents.example.com")
+        print(f"📖 Documentation: https://agents.example.com/docs")
         print()
 
 

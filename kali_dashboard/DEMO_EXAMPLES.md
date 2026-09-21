@@ -165,7 +165,7 @@ def main():
     
     # Set whitelist
     safety_data = {
-        "whitelist": ["scanme.nmap.org", "192.168.1.0/24"],
+        "whitelist": ["scanme.nmap.org", "192.0.2.0/24"],
         "blacklist": ["8.8.8.8", "1.1.1.1"]
     }
     
@@ -577,19 +577,19 @@ echo "   Configuring whitelist..."
 curl -s -X POST http://localhost:8001/api/safety \
   -H "Content-Type: application/json" \
   -d '{
-    "whitelist": ["192.168.1.0/24", "10.0.0.0/8"],
+    "whitelist": ["192.0.2.0/24", "198.51.100.0/8"],
     "blacklist": []
   }' > /dev/null
 
-echo "   ✅ Whitelist set: 192.168.1.0/24, 10.0.0.0/8"
+echo "   ✅ Whitelist set: 192.0.2.0/24, 198.51.100.0/8"
 echo ""
 
-echo "   Attempting to scan approved target (192.168.1.100)..."
+echo "   Attempting to scan approved target (192.0.2.100)..."
 RESULT=$(curl -s -X POST http://localhost:8001/api/engagements \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test",
-    "targets": ["192.168.1.100"]
+    "targets": ["192.0.2.100"]
   }' | jq -r '.status // error')
 
 if [ "$RESULT" == "created" ]; then
@@ -623,19 +623,19 @@ echo "   Configuring blacklist..."
 curl -s -X POST http://localhost:8001/api/safety \
   -H "Content-Type: application/json" \
   -d '{
-    "whitelist": ["192.168.1.0/24"],
-    "blacklist": ["192.168.1.1"]
+    "whitelist": ["192.0.2.0/24"],
+    "blacklist": ["192.0.2.1"]
   }' > /dev/null
 
-echo "   ✅ Blacklist set: 192.168.1.1 (gateway)"
+echo "   ✅ Blacklist set: 192.0.2.1 (gateway)"
 echo ""
 
-echo "   Attempting to scan blacklisted target (192.168.1.1)..."
+echo "   Attempting to scan blacklisted target (192.0.2.1)..."
 RESULT=$(curl -s -X POST http://localhost:8001/api/engagements \
   -H "Content-Type: application/json" \
   -d '{
     "name": "Test",
-    "targets": ["192.168.1.1"]
+    "targets": ["192.0.2.1"]
   }' | jq -r '.error // "none"')
 
 if [[ "$RESULT" == *"blacklist"* ]]; then

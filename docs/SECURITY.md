@@ -162,10 +162,10 @@ from agentic_ai.agents.security import SeverityLevel, ThreatType
 
 incident = agent.create_incident(
     title="Brute Force Attack Detected",
-    description="Multiple failed login attempts from 192.168.1.100",
+    description="Multiple failed login attempts from 192.0.2.100",
     severity=SeverityLevel.HIGH,
     threat_type=ThreatType.BRUTE_FORCE,
-    source_ip="192.168.1.100",
+    source_ip="192.0.2.100",
     target_resource="/api/login",
     user_id="attacker",
 )
@@ -337,7 +337,7 @@ agent.log_access(
     user_id="alice",
     resource="/api/users",
     action="delete",
-    source_ip="10.0.0.1",
+    source_ip="198.51.100.1",
     success=True,
     metadata={'user_agent': 'Mozilla/5.0'},
 )
@@ -543,7 +543,7 @@ send_report(report)
 See `examples/security_scanning.py` for comprehensive examples:
 
 ```bash
-cd ~/stsgym-work/agentic_ai
+cd ~/agentic-ai/agentic_ai
 PYTHONPATH=. ./venv/bin/python examples/security_scanning.py
 ```
 

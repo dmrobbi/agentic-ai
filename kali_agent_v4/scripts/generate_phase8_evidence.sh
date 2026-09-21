@@ -84,7 +84,7 @@ sys.path.insert(0, '.')
 from phase8.ad_agent import ADAgent
 
 # Create AD agent
-agent = ADAgent(domain='CORP.LOCAL', dc_ip='192.168.1.10')
+agent = ADAgent(domain='CORP.LOCAL', dc_ip='192.0.2.10')
 agent.authenticate(username='pentester@CORP.LOCAL', password='Test123!')
 
 # Run assessments

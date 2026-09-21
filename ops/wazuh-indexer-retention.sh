@@ -13,10 +13,10 @@
 set -euo pipefail
 
 INDEXER_CONTAINER="${INDEXER_CONTAINER:-wazuh-stack_wazuh.indexer_1}"
-INDEXER_PASSWORD="${INDEXER_PASSWORD:-SecretPassword}"
+INDEXER_PASSWORD="${INDEXER_PASSWORD:-CHANGE_ME}"
 MAX_DAYS="${MAX_DAYS:-365}"
 DISK_WARN_PCT="${DISK_WARN_PCT:-80}"
-LOG="${LOG:-/home/wez/logs/wazuh-indexer-retention.log}"
+LOG="${LOG:-/home/user/logs/wazuh-indexer-retention.log}"
 
 mkdir -p "$(dirname "$LOG")"
 log() { echo "[$(date -u +%FT%TZ)] $*" | tee -a "$LOG"; }

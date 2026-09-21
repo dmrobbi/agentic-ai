@@ -20,7 +20,7 @@
 ║     🛡️ SOC Agent    |    🔍 VulnMan    |    ⚔️ RedTeam   ║
 ║     🦠 Malware      |    🔐 Security   |    ☁️ CloudSec   ║
 ║                                                           ║
-║              https://agents.bedimsecurity.com             ║
+║              https://agents.example.com             ║
 ║                                                           ║
 ╚═══════════════════════════════════════════════════════════╝
 ```
@@ -222,7 +222,7 @@ redteam = RedTeamAgent()
 # Create a new engagement
 engagement = redteam.create_engagement(
     name="Q2 2026 External Penetration Test",
-    scope=["*.bedimsecurity.com", "203.0.113.0/24"],
+    scope=["*.example.com", "203.0.113.0/24"],
     start_date="2026-04-20",
     end_date="2026-05-04",
     rules_of_engagement="no-dos",
@@ -351,7 +351,7 @@ security = SecurityAgent()
 
 # Scan codebase for vulnerabilities
 scan_result = security.scan_code(
-    repo_path="/app/stsgym-work",
+    repo_path="/app/agentic-ai",
     scan_type="full",
     languages=["python", "javascript", "go"]
 )
@@ -551,7 +551,7 @@ Example: SQL Injection Detection
 ```
 🌐 Try It Yourself!
 
-Dashboard: https://agents.bedimsecurity.com
+Dashboard: https://agents.example.com
 Password: let_me_in
 
 API Endpoints:
@@ -562,14 +562,14 @@ API Endpoints:
 └─ POST /api/{agent}/{capability}
 
 Example API Calls:
-├─ curl https://agents.bedimsecurity.com/api/agents/soc
-├─ curl https://agents.bedimsecurity.com/api/agents/vulnman
-├─ curl https://agents.bedimsecurity.com/api/agents/redteam
-└─ curl https://agents.bedimsecurity.com/docs
+├─ curl https://agents.example.com/api/agents/soc
+├─ curl https://agents.example.com/api/agents/vulnman
+├─ curl https://agents.example.com/api/agents/redteam
+└─ curl https://agents.example.com/docs
 
 Repository:
-├─ GitLab: https://idm.wezzel.com/crab-meat-repos/agentic-ai
-└─ GitHub: https://github.com/wezzels/agentic-ai
+├─ GitLab: https://gitlab.example.internal/crab-meat-repos/agentic-ai
+└─ GitHub: https://github.com/dmrobbi/agentic-ai
 ```
 
 ---
@@ -580,7 +580,7 @@ Repository:
 🚀 Quick Start Guide
 
 1. Clone the repository
-   git clone https://github.com/wezzels/agentic-ai.git
+   git clone https://github.com/dmrobbi/agentic-ai.git
    cd agentic-ai
 
 2. Install dependencies
@@ -591,7 +591,7 @@ Repository:
    python -m agentic_ai.server
 
 4. Access the dashboard
-   Open https://agents.bedimsecurity.com
+   Open https://agents.example.com
    Password: let_me_in
 
 5. Try the cyber agents
@@ -615,8 +615,8 @@ Documentation:
 ║                                                           ║
 ║                    QUESTIONS?                             ║
 ║                                                           ║
-║     📧 wlrobbi@gmail.com                                  ║
-║     🌐 https://agents.bedimsecurity.com                   ║
+║     📧 user@example.com                                  ║
+║     🌐 https://agents.example.com                   ║
 ║     💬 https://discord.gg/clawd                           ║
 ║                                                           ║
 ║     Thank you for watching!                               ║
@@ -689,7 +689,7 @@ Documentation:
 
 **Visual:** Summary slide with access information
 **Narration:**
-"The Agentic AI Cyber Division is production-ready with 60+ tests, 74KB of code, and 50+ capabilities. Try it yourself at agents.bedimsecurity.com. Thank you for watching."
+"The Agentic AI Cyber Division is production-ready with 60+ tests, 74KB of code, and 50+ capabilities. Try it yourself at agents.example.com. Thank you for watching."
 
 ---
 
@@ -757,7 +757,7 @@ print("\n⚔️ RedTeam Agent - Attack Simulation...")
 redteam = RedTeamAgent()
 engagement = redteam.create_engagement(
     name="Q2 2026 External Penetration Test",
-    scope=["*.bedimsecurity.com"],
+    scope=["*.example.com"],
     objectives=["web-app", "network"],
 )
 print(f"✅ Engagement Created: {engagement['engagement_id']}")
@@ -779,7 +779,7 @@ print(f"   Campaign: {analysis['campaign']}")
 print("\n🔐 Security Agent - Code Scanning...")
 security = SecurityAgent()
 scan = security.scan_code(
-    repo_path="/app/stsgym-work",
+    repo_path="/app/agentic-ai",
     scan_type="full",
 )
 print(f"✅ Scan Complete: {scan['scan_id']}")

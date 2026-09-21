@@ -22,7 +22,7 @@ KaliAgent v5.0.0 introduces **enterprise-grade machine learning and deep learnin
 
 ### Bottom Line on Hardware
 
-**Your miner (10.0.0.117) with RTX 5060 Ti 16GB is SUFFICIENT for development** with some caveats:
+**Your gpu-host (198.51.100.117) with RTX 5060 Ti 16GB is SUFFICIENT for development** with some caveats:
 
 ✅ **Good for:**
 - Model development and testing
@@ -35,7 +35,7 @@ KaliAgent v5.0.0 introduces **enterprise-grade machine learning and deep learnin
 - Federated learning needs multiple nodes (use VMs/containers)
 - Production-scale training needs cloud GPUs
 
-**Recommendation:** Develop on miner, train large models on cloud (AWS/GCP/Azure spot instances)
+**Recommendation:** Develop on gpu-host, train large models on cloud (AWS/GCP/Azure spot instances)
 
 ---
 
@@ -129,7 +129,7 @@ class LSTMSecurityDetector:
 | Training (full) | 12GB+ | 32GB | 50GB | 6-12 hours |
 | Inference | 2GB | 4GB | 5GB | Milliseconds |
 
-**Your miner (16GB VRAM):** ✅ Can handle all LSTM development and most training
+**Your gpu-host (16GB VRAM):** ✅ Can handle all LSTM development and most training
 
 ---
 
@@ -245,7 +245,7 @@ class VariationalAutoencoder(SecurityAutoencoder):
 | Training | 8-12GB | 16-32GB | 50GB | 2-4 hours |
 | Inference | 2GB | 4GB | 5GB | Milliseconds |
 
-**Your miner (16GB VRAM):** ✅ Perfect for autoencoder development and training
+**Your gpu-host (16GB VRAM):** ✅ Perfect for autoencoder development and training
 
 ---
 
@@ -358,7 +358,7 @@ class ThreatIntelExtractor:
 | Fine-tuning (large) | 16-24GB | 32GB | 50GB | 12-24 hours |
 | Pre-training | 40GB+ | 64GB | 100GB+ | Days-weeks |
 
-**Your miner (16GB VRAM):** ⚠️ Good for inference and fine-tuning small models. Use cloud for large model training.
+**Your gpu-host (16GB VRAM):** ⚠️ Good for inference and fine-tuning small models. Use cloud for large model training.
 
 ---
 
@@ -484,7 +484,7 @@ class FederatedClient:
 | Client (each) | 4-8GB | 16GB | 20GB | Local training |
 | Network | - | - | - | Secure TLS required |
 
-**Your miner (16GB VRAM):** ✅ Can run coordinator + several client simulations
+**Your gpu-host (16GB VRAM):** ✅ Can run coordinator + several client simulations
 
 **For real deployment:** Need multiple organizations with their own hardware
 
@@ -550,22 +550,22 @@ class ModelStorage:
 | Registry service | 0GB | 4GB | 100GB+ | Metadata + models |
 | Model serving | 2-8GB | 8GB | 20GB | Depends on model |
 
-**Your miner (16GB VRAM):** ✅ More than sufficient
+**Your gpu-host (16GB VRAM):** ✅ More than sufficient
 
 ---
 
-## 💻 Hardware Assessment: miner (10.0.0.117)
+## 💻 Hardware Assessment: gpu-host (198.51.100.117)
 
 ### Current Specifications
 
 Based on memory:
 - **GPU:** RTX 5060 Ti 16GB VRAM
-- **User:** wez
+- **User:** demo-user
 - **Purpose:** Ollama/LLM, security tools
 
 ### Suitability Analysis
 
-#### ✅ What Your miner CAN Do
+#### ✅ What Your gpu-host CAN Do
 
 | Task | Feasibility | Notes |
 |------|-------------|-------|
@@ -577,7 +577,7 @@ Based on memory:
 | Federated coordinator | ✅ Excellent | Lightweight |
 | Federated client (sim) | ✅ Good | Run 3-5 simulated clients |
 
-#### ⚠️ What Your miner STRUGGLES With
+#### ⚠️ What Your gpu-host STRUGGLES With
 
 | Task | Issue | Workaround |
 |------|-------|------------|
@@ -585,7 +585,7 @@ Based on memory:
 | Full federated learning | Need multiple orgs | Use VMs/containers for simulation |
 | Production-scale training | Single GPU bottleneck | Cloud spot instances (AWS G4, G5) |
 
-#### ❌ What Your miner CANNOT Do
+#### ❌ What Your gpu-host CANNOT Do
 
 | Task | Why | Solution |
 |------|-----|----------|
@@ -594,18 +594,18 @@ Based on memory:
 
 ### Cost-Effective Cloud Augmentation
 
-For tasks exceeding miner capabilities:
+For tasks exceeding gpu-host capabilities:
 
 | Cloud Provider | Instance | VRAM | Cost/Hour | Use Case |
 |----------------|----------|------|-----------|----------|
-| AWS | g4dn.xlarge | 16GB | ~$0.52 | Similar to miner, burst capacity |
+| AWS | g4dn.xlarge | 16GB | ~$0.52 | Similar to gpu-host, burst capacity |
 | AWS | g5.2xlarge | 24GB | ~$1.20 | Large model training |
 | GCP | n1-standard-8 + V100 | 16GB | ~$0.80 | Flexible training |
 | Azure | NC6as-v4 | 16GB | ~$0.90 | Similar to AWS |
 | Lambda Labs | 1x RTX 6000 | 48GB | ~$0.50 | **Best value for large training** |
 
 **Recommendation:** 
-- Develop on miner (free)
+- Develop on gpu-host (free)
 - Use Lambda Labs for large training ($0.50/hr for 48GB VRAM)
 - Estimated cloud cost for v5.0.0 ML training: $200-500 total
 
@@ -613,11 +613,11 @@ For tasks exceeding miner capabilities:
 
 ## 📊 Development Workflow Recommendation
 
-### Local Development (miner)
+### Local Development (gpu-host)
 
 ```bash
 # 1. Develop and test models locally
-cd ~/stsgym-work/agentic_ai/kali_agent_v4/phase14
+cd ~/agentic-ai/agentic_ai/kali_agent_v4/phase14
 
 # 2. Train small models for validation
 python deep_learning/lstm_network.py --epochs 10 --batch-size 32
@@ -647,7 +647,7 @@ scp user@cloud-instance:/workspace/models/*.pth ~/models/
 python model_registry/register.py --model lstm_v1.0.0 --path ~/models/
 ```
 
-### Production Deployment (miner)
+### Production Deployment (gpu-host)
 
 ```bash
 # 1. Load trained model
@@ -666,7 +666,7 @@ python model_serving/ab_test.py --control v1.0.0 --candidate v1.1.0
 
 ### Phase 1: Foundation (Weeks 1-4)
 
-**On miner:**
+**On gpu-host:**
 - [ ] Set up PyTorch/TensorFlow environment
 - [ ] Implement LSTM baseline model
 - [ ] Implement autoencoder baseline
@@ -676,11 +676,11 @@ python model_serving/ab_test.py --control v1.0.0 --candidate v1.1.0
 **Deliverables:**
 - Working LSTM anomaly detector
 - Working autoencoder for novelty detection
-- Performance benchmarks on miner
+- Performance benchmarks on gpu-host
 
 ### Phase 2: Enhancement (Weeks 5-8)
 
-**On miner + cloud:**
+**On gpu-host + cloud:**
 - [ ] Fine-tune NLP models on security text (cloud if needed)
 - [ ] Implement threat intel extraction
 - [ ] Integrate with Phase 13 threat intel
@@ -693,7 +693,7 @@ python model_serving/ab_test.py --control v1.0.0 --candidate v1.1.0
 
 ### Phase 3: Advanced (Weeks 9-12)
 
-**On miner + cloud:**
+**On gpu-host + cloud:**
 - [ ] Implement federated learning simulation
 - [ ] Multi-model ensemble
 - [ ] A/B testing framework
@@ -706,7 +706,7 @@ python model_serving/ab_test.py --control v1.0.0 --candidate v1.1.0
 
 ---
 
-## 🔧 Environment Setup for miner
+## 🔧 Environment Setup for gpu-host
 
 ### Required Packages
 
@@ -747,7 +747,7 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
 
 ---
 
-## 📈 Expected Performance on miner
+## 📈 Expected Performance on gpu-host
 
 ### LSTM Training
 
@@ -773,26 +773,26 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
 | RoBERTa-base | 10K reports | 4 hours | 8GB |
 | Security-BERT | 10K reports | 4 hours | 6GB |
 
-**All feasible on miner with 16GB VRAM!**
+**All feasible on gpu-host with 16GB VRAM!**
 
 ---
 
 ## ✅ Final Verdict
 
-### Is miner (10.0.0.117) sufficient?
+### Is gpu-host (198.51.100.117) sufficient?
 
 **YES** for v5.0.0 ML development with this strategy:
 
-1. **Develop locally** on miner (16GB VRAM is great for this)
-2. **Train medium models** on miner (most models will fit)
+1. **Develop locally** on gpu-host (16GB VRAM is great for this)
+2. **Train medium models** on gpu-host (most models will fit)
 3. **Use cloud for large training** (Lambda Labs $0.50/hr when needed)
-4. **Deploy inference** on miner (plenty of capacity)
+4. **Deploy inference** on gpu-host (plenty of capacity)
 
 ### Estimated Costs
 
 | Item | Cost |
 |------|------|
-| Local development (miner) | $0 (already owned) |
+| Local development (gpu-host) | $0 (already owned) |
 | Cloud training (estimated 100 hours) | $50-100 |
 | Large model training (estimated 50 hours) | $25-50 |
 | **Total** | **~$75-150** |
@@ -801,17 +801,17 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
 
 | Scenario | Timeline |
 |----------|----------|
-| miner only | 14-16 weeks |
-| miner + cloud burst | 12-14 weeks |
+| gpu-host only | 14-16 weeks |
+| gpu-host + cloud burst | 12-14 weeks |
 | Full cloud development | 10-12 weeks (but $2000+) |
 
-**Recommendation:** miner + cloud burst = best value
+**Recommendation:** gpu-host + cloud burst = best value
 
 ---
 
 ## 🚀 Next Steps
 
-1. **Set up ML environment on miner**
+1. **Set up ML environment on gpu-host**
    ```bash
    pip install torch transformers flwr mlflow
    ```
@@ -823,7 +823,7 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
 
 3. **Start with LSTM baseline**
    ```bash
-   cd ~/stsgym-work/agentic_ai/kali_agent_v4/phase14/deep_learning
+   cd ~/agentic-ai/agentic_ai/kali_agent_v4/phase14/deep_learning
    python lstm_network.py --demo
    ```
 
@@ -837,4 +837,4 @@ export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:128
 *Document Created: April 28, 2026*  
 *KaliAgent v5.0.0 - ML/Deep Learning Guide*
 
-**Your miner is ready. Let's build some ML!** 🧠
+**Your gpu-host is ready. Let's build some ML!** 🧠

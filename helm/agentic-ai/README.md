@@ -244,10 +244,10 @@ helm upgrade my-agentic-ai agentic-ai/agentic-ai -f new-values.yaml
 
 ## Support
 
-- GitHub Issues: https://github.com/wezzels/agentic-ai/issues
-- Documentation: https://github.com/wezzels/agentic-ai/tree/main/docs
+- GitHub Issues: https://github.com/dmrobbi/agentic-ai/issues
+- Documentation: https://github.com/dmrobbi/agentic-ai/tree/main/docs
 - Discord: https://discord.com/invite/clawd
 
 ## License
 
-MIT License - see [LICENSE](https://github.com/wezzels/agentic-ai/blob/main/LICENSE)
+MIT License - see [LICENSE](https://github.com/dmrobbi/agentic-ai/blob/main/LICENSE)

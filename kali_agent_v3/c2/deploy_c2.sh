@@ -164,7 +164,7 @@ deploy_sliver() {
     cd $DEPLOY_DIR
     
     # Copy Docker Compose file
-    cp /home/wez/stsgym-work/agentic_ai/kali_agent_v3/c2/docker-compose.sliver.yml .
+    cp /home/user/agentic-ai/agentic_ai/kali_agent_v3/c2/docker-compose.sliver.yml .
     
     # Start Sliver
     sudo docker-compose -f docker-compose.sliver.yml up -d
@@ -190,7 +190,7 @@ deploy_empire() {
     cd $DEPLOY_DIR
     
     # Copy Docker Compose file
-    cp /home/wez/stsgym-work/agentic_ai/kali_agent_v3/c2/docker-compose.empire.yml .
+    cp /home/user/agentic-ai/agentic_ai/kali_agent_v3/c2/docker-compose.empire.yml .
     
     # Start Empire
     sudo docker-compose -f docker-compose.empire.yml up -d

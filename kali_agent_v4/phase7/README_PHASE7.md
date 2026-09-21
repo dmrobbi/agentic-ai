@@ -67,7 +67,7 @@ Phase 7 introduces **multi-agent orchestration** - multiple KaliAgent instances 
 from phase7.agent_base import AgentBase, AgentRole, Task
 
 # Create agent
-scout = AgentBase(AgentRole.SCOUT, host="10.0.100.2")
+scout = AgentBase(AgentRole.SCOUT, host="198.51.100.2")
 
 # Get state
 state = scout.get_state()
@@ -78,7 +78,7 @@ task = Task(
     task_id="task-001",
     task_type="scan_network",
     description="Scan target network",
-    target="10.0.100.0/24",
+    target="198.51.100.0/24",
     priority=8
 )
 scout.assign_task(task)
@@ -110,12 +110,12 @@ from phase7.orchestrator import LeadAgent
 from phase7.agent_base import AgentBase, AgentRole
 
 # Create lead agent
-lead = LeadAgent(host="10.0.100.1")
+lead = LeadAgent(host="198.51.100.1")
 
 # Create team
-scout1 = AgentBase(AgentRole.SCOUT, host="10.0.100.2")
-attacker1 = AgentBase(AgentRole.ATTACKER, host="10.0.100.3")
-analyst1 = AgentBase(AgentRole.ANALYST, host="10.0.100.4")
+scout1 = AgentBase(AgentRole.SCOUT, host="198.51.100.2")
+attacker1 = AgentBase(AgentRole.ATTACKER, host="198.51.100.3")
+analyst1 = AgentBase(AgentRole.ANALYST, host="198.51.100.4")
 
 # Register agents
 lead.register_agent(scout1)
@@ -125,7 +125,7 @@ lead.register_agent(analyst1)
 # Create operation
 op = lead.create_operation(
     template_name="network_pentest",
-    target="10.0.100.0/24",
+    target="198.51.100.0/24",
     name="Q2_Assessment"
 )
 
@@ -200,7 +200,7 @@ agent.share_intelligence(
     data={
         "cve": "CVE-2017-0144",
         "cvss": 9.8,
-        "target": "10.0.100.20",
+        "target": "198.51.100.20",
         "service": "SMB"
     },
     confidence=0.95,
@@ -296,16 +296,16 @@ from phase7.agent_base import AgentBase, AgentRole
 import time
 
 # Initialize lead agent
-lead = LeadAgent(host="10.0.100.1")
+lead = LeadAgent(host="198.51.100.1")
 
 # Create specialized team
 agents = [
-    AgentBase(AgentRole.SCOUT, host="10.0.100.2"),
-    AgentBase(AgentRole.SCOUT, host="10.0.100.3"),
-    AgentBase(AgentRole.ATTACKER, host="10.0.100.4"),
-    AgentBase(AgentRole.ATTACKER, host="10.0.100.5"),
-    AgentBase(AgentRole.ANALYST, host="10.0.100.6"),
-    AgentBase(AgentRole.REPORTER, host="10.0.100.7"),
+    AgentBase(AgentRole.SCOUT, host="198.51.100.2"),
+    AgentBase(AgentRole.SCOUT, host="198.51.100.3"),
+    AgentBase(AgentRole.ATTACKER, host="198.51.100.4"),
+    AgentBase(AgentRole.ATTACKER, host="198.51.100.5"),
+    AgentBase(AgentRole.ANALYST, host="198.51.100.6"),
+    AgentBase(AgentRole.REPORTER, host="198.51.100.7"),
 ]
 
 # Register all agents
@@ -317,7 +317,7 @@ print(f"✅ Team formed: {len(agents)} agents")
 # Create network pentest operation
 op = lead.create_operation(
     template_name="network_pentest",
-    target="10.0.100.0/24",
+    target="198.51.100.0/24",
     name="Production_Network_Pentest"
 )
 
@@ -437,7 +437,7 @@ lead = LeadAgent()
 llm = LLMIntegration()
 
 # Create operation
-op = lead.create_operation("network_pentest", "10.0.100.0/24")
+op = lead.create_operation("network_pentest", "198.51.100.0/24")
 
 # Use AI for intelligence analysis
 intel = lead.aggregate_intelligence(op.operation_id)
@@ -468,7 +468,7 @@ for agent in lead.registered_agents.values():
 
 ## Security Considerations
 
-- ✅ Agents use isolated lab network (10.0.100.0/24)
+- ✅ Agents use isolated lab network (198.51.100.0/24)
 - ✅ Intelligence encrypted in transit (future)
 - ✅ Agent authentication required (future)
 - ✅ Operation audit logging (future)

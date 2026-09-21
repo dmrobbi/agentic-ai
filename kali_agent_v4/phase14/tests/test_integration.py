@@ -332,7 +332,7 @@ class TestMLOrchestrator(unittest.TestCase):
         
         orchestrator = MLOrchestrator()
         
-        report = "APT29 malware attack with C2 at 192.168.1.100"
+        report = "APT29 malware attack with C2 at 192.0.2.100"
         result = orchestrator.analyze_threat_report(report)
         
         # Should have recommendations

@@ -784,9 +784,9 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: python device_discovery.py <target> [quick]")
         print("\nExamples:")
-        print("  python device_discovery.py 192.168.1.0/24")
-        print("  python device_discovery.py 192.168.1.100")
-        print("  python device_discovery.py 192.168.1.0/24 quick")
+        print("  python device_discovery.py 192.0.2.0/24")
+        print("  python device_discovery.py 192.0.2.100")
+        print("  python device_discovery.py 192.0.2.0/24 quick")
         sys.exit(1)
     
     target = sys.argv[1]

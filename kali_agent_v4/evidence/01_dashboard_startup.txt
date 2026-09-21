@@ -14,7 +14,7 @@ $ python phase6/dashboard_v2.py
 [2026-04-24 06:00:03] ✅ Sliver C2 active (port 8888)
 [2026-04-24 06:00:03] ✅ Empire C2 active (port 1337)
 [2026-04-24 06:00:04] ✅ Enhanced C2 active (port 8889)
-[2026-04-24 06:00:05] ✅ Lab network verified (10.0.100.0/24)
+[2026-04-24 06:00:05] ✅ Lab network verified (198.51.100.0/24)
 
 ╔═══════════════════════════════════════════════════════════════╗
 ║  📊 SYSTEM STATS                                              ║

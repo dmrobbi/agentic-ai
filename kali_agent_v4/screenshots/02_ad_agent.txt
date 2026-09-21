@@ -1,6 +1,6 @@
 🏢 AD Agent initialized: ad-20260425233400
    Target domain: CORP.LOCAL
-   DC IP: 192.168.1.10
+   DC IP: 192.0.2.10
 
 🔐 Authenticating to AD...
 ✅ Successfully authenticated as: pentester@CORP.LOCAL

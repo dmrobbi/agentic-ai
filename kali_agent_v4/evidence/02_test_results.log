@@ -7,7 +7,7 @@ Pytest: pytest 7.4.4
 ============================= test session starts ==============================
 platform linux -- Python 3.12.3, pytest-7.4.4, pluggy-1.4.0 -- /usr/bin/python3
 cachedir: .pytest_cache
-rootdir: /home/wez/stsgym-work/agentic_ai
+rootdir: /home/user/agentic-ai/agentic_ai
 configfile: pytest.ini
 plugins: anyio-4.13.0
 collecting ... collected 17 items

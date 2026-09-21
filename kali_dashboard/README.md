@@ -241,7 +241,7 @@ python3 -m pytest tests/test_kali_agent.py -v --cov=agentic_ai.agents.cyber.kali
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 
 # Install Python dependencies
@@ -267,7 +267,7 @@ sudo apt update
 sudo apt install -y kali-linux-default
 
 # Install KaliAgent
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 pip install -r requirements.txt
 ```
@@ -365,13 +365,13 @@ engagement = redteam.create_engagement(
     name="Auto Pentest",
     engagement_type="penetration_test",
     start_date=datetime.utcnow(),
-    scope=["192.168.1.0/24"]
+    scope=["192.0.2.0/24"]
 )
 
 # Execute full autonomous engagement
 result = redteam.execute_kali_full_engagement(
     engagement_id=engagement.engagement_id,
-    targets=["192.168.1.100", "192.168.1.101"]
+    targets=["192.0.2.100", "192.0.2.101"]
 )
 ```
 
@@ -451,7 +451,7 @@ msfrpcd -P your_password -a 127.0.0.1 -p 55553
 - **Discord**: Community support
 
 ### Contact
-- **GitHub**: https://github.com/wezzels/agentic-ai
+- **GitHub**: https://github.com/dmrobbi/agentic-ai
 - **Discord**: https://discord.gg/clawd
 - **Email**: security@example.com
 

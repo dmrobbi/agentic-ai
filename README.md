@@ -51,7 +51,7 @@ Think of it as an **"operating system for AI agents"** — providing infrastruct
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 
 # Start full stack
@@ -68,7 +68,7 @@ docker-compose logs -f
 
 ```bash
 # Clone and setup
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 python -m venv venv
 source venv/bin/activate  # Linux/macOS
@@ -235,7 +235,7 @@ result = lead.orchestrate(
     agents=[soc, security],
     workflow=[
         {"agent": soc, "action": "triage_alert", "params": {"alert_id": "alert-123"}},
-        {"agent": security, "action": "scan_vulnerabilities", "params": {"target": "192.168.1.1"}},
+        {"agent": security, "action": "scan_vulnerabilities", "params": {"target": "192.0.2.1"}},
         {"agent": soc, "action": "investigate_incident", "params": {"incident_id": "inc-123"}},
         {"agent": lead, "action": "aggregate", "params": {"results": "..."}},
     ],
@@ -264,7 +264,7 @@ bus.connect()
 # Publish
 bus.publish(Message(
     topic="agent.security",
-    payload={"action": "scan", "target": "192.168.1.1"},
+    payload={"action": "scan", "target": "192.0.2.1"},
 ))
 
 # Subscribe
@@ -485,8 +485,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📬 Contact
 
-- **GitHub**: https://github.com/wezzels/agentic-ai
-- **GitLab**: https://idm.wezzel.com/crab-meat-repos/agentic-ai
+- **GitHub**: https://github.com/dmrobbi/agentic-ai
+- **GitLab**: https://gitlab.example.internal/crab-meat-repos/agentic-ai
 - **Discord**: https://discord.com/invite/clawd
 
 ---

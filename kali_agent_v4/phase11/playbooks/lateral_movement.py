@@ -388,12 +388,12 @@ MITRE ATT&CK: TA0008 (Lateral Movement)
     
     # Simulated logs
     logs = [
-        {'event_id': 5140, 'share_name': 'C$', 'source_ip': '192.168.1.100', 'user': 'admin'},
-        {'event_id': 4624, 'logon_type': 10, 'source_ip': '192.168.1.100', 'dest_ip': '192.168.1.101'},
-        {'event_id': 4624, 'logon_type': 10, 'source_ip': '192.168.1.100', 'dest_ip': '192.168.1.102'},
-        {'event_id': 4624, 'logon_type': 10, 'source_ip': '192.168.1.100', 'dest_ip': '192.168.1.103'},
+        {'event_id': 5140, 'share_name': 'C$', 'source_ip': '192.0.2.100', 'user': 'admin'},
+        {'event_id': 4624, 'logon_type': 10, 'source_ip': '192.0.2.100', 'dest_ip': '192.0.2.101'},
+        {'event_id': 4624, 'logon_type': 10, 'source_ip': '192.0.2.100', 'dest_ip': '192.0.2.102'},
+        {'event_id': 4624, 'logon_type': 10, 'source_ip': '192.0.2.100', 'dest_ip': '192.0.2.103'},
         {'event_id': 7045, 'service_name': 'PSEXESVC'},
-        {'command': 'Invoke-Command -ComputerName DC01 -ScriptBlock {whoami}', 'source_ip': '192.168.1.100'},
+        {'command': 'Invoke-Command -ComputerName DC01 -ScriptBlock {whoami}', 'source_ip': '192.0.2.100'},
     ]
     
     findings = hunter.run_full_hunt(logs)

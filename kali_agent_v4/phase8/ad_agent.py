@@ -620,7 +620,7 @@ class ADAgent:
 # Example usage
 if __name__ == "__main__":
     # Create AD agent
-    ad_agent = ADAgent(domain="CORP.LOCAL", dc_ip="192.168.1.10")
+    ad_agent = ADAgent(domain="CORP.LOCAL", dc_ip="192.0.2.10")
     
     # Authenticate (simulated)
     ad_agent.authenticate(

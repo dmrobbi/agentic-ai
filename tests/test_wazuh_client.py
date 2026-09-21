@@ -58,7 +58,7 @@ class AlertToSOCTests(unittest.TestCase):
     def test_full_alert_mapping(self):
         a = {
             "timestamp": "2026-08-03T10:00:00+00:00",
-            "agent": {"id": "003", "name": "darth", "ip": "10.0.0.114"},
+            "agent": {"id": "003", "name": "managed-host", "ip": "198.51.100.114"},
             "rule": {"id": "5715", "level": 10, "description": "SSHD brute force"},
         }
         kw = wc.alert_to_soc_kwargs(a)
@@ -66,8 +66,8 @@ class AlertToSOCTests(unittest.TestCase):
         self.assertEqual(kw["severity"], "high")
         self.assertEqual(kw["source"], "wazuh")
         self.assertEqual(kw["rule_name"], "5715")
-        self.assertEqual(kw["affected_asset"], "darth")
-        self.assertEqual(kw["source_ip"], "10.0.0.114")
+        self.assertEqual(kw["affected_asset"], "managed-host")
+        self.assertEqual(kw["source_ip"], "198.51.100.114")
 
     def test_loopback_ip_filtered(self):
         a = {"agent": {"id": "000", "name": "wazuh.manager", "ip": "127.0.0.1"},
@@ -199,7 +199,7 @@ class PollerDiffTests(unittest.TestCase):
     def _alert(self, ts, agent_id, rule_id):
         return {
             "timestamp": ts,
-            "agent": {"id": agent_id, "name": f"agent{agent_id}", "ip": "10.0.0.1"},
+            "agent": {"id": agent_id, "name": f"agent{agent_id}", "ip": "198.51.100.1"},
             "rule": {"id": rule_id, "level": 10, "description": "test"},
         }
 

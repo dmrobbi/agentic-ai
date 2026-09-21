@@ -149,7 +149,7 @@ class AgentBase:
             role=self.role.value,
             status=self.status.value,
             hostname=self.host,
-            ip_address="10.0.100.1",  # Would be actual IP
+            ip_address="198.51.100.1",  # Would be actual IP
             port=self.port,
             capabilities=asdict(self.capabilities),
             current_task=self.current_task.task_id if self.current_task else None,
@@ -315,16 +315,16 @@ class AgentBase:
 # Example usage
 if __name__ == "__main__":
     # Create agents with different roles
-    scout = AgentBase(AgentRole.SCOUT, host="10.0.100.1")
-    attacker = AgentBase(AgentRole.ATTACKER, host="10.0.100.2")
-    analyst = AgentBase(AgentRole.ANALYST, host="10.0.100.3")
+    scout = AgentBase(AgentRole.SCOUT, host="198.51.100.1")
+    attacker = AgentBase(AgentRole.ATTACKER, host="198.51.100.2")
+    analyst = AgentBase(AgentRole.ANALYST, host="198.51.100.3")
     
     # Create task
     task = Task(
         task_id="task-001",
         task_type="scan_network",
         description="Scan target network",
-        target="10.0.100.0/24",
+        target="198.51.100.0/24",
         priority=8
     )
     

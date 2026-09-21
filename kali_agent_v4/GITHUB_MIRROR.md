@@ -31,7 +31,7 @@ KaliAgent v4 has been successfully mirrored to GitHub with **ZERO** exposed secr
 | JWT Tokens | ✅ Clean | No exposed JWT tokens |
 | Slack Tokens | ✅ Clean | No xox tokens |
 | Telegram Tokens | ✅ Clean | No bot tokens |
-| Internal IPs | ⚠️ Review | Only lab network (10.0.100.x) - safe |
+| Internal IPs | ⚠️ Review | Only lab network (198.51.100.x) - safe |
 | Email Addresses | ⚠️ 4 found | Generic addresses only (noreply, example) |
 | Internal Domains | ⚠️ Review | Only in TODO comments - can be ignored |
 
@@ -90,7 +90,7 @@ kaliagent-v4/
 - **Visibility:** ✅ Safe for public consumption
 
 ### GitLab (Primary):
-- **URL:** https://gitlab.idm.wezzel.com/crab-meat-repos/agentic-ai
+- **URL:** https://gitlab.gitlab.example.internal/crab-meat-repos/agentic-ai
 - **Access:** Private (internal)
 - **Default Branch:** main
 
@@ -109,8 +109,8 @@ kaliagent-v4/
 ```
 
 ### 2. References Updated
-- ❌ Removed: `idm.wezzel.com` references from README
-- ❌ Removed: `stsgym.com` references from public docs
+- ❌ Removed: `gitlab.example.internal` references from README
+- ❌ Removed: internal-domain references from public docs
 - ✅ Replaced: All GitLab URLs → GitHub URLs
 - ✅ Replaced: Internal hostnames → Generic names (trooper1 → attack-machine)
 

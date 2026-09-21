@@ -382,12 +382,12 @@ DASHBOARD_HTML = """
                 </div>
                 <div style="margin-top: 15px;">
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
-                        <span>Isolated Network (10.0.100.0/24)</span>
+                        <span>Isolated Network (198.51.100.0/24)</span>
                         <span class="badge badge-success">Online</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                         <span>OWASP Juice Shop</span>
-                        <span class="badge badge-success">http://100.116.156.61:3000</span>
+                        <span class="badge badge-success">http://198.51.100.61:3000</span>
                     </div>
                     <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
                         <span>Sliver C2</span>
@@ -461,7 +461,7 @@ DASHBOARD_HTML = """
                     <div class="terminal-line success">[2026-04-24 05:55:02] Sliver C2 connected (port 8888)</div>
                     <div class="terminal-line success">[2026-04-24 05:55:02] Empire C2 connected (port 1337)</div>
                     <div class="terminal-line success">[2026-04-24 05:55:03] Enhanced C2 connected (port 8889)</div>
-                    <div class="terminal-line info">[2026-04-24 05:55:04] Lab network verified (10.0.100.0/24)</div>
+                    <div class="terminal-line info">[2026-04-24 05:55:04] Lab network verified (198.51.100.0/24)</div>
                     <div class="terminal-line">[2026-04-24 05:55:05] Waiting for commands...</div>
                 </div>
             </div>

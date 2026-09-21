@@ -48,4 +48,4 @@ Features Enabled:
 - Prometheus Metrics: {{ .Values.prometheus.enabled }}
 - Grafana Dashboards: {{ .Values.grafana.enabled }}
 
-For more information, visit: https://github.com/wezzels/agentic-ai
+For more information, visit: https://github.com/dmrobbi/agentic-ai

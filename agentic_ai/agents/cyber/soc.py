@@ -841,7 +841,7 @@ class SecurityOperationsAgent(BaseAgent):
 
     def start_wazuh_poller(
         self,
-        base_url: str = "https://192.168.1.106:55000",
+        base_url: str = "https://192.0.2.106:55000",
         username: str = "wazuh-wui",
         password: Optional[str] = None,
         poll_interval_sec: int = 15,
@@ -856,9 +856,9 @@ class SecurityOperationsAgent(BaseAgent):
         On Wazuh 4.x the manager REST /alerts endpoint is not exposed, so the
         poller must read from the OpenSearch indexer (wazuh-alerts-*). Pass
         `indexer_password` (or set WAZUH_INDEXER_PASSWORD). The default
-        `admin/SecretPassword` matches the single-node stack at thing1.
+        `admin/CHANGE_ME` matches the single-node stack at manager-host.
         """
-        indexer_pwd = indexer_password or os.environ.get("WAZUH_INDEXER_PASSWORD", "SecretPassword")
+        indexer_pwd = indexer_password or os.environ.get("WAZUH_INDEXER_PASSWORD", "CHANGE_ME")
         indexer = WazuhIndexerClient(
             base_url=indexer_url,
             username=indexer_username,
@@ -999,11 +999,11 @@ class SecurityOperationsAgent(BaseAgent):
 # ---------------------------------------------------------------------------
 # Allowlist for inbound triage. Anyone else → review_later folder.
 _ALLOWLIST_ADDRESSES = frozenset({
-    "wlrobbi@gmail.com",
+    "user@example.com",
 })
 _ALLOWLIST_DOMAINS = frozenset({
-    "stsgym.com",
-    "bedimsecurity.com",
+    "example.internal",
+    "example.com",
 })
 
 # incident_id (string) -> message_id of the outbound email we sent for it.
@@ -1052,12 +1052,12 @@ if __name__ == "__main__":
     # Create alert
     alert = agent.create_alert(
         title="Brute Force Attack Detected",
-        description="Multiple failed login attempts from 192.168.1.100",
+        description="Multiple failed login attempts from 192.0.2.100",
         severity=AlertSeverity.MEDIUM,
         source="SIEM",
         rule_name="brute_force",
         affected_asset="auth-server-01",
-        source_ip="192.168.1.100",
+        source_ip="192.0.2.100",
         user="admin",
     )
 
@@ -1079,7 +1079,7 @@ if __name__ == "__main__":
 
     # Add IOC
     agent.add_ioc(incident.incident_id, "hash", "abc123def456", "Ransomware payload hash")
-    agent.add_ioc(incident.incident_id, "ip", "10.0.0.99", "C2 server")
+    agent.add_ioc(incident.incident_id, "ip", "198.51.100.99", "C2 server")
 
     # Add timeline
     agent.add_timeline_entry(incident.incident_id, "detection", "EDR detected suspicious process", actor="EDR")
@@ -1088,7 +1088,7 @@ if __name__ == "__main__":
     # Add threat intel
     intel = agent.add_threat_intel(
         indicator_type="ip",
-        value="10.0.0.99",
+        value="198.51.100.99",
         threat_type="c2_server",
         confidence="high",
         source="internal",

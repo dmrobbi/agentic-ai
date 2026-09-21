@@ -3,9 +3,9 @@
 ║  💉 KALIAGENT V4 - SQL INJECTION ATTACK                       ║
 ╚═══════════════════════════════════════════════════════════════╝
 
-$ ./kaliagent attack -t 10.0.100.10 -a web --method sql_injection
+$ ./kaliagent attack -t 198.51.100.10 -a web --method sql_injection
 
-⚔️  Launching web attack on 10.0.100.10...
+⚔️  Launching web attack on 198.51.100.10...
 🎯 Target: OWASP Juice Shop (port 3000)
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -60,7 +60,7 @@ STEP 5/5: Evidence Collection
 🎉 ATTACK SUCCESSFUL!
 
 Summary:
-  • Target: 10.0.100.10:3000
+  • Target: 198.51.100.10:3000
   • Vulnerability: SQL Injection (CVSS 9.8)
   • Access Gained: Administrator
   • Data Exfiltrated: 127 user records

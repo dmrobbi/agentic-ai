@@ -301,7 +301,7 @@ FULL_DATABASE = {**COMPLETE_TOOL_DATABASE, **ADDITIONAL_TOOLS}
 
 def save_database():
     """Save complete database to JSON file."""
-    output_path = Path('/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_complete.json')
+    output_path = Path('/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_complete.json')
     
     with open(output_path, 'w') as f:
         json.dump(FULL_DATABASE, f, indent=2)

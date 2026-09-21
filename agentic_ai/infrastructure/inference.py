@@ -57,7 +57,7 @@ AGENT_MODEL_PREFERENCES = {
 class InferenceServer:
     """Manages inference requests for agents."""
 
-    def __init__(self, host: str = "10.0.0.117", port: int = 11434,
+    def __init__(self, host: str = "localhost", port: int = 11434,
                  timeout: float = 120.0, config: Optional[InferenceConfig] = None,
                  stub: bool = False):
         self.stub = stub

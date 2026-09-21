@@ -366,14 +366,14 @@ class LeadAgent:
 # Example usage
 if __name__ == "__main__":
     # Create lead agent
-    lead = LeadAgent(host="10.0.100.1")
+    lead = LeadAgent(host="198.51.100.1")
     
     # Create team
-    scout1 = AgentBase(AgentRole.SCOUT, host="10.0.100.2")
-    scout2 = AgentBase(AgentRole.SCOUT, host="10.0.100.3")
-    attacker1 = AgentBase(AgentRole.ATTACKER, host="10.0.100.4")
-    analyst1 = AgentBase(AgentRole.ANALYST, host="10.0.100.5")
-    reporter1 = AgentBase(AgentRole.REPORTER, host="10.0.100.6")
+    scout1 = AgentBase(AgentRole.SCOUT, host="198.51.100.2")
+    scout2 = AgentBase(AgentRole.SCOUT, host="198.51.100.3")
+    attacker1 = AgentBase(AgentRole.ATTACKER, host="198.51.100.4")
+    analyst1 = AgentBase(AgentRole.ANALYST, host="198.51.100.5")
+    reporter1 = AgentBase(AgentRole.REPORTER, host="198.51.100.6")
     
     # Register agents
     lead.register_agent(scout1)
@@ -385,7 +385,7 @@ if __name__ == "__main__":
     # Create operation
     op = lead.create_operation(
         template_name="network_pentest",
-        target="10.0.100.0/24",
+        target="198.51.100.0/24",
         name="Q2_Network_Assessment"
     )
     

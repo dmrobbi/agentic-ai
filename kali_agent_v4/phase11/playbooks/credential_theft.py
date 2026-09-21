@@ -332,13 +332,13 @@ MITRE ATT&CK: TA0006 (Credential Access)
     
     # Simulated logs
     logs = [
-        {'event_id': 4624, 'logon_type': 9, 'source_ip': '192.168.1.100'},
+        {'event_id': 4624, 'logon_type': 9, 'source_ip': '192.0.2.100'},
         {'event_id': 4769, 'encryption_type': '0x17', 'service_name': 'MSSQLSvc'},
-        {'event_id': 4625, 'source_ip': '10.0.0.50', 'target_user': 'admin'},
-        {'event_id': 4625, 'source_ip': '10.0.0.50', 'target_user': 'admin'},
-        {'event_id': 4625, 'source_ip': '10.0.0.50', 'target_user': 'admin'},
-        {'event_id': 4625, 'source_ip': '10.0.0.50', 'target_user': 'admin'},
-        {'event_id': 4625, 'source_ip': '10.0.0.50', 'target_user': 'admin'},
+        {'event_id': 4625, 'source_ip': '198.51.100.50', 'target_user': 'admin'},
+        {'event_id': 4625, 'source_ip': '198.51.100.50', 'target_user': 'admin'},
+        {'event_id': 4625, 'source_ip': '198.51.100.50', 'target_user': 'admin'},
+        {'event_id': 4625, 'source_ip': '198.51.100.50', 'target_user': 'admin'},
+        {'event_id': 4625, 'source_ip': '198.51.100.50', 'target_user': 'admin'},
         {'process_name': 'procdump', 'command': 'procdump -ma lsass.exe'},
     ]
     

@@ -89,7 +89,7 @@ def example_incident_response():
             user_id="attacker",
             resource="/api/login",
             action="login",
-            source_ip="192.168.1.100",
+            source_ip="192.0.2.100",
             success=False,
             metadata={'user_agent': 'Mozilla/5.0'},
         )
@@ -228,7 +228,7 @@ def example_security_reporting():
         description="Detected in /api/users endpoint",
         severity=SeverityLevel.CRITICAL,
         threat_type=ThreatType.SQL_INJECTION,
-        source_ip="10.0.0.50",
+        source_ip="198.51.100.50",
     )
     
     agent.scan_code("query = 'SELECT * FROM x WHERE a=' + input", "test.py")

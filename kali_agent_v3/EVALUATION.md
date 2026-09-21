@@ -12,7 +12,7 @@
 
 ### Host System
 - **OS:** Rocky Linux 9.6 (Blue Onyx)
-- **Hostname:** wezzel.com
+- **Hostname:** example.internal
 - **Container Runtime:** Podman
 - **Network:** Public IP (209.145.59.209)
 
@@ -114,7 +114,7 @@
 **Status:** ✅ WORKAROUND SUCCESSFUL
 
 **Problem:**
-- wezzel.com is Rocky Linux 9.6, NOT Kali Linux
+- example.internal is Rocky Linux 9.6, NOT Kali Linux
 - No native Kali Linux machine in infrastructure
 
 **Solution:**
@@ -229,7 +229,7 @@ docker-compose → podman-compose (optional)
 **Status:** ✅ FIXED
 
 **Problem:**
-- Installer looked for source in `/home/wez/stsgym-work/agentic_ai/kali_agent_v3`
+- Installer looked for source in `/home/user/agentic-ai/agentic_ai/kali_agent_v3`
 - Path doesn't exist in container
 
 **Solution:**

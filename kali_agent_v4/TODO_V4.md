@@ -20,13 +20,13 @@
 **Goal:** Create isolated attack network (no internet leak)
 
 - [ ] **1.1.1:** Create isolated VLAN/subnet
-  - [ ] Configure 10.0.100.0/24 network
+  - [ ] Configure 198.51.100.0/24 network
   - [ ] Set up firewall rules (no outbound)
   - [ ] Test isolation (ping internet → should fail)
 
 - [ ] **1.1.2:** Configure attack machine network
   - [ ] Add second NIC to attack-machine
-  - [ ] Configure static IP (10.0.100.1)
+  - [ ] Configure static IP (198.51.100.1)
   - [ ] Disable IPv6 (prevent leaks)
 
 - [ ] **1.1.3:** Document network topology
@@ -69,7 +69,7 @@
 
 - [ ] **1.3.2:** Deploy on target VM 2
   - [ ] Import VM to KVM/VirtualBox
-  - [ ] Configure network (10.0.100.20)
+  - [ ] Configure network (198.51.100.20)
   - [ ] Disable Windows Firewall (for testing)
 
 - [ ] **1.3.3:** Identify vulnerabilities
@@ -92,7 +92,7 @@
   - [ ] Import to hypervisor
 
 - [ ] **1.4.2:** Configure network
-  - [ ] Set IP: 10.0.100.30
+  - [ ] Set IP: 198.51.100.30
   - [ ] Test connectivity from attack machine
   - [ ] Verify no internet access
 
@@ -126,7 +126,7 @@
   - [ ] Safety checklist
 
 **Phase 1 Deliverables:**
-- ✅ Isolated network (10.0.100.0/24)
+- ✅ Isolated network (198.51.100.0/24)
 - ✅ 3 vulnerable VMs deployed
 - ✅ Network isolation verified
 - ✅ Lab documentation complete
@@ -294,7 +294,7 @@
   - [ ] Export PDF
 
 - [ ] **3.1.6:** One-click execution
-  - [ ] `kaliagent attack web --target 10.0.100.10`
+  - [ ] `kaliagent attack web --target 198.51.100.10`
   - [ ] Fully automated
   - [ ] Progress dashboard
   - [ ] Video recording
@@ -376,7 +376,7 @@
   - [ ] Full domain control
 
 - [ ] **3.3.7:** One-click execution
-  - [ ] `kaliagent attack network --target 10.0.100.0/24`
+  - [ ] `kaliagent attack network --target 198.51.100.0/24`
   - [ ] Fully automated
   - [ ] Progress dashboard
 
@@ -614,7 +614,7 @@
 **Goal:** AI-powered attack automation
 
 - [ ] **6.1.1:** Natural language commands
-  - [ ] "Scan 192.168.1.0/24 for web servers"
+  - [ ] "Scan 192.0.2.0/24 for web servers"
   - [ ] "Hack the vulnerable PHP app"
   - [ ] "Generate pentest report"
   - [ ] Ollama integration (local LLM)

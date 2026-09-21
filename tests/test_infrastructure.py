@@ -28,7 +28,7 @@ class TestInferenceServer:
         from agentic_ai.infrastructure.inference import InferenceServer
 
         server = InferenceServer()
-        assert server.base_url == "http://10.0.0.117:11434"
+        assert server.base_url == "http://localhost:11434"
         assert server.timeout == 120.0
 
     def test_init_custom_host(self):

@@ -67,7 +67,7 @@ graph LR
 
 **Step 1: Clone Repository**
 ```bash
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 ```
 
@@ -391,7 +391,7 @@ graph TD
 sudo apt update && sudo apt upgrade -y
 
 # Step 2: Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 
 # Step 3: Install Python dependencies
@@ -422,7 +422,7 @@ sudo apt update
 sudo apt install -y kali-linux-default
 
 # Step 4: Install KaliAgent
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 pip install -r requirements.txt
 ```
@@ -571,7 +571,7 @@ graph TD
 |----------|-----|---------|
 | 📖 **Documentation** | `/kali_dashboard/README.md` | User guides |
 | 🔌 **API Reference** | `http://localhost:8001/docs` | Interactive API docs |
-| 🐛 **GitHub Issues** | `github.com/wezzels/agentic-ai/issues` | Bug reports |
+| 🐛 **GitHub Issues** | `github.com/dmrobbi/agentic-ai/issues` | Bug reports |
 | 💬 **Discord** | `discord.gg/clawd` | Community support |
 | 📧 **Email** | `security@example.com` | Direct contact |
 

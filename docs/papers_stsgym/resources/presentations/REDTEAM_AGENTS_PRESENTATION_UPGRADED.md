@@ -874,11 +874,11 @@ on-premises."
 ║  ┌───────────────────────────────────────────────────┐   ║
 ║  │                                                   │   ║
 ║  │  🌐 Live Demo:                                    │   ║
-║  │     https://agents.bedimsecurity.com             │   ║
+║  │     https://agents.example.com             │   ║
 ║  │     [QR CODE - 200x200px]                        │   ║
 ║  │                                                   │   ║
 ║  │  💻 Source Code:                                  │   ║
-║  │     https://github.com/wezzels/agentic-ai        │   ║
+║  │     https://github.com/dmrobbi/agentic-ai        │   ║
 ║  │     [QR CODE - 150x150px]                        │   ║
 ║  │                                                   │   ║
 ║  │  💬 Community:                                    │   ║
@@ -902,7 +902,7 @@ on-premises."
 "Thank you for your time today!"
 
 "I'd like to invite you to try KaliAgent yourself. We have 
-a live demo running at agents.bedimsecurity.com - just scan 
+a live demo running at agents.example.com - just scan 
 the QR code."
 
 "The source code is available on GitHub - also via QR code.
@@ -934,7 +934,7 @@ get support, and contribute."
 # Using Python
 import qrcode
 qr = qrcode.QRCode(version=1, box_size=10, border=5)
-qr.add_data('https://agents.bedimsecurity.com')
+qr.add_data('https://agents.example.com')
 qr.make(fit=True)
 img = qr.make_image(fill_color='#3b82f6', back_color='white')
 img.save('qr_demo.png')
@@ -943,7 +943,7 @@ img.save('qr_demo.png')
 **GitHub QR Code:**
 ```bash
 qr = qrcode.QRCode(version=1, box_size=10, border=5)
-qr.add_data('https://github.com/wezzels/agentic-ai')
+qr.add_data('https://github.com/dmrobbi/agentic-ai')
 qr.make(fit=True)
 img = qr.make_image(fill_color='#3b82f6', back_color='white')
 img.save('qr_github.png')

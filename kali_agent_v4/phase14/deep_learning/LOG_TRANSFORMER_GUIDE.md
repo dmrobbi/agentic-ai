@@ -39,7 +39,7 @@ Global Average Pooling → Classification Head → Output
 ### 1. Run Demo
 
 ```bash
-cd ~/stsgym-work/agentic_ai/kaliagent-v4
+cd ~/agentic-ai/agentic_ai/kaliagent-v4
 source venv/bin/activate
 python3 kali_agent_v4/phase14/deep_learning/log_transformer.py
 ```
@@ -83,8 +83,8 @@ import torch
 
 # Your logs
 logs = [
-    "User admin logged in from 192.168.1.100",
-    "Failed login attempt for user root from 10.0.0.50",
+    "User admin logged in from 192.0.2.100",
+    "Failed login attempt for user root from 198.51.100.50",
     "Port scan detected from 203.0.113.50",
     # ... more logs
 ]
@@ -122,7 +122,7 @@ for epoch in range(15):
 # Predict
 model.eval()
 with torch.no_grad():
-    sample_log = "Failed login attempt for user admin from 10.0.0.1"
+    sample_log = "Failed login attempt for user admin from 198.51.100.1"
     tokens = dataset._encode(sample_log)
     src = torch.tensor([tokens]).to(device)
     predicted, confidence = model.predict(src)

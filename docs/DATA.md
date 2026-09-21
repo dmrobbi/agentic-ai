@@ -285,7 +285,7 @@ for section in report.sections:
 See `examples/data_analysis.py` for comprehensive examples:
 
 ```bash
-cd ~/stsgym-work/agentic_ai
+cd ~/agentic-ai/agentic_ai
 PYTHONPATH=. ./venv/bin/python examples/data_analysis.py
 ```
 

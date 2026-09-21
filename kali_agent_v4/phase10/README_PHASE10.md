@@ -280,16 +280,16 @@ scadasuite              # SCADA testing suite
 from phase10.scada_agent import SCADAAgent
 
 # Initialize agent
-scada = SCADAAgent(target_network="192.168.10.0/24")
+scada = SCADAAgent(target_network="192.0.2.0/24")
 
 # Discover ICS devices
 devices = scada.discover_ics_devices()
 
 # Scan Modbus PLCs
-modbus_results = scada.scan_modbus("192.168.10.100")
+modbus_results = scada.scan_modbus("192.0.2.100")
 
 # Scan Siemens S7 PLCs
-s7_results = scada.scan_s7("192.168.10.101")
+s7_results = scada.scan_s7("192.0.2.101")
 
 # Generate report
 report = scada.generate_report()
@@ -301,7 +301,7 @@ report = scada.generate_report()
 from phase10.protocols.s7comm import S7Client
 
 # Connect to S7 PLC
-s7 = S7Client("192.168.10.101", port=102)
+s7 = S7Client("192.0.2.101", port=102)
 
 # Read PLC info
 info = s7.get_cpu_info()

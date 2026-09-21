@@ -45,12 +45,12 @@ class TestSecurityOperationsAgent:
         """Test creating security alert."""
         alert = soc.create_alert(
             title="Brute Force Attack",
-            description="Multiple failed logins from 192.168.1.100",
+            description="Multiple failed logins from 192.0.2.100",
             severity=AlertSeverity.MEDIUM,
             source="SIEM",
             rule_name="brute_force",
             affected_asset="auth-server-01",
-            source_ip="192.168.1.100",
+            source_ip="192.0.2.100",
             user="admin",
         )
         
@@ -168,7 +168,7 @@ class TestSecurityOperationsAgent:
         """Test adding threat intelligence."""
         intel = soc.add_threat_intel(
             indicator_type="ip",
-            value="10.0.0.99",
+            value="198.51.100.99",
             threat_type="c2_server",
             confidence="high",
             source="internal",
@@ -180,10 +180,10 @@ class TestSecurityOperationsAgent:
     
     def test_search_threat_intel(self, soc):
         """Test searching threat intel."""
-        soc.add_threat_intel("ip", "10.0.0.99", "c2", "high", "internal")
-        soc.add_threat_intel("ip", "10.0.0.100", "c2", "medium", "internal")
+        soc.add_threat_intel("ip", "198.51.100.99", "c2", "high", "internal")
+        soc.add_threat_intel("ip", "198.51.100.100", "c2", "medium", "internal")
         
-        results = soc.search_threat_intel("10.0.0")
+        results = soc.search_threat_intel("198.51.100")
         
         assert len(results) == 2
     
@@ -211,7 +211,7 @@ class TestSecurityOperationsAgent:
         
         result = soc.execute_hunt(
             hunt.hunt_id,
-            findings=[{'src_ip': '10.0.0.1', 'count': 500}],
+            findings=[{'src_ip': '198.51.100.1', 'count': 500}],
         )
         
         assert result is True
@@ -257,7 +257,7 @@ class TestVulnerabilityManagementAgent:
         asset = vulnman.add_asset(
             name="web-server-01",
             asset_type=AssetType.SERVER,
-            ip_address="10.0.1.10",
+            ip_address="198.51.100.10",
             hostname="web01.example.com",
             os="Ubuntu 22.04",
             owner="ops@example.com",
@@ -270,9 +270,9 @@ class TestVulnerabilityManagementAgent:
     
     def test_get_assets_by_type(self, vulnman):
         """Test filtering assets by type."""
-        vulnman.add_asset("Server", AssetType.SERVER, "10.0.1.10")
-        vulnman.add_asset("Workstation", AssetType.WORKSTATION, "10.0.2.20")
-        vulnman.add_asset("DB", AssetType.DATABASE, "10.0.1.50")
+        vulnman.add_asset("Server", AssetType.SERVER, "198.51.100.10")
+        vulnman.add_asset("Workstation", AssetType.WORKSTATION, "198.51.100.20")
+        vulnman.add_asset("DB", AssetType.DATABASE, "198.51.100.50")
         
         servers = vulnman.get_assets(asset_type=AssetType.SERVER)
         
@@ -280,7 +280,7 @@ class TestVulnerabilityManagementAgent:
     
     def test_add_vulnerability(self, vulnman):
         """Test adding vulnerability."""
-        asset = vulnman.add_asset("Server", AssetType.SERVER, "10.0.1.10")
+        asset = vulnman.add_asset("Server", AssetType.SERVER, "198.51.100.10")
         
         vuln = vulnman.add_vulnerability(
             cve_id="CVE-2024-1234",
@@ -347,7 +347,7 @@ class TestVulnerabilityManagementAgent:
             name="Weekly Scan",
             scanner="nessus",
             target_type="network",
-            targets=["10.0.1.0/24"],
+            targets=["198.51.100.0/24"],
             created_by="security@example.com",
         )
         
@@ -360,7 +360,7 @@ class TestVulnerabilityManagementAgent:
             "Test Scan",
             "nessus",
             "network",
-            ["10.0.0.0/24"],
+            ["198.51.100.0/24"],
         )
         
         result = vulnman.complete_scan(
@@ -459,7 +459,7 @@ class TestRedTeamAgent:
             name="Q2 Red Team Exercise",
             engagement_type=EngagementType.RED_TEAM,
             start_date=utcnow(),
-            scope=["10.0.0.0/24", "example.com"],
+            scope=["198.51.100.0/24", "example.com"],
             objectives=["Gain domain admin", "Access sensitive data"],
             rules_of_engagement=["No production impact"],
             team_members=["red1", "red2"],
@@ -497,7 +497,7 @@ class TestRedTeamAgent:
         target = redteam.add_target(
             name="Web Server",
             target_type=TargetType.WEB_APP,
-            ip_address="10.0.1.10",
+            ip_address="198.51.100.10",
             domain="web.example.com",
             os="Ubuntu 22.04",
             engagement_id=engagement.engagement_id,
@@ -511,7 +511,7 @@ class TestRedTeamAgent:
         target = redteam.add_target(
             "Test Target",
             TargetType.NETWORK,
-            ip_address="10.0.0.1",
+            ip_address="198.51.100.1",
         )
         
         result = redteam.mark_target_compromised(target.target_id)
@@ -522,7 +522,7 @@ class TestRedTeamAgent:
     
     def test_add_service_to_target(self, redteam):
         """Test adding service to target."""
-        target = redteam.add_target("Server", TargetType.SERVER, "10.0.0.1")
+        target = redteam.add_target("Server", TargetType.SERVER, "198.51.100.1")
         
         result = redteam.add_service_to_target(
             target.target_id,
@@ -643,7 +643,7 @@ class TestRedTeamAgent:
         target = redteam.add_target(
             "Web Server",
             TargetType.WEB_APP,
-            "10.0.1.10",
+            "198.51.100.10",
             engagement_id=engagement.engagement_id,
         )
         

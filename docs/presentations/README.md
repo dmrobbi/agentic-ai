@@ -32,14 +32,14 @@ A comprehensive 15-slide PowerPoint presentation detailing the Agentic AI Cyber 
 
 ### Downloads
 
-- **Presentation:** https://media.papers.stsgym.com/REDTEAM_AGENTS_PRESENTATION.pptx (51 KB)
-- **Demo Video:** https://media.papers.stsgym.com/cyber_agents_demo.mp4 (1.0 MB, 83 seconds)
+- **Presentation:** https://media.papers.example.internal/REDTEAM_AGENTS_PRESENTATION.pptx (51 KB)
+- **Demo Video:** https://media.papers.example.internal/cyber_agents_demo.mp4 (1.0 MB, 83 seconds)
 
 ### Production Access
 
-- **Dashboard:** https://agents.bedimsecurity.com (password: `let_me_in`)
-- **API Docs:** https://agents.bedimsecurity.com/docs
-- **Agents API:** https://agents.bedimsecurity.com/api/agents
+- **Dashboard:** https://agents.example.com (password: `let_me_in`)
+- **API Docs:** https://agents.example.com/docs
+- **Agents API:** https://agents.example.com/api/agents
 
 ---
 
@@ -67,7 +67,7 @@ An 83-second automated video demonstration of all 6 Cyber Division agents.
 
 Generated automatically using:
 ```bash
-cd ~/stsgym-work/human-test-sim
+cd ~/agentic-ai/human-test-sim
 source venv/bin/activate
 python simulator/cyber_agents_demo.py
 ```

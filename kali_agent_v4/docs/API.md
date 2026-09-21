@@ -74,7 +74,7 @@ Initiate a network scan.
 **Request:**
 ```json
 {
-  "target": "10.0.100.0/24",
+  "target": "198.51.100.0/24",
   "scan_type": "nmap",
   "options": ["-sV", "-O", "-A"]
 }
@@ -119,7 +119,7 @@ Launch an automated attack.
 **Request:**
 ```json
 {
-  "target": "10.0.100.10",
+  "target": "198.51.100.10",
   "attack_type": "web",
   "method": "sql_injection",
   "auto_exploit": true
@@ -188,7 +188,7 @@ List all registered C2 agents.
     {
       "agent_id": "agent-001",
       "c2_type": "sliver",
-      "ip": "10.0.100.10",
+      "ip": "198.51.100.10",
       "os": "windows",
       "status": "active",
       "last_seen": "2026-04-24T05:55:00Z"
@@ -286,7 +286,7 @@ Parse natural language command.
 **Request:**
 ```json
 {
-  "command": "Scan the 10.0.100.0/24 network for web servers"
+  "command": "Scan the 198.51.100.0/24 network for web servers"
 }
 ```
 
@@ -294,7 +294,7 @@ Parse natural language command.
 ```json
 {
   "type": "scan",
-  "target": "10.0.100.0/24",
+  "target": "198.51.100.0/24",
   "scan_type": "nmap",
   "options": ["-p 80,443", "--script http-enum"]
 }
@@ -402,7 +402,7 @@ Get attack history.
   "attacks": [
     {
       "attack_id": "attack_67890",
-      "target": "10.0.100.10",
+      "target": "198.51.100.10",
       "type": "web",
       "status": "completed",
       "success": true,

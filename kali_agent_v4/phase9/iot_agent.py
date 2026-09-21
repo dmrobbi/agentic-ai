@@ -111,7 +111,7 @@ class IoTAgent:
         Initialize IoT Agent
         
         Args:
-            target_network: Target network CIDR (e.g., "192.168.1.0/24")
+            target_network: Target network CIDR (e.g., "192.0.2.0/24")
             verbose: Enable verbose logging
         """
         self.target_network = target_network
@@ -152,7 +152,7 @@ class IoTAgent:
         """Simulate device discovery for testing"""
         devices = [
             IoTDevice(
-                ip_address="192.168.1.100",
+                ip_address="192.0.2.100",
                 mac_address="50:C7:BF:01:23:45",
                 vendor="TP-Link",
                 model="HS100 Smart Plug",
@@ -164,7 +164,7 @@ class IoTAgent:
                 risk_score=7.5
             ),
             IoTDevice(
-                ip_address="192.168.1.101",
+                ip_address="192.0.2.101",
                 mac_address="00:17:88:AB:CD:EF",
                 vendor="Philips",
                 model="Hue Bridge",
@@ -176,7 +176,7 @@ class IoTAgent:
                 risk_score=6.0
             ),
             IoTDevice(
-                ip_address="192.168.1.102",
+                ip_address="192.0.2.102",
                 mac_address="48:A1:95:12:34:56",
                 vendor="Hikvision",
                 model="DS-2CD2142FWD-I",
@@ -414,7 +414,7 @@ def main():
     """)
     
     # Initialize agent
-    iot = IoTAgent(target_network="192.168.1.0/24", verbose=True)
+    iot = IoTAgent(target_network="192.0.2.0/24", verbose=True)
     
     # Run assessment
     report = iot.run_full_assessment()

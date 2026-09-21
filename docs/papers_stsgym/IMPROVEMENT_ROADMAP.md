@@ -34,7 +34,7 @@
 **Action:**
 ```bash
 # Run screenshot capture
-cd /home/wez/stsgym-work/agentic_ai
+cd /home/user/agentic-ai/agentic_ai
 pip install playwright
 playwright install firefox
 python3 kali_dashboard/scripts/capture_screenshots.py
@@ -97,7 +97,7 @@ pandoc kali_dashboard/USER_GUIDE_IMPROVED.md -o USER_GUIDE.pdf
 1. Set up screen recording software (OBS Studio)
 2. Follow VIDEO_TUTORIALS.md scripts
 3. Record each of 6 tutorials
-4. Edit and upload to papers.stsgym.com
+4. Edit and upload to papers.example.internal
 
 **Expected Result:** 6 professional video tutorials (50 min total)
 
@@ -270,8 +270,8 @@ python3 -m pytest kali_dashboard/tests/ -v
 # 3. Generate PDFs (2 hr)
 for file in *.md; do pandoc "$file" -o "${file%.md}.pdf"; done
 
-# 4. Upload to papers.stsgym.com (30 min)
-scp screenshots/*.png crackers@wezzel.com:/home/crackers/stsgym-joined/static/papers/cyber-division/media/screenshots/
+# 4. Upload to papers.example.internal (30 min)
+scp screenshots/*.png deploy@example.internal:/home/deploy/app-portal/static/papers/cyber-division/media/screenshots/
 
 # Gets you to 9.5/10!
 ```
@@ -319,7 +319,7 @@ Impact
 - ✅ Code examples (50+)
 - ✅ Structure & organization
 - ✅ Security (no exposed credentials)
-- ✅ Deployment (papers.stsgym.com)
+- ✅ Deployment (papers.example.internal)
 - ✅ Navigation (featured placement)
 
 ### **What's Good But Could Be Better:**
@@ -340,17 +340,17 @@ Impact
 ### **Do This Now (30 minutes):**
 ```bash
 # 1. Make sure dashboard is running
-cd /home/wez/stsgym-work/agentic_ai/kali_dashboard/frontend
+cd /home/user/agentic-ai/agentic_ai/kali_dashboard/frontend
 npm run dev &
 
 # 2. Capture all screenshots
-cd /home/wez/stsgym-work/agentic_ai
+cd /home/user/agentic-ai/agentic_ai
 pip install playwright
 playwright install firefox
 python3 kali_dashboard/scripts/capture_screenshots.py
 
-# 3. Upload to papers.stsgym.com
-scp kali_dashboard/screenshots/*.png crackers@wezzel.com:/home/crackers/stsgym-joined/static/papers/cyber-division/media/screenshots/
+# 3. Upload to papers.example.internal
+scp kali_dashboard/screenshots/*.png deploy@example.internal:/home/deploy/app-portal/static/papers/cyber-division/media/screenshots/
 
 # Result: 9.3/10 quality score!
 ```

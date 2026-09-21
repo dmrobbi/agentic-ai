@@ -224,14 +224,14 @@ install_kaliagent() {
     log_info "Installing KaliAgent v3..."
     
     # Copy files to install directory
-    if [[ -d "/home/wez/stsgym-work/agentic_ai/kali_agent_v3" ]]; then
-        cp -r /home/wez/stsgym-work/agentic_ai/kali_agent_v3/core "$INSTALL_DIR/"
-        cp -r /home/wez/stsgym-work/agentic_ai/kali_agent_v3/weaponization "$INSTALL_DIR/"
-        cp -r /home/wez/stsgym-work/agentic_ai/kali_agent_v3/c2 "$INSTALL_DIR/"
-        cp -r /home/wez/stsgym-work/agentic_ai/kali_agent_v3/production "$INSTALL_DIR/"
-        cp -r /home/wez/stsgym-work/agentic_ai/kali_agent_v3/docs "$INSTALL_DIR/"
-        cp /home/wez/stsgym-work/agentic_ai/kali_agent_v3/README.md "$INSTALL_DIR/"
-        cp /home/wez/stsgym-work/agentic_ai/kali_agent_v3/requirements.txt "$INSTALL_DIR/" 2>/dev/null || true
+    if [[ -d "/home/user/agentic-ai/agentic_ai/kali_agent_v3" ]]; then
+        cp -r /home/user/agentic-ai/agentic_ai/kali_agent_v3/core "$INSTALL_DIR/"
+        cp -r /home/user/agentic-ai/agentic_ai/kali_agent_v3/weaponization "$INSTALL_DIR/"
+        cp -r /home/user/agentic-ai/agentic_ai/kali_agent_v3/c2 "$INSTALL_DIR/"
+        cp -r /home/user/agentic-ai/agentic_ai/kali_agent_v3/production "$INSTALL_DIR/"
+        cp -r /home/user/agentic-ai/agentic_ai/kali_agent_v3/docs "$INSTALL_DIR/"
+        cp /home/user/agentic-ai/agentic_ai/kali_agent_v3/README.md "$INSTALL_DIR/"
+        cp /home/user/agentic-ai/agentic_ai/kali_agent_v3/requirements.txt "$INSTALL_DIR/" 2>/dev/null || true
     else
         log_error "KaliAgent v3 source not found"
         exit 1
@@ -390,8 +390,8 @@ EOF
 install_tool_database() {
     log_info "Installing tool database..."
     
-    if [[ -f "/home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json" ]]; then
-        cp /home/wez/stsgym-work/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json "$DATA_DIR/tools/"
+    if [[ -f "/home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json" ]]; then
+        cp /home/user/agentic-ai/agentic_ai/kali_agent_v3/core/tools_db_600_plus.json "$DATA_DIR/tools/"
         chown "$USER:$USER" "$DATA_DIR/tools/tools_db_600_plus.json"
         chmod 640 "$DATA_DIR/tools/tools_db_600_plus.json"
         log_success "Tool database installed (602 tools)"

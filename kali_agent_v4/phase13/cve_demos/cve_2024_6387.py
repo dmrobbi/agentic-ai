@@ -642,7 +642,7 @@ MITIGATIONS = [
         "priority": "high",
         "details": "Only allow SSH from known management networks.",
         "commands": [
-            "iptables -A INPUT -p tcp --dport 22 -s 10.0.0.0/8 -j ACCEPT",
+            "iptables -A INPUT -p tcp --dport 22 -s 198.51.100.0/8 -j ACCEPT",
             "iptables -A INPUT -p tcp --dport 22 -j DROP",
         ],
     },
@@ -848,19 +848,19 @@ def main():
         epilog="""
 Examples:
   # Scan target for vulnerability
-  python cve_2024_6387.py scan --target 192.168.1.1
+  python cve_2024_6387.py scan --target 192.0.2.1
 
   # Scan multiple targets
-  python cve_2024_6387.py scan --target 192.168.1.1 --target 192.168.1.2
+  python cve_2024_6387.py scan --target 192.0.2.1 --target 192.0.2.2
 
   # Timing analysis
-  python cve_2024_6387.py scan --target 192.168.1.1 --timing --probes 20
+  python cve_2024_6387.py scan --target 192.0.2.1 --timing --probes 20
 
   # Show attack flow and detection
   python cve_2024_6387.py explain
 
   # Generate report
-  python cve_2024_6387.py report --target 192.168.1.1
+  python cve_2024_6387.py report --target 192.0.2.1
 
 ⚠️  For authorized security testing and education only.
 """)

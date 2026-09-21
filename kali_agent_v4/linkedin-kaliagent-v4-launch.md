@@ -58,7 +58,7 @@ This isn't just another security tool. It's a fully automated penetration testin
    docker-compose up -d
 
 2️⃣ Launch attacks:
-   ./kaliagent attack -t 10.0.100.10 -a web
+   ./kaliagent attack -t 198.51.100.10 -a web
 
 3️⃣ Generate reports:
    ./kaliagent report -f pdf
@@ -124,7 +124,7 @@ Attach 3-4 of these to the post:
 
 Generate GIFs with:
 ```bash
-cd ~/stsgym-work/agentic_ai/kali_agent_v4
+cd ~/agentic-ai/agentic_ai/kali_agent_v4
 ./scripts/create_demo_gifs.sh
 ```
 

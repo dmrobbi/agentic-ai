@@ -715,7 +715,7 @@ def deploy_c2_implant(target_ip: str, c2_server: str):
   "user": "pentester_01",
   "action": "exploit_execution",
   "tool": "metasploit",
-  "target": "192.168.1.100",
+  "target": "192.0.2.100",
   "module": "exploit/windows/smb/ms17_010_eternalblue",
   "authorization_id": "ENG-2026-0420-001",
   "result": "success",

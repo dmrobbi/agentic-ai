@@ -283,13 +283,13 @@ Example:
 
 ## Links
 
-- [GitHub Repository](https://github.com/wezzels/agentic-ai)
-- [Issue Tracker](https://github.com/wezzels/agentic-ai/issues)
-- [Releases](https://github.com/wezzels/agentic-ai/releases)
+- [GitHub Repository](https://github.com/dmrobbi/agentic-ai)
+- [Issue Tracker](https://github.com/dmrobbi/agentic-ai/issues)
+- [Releases](https://github.com/dmrobbi/agentic-ai/releases)
 - [Documentation](kali_dashboard/README.md)
 
 ---
 
 *Last Updated: April 18, 2026*
 
-[1.0.0]: https://github.com/wezzels/agentic-ai/releases/tag/v1.0.0
+[1.0.0]: https://github.com/dmrobbi/agentic-ai/releases/tag/v1.0.0

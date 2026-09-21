@@ -39,10 +39,10 @@ deactivate nondestructive
 if [ "${OSTYPE:-}" = "cygwin" ] || [ "${OSTYPE:-}" = "msys" ] ; then
     # transform D:\path\to\venv to /d/path/to/venv on MSYS
     # and to /cygdrive/d/path/to/venv on Cygwin
-    export VIRTUAL_ENV=$(cygpath /home/wez/stsgym-work/agentic_ai/venv-pptx)
+    export VIRTUAL_ENV=$(cygpath /home/user/agentic-ai/agentic_ai/venv-pptx)
 else
     # use the path as-is
-    export VIRTUAL_ENV=/home/wez/stsgym-work/agentic_ai/venv-pptx
+    export VIRTUAL_ENV=/home/user/agentic-ai/agentic_ai/venv-pptx
 fi
 
 _OLD_VIRTUAL_PATH="$PATH"

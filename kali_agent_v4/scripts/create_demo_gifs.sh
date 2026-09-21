@@ -39,9 +39,9 @@ fi
 # GIF 2: Network Scan
 echo "🔍 Creating network_scan.gif..."
 cat > /tmp/scan_demo.txt << 'EOF'
-$ ./kaliagent scan -t 10.0.100.0/24 --type nmap
+$ ./kaliagent scan -t 198.51.100.0/24 --type nmap
 
-🔍 Starting nmap scan on 10.0.100.0/24...
+🔍 Starting nmap scan on 198.51.100.0/24...
 
 [████████░░░░░░░░░░░░] 40% - Scanning hosts
 [████████████████░░░░] 80% - Detecting services
@@ -64,9 +64,9 @@ fi
 # GIF 3: SQL Injection Attack
 echo "💉 Creating sql_injection.gif..."
 cat > /tmp/sqli_demo.txt << 'EOF'
-$ ./kaliagent attack -t 10.0.100.10 -a web --method sql_injection
+$ ./kaliagent attack -t 198.51.100.10 -a web --method sql_injection
 
-⚔️  Launching web attack on 10.0.100.10...
+⚔️  Launching web attack on 198.51.100.10...
 
 Step 1/5: Reconnaissance     ✅ Complete
 Step 2/5: Vuln Detection     ✅ Complete  
@@ -126,12 +126,12 @@ Analyzing... 🧠
 
 Parsed Command:
   Type: scan + attack
-  Target: 10.0.100.0/24
+  Target: 198.51.100.0/24
   Filter: port 80,443
   Attack: SQL injection
 
 Recommendation:
-  "Target 10.0.100.10 running Apache 2.4.18 is vulnerable.
+  "Target 198.51.100.10 running Apache 2.4.18 is vulnerable.
    Use SQLMap with --dbs flag for database enumeration."
 
 Executing attack chain... ✅

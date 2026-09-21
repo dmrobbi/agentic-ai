@@ -206,7 +206,7 @@ With Phase 5 complete, the system is ready for:
 ## Running the Tests
 
 ```bash
-cd ~/stsgym-work/agentic_ai
+cd ~/agentic-ai/agentic_ai
 source venv/bin/activate
 
 # Run all tests

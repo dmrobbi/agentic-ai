@@ -72,7 +72,7 @@ def generate_evidence_reports():
                 ),
                 'evidence': (
                     "Nmap Scan Results:\n"
-                    "  Host: 10.0.100.20\n"
+                    "  Host: 198.51.100.20\n"
                     "  Port: 445/tcp (SMB)\n"
                     "  OS: Windows Server 2016\n"
                     "  Vulnerability: MS17-010 (EternalBlue)\n"

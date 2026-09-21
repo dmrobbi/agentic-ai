@@ -30,7 +30,7 @@ Production deployment instructions for various environments.
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 
 # Create .env file
@@ -491,11 +491,11 @@ module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
   
   name = "kali-vpc"
-  cidr = "10.0.0.0/16"
+  cidr = "198.51.100.0/16"
   
   azs             = ["us-east-1a", "us-east-1b"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+  private_subnets = ["198.51.100.0/24", "198.51.100.0/24"]
+  public_subnets  = ["198.51.100.0/24", "198.51.100.0/24"]
   
   enable_nat_gateway = true
   single_nat_gateway = true
@@ -636,7 +636,7 @@ apt install -y \
 useradd -m -s /bin/bash kali-agent
 
 # Clone repository
-sudo -u kali-agent git clone https://github.com/wezzels/agentic-ai.git /opt/kali-agent
+sudo -u kali-agent git clone https://github.com/dmrobbi/agentic-ai.git /opt/kali-agent
 cd /opt/kali-agent
 
 # Create virtual environment

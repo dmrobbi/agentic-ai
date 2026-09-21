@@ -10,7 +10,7 @@ SecurityOperationsAgent and asserts:
   3. A level>=10 alert auto-creates an IncidentReport (the auto-escalate path)
 
 This is an OPT-IN integration test (skipped by default). It requires:
-  - Wazuh manager + indexer reachable (thing1:55000 / 9200)
+  - Wazuh manager + indexer reachable (manager-host:55000 / 9200)
   - A target host monitored by Wazuh that accepts password auth
   - sshpass installed on this host
   - The Wazuh agent on the target must be able to read journald/auth.log
@@ -87,7 +87,7 @@ def _preflight():
         pytest.skip("sshpass not installed (apt-get install -y sshpass)")
     if not _indexer_reachable():
         pytest.skip("Wazuh indexer not reachable at 127.0.0.1:9200")
-    target = os.environ.get("BRUTEFORCE_TARGET", "192.168.1.151")
+    target = os.environ.get("BRUTEFORCE_TARGET", "192.0.2.151")
     if not _ssh_target_reachable(target):
         pytest.skip(f"ssh target {target} unreachable")
     return target

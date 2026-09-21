@@ -122,7 +122,7 @@
 
 ### GPU Setup
 
-**Host:** darth (10.0.0.117)  
+**Host:** managed-host (198.51.100.117)  
 **GPU:** NVIDIA GeForce RTX 5060 Ti 16GB  
 **PyTorch:** 2.12.0.dev20260407+cu128 (nightly)  
 **CUDA:** 12.8  
@@ -392,9 +392,9 @@ phase13.add_threat_intel(
 ## 👥 Team
 
 **Developer:** Lucky 🍀 (KaliAgent AI Assistant)  
-**Host:** darth (10.0.0.117)  
+**Host:** managed-host (198.51.100.117)  
 **Hardware:** RTX 5060 Ti 16GB  
-**Location:** ~/stsgym-work/agentic_ai/kali_agent_v4/phase14
+**Location:** ~/agentic-ai/agentic_ai/kali_agent_v4/phase14
 
 ---
 

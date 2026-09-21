@@ -13,7 +13,7 @@ Author: KaliAgent Team
 Started: April 28, 2026
 Status: Alpha (0.1.0)
 
-Hardware: Optimized for RTX 5060 Ti 16GB (darth/10.0.0.117)
+Hardware: Optimized for RTX 5060 Ti 16GB (managed-host/198.51.100.117)
 """
 
 import logging
@@ -663,7 +663,7 @@ def main():
 ║                    Phase 14: Alpha 0.1.0                      ║
 ╚═══════════════════════════════════════════════════════════════╝
 
-Hardware: Optimized for RTX 5060 Ti 16GB (darth/10.0.0.117)
+Hardware: Optimized for RTX 5060 Ti 16GB (managed-host/198.51.100.117)
 
     """)
     

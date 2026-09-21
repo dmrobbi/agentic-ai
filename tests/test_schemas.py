@@ -256,12 +256,12 @@ class TestIncidentReport:
             title="T",
             category="unauthorized_access",
             affected_users=["admin"],
-            source_ip="10.0.0.1",
+            source_ip="198.51.100.1",
             detected_at="2026-01-01",
             _incident="mock",
         )
         assert r.category == "unauthorized_access"
-        assert r.source_ip == "10.0.0.1"
+        assert r.source_ip == "198.51.100.1"
         assert r._incident == "mock"
 
     def test_serializes_to_dict(self):

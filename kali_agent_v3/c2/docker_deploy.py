@@ -348,7 +348,7 @@ class DockerDeployment:
                     'driver': 'bridge',
                     'ipam': {
                         'config': [{
-                            'subnet': '172.28.0.0/16'
+                            'subnet': '203.0.113.0/16'
                         }]
                     }
                 }
@@ -584,7 +584,7 @@ provider "aws" {{
 
 # VPC
 resource "aws_vpc" "c2_vpc" {{
-  cidr_block           = "10.0.0.0/16"
+  cidr_block           = "198.51.100.0/16"
   enable_dns_hostnames = true
   enable_dns_support   = true
   
@@ -605,7 +605,7 @@ resource "aws_internet_gateway" "c2_gw" {{
 # Public Subnet
 resource "aws_subnet" "c2_public" {{
   vpc_id                  = aws_vpc.c2_vpc.id
-  cidr_block              = "10.0.1.0/24"
+  cidr_block              = "198.51.100.0/24"
   availability_zone       = "{deployment.region}a"
   map_public_ip_on_launch = true
   
@@ -818,7 +818,7 @@ resource "google_compute_network" "c2_vpc" {{
 # Subnet
 resource "google_compute_subnetwork" "c2_subnet" {{
   name          = "{deployment.name}-subnet"
-  ip_cidr_range = "10.0.0.0/24"
+  ip_cidr_range = "198.51.100.0/24"
   region        = "{deployment.region}"
   network       = google_compute_network.c2_vpc.id
 }}
@@ -913,7 +913,7 @@ resource "azurerm_resource_group" "c2_rg" {{
 # Virtual Network
 resource "azurerm_virtual_network" "c2_vnet" {{
   name                = "{deployment.name}-vnet"
-  address_space       = ["10.0.0.0/16"]
+  address_space       = ["198.51.100.0/16"]
   location            = azurerm_resource_group.c2_rg.location
   resource_group_name = azurerm_resource_group.c2_rg.name
 }}
@@ -923,7 +923,7 @@ resource "azurerm_subnet" "c2_subnet" {{
   name                 = "{deployment.name}-subnet"
   resource_group_name  = azurerm_resource_group.c2_rg.name
   virtual_network_name = azurerm_virtual_network.c2_vnet.name
-  address_prefixes     = ["10.0.1.0/24"]
+  address_prefixes     = ["198.51.100.0/24"]
 }}
 
 # Network Security Group

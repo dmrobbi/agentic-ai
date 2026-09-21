@@ -24,7 +24,7 @@ log_info() {
 # Create deployment directory
 log_info "Creating deployment directory..."
 sudo mkdir -p $DEPLOY_DIR
-sudo chown -R wez:wez $DEPLOY_DIR
+sudo chown -R demo-user:demo-user $DEPLOY_DIR
 
 # Create simple Sliver mock server (Python)
 log_info "Creating Sliver mock server..."
@@ -238,7 +238,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=wez
+User=demo-user
 WorkingDirectory=/opt/kaliagent_v3/c2
 ExecStart=/opt/kaliagent_v3/venv/bin/python /opt/kaliagent_v3/c2/sliver_mock.py
 Restart=always
@@ -256,7 +256,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=wez
+User=demo-user
 WorkingDirectory=/opt/kaliagent_v3/c2
 ExecStart=/opt/kaliagent_v3/venv/bin/python /opt/kaliagent_v3/c2/empire_mock.py
 Restart=always

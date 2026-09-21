@@ -207,10 +207,10 @@ pytest tests/test_kali_agent.py::TestAuthorization -v
 def test_ip_whitelist(self):
     """Test IP whitelist functionality."""
     agent = KaliAgent()
-    agent.set_ip_whitelist(["192.168.1.0/24", "10.0.0.100"])
+    agent.set_ip_whitelist(["192.0.2.0/24", "198.51.100.100"])
     
     # Allowed target
-    valid, msg = agent.validate_target("10.0.0.100")
+    valid, msg = agent.validate_target("198.51.100.100")
     assert valid is True
     
     # Blocked target
@@ -220,19 +220,19 @@ def test_ip_whitelist(self):
 def test_ip_blacklist(self):
     """Test IP blacklist functionality."""
     agent = KaliAgent()
-    agent.add_to_blacklist("192.168.1.1")
+    agent.add_to_blacklist("192.0.2.1")
     
-    valid, msg = agent.validate_target("192.168.1.1")
+    valid, msg = agent.validate_target("192.0.2.1")
     assert valid is False
     assert "blacklisted" in msg
 
 def test_blacklist_takes_precedence(self):
     """Test blacklist takes precedence over whitelist."""
     agent = KaliAgent()
-    agent.set_ip_whitelist(["192.168.1.100"])
-    agent.add_to_blacklist("192.168.1.100")
+    agent.set_ip_whitelist(["192.0.2.100"])
+    agent.add_to_blacklist("192.0.2.100")
     
-    valid, msg = agent.validate_target("192.168.1.100")
+    valid, msg = agent.validate_target("192.0.2.100")
     assert valid is False
     assert "blacklisted" in msg
 ```
@@ -371,7 +371,7 @@ def test_recon_playbook_structure(self):
     agent.enable_dry_run()
     
     results = agent.run_recon_playbook(
-        target="192.168.1.100",
+        target="192.0.2.100",
         domain="example.com"
     )
     
@@ -401,7 +401,7 @@ def test_playbook_report_generation(self):
     agent.enable_dry_run()
     
     results = agent.run_recon_playbook(
-        target="192.168.1.100",
+        target="192.0.2.100",
         domain="example.com"
     )
     
@@ -545,14 +545,14 @@ class TestEndToEndEngagement:
             name="E2E Test Engagement",
             engagement_type=EngagementType.PENETRATION_TEST,
             start_date=datetime.utcnow(),
-            scope=["192.168.1.0/24"],
+            scope=["192.0.2.0/24"],
             objectives=["E2E testing"]
         )
         
         # Execute Kali recon
         result = redteam.execute_kali_recon(
             engagement_id=engagement.engagement_id,
-            target="192.168.1.100",
+            target="192.0.2.100",
             domain="test.local"
         )
         
@@ -595,7 +595,7 @@ class TestPerformance:
         agent.enable_dry_run()
         
         def execute_tool(tool_name):
-            return agent.execute_tool(tool_name, {"target": "192.168.1.1"})
+            return agent.execute_tool(tool_name, {"target": "192.0.2.1"})
         
         tools = ["nmap", "nikto", "gobuster"] * 10  # 30 executions
         
@@ -615,7 +615,7 @@ class TestPerformance:
         
         start = time.time()
         results = agent.run_recon_playbook(
-            target="192.168.1.100",
+            target="192.0.2.100",
             domain="example.com"
         )
         duration = time.time() - start
@@ -660,7 +660,7 @@ class TestSecurityAuthorization:
     def test_whitelist_enforcement(self):
         """Test that whitelist is enforced."""
         agent = KaliAgent()
-        agent.set_ip_whitelist(["192.168.1.0/24"])
+        agent.set_ip_whitelist(["192.0.2.0/24"])
         agent.set_authorization(AuthorizationLevel.BASIC)
         agent.enable_dry_run()
         
@@ -672,12 +672,12 @@ class TestSecurityAuthorization:
     def test_blacklist_enforcement(self):
         """Test that blacklist is enforced."""
         agent = KaliAgent()
-        agent.add_to_blacklist("192.168.1.1")
+        agent.add_to_blacklist("192.0.2.1")
         agent.set_authorization(AuthorizationLevel.BASIC)
         agent.enable_dry_run()
         
         # Try to scan blacklisted IP
-        result = agent.execute_tool("nmap", {"target": "192.168.1.1"})
+        result = agent.execute_tool("nmap", {"target": "192.0.2.1"})
         assert result.status == "failed"
         assert "blacklisted" in result.stderr
 ```
@@ -874,7 +874,7 @@ user:5f4dcc3b5aa765d61d8327deb882cf99
 <?xml version="1.0"?>
 <nmaprun>
   <host>
-    <address addr="192.168.1.100" addrtype="ipv4"/>
+    <address addr="192.0.2.100" addrtype="ipv4"/>
     <ports>
       <port protocol="tcp" portid="80">
         <state state="open"/>

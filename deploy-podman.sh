@@ -87,10 +87,10 @@ show_status() {
     podman-compose -f ${COMPOSE_FILE} ps
     echo ""
     log_info "Access URLs:"
-    echo "  - API:         http://agents.bedimsecurity.com:8000"
-    echo "  - Dashboard:   http://agents.bedimsecurity.com:3000"
-    echo "  - Grafana:     http://agents.bedimsecurity.com:3001 (admin/admin)"
-    echo "  - Prometheus:  http://agents.bedimsecurity.com:9090"
+    echo "  - API:         http://agents.example.com:8000"
+    echo "  - Dashboard:   http://agents.example.com:3000"
+    echo "  - Grafana:     http://agents.example.com:3001 (admin/admin)"
+    echo "  - Prometheus:  http://agents.example.com:9090"
 }
 
 show_logs() {

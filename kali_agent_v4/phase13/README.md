@@ -37,8 +37,8 @@ Race condition in OpenSSH's sshd SIGALRM handler allows remote unauthenticated c
 
 ```bash
 python cve_2024_6387.py explain          # Attack flow and scenarios
-python cve_2024_6387.py scan --target 10.0.0.1  # Check SSH server
-python cve_2024_6387.py generate --attacker 10.0.0.100  # Generate test payloads
+python cve_2024_6387.py scan --target 198.51.100.1  # Check SSH server
+python cve_2024_6387.py generate --attacker 198.51.100.100  # Generate test payloads
 python cve_2024_6387.py report          # Full audit report
 ```
 
@@ -111,10 +111,10 @@ Protection mechanism failure in Windows Shell allows crafted `.lnk` files to tri
 **Demo tools:** LNK file crafter (MS-SHLLINK spec), NTLM capture server (SMB1/SMB2), hashcat/John format output
 
 ```bash
-python cve_2026_32202.py generate --attacker 192.168.1.100  # Create .lnk payloads
+python cve_2026_32202.py generate --attacker 192.0.2.100  # Create .lnk payloads
 python cve_2026_32202.py capture --port 445                  # Start hash capture
 python cve_2026_32202.py explain                              # Attack flow
-python cve_2026_32202.py demo --attacker 192.168.1.100       # Full demo
+python cve_2026_32202.py demo --attacker 192.0.2.100       # Full demo
 python cve_2026_32202.py report                               # Report
 ```
 
@@ -155,5 +155,5 @@ python cve_2024_1086.py scan
 python cve_2024_21626.py scan --target docker-host
 python cve_2024_3094.py scan
 python cve_2025_29927.py scan https://target.com
-python cve_2026_32202.py demo --attacker 192.168.1.100
+python cve_2026_32202.py demo --attacker 192.0.2.100
 ```

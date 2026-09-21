@@ -37,7 +37,7 @@ for impl_type, proto, port in implants:
         name=f'demo_{impl_type.value}',
         implant_type=impl_type,
         protocol=proto,
-        lhost='192.168.1.100',
+        lhost='192.0.2.100',
         lport=port,
         output_path=Path(f'/tmp/{impl_type.value}.bin')
     )

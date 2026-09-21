@@ -630,7 +630,7 @@ if __name__ == "__main__":
     server = agent.add_asset(
         name="web-server-01",
         asset_type=AssetType.SERVER,
-        ip_address="10.0.1.10",
+        ip_address="198.51.100.10",
         hostname="web01.example.com",
         os="Ubuntu 22.04",
         owner="ops@example.com",
@@ -673,7 +673,7 @@ if __name__ == "__main__":
         name="Weekly Vulnerability Scan",
         scanner="nessus",
         target_type="network",
-        targets=["10.0.1.0/24"],
+        targets=["198.51.100.0/24"],
         created_by="security@example.com",
     )
 

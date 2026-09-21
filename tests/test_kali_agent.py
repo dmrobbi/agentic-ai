@@ -123,11 +123,11 @@ class TestSafetyControls:
         agent = KaliAgent()
         
         # Set whitelist
-        agent.set_ip_whitelist(["192.168.1.0/24", "10.0.0.100"])
+        agent.set_ip_whitelist(["192.0.2.0/24", "198.51.100.100"])
         assert agent.ip_whitelist is not None
         
         # Validate allowed target
-        valid, msg = agent.validate_target("10.0.0.100")
+        valid, msg = agent.validate_target("198.51.100.100")
         assert valid is True
         
         # Validate blocked target
@@ -144,28 +144,28 @@ class TestSafetyControls:
         agent = KaliAgent()
         
         # Add to blacklist
-        agent.add_to_blacklist("192.168.1.1")
-        assert "192.168.1.1" in agent.ip_blacklist
+        agent.add_to_blacklist("192.0.2.1")
+        assert "192.0.2.1" in agent.ip_blacklist
         
         # Validate blacklisted target
-        valid, msg = agent.validate_target("192.168.1.1")
+        valid, msg = agent.validate_target("192.0.2.1")
         assert valid is False
         assert "blacklisted" in msg
         
         # Remove from blacklist
-        agent.remove_from_blacklist("192.168.1.1")
-        assert "192.168.1.1" not in agent.ip_blacklist
+        agent.remove_from_blacklist("192.0.2.1")
+        assert "192.0.2.1" not in agent.ip_blacklist
     
     def test_blacklist_takes_precedence(self):
         """Test blacklist takes precedence over whitelist."""
         agent = KaliAgent()
         
         # Set both whitelist and blacklist with same IP
-        agent.set_ip_whitelist(["192.168.1.100"])
-        agent.add_to_blacklist("192.168.1.100")
+        agent.set_ip_whitelist(["192.0.2.100"])
+        agent.add_to_blacklist("192.0.2.100")
         
         # Should be blocked (blacklist wins)
-        valid, msg = agent.validate_target("192.168.1.100")
+        valid, msg = agent.validate_target("192.0.2.100")
         assert valid is False
         assert "blacklisted" in msg
 
@@ -320,7 +320,7 @@ class TestPlaybooks:
         agent.enable_dry_run()
         
         results = agent.run_recon_playbook(
-            target="192.168.1.100",
+            target="192.0.2.100",
             domain="example.com",
         )
         
@@ -365,7 +365,7 @@ class TestPlaybooks:
         agent.enable_dry_run()
         
         results = agent.run_recon_playbook(
-            target="192.168.1.100",
+            target="192.0.2.100",
             domain="example.com",
         )
         
@@ -427,7 +427,7 @@ class TestReporting:
         agent.enable_dry_run()
         
         # Execute some tools
-        agent.nmap_scan("192.168.1.1")
+        agent.nmap_scan("192.0.2.1")
         agent.nikto_scan("example.com")
         
         history = agent.get_execution_history()
@@ -442,7 +442,7 @@ class TestReporting:
         agent.set_authorization(AuthorizationLevel.BASIC)
         agent.enable_dry_run()
         
-        agent.nmap_scan("192.168.1.1")
+        agent.nmap_scan("192.0.2.1")
         
         report = agent.generate_report(output_format="markdown")
         
@@ -456,7 +456,7 @@ class TestReporting:
         agent.set_authorization(AuthorizationLevel.BASIC)
         agent.enable_dry_run()
         
-        agent.nmap_scan("192.168.1.1")
+        agent.nmap_scan("192.0.2.1")
         
         import json
         report = agent.generate_report(output_format="json")
@@ -553,7 +553,7 @@ class TestRedTeamIntegration:
             name="Test Engagement",
             engagement_type=EngagementType.PENETRATION_TEST,
             start_date=utcnow(),
-            scope=["192.168.1.0/24"],
+            scope=["192.0.2.0/24"],
             objectives=["Find vulns"],
         )
         

@@ -526,8 +526,8 @@ def main():
     
     # Simulate logs
     logs = [
-        {'event': 'failed login', 'user': 'admin', 'ip': '192.168.1.100'},
-        {'event': 'authentication fail', 'user': 'root', 'ip': '10.0.0.50'},
+        {'event': 'failed login', 'user': 'admin', 'ip': '192.0.2.100'},
+        {'event': 'authentication fail', 'user': 'root', 'ip': '198.51.100.50'},
         {'event': 'normal activity', 'user': 'user1'},
     ]
     

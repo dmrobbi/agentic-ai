@@ -606,7 +606,7 @@ Capabilities:
         source='EDR',
         affected_systems=['WS-001'],
         affected_users=['jsmith'],
-        iocs=['192.168.1.100', 'malware-c2.example.com'],
+        iocs=['192.0.2.100', 'malware-c2.example.com'],
         mitre_attack=['T1003.001']
     )
     

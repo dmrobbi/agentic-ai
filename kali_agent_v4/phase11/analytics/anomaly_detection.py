@@ -501,7 +501,7 @@ def main():
     
     # Network anomaly
     detector.detect_network_anomaly({
-        'source_ip': '192.168.1.100',
+        'source_ip': '192.0.2.100',
         'bytes_out': 2_000_000_000,
         'port': 4444,
         'connections_per_min': 150

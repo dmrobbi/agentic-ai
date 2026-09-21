@@ -205,7 +205,7 @@ curl -s http://localhost:5007/api/stats | jq .
 # Test scan endpoint
 curl -s -X POST http://localhost:5007/api/scan \
     -H "Content-Type: application/json" \
-    -d '{"target":"10.0.100.0/24","scan_type":"nmap"}' | jq .
+    -d '{"target":"198.51.100.0/24","scan_type":"nmap"}' | jq .
 
 # Test report generation
 curl -s -X POST http://localhost:5007/api/report/generate \
@@ -381,7 +381,7 @@ python3 phase7/orchestrator.py 2>&1 | tee evidence/08_multi_agent.log
 ✅ Agent registered: agent-ghi789 (attacker)
 ✅ Agent registered: agent-jkl012 (analyst)
 🎯 Operation created: op-mno345 (Q2_Network_Assessment)
-   Target: 10.0.100.0/24
+   Target: 198.51.100.0/24
    Team: 3 agents
    Tasks: 6
 🚀 Starting operation: Q2_Network_Assessment

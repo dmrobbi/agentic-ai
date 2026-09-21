@@ -169,7 +169,7 @@ class TestSecurityAgentIncident:
             description="SQL injection attempt detected",
             severity=SeverityLevel.HIGH,
             threat_type=ThreatType.SQL_INJECTION,
-            source_ip="10.0.0.1",
+            source_ip="198.51.100.1",
             target_resource="user-db",
         )
         assert isinstance(incident, SecurityIncident)

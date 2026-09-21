@@ -1,7 +1,7 @@
 # KaliAgent v3 - Hardware Compatibility Report
 
 **Test Date:** April 23, 2026  
-**Test System:** trooper1 (10.0.0.99)  
+**Test System:** trooper1 (198.51.100.99)  
 **Status:** ✅ PRODUCTION READY
 
 ---
@@ -270,11 +270,11 @@ sudo aireplay-ng --test $INTERFACE
 
 ## 📸 Test Photos/Screenshots
 
-*See video demo at:* `http://100.116.156.61/videos/kaliagent_full.html`
+*See video demo at:* `http://198.51.100.61/videos/kaliagent_full.html`
 
 ---
 
 **Report Generated:** April 23, 2026  
 **Tested By:** KaliAgent v3 Hardware Manager  
-**System:** trooper1 (10.0.0.99)  
+**System:** trooper1 (198.51.100.99)  
 **Status:** PRODUCTION READY ✅

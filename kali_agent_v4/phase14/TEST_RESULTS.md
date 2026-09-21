@@ -3,7 +3,7 @@
 ## Test Summary
 
 **Date:** April 29, 2026  
-**Environment:** darth (10.0.0.117) - RTX 5060 Ti 16GB  
+**Environment:** managed-host (198.51.100.117) - RTX 5060 Ti 16GB  
 **PyTorch:** 2.12.0.dev20260407+cu128 (nightly)  
 **Status:** ✅ **ALL TESTS PASSED**
 
@@ -174,8 +174,8 @@ Success: True
 ## Test Environment
 
 ```
-Host: darth (10.0.0.117)
-User: wez
+Host: managed-host (198.51.100.117)
+User: demo-user
 GPU: NVIDIA GeForce RTX 5060 Ti 16GB
 CPU: AMD Ryzen (multi-core)
 RAM: 32GB+
@@ -186,7 +186,7 @@ CUDA: 12.8
 Transformers: Latest
 
 OS: Linux (Ubuntu-based)
-Workspace: ~/stsgym-work/agentic_ai/kaliagent-v4
+Workspace: ~/agentic-ai/agentic_ai/kaliagent-v4
 ```
 
 ---

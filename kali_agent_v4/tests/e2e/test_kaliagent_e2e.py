@@ -59,7 +59,7 @@ class TestKaliAgentE2E:
     def test_04_scan_network(self, api_url):
         """Test network scanning workflow"""
         payload = {
-            "target": "10.0.100.0/24",
+            "target": "198.51.100.0/24",
             "scan_type": "nmap",
             "options": ["-sV", "-O"]
         }
@@ -110,7 +110,7 @@ class TestKaliAgentE2E:
         """Test payload generation"""
         payload = {
             "type": "reverse_shell",
-            "lhost": "10.0.100.1",
+            "lhost": "198.51.100.1",
             "lport": 4444,
             "format": "python"
         }
@@ -171,7 +171,7 @@ class TestKaliAgentE2E:
         """Test LLM-powered nmap analysis"""
         nmap_output = """
         Starting Nmap 7.94
-        Nmap scan report for 10.0.100.10
+        Nmap scan report for 198.51.100.10
         PORT   STATE SERVICE VERSION
         22/tcp open  ssh     OpenSSH 7.2p1
         80/tcp open  http    Apache httpd 2.4.18
@@ -251,7 +251,7 @@ class TestKaliAgentE2E:
     def test_12_natural_language_command(self, api_url):
         """Test natural language command parsing"""
         payload = {
-            "command": "Scan the 10.0.100.0/24 network for web servers"
+            "command": "Scan the 198.51.100.0/24 network for web servers"
         }
         
         response = requests.post(
@@ -293,7 +293,7 @@ class TestKaliAgentE2E:
     def test_15_full_workflow(self, api_url):
         """Test complete attack workflow: scan → attack → report"""
         # Step 1: Scan
-        scan_payload = {"target": "10.0.100.10", "scan_type": "nmap"}
+        scan_payload = {"target": "198.51.100.10", "scan_type": "nmap"}
         scan_response = requests.post(f"{api_url}/scan", json=scan_payload, timeout=30)
         assert scan_response.status_code == 200
         scan_id = scan_response.json()['scan_id']
@@ -303,7 +303,7 @@ class TestKaliAgentE2E:
         
         # Step 3: Attack based on scan results
         attack_payload = {
-            "target": "10.0.100.10",
+            "target": "198.51.100.10",
             "attack_type": "web",
             "scan_id": scan_id
         }

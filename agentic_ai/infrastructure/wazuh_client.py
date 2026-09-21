@@ -41,7 +41,7 @@ logger = logging.getLogger(__name__)
 # Config & defaults
 # --------------------------------------------------------------------------- #
 
-DEFAULT_BASE_URL = "https://192.168.1.106:55000"
+DEFAULT_BASE_URL = os.environ.get("WAZUH_API_URL", "https://wazuh.example.internal:55000")
 DEFAULT_USERNAME = "wazuh-wui"
 # Password is intentionally NOT defaulted here. Inject from environment.
 ENV_PASSWORD = "WAZUH_API_PASSWORD"

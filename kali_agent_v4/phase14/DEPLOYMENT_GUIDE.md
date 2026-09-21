@@ -65,7 +65,7 @@ kubectl get svc kaliagent-ml-service -n ml-platform
 ### Step 1: Generate Manifests
 
 ```bash
-cd ~/stsgym-work/agentic_ai/kali_agent_v4/phase14
+cd ~/agentic-ai/agentic_ai/kali_agent_v4/phase14
 
 # Generate all K8s manifests
 python3 serving/auto_scaling.py
@@ -153,7 +153,7 @@ kubectl get svc -n ml-platform
 
 # Expected output:
 # NAME                  TYPE           CLUSTER-IP     EXTERNAL-IP     PORT(S)        AGE
-# kaliagent-ml-service  LoadBalancer   10.96.123.45   203.0.113.100   80:30XXX/TCP   2m
+# kaliagent-ml-service  LoadBalancer   198.51.100.45   203.0.113.100   80:30XXX/TCP   2m
 
 # Check HPA
 kubectl get hpa -n ml-platform

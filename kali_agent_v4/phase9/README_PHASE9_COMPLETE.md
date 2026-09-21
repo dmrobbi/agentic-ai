@@ -157,26 +157,26 @@ apt-get install nmap binwalk sasquatch openocd python3-serial python3-pymodbus
 
 ```bash
 # Scan network for IoT devices
-python3 phase9/discovery/device_discovery.py 192.168.1.0/24
+python3 phase9/discovery/device_discovery.py 192.0.2.0/24
 
 # Quick scan
-python3 phase9/discovery/device_discovery.py 192.168.1.0/24 quick
+python3 phase9/discovery/device_discovery.py 192.0.2.0/24 quick
 
 # Identify specific device
-python3 phase9/discovery/device_discovery.py 192.168.1.100
+python3 phase9/discovery/device_discovery.py 192.0.2.100
 ```
 
 ### Protocol Testing
 
 ```bash
 # Test MQTT broker
-python3 phase9/iot_protocols/mqtt_client.py 192.168.1.100
+python3 phase9/iot_protocols/mqtt_client.py 192.0.2.100
 
 # Test CoAP server
-python3 phase9/iot_protocols/coap_client.py 192.168.1.100
+python3 phase9/iot_protocols/coap_client.py 192.0.2.100
 
 # Test Modbus PLC
-python3 phase9/iot_protocols/modbus_client.py 192.168.1.100
+python3 phase9/iot_protocols/modbus_client.py 192.0.2.100
 ```
 
 ### Firmware Analysis
@@ -186,7 +186,7 @@ python3 phase9/iot_protocols/modbus_client.py 192.168.1.100
 python3 phase9/firmware/firmware_analyzer.py firmware.bin
 
 # Download from device
-python3 phase9/firmware/firmware_analyzer.py --download 192.168.1.100 /firmware.bin
+python3 phase9/firmware/firmware_analyzer.py --download 192.0.2.100 /firmware.bin
 ```
 
 ### Hardware Debugging
@@ -206,10 +206,10 @@ python3 phase9/hardware_interfaces/swd_interface.py stlink-v2
 
 ```bash
 # Run all exploits against target
-python3 phase9/exploits/iot_exploits.py 192.168.1.100
+python3 phase9/exploits/iot_exploits.py 192.0.2.100
 
 # Quick scan (high-success exploits only)
-python3 phase9/exploits/iot_exploits.py 192.168.1.100 quick
+python3 phase9/exploits/iot_exploits.py 192.0.2.100 quick
 ```
 
 ---
@@ -294,7 +294,7 @@ python3 -m pytest tests/phase9/test_exploits.py -v
 
 ```bash
 # Test on lab network
-python3 tests/phase9/integration_test.py --target 192.168.100.0/24
+python3 tests/phase9/integration_test.py --target 192.0.2.0/24
 
 # Generate evidence package
 python3 scripts/generate_phase9_evidence.sh

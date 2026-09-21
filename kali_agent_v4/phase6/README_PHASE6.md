@@ -176,7 +176,7 @@ python phase6_orchestrator.py
 ## Installation
 
 ```bash
-cd ~/stsgym-work/agentic_ai/kali_agent_v4/phase6
+cd ~/agentic-ai/agentic_ai/kali_agent_v4/phase6
 
 # Install dependencies
 pip install reportlab flask flask-socketio
@@ -227,8 +227,8 @@ After=network.target
 [Service]
 Type=simple
 User=kali
-WorkingDirectory=/home/kali/stsgym-work/agentic_ai/kali_agent_v4/phase6
-ExecStart=/home/kali/stsgym-work/agentic_ai/kali_agent_v4/venv/bin/python dashboard_v2.py
+WorkingDirectory=/home/kali/agentic-ai/agentic_ai/kali_agent_v4/phase6
+ExecStart=/home/kali/agentic-ai/agentic_ai/kali_agent_v4/venv/bin/python dashboard_v2.py
 Restart=always
 
 [Install]

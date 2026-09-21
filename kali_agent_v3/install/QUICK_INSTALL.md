@@ -1,7 +1,7 @@
 # KaliAgent v3 - Quick Installation on KVM VM
 
-**Target:** 10.0.0.99 or 10.0.0.70 (Kali Linux VM)  
-**User:** wez (with sudo)  
+**Target:** 198.51.100.99 or 198.51.100.70 (Kali Linux VM)  
+**User:** demo-user (with sudo)  
 **Time:** ~10 minutes
 
 ---
@@ -12,7 +12,7 @@
 
 ```bash
 cd /tmp
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_agent_v3/install
 chmod +x install.sh
 ```

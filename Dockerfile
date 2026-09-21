@@ -3,7 +3,7 @@
 
 FROM python:3.11-slim
 
-LABEL maintainer="Wesley Robbins <wlrobbi@gmail.com>"
+LABEL maintainer="Wesley Robbins <user@example.com>"
 LABEL version="1.0.0"
 LABEL description="Agentic AI - Multi-Agent Orchestration Framework"
 

@@ -79,7 +79,7 @@
 - Update documentation
 
 **Deliverables:**
-- Upgraded installations (10.0.0.99, 10.0.0.70)
+- Upgraded installations (198.51.100.99, 198.51.100.70)
 - Expanded tool database
 - Tool testing reports
 
@@ -323,8 +323,8 @@
    - Test communication
 
 3. **Profile Upgrade** (Phase 7)
-   - Upgrade 10.0.0.99 to standard
-   - Upgrade 10.0.0.70 to standard
+   - Upgrade 198.51.100.99 to standard
+   - Upgrade 198.51.100.70 to standard
    - Test new tools
 
 ---

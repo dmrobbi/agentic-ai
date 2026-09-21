@@ -497,7 +497,7 @@ class TestCrossAgentContextSharing:
             severity="high",
             incident_type="test",
             affected_systems=["system-a", "system-b"],
-            source_ip="192.168.1.100",
+            source_ip="192.0.2.100",
             target_user="admin@example.com",
         )
         

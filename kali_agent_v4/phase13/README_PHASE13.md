@@ -175,7 +175,7 @@ anomalies = detector.detect_user_behavior_anomaly('jsmith', {
 
 # Detect network anomalies
 anomaly = detector.detect_network_anomaly(
-    '192.168.1.100',
+    '192.0.2.100',
     '203.0.113.50',
     port=4444,  # Suspicious
     bytes_sent=150_000_000

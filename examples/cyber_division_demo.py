@@ -229,7 +229,7 @@ def main():
     
     engagement = redteam.create_engagement(
         name="Q2 2026 External Penetration Test",
-        scope=["*.bedimsecurity.com", "203.0.113.0/24"],
+        scope=["*.example.com", "203.0.113.0/24"],
         start_date="2026-04-20",
         end_date="2026-05-04",
         rules_of_engagement="no-dos",
@@ -372,7 +372,7 @@ def main():
     pause(1)
     
     scan = security.scan_code(
-        repo_path="/app/stsgym-work",
+        repo_path="/app/agentic-ai",
         scan_type="full",
         languages=["python", "javascript", "go"]
     )
@@ -518,10 +518,10 @@ def main():
 └─ Total Code: 74KB
 
 {Colors.BOLD}Access:{Colors.END}
-├─ Dashboard: https://agents.bedimsecurity.com
+├─ Dashboard: https://agents.example.com
 ├─ Password: let_me_in
-├─ API Docs: https://agents.bedimsecurity.com/docs
-└─ Repository: https://github.com/wezzels/agentic-ai
+├─ API Docs: https://agents.example.com/docs
+└─ Repository: https://github.com/dmrobbi/agentic-ai
 
 {Colors.GREEN}All 6 Cyber Agents Operational ✅{Colors.END}
 """)

@@ -52,7 +52,7 @@ Exit codes:
 Usage:
   python3 scripts/soc/soc_pipeline_selftest.py                 # synthetic
   python3 scripts/soc/soc_pipeline_selftest.py --probe         # fleet audit
-  python3 scripts/soc/soc_pipeline_selftest.py --mode live --target rpi42
+  python3 scripts/soc/soc_pipeline_selftest.py --mode live --target target-host
   python3 scripts/soc/soc_pipeline_selftest.py --mode auto     # try live, fall back
   python3 scripts/soc/soc_pipeline_selftest.py --tag my-run-id # custom run tag
 """
@@ -87,22 +87,22 @@ REALTIME_SOC_URL = os.environ.get("REALTIME_SOC_URL", "http://127.0.0.1:8765")
 REALTIME_SOC_LOG = Path(
     os.environ.get(
         "REALTIME_SOC_LOG",
-        "/home/wez/.openclaw/workspace/agentic-ai/data/realtime_soc.jsonl",
+        "/home/user/.openclaw/workspace/agentic-ai/data/realtime_soc.jsonl",
     )
 )
 MANAGER_CONTAINER = os.environ.get("WAZUH_MANAGER_CONTAINER", "wazuh-stack-wazuh.manager-1")
 INDEXER_URL = os.environ.get("WAZUH_INDEXER_URL", "https://127.0.0.1:9200")
 INDEXER_USER = os.environ.get("WAZUH_INDEXER_USERNAME", "admin")
-# NOTE: indexer admin password is the default "SecretPassword" — not rotated
+# NOTE: indexer admin password is the default "CHANGE_ME" — not rotated
 # (only the *manager API* password was rotated 2026-08-07).
-INDEXER_PASSWORD = os.environ.get("WAZUH_INDEXER_PASSWORD", "SecretPassword")
+INDEXER_PASSWORD = os.environ.get("WAZUH_INDEXER_PASSWORD", "CHANGE_ME")
 
 # Synthetic alert template — rule 40112 (level 12) is the lowest L that
 # triggers wazuh-integratord's custom-agentic-soc-send hook, AND it's the
 # classic brute-force-then-success pattern that the SOC tests daily.
-SYNTHETIC_AGENT_ID = "002"  # darth (active, Tailscale-reachable, in the Wazuh fleet)
-SYNTHETIC_AGENT_NAME = "darth"
-SYNTHETIC_AGENT_IP = "100.92.94.92"
+SYNTHETIC_AGENT_ID = os.environ.get("SOC_SELFTEST_AGENT_ID", "000")  # managed-host (active, Tailscale-reachable, in the Wazuh fleet)
+SYNTHETIC_AGENT_NAME = os.environ.get("SOC_SELFTEST_AGENT_NAME", "selftest-agent")
+SYNTHETIC_AGENT_IP = os.environ.get("SOC_SELFTEST_AGENT_IP", "198.51.100.92")
 SYNTHETIC_RULE_ID = 40112
 SYNTHETIC_RULE_LEVEL = 12
 
@@ -162,7 +162,7 @@ def check_preconditions() -> Optional[str]:
             return (
                 f"manager container '{MANAGER_CONTAINER}' not reachable "
                 f"(rc={r.returncode}). Start it with: "
-                f"`docker compose -f /home/wez/wazuh-stack/docker-compose.yml up -d`"
+                f"`docker compose -f /home/user/wazuh-stack/docker-compose.yml up -d`"
             )
     except subprocess.TimeoutExpired:
         return f"manager container '{MANAGER_CONTAINER}' did not respond within 10s"
@@ -236,11 +236,11 @@ def probe_fleet() -> Dict[str, Any]:
 
     # Ensure WAZUH_API_PASSWORD_NEW is loaded from secrets if missing
     # (this file is bind-mounted into the SOC container too, but
-    # daily-cron runs from thing1's host filesystem).
+    # daily-cron runs from manager-host's host filesystem).
     if not os.environ.get("WAZUH_API_PASSWORD_NEW"):
         for path in (
-            "/home/wez/.openclaw/workspace/secrets/wazuh-agent-keys-2026-08-03.env",
-            "/home/wez/wazuh-stack/secrets/wazuh-agent-keys-2026-08-03.env",
+            "/home/user/.openclaw/workspace/secrets/wazuh-agent-keys-2026-08-03.env",
+            "/home/user/wazuh-stack/secrets/wazuh-agent-keys-2026-08-03.env",
         ):
             try:
                 for line in open(path):
@@ -267,7 +267,7 @@ def probe_fleet() -> Dict[str, Any]:
             [
                 "curl", "-ksS",
                 "-u", f"wazuh-wui:{pw}",
-                "https://192.168.1.106:55000/security/user/authenticate?raw=true",
+                "https://192.0.2.106:55000/security/user/authenticate?raw=true",
                 "-X", "POST",
             ],
             capture_output=True, text=True, timeout=10,
@@ -285,7 +285,7 @@ def probe_fleet() -> Dict[str, Any]:
                 [
                     "curl", "-ksS",
                     "-H", f"Authorization: Bearer {token}",
-                    "https://192.168.1.106:55000/agents?limit=50",
+                    "https://192.0.2.106:55000/agents?limit=50",
                 ],
                 capture_output=True, text=True, timeout=10,
             )
@@ -316,7 +316,7 @@ def probe_fleet() -> Dict[str, Any]:
             r = subprocess.run(
                 [
                     "ssh", "-o", "BatchMode=yes", "-o", f"ConnectTimeout=4",
-                    f"wez@{ip}",
+                    f"demo-user@{ip}",
                     "sshd -T 2>/dev/null | grep -E '^passwordauthentication ' || "
                     "grep -E '^\\s*PasswordAuthentication' /etc/ssh/sshd_config 2>/dev/null",
                 ],
@@ -378,7 +378,7 @@ def render_probe(probe: Dict[str, Any]) -> str:
 
 def build_synthetic_alert(tag: str) -> Dict[str, Any]:
     """Build a Wazuh alert dict shaped like a real SSH brute-force-then-
-    success from rule 40112. Uses darth (active agent id=002) and
+    success from rule 40112. Uses managed-host (active agent id=002) and
     embeds the run tag in `rule.description` so this run's records
     can be filtered out of realtime_soc.jsonl."""
     now = utcnow()
@@ -398,7 +398,7 @@ def build_synthetic_alert(tag: str) -> Dict[str, Any]:
             "pci": ["10.2.4", "10.2.5"],
             "gpg13": ["7.1", "7.2"],
         },
-        "data": {"srcip": "10.9.8.7", "dstuser": "root", "srcport": "54321"},
+        "data": {"srcip": "198.51.100.7", "dstuser": "root", "srcport": "54321"},
         "manager": {"name": "wazuh.manager"},
         "location": "agentless",
         "decoder": {"name": "pam"},
@@ -615,8 +615,8 @@ def main() -> int:
                    help="audit the fleet and print what's usable for live mode; do not inject alerts")
     p.add_argument("--target", default=None,
                    help="target host for --mode live (default: auto-pick from password-auth-enabled fleet)")
-    p.add_argument("--user", default="wez",
-                   help="REAL username on target for --mode live (default: wez)")
+    p.add_argument("--user", default="demo-user",
+                   help="REAL username on target for --mode live (default: demo-user)")
     p.add_argument("--attempts", type=int, default=10,
                    help="bad-password attempts for --mode live (default: 10, needs >= 8 for rule 5720)")
     p.add_argument("--timeout", type=int, default=30,

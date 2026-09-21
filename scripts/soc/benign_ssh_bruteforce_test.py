@@ -10,11 +10,11 @@
     harness and as a one-off validation against a staging host that
     has PasswordAuthentication=yes.  Run it directly:
 
-        python3 scripts/soc/benign_ssh_bruteforce_test.py --target STAGING --user wez
+        python3 scripts/soc/benign_ssh_bruteforce_test.py --target STAGING --user demo-user
 
 What this does:
   1. Fires N bad-password attempts from this host at a target where sshd
-     is monitored by Wazuh (mail.stsgym.com, agent id 006).
+     is monitored by Wazuh (smtp.example.internal, agent id 006).
   2. Polls the Wazuh indexer (`wazuh-alerts-*`) for a resulting rule-5720
      ("Multiple failed logins from same source IP") alert.
   3. Re-runs the SecurityOperationsAgent poller end-to-end and asserts it
@@ -27,8 +27,8 @@ unique-per-run marker so we can identify OUR test alert among the noise.
 
 Usage:
   python3 scripts/soc/benign_ssh_bruteforce_test.py
-  python3 scripts/soc/benign_ssh_bruteforce_test.py --target 192.168.1.151
-  python3 scripts/soc/benign_ssh_bruteforce_test.py --user wez
+  python3 scripts/soc/benign_ssh_bruteforce_test.py --target 192.0.2.151
+  python3 scripts/soc/benign_ssh_bruteforce_test.py --user demo-user
   python3 scripts/soc/benign_ssh_bruteforce_test.py --attempts 10
   python3 scripts/soc/benign_ssh_bruteforce_test.py --timeout 90
 """
@@ -164,8 +164,8 @@ def wait_for_wazuh_alert(
     doesn't always carry the original dstuser — it correlates by same
     source IP across multiple child events.
 
-    For rpi42 we look at agent.id == "004"; for mail.stsgym.com the agent
-    is named "mail.stsgym.com" (no separate numeric id we know). We use a
+    For target-host we look at agent.id == "004"; for smtp.example.internal the agent
+    is named "smtp.example.internal" (no separate numeric id we know). We use a
     `should` clause over a few fields and require minimum_should_match=1.
 
     `start_ts` should be captured BEFORE firing the bad logins, because rule
@@ -247,10 +247,10 @@ def run_poller_against_alert(
 
 def main() -> int:
     p = argparse.ArgumentParser(description=__doc__)
-    p.add_argument("--target", default="192.168.1.151",
-                   help="sshd host monitored by Wazuh (default: 192.168.1.151 = rpi42, "
+    p.add_argument("--target", default="192.0.2.151",
+                   help="sshd host monitored by Wazuh (default: 192.0.2.151 = target-host, "
                         "which accepts password auth and is reporting via Wazuh agent 004)")
-    p.add_argument("--user", default="wez",
+    p.add_argument("--user", default="demo-user",
                    help="REAL local username on target (must exist on target so sshd logs "
                         "rule-5716 'Failed password' not rule-5710 'Invalid user'; rule 5720 "
                         "only counts 5716 events). DEFAULT USER MUST EXIST ON TARGET.")
@@ -292,12 +292,12 @@ def main() -> int:
     idx = WazuhIndexerClient(
         base_url=os.environ.get("WAZUH_INDEXER_URL", "https://127.0.0.1:9200"),
         username=os.environ.get("WAZUH_INDEXER_USERNAME", "admin"),
-        password=os.environ.get("WAZUH_INDEXER_PASSWORD", "SecretPassword"),
+        password=os.environ.get("WAZUH_INDEXER_PASSWORD", "CHANGE_ME"),
         verify_ssl=False,
     )
     alert = wait_for_wazuh_alert(
         idx=idx,
-        srcip="192.168.1.106",
+        srcip="192.0.2.106",
         username=user,
         target_agent=args.target,
         timeout_sec=args.timeout,

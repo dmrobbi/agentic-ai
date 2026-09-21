@@ -46,8 +46,8 @@ KaliAgent v1.0.0 is available now on GitHub under the MIT license.
 KaliAgent is an open-source security automation platform built on FastAPI and React, integrating 52 Kali Linux tools with professional reporting and enterprise safety controls.
 
 **Links:**
-- GitHub: https://github.com/wezzels/agentic-ai
-- Documentation: https://github.com/wezzels/agentic-ai/tree/main/kali_dashboard
+- GitHub: https://github.com/dmrobbi/agentic-ai
+- Documentation: https://github.com/dmrobbi/agentic-ai/tree/main/kali_dashboard
 - Discord: https://discord.gg/clawd
 
 **Media Contact:**
@@ -74,7 +74,7 @@ Professional security automation with:
 
 Free & open source 🍀
 
-https://github.com/wezzels/agentic-ai
+https://github.com/dmrobbi/agentic-ai
 
 #cybersecurity #pentesting #opensource
 ```
@@ -173,7 +173,7 @@ Because security tools should be secure themselves!
 
 Everything you need! 📖
 
-Get started: https://github.com/wezzels/agentic-ai
+Get started: https://github.com/dmrobbi/agentic-ai
 
 #documentation #opensource
 ```
@@ -186,7 +186,7 @@ Get started: https://github.com/wezzels/agentic-ai
 ```
 ⚡ Install KaliAgent in 5 minutes:
 
-git clone https://github.com/wezzels/agentic-ai
+git clone https://github.com/dmrobbi/agentic-ai
 pip install -r requirements.txt
 python3 server.py
 
@@ -236,7 +236,7 @@ The PDF reports are client-ready out of the box."
 - Security Consultant, Fortune 500
 
 Try it yourself! 👇
-https://github.com/wezzels/agentic-ai
+https://github.com/dmrobbi/agentic-ai
 ```
 
 **Tweet - Meme Style:**
@@ -312,7 +312,7 @@ PERFECT FOR:
 • DevSecOps teams
 
 Getting started takes just 5 minutes:
-git clone https://github.com/wezzels/agentic-ai
+git clone https://github.com/dmrobbi/agentic-ai
 pip install -r requirements.txt
 python3 server.py
 
@@ -324,7 +324,7 @@ I'd love your feedback! Try it out and let me know what you think.
 
 #CyberSecurity #PenetrationTesting #OpenSource #InfoSec #Automation #DevSecOps #KaliLinux #Security #Technology #Innovation
 
-🔗 https://github.com/wezzels/agentic-ai
+🔗 https://github.com/dmrobbi/agentic-ai
 ```
 
 ---
@@ -399,7 +399,7 @@ The entire codebase is ~5,000 lines of production code + ~180 KB of documentatio
 
 All open source. All free.
 
-Check it out: https://github.com/wezzels/agentic-ai
+Check it out: https://github.com/dmrobbi/agentic-ai
 
 #SoftwareEngineering #Python #React #CyberSecurity #OpenSource #Architecture #DevOps #CloudNative
 ```
@@ -476,7 +476,7 @@ Unauthorized scanning can result in:
 
 KaliAgent helps you stay on the right side of the law. 🍀
 
-Full safety guide: https://github.com/wezzels/agentic-ai/blob/main/kali_dashboard/SECURITY.md
+Full safety guide: https://github.com/dmrobbi/agentic-ai/blob/main/kali_dashboard/SECURITY.md
 
 #CyberSecurity #Compliance #Ethics #Responsibility #PCI #HIPAA #GDPR #SOC2 #InfoSec
 ```
@@ -534,14 +534,14 @@ Built for PCI-DSS, HIPAA, GDPR, SOC 2
 
 GETTING STARTED:
 5-minute setup:
-git clone https://github.com/wezzels/agentic-ai
+git clone https://github.com/dmrobbi/agentic-ai
 pip install -r requirements.txt
 python3 server.py
 
 Full documentation includes installation guide, user guide, security guide, testing guide, deployment guide, and video tutorial scripts.
 
 TRY IT OUT:
-GitHub: https://github.com/wezzels/agentic-ai
+GitHub: https://github.com/dmrobbi/agentic-ai
 Demo: http://localhost:5173 (after install)
 
 I'd love feedback from the community! What features would you find most useful? What's missing?
@@ -585,7 +585,7 @@ SAFETY:
 - Complete audit trail for compliance
 
 LINKS:
-GitHub: https://github.com/wezzels/agentic-ai
+GitHub: https://github.com/dmrobbi/agentic-ai
 Docs: /kali_dashboard/README.md
 
 Feedback welcome!
@@ -647,7 +647,7 @@ TECH STACK:
 - Redis 7
 - Nginx
 
-All open source: https://github.com/wezzels/agentic-ai
+All open source: https://github.com/dmrobbi/agentic-ai
 
 Would love DevOps feedback! What would you improve?
 ```
@@ -678,7 +678,7 @@ We're excited to announce the release of KaliAgent - a professional security aut
 • Security researchers
 
 ⚡ QUICK START:
-git clone https://github.com/wezzels/agentic-ai
+git clone https://github.com/dmrobbi/agentic-ai
 pip install -r requirements.txt
 python3 server.py
 
@@ -694,9 +694,9 @@ python3 server.py
 • Demo Examples
 
 🔗 LINKS:
-GitHub: https://github.com/wezzels/agentic-ai
+GitHub: https://github.com/dmrobbi/agentic-ai
 Docs: /kali_dashboard/README.md
-Issues: https://github.com/wezzels/agentic-ai/issues
+Issues: https://github.com/dmrobbi/agentic-ai/issues
 
 🎁 SPECIAL:
 First 100 users to star the repo get a special Discord role!
@@ -716,7 +716,7 @@ Questions? Ask in #kali-agent-help!
 
 Professional security automation is now available!
 
-🔗 https://github.com/wezzels/agentic-ai
+🔗 https://github.com/dmrobbi/agentic-ai
 
 #release
 ```
@@ -729,7 +729,7 @@ Professional security automation is now available!
 
 Perfect for security assessments! 🍀
 
-https://github.com/wezzels/agentic-ai
+https://github.com/dmrobbi/agentic-ai
 
 #project #security
 ```
@@ -865,7 +865,7 @@ KaliAgent v1.0.0 is here! This is the initial public release of the professional
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai/kali_dashboard
 
 # Install dependencies
@@ -974,13 +974,13 @@ MIT License - See [LICENSE](LICENSE) file.
 
 ## 🔗 Links
 
-- **GitHub**: https://github.com/wezzels/agentic-ai
+- **GitHub**: https://github.com/dmrobbi/agentic-ai
 - **Discord**: https://discord.gg/clawd
 - **Documentation**: /kali_dashboard/README.md
 
 ---
 
-**Full Changelog**: https://github.com/wezzels/agentic-ai/compare/v0.0.0...v1.0.0
+**Full Changelog**: https://github.com/dmrobbi/agentic-ai/compare/v0.0.0...v1.0.0
 ```
 
 ---
@@ -998,7 +998,7 @@ Security testing shouldn't require manual setup, copy-paste reports, or safety c
 [See full press release above, expanded to 800-1000 words with screenshots]
 
 **CTA:**
-Try KaliAgent today: https://github.com/wezzels/agentic-ai
+Try KaliAgent today: https://github.com/dmrobbi/agentic-ai
 
 ---
 
@@ -1062,14 +1062,14 @@ PERFECT FOR:
 
 GETTING STARTED:
 Takes just 5 minutes:
-git clone https://github.com/wezzels/agentic-ai
+git clone https://github.com/dmrobbi/agentic-ai
 pip install -r requirements.txt
 python3 server.py
 
 Full documentation includes 9 comprehensive guides covering everything from installation to deployment.
 
 TRY IT NOW:
-🔗 https://github.com/wezzels/agentic-ai
+🔗 https://github.com/dmrobbi/agentic-ai
 
 I'd love your feedback! Reply to this email or open an issue on GitHub.
 
@@ -1102,7 +1102,7 @@ In this video, you'll learn how to [brief description].
 9:00 - Summary
 
 📚 RESOURCES:
-• GitHub: https://github.com/wezzels/agentic-ai
+• GitHub: https://github.com/dmrobbi/agentic-ai
 • Documentation: /kali_dashboard/README.md
 • Test Target: scanme.nmap.org (safe & legal)
 • Discord: https://discord.gg/clawd

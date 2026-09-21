@@ -85,7 +85,7 @@ fi
 
 # Domain names (internal)
 echo -n "Checking: Internal domain names... "
-if grep -rn -E "(wezzel\.com|stsgym\.com|idm\.wezzel\.com|miner|trooper[0-9]|swordfish)" --include="*.py" --include="*.md" --include="*.yml" . 2>/dev/null | grep -v ".git/" | grep -v "example.com" | head -5; then
+if grep -rn -E "(wezzel\.com|stsgym\.com|idm\.wezzel\.com|gpu-host|trooper[0-9]|swordfish)" --include="*.py" --include="*.md" --include="*.yml" . 2>/dev/null | grep -v ".git/" | grep -v "example.com" | head -5; then
     echo -e "${YELLOW}⚠️  Review needed${NC}"
     echo "   (Internal domain/host names found)"
 else

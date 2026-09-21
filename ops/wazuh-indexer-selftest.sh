@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /home/wez/bin/wazuh-indexer-selftest.sh
+# /home/user/bin/wazuh-indexer-selftest.sh
 #
 # Shared selftest for Wazuh indexer-dependent cron scripts
 # (morning-highlights, daily-digest).
@@ -37,16 +37,16 @@
 #
 # Usage:
 #   . $REPORTS_ENV   # set REPORTS_MAILBOX, REPORTS_MAILBOX_PW, SMTP_HOST, SMTP_PORT
-#   /home/wez/bin/wazuh-indexer-selftest.sh [RECIPIENT]
+#   /home/user/bin/wazuh-indexer-selftest.sh [RECIPIENT]
 #
 # Optional env vars (with defaults):
 #   WAZUH_INDEXER_URL=https://127.0.0.1:9200
 #   WAZUH_INDEXER_USERNAME=admin
-#   WAZUH_INDEXER_PASSWORD=SecretPassword
+#   WAZUH_INDEXER_PASSWORD=CHANGE_ME
 #   WAZUH_SELFTEST_TIMEOUT=30
-#   WAZUH_SELFTEST_RECIPIENT=wlrobbi@gmail.com   (default; can override as arg 1)
+#   WAZUH_SELFTEST_RECIPIENT=user@example.com   (default; can override as arg 1)
 #   WAZUH_SELFTEST_MIN_HITS=1
-#   LOGFILE=/home/wez/logs/wazuh-indexer-selftest.log
+#   LOGFILE=/home/user/logs/wazuh-indexer-selftest.log
 
 set -u
 
@@ -54,7 +54,7 @@ set -u
 # selftest callable from a clean shell (e.g. cron) without requiring
 # the caller to source the env first. Override REPORTS_ENV if you've
 # placed the file somewhere nonstandard.
-REPORTS_ENV="${REPORTS_ENV:-/home/wez/.openclaw/workspace/secrets/reports-bedimsecurity-mailbox.env}"
+REPORTS_ENV="${REPORTS_ENV:-/etc/agentic-soc/soc-mailbox.env}"
 if [[ -r "$REPORTS_ENV" ]]; then
   set -a; source "$REPORTS_ENV"; set +a
 fi
@@ -66,11 +66,11 @@ fi
 
 WAZUH_INDEXER_URL="${WAZUH_INDEXER_URL:-https://127.0.0.1:9200}"
 WAZUH_INDEXER_USERNAME="${WAZUH_INDEXER_USERNAME:-admin}"
-WAZUH_INDEXER_PASSWORD="${WAZUH_INDEXER_PASSWORD:-SecretPassword}"
+WAZUH_INDEXER_PASSWORD="${WAZUH_INDEXER_PASSWORD:-CHANGE_ME}"
 WAZUH_SELFTEST_TIMEOUT="${WAZUH_SELFTEST_TIMEOUT:-30}"
 WAZUH_SELFTEST_MIN_HITS="${WAZUH_SELFTEST_MIN_HITS:-1}"
-LOGFILE="${LOGFILE:-/home/wez/logs/wazuh-indexer-selftest.log}"
-RECIPIENT="${1:-${WAZUH_SELFTEST_RECIPIENT:-wlrobbi@gmail.com}}"
+LOGFILE="${LOGFILE:-/home/user/logs/wazuh-indexer-selftest.log}"
+RECIPIENT="${1:-${WAZUH_SELFTEST_RECIPIENT:-user@example.com}}"
 LOG_TAG="${LOG_TAG:-wazuh-selftest}"
 
 mkdir -p "$(dirname "$LOGFILE")"

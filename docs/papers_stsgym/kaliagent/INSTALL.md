@@ -48,7 +48,7 @@ Complete installation instructions for KaliAgent security automation platform.
 
 ```bash
 # Clone repository
-git clone https://github.com/wezzels/agentic-ai.git
+git clone https://github.com/dmrobbi/agentic-ai.git
 cd agentic-ai
 
 # Install Python dependencies
@@ -422,7 +422,7 @@ Edit `kali_dashboard/server.py`:
 DEFAULT_AUTH_LEVEL = "BASIC"
 
 # Configure IP whitelist
-IP_WHITELIST = ["192.168.1.0/24", "10.0.0.0/8"]
+IP_WHITELIST = ["192.0.2.0/24", "198.51.100.0/8"]
 
 # Enable audit logging
 ENABLE_AUDIT_LOGGING = True
@@ -437,7 +437,7 @@ curl -X POST http://localhost:8001/api/engagements \
   -d '{
     "name": "My First Engagement",
     "engagement_type": "penetration_test",
-    "scope": ["192.168.1.0/24"],
+    "scope": ["192.0.2.0/24"],
     "objectives": ["Find vulnerabilities", "Test security posture"]
   }'
 ```
@@ -447,7 +447,7 @@ curl -X POST http://localhost:8001/api/engagements \
 Via Dashboard:
 1. Navigate to **Playbooks** page
 2. Select **Comprehensive Reconnaissance**
-3. Enter target: `192.168.1.100`
+3. Enter target: `192.0.2.100`
 4. Click **Execute Playbook**
 5. Monitor live execution
 
@@ -457,7 +457,7 @@ curl -X POST http://localhost:8001/api/engagements/eng-001/playbook \
   -H "Content-Type: application/json" \
   -d '{
     "playbook_type": "recon",
-    "target": "192.168.1.100",
+    "target": "192.0.2.100",
     "domain": "example.com"
   }'
 ```

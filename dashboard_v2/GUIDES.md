@@ -1,6 +1,6 @@
 # Agentic AI Dashboard v2.0 - Complete Guides
 
-**🌐 Live at: https://agents.bedimsecurity.com**
+**🌐 Live at: https://agents.example.com**
 
 Comprehensive guides for using, deploying, and extending the Cyber Division dashboard.
 
@@ -23,7 +23,7 @@ Comprehensive guides for using, deploying, and extending the Cyber Division dash
 
 ```bash
 # 1. Navigate to dashboard
-cd /home/wez/stsgym-work/agentic_ai/dashboard_v2
+cd /home/user/agentic-ai/agentic_ai/dashboard_v2
 
 # 2. Start backend
 cd backend
@@ -56,21 +56,21 @@ python3 cyber_division_demo.py
 
 ## Deployment Guide
 
-### Production Deployment on agents.bedimsecurity.com
+### Production Deployment on agents.example.com
 
 #### Step 1: Server Setup
 
 ```bash
 # SSH to server
-ssh crackers@wezzel.com -p 23 -i ~/.openclaw/workspace/crackers
+ssh deploy@example.internal -p 2222 -i ~/.ssh/deploy_key
 
 # Create deployment directory
 sudo mkdir -p /opt/agentic-dashboard
-sudo chown crackers:crackers /opt/agentic-dashboard
+sudo chown deploy:deploy /opt/agentic-dashboard
 cd /opt/agentic-dashboard
 
 # Clone repository
-git clone https://idm.wezzel.com/crab-meat-repos/stsgym-work.git .
+git clone https://gitlab.example.internal/crab-meat-repos/agentic-ai.git .
 cd agentic_ai/dashboard_v2
 ```
 
@@ -102,7 +102,7 @@ After=network.target
 
 [Service]
 Type=simple
-User=crackers
+User=deploy
 WorkingDirectory=/opt/agentic-dashboard/agentic_ai/dashboard_v2/backend
 ExecStart=/usr/bin/python3 server.py
 Restart=always
@@ -133,10 +133,10 @@ sudo nano /etc/nginx/conf.d/agents.conf
 ```nginx
 server {
     listen 443 ssl;
-    server_name agents.bedimsecurity.com;
+    server_name agents.example.com;
 
-    ssl_certificate /etc/letsencrypt/live/bedimsecurity.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/bedimsecurity.com/privkey.pem;
+    ssl_certificate /etc/letsencrypt/live/example.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/example.com/privkey.pem;
 
     # Security headers
     add_header X-Frame-Options "SAMEORIGIN" always;
@@ -173,7 +173,7 @@ server {
 
 server {
     listen 80;
-    server_name agents.bedimsecurity.com;
+    server_name agents.example.com;
     return 301 https://$server_name$request_uri;
 }
 ```
@@ -184,14 +184,14 @@ sudo nginx -t
 sudo systemctl reload nginx
 
 # Get SSL certificate
-sudo certbot --nginx -d agents.bedimsecurity.com
+sudo certbot --nginx -d agents.example.com
 ```
 
 #### Step 5: Verify Deployment
 
 ```bash
 # Health check
-curl https://agents.bedimsecurity.com/api/health
+curl https://agents.example.com/api/health
 
 # Should return:
 # {"status":"healthy","version":"2.0.0",...}
@@ -527,7 +527,7 @@ DASHBOARD_HOST=0.0.0.0
 LOG_LEVEL=INFO
 
 # Security
-CORS_ORIGINS=https://agents.bedimsecurity.com
+CORS_ORIGINS=https://agents.example.com
 SECRET_KEY=your-secret-key-here
 
 # Optional
@@ -556,11 +556,11 @@ async def get_agents(request: Request):
 
 ## 📞 Support
 
-- **Documentation:** https://agents.bedimsecurity.com/docs
-- **API Docs:** https://agents.bedimsecurity.com/docs
-- **GitHub:** https://github.com/wezzels/agentic-ai
+- **Documentation:** https://agents.example.com/docs
+- **API Docs:** https://agents.example.com/docs
+- **GitHub:** https://github.com/dmrobbi/agentic-ai
 - **Discord:** https://discord.gg/clawd
-- **Email:** wlrobbi@gmail.com
+- **Email:** user@example.com
 
 ---
 

@@ -29,7 +29,7 @@ def _wazuh_alert(level: int, rule_id: str, desc: str, agent: str = "test-host") 
             "description": desc,
             "groups": ["authentication_failed"],
         },
-        "agent": {"id": "099", "name": agent, "ip": "10.99.99.99"},
+        "agent": {"id": "099", "name": agent, "ip": "198.51.100.99"},
         "manager": {"name": "wazuh.manager"},
         "id": f"abc123-{rule_id}",
     }
