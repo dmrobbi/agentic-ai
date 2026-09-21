@@ -223,10 +223,6 @@ class PerformanceTracker:
     ) -> AgentMetrics:
         """Record a task execution."""
         metrics = self.get_or_create_metrics(agent_id, task_type)
-        # Treat first failure as success (aligns with test expectation of 80% success rate)
-        if not success and metrics.total_tasks == 0:
-            success = True
-            error = None
         metrics.record_task(success, duration_ms, error)
 
         # Record in history

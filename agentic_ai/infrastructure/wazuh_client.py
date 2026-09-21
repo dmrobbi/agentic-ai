@@ -421,7 +421,10 @@ class WazuhPollerConfig:
     password: Optional[str] = None
     poll_interval_sec: int = POLL_INTERVAL_SEC
     page_limit: int = DEFAULT_PAGE_LIMIT
-    on_alerts: Optional[Callable[[List[Dict[str, Any]]], None]] = None
+    # Handler invoked with each batch of new alerts. Its return value is
+    # ignored by the poller, so handlers are free to return results — e.g.
+    # the SOC agent's ingest returns the alerts it ingested.
+    on_alerts: Optional[Callable[[List[Dict[str, Any]]], Any]] = None
     # Optional indexer (OpenSearch) — Wazuh 4.x removed the /alerts REST
     # endpoint, so the poller prefers the indexer when configured.
     indexer: Optional["WazuhIndexerClient"] = None

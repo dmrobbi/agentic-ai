@@ -447,7 +447,7 @@ class TestLearningIntegration:
         
         # Simulate agent working and receiving feedback
         for i in range(20):
-            success = i % 4 != 0  # 80% success rate
+            success = i % 4 != 0  # 75% success rate (5 failures in 20)
             duration = 1000 + (i * 10)  # Getting slower
             
             # Record task
@@ -475,8 +475,8 @@ class TestLearningIntegration:
         learning_score = collector.get_learning_score("agent-001")
         
         assert metrics.total_tasks == 20
-        assert metrics.successful_tasks == 16
-        assert metrics.get_success_rate() == pytest.approx(0.8)
+        assert metrics.successful_tasks == 15
+        assert metrics.get_success_rate() == pytest.approx(0.75)
         assert avg_rating is not None
         assert learning_score > 0
     

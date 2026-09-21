@@ -133,6 +133,7 @@ class BiblicalScholarAgent:
 
     def __init__(self, agent_id: str = "biblical-scholar-agent"):
         self.agent_id = agent_id
+        self.name: str = agent_id
         self.texts: Dict[str, ReligiousText] = {}
         self.quote_analyses: Dict[str, QuoteAnalysis] = {}
         self.comparative_studies: Dict[str, ComparativeStudy] = {}
@@ -731,7 +732,7 @@ class BiblicalScholarAgent:
                any(concept.lower() in theme for theme in text.themes):
                 if concept not in self.religious_concepts:
                     self.religious_concepts[concept] = set()
-                self.religious_concepts[concept].add(text.religion)
+                self.religious_concepts[concept].add(text.religion.value)
 
     def _get_literal_translation(self, quote: str, source: ReligiousText) -> str:
         """Get literal translation of quote."""
@@ -970,7 +971,7 @@ class BiblicalScholarAgent:
 
     def _get_unique_concepts(self, concept: str, religions: List[Religion]) -> Dict[str, List[str]]:
         """Get unique concepts for each religion."""
-        unique_concepts = {}
+        unique_concepts: Dict[str, List[str]] = {}
         
         for religion in religions:
             unique_concepts[religion.value] = []

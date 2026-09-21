@@ -15,15 +15,15 @@ This is an OPT-IN integration test (skipped by default). It requires:
   - sshpass installed on this host
   - The Wazuh agent on the target must be able to read journald/auth.log
 
-Run with:
-  pytest tests/integration/test_ssh_bruteforce_e2e.py -v
-  pytest tests/integration/test_ssh_bruteforce_e2e.py -v -k bruteforce
+Run with (opt-in):
+  BRUTEFORCE_E2E=1 pytest tests/integration/test_ssh_bruteforce_e2e.py -v
+  BRUTEFORCE_E2E=1 pytest tests/integration/test_ssh_bruteforce_e2e.py -v -k bruteforce
 
 Or drive the underlying script directly for more control over timeouts:
   python3 scripts/soc/benign_ssh_bruteforce_test.py --attempts 12 --timeout 120
 
 Skip reasons (printed as the pytest skip message):
-  - BRUTEFORCE_E2E=0  -> opt-out
+  - BRUTEFORCE_E2E not set to 1  -> not opted in (default)
   - sshpass not installed
   - Wazuh indexer unreachable
   - ssh cannot reach target
@@ -46,7 +46,10 @@ SCRIPT = ROOT / "scripts" / "soc" / "benign_ssh_bruteforce_test.py"
 
 
 def _opted_out() -> bool:
-    return os.environ.get("BRUTEFORCE_E2E", "1") == "0"
+    # Opt-in only: run when BRUTEFORCE_E2E is exactly "1"; skip otherwise
+    # (unset, 0, or any other value). The default is skip, matching the
+    # docstring: this fires real SSH attempts at a LAN host.
+    return os.environ.get("BRUTEFORCE_E2E") != "1"
 
 
 def _sshpass_available() -> bool:
@@ -73,7 +76,7 @@ def _ssh_target_reachable(target: str, timeout: float = 3.0) -> bool:
 # Pytest skip conditions (eval'd at collection time)
 pytestmark = pytest.mark.skipif(
     _opted_out(),
-    reason="BRUTEFORCE_E2E=0 (opt-out)",
+    reason="BRUTEFORCE_E2E!=1 (opt-in: set BRUTEFORCE_E2E=1 to run)",
 )
 
 

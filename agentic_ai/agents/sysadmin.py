@@ -12,11 +12,23 @@ from typing import List, Optional, Dict, Any
 import asyncio
 import logging
 import platform
+import shlex
 import subprocess
 
 from agentic_ai.agents.base import BaseAgent, Permission
 
 logger = logging.getLogger(__name__)
+
+# Read-only diagnostic executables that run_command may invoke. Commands are
+# tokenized (shlex) and executed as argument lists WITHOUT a shell, and only
+# bare names from this set are accepted — no paths (a path could point at a
+# lookalike binary), no quoting or metacharacter tricks. This is an allowlist,
+# not a blocklist: blocklists over raw shell strings were trivially bypassable
+# (quoting, casing, `sh -c`, variable expansion).
+_SAFE_COMMANDS = frozenset({
+    "echo", "date", "uptime", "whoami", "id", "hostname", "uname",
+    "df", "free", "lsblk", "ls", "ps", "vmstat", "who", "w",
+})
 
 
 class IncidentSeverity(Enum):
@@ -117,15 +129,24 @@ class SysAdminAgent(BaseAgent):
         return results
 
     def run_command(self, command: str = "", timeout: int = 30) -> Dict[str, Any]:
-        """Execute a system command (safe mode — no destructive ops)."""
+        """Execute an allowlisted system command (safe mode — read-only diagnostics).
+
+        The command is tokenized with shlex and executed as an argument list
+        with shell=False. Only bare command names in _SAFE_COMMANDS are
+        permitted; anything else is refused.
+        """
         if not command:
             return {"error": "No command provided"}
-        # Block destructive commands
-        blocked = ["rm -rf", "del /", "format", "mkfs", "dd if=", ":(){ :|:& };:", "shutdown", "reboot"]
-        if any(b in command.lower() for b in blocked):
-            return {"error": "Command blocked for safety", "command": command}
         try:
-            result = subprocess.run(command, shell=True, capture_output=True, text=True, timeout=timeout)
+            argv = shlex.split(command)
+        except ValueError as e:
+            return {"error": f"Could not parse command: {e}", "command": command}
+        if not argv:
+            return {"error": "No command provided"}
+        if argv[0] not in _SAFE_COMMANDS:
+            return {"error": "Command blocked for safety (only allowlisted read-only commands run)", "command": command}
+        try:
+            result = subprocess.run(argv, shell=False, capture_output=True, text=True, timeout=timeout)
             return {"success": True, "stdout": result.stdout.strip(), "stderr": result.stderr.strip(), "exit_code": result.returncode, "command": command, "timed_out": False}
         except subprocess.TimeoutExpired:
             return {"success": False, "error": "Command timed out", "command": command, "timed_out": True}
