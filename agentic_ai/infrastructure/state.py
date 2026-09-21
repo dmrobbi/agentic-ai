@@ -62,13 +62,32 @@ class StateStore:
         self._conn = None
         self._db_lock = threading.Lock()
         self._init_db()
-        # Try to connect to Redis
+        # Try to connect to Redis. redis-py raises redis.exceptions.ConnectionError
+        # (a RedisError, NOT the builtin ConnectionError) when the server is
+        # unreachable, so the fallback must catch RedisError or the
+        # constructor itself crashes when Redis is configured but down.
         try:
             from agentic_ai.infrastructure.config import RedisConfig
+            import redis
             self.redis_client = RedisConfig().create_client()
             self.redis_client.ping()
-        except (ImportError, ConnectionError, OSError):
+        except (ImportError, OSError, redis.RedisError):
             self.redis_client = None
+
+    def close(self) -> None:
+        """Close the Redis client and SQLite connection."""
+        if self.redis_client is not None:
+            try:
+                self.redis_client.close()
+            except Exception as e:
+                logger.warning(f"Error closing Redis client: {e}")
+            self.redis_client = None
+        if self._conn is not None:
+            try:
+                self._conn.close()
+            except Exception as e:
+                logger.warning(f"Error closing SQLite connection: {e}")
+            self._conn = None
 
     def _init_db(self):
         """Initialize SQLite database tables."""

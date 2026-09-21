@@ -10,7 +10,9 @@ from collections import OrderedDict
 import logging
 import asyncio
 import secrets
+import uuid
 from agentic_ai.infrastructure.utils import utcnow
+from agentic_ai.messaging.message_bus import Message, MessageType
 from agentic_ai.infrastructure.rate_limit import RateLimiter
 from agentic_ai.agents.reasoning import ReActLoop, ReActTrace, ReasoningStatus, ReflectionResult
 from agentic_ai.agents.memory import TieredMemory
@@ -49,6 +51,19 @@ class AgentMessage:
     msg_type: str = "info"
     timestamp: datetime = field(default_factory=datetime.now)
     metadata: Dict[str, Any] = field(default_factory=dict)
+
+
+# Map lightweight AgentMessage types to wire-level MessageType values so
+# BaseAgent.send_message can publish on the MessageBus wire format.
+_MSG_TYPE_TO_MESSAGE_TYPE: Dict[str, MessageType] = {
+    "info": MessageType.NOTIFICATION,
+    "notification": MessageType.NOTIFICATION,
+    "request": MessageType.REQUEST,
+    "response": MessageType.RESPONSE,
+    "command": MessageType.COMMAND,
+    "error": MessageType.ERROR,
+    "event": MessageType.EVENT,
+}
 
 
 @dataclass
@@ -384,13 +399,25 @@ class BaseAgent:
             logger.warning(f"Output guardrail warning on send_message: content flagged but still sent")
 
         if self.bus:
-            msg = AgentMessage(
-                sender=self.agent_id,
-                recipient=recipient,
-                content=sanitized,
-                msg_type=msg_type,
+            # Publish on the wire format the bus and agent protocol share:
+            # a messaging.Message on topic "agent.<recipient>". The old code
+            # published an AgentMessage, which has neither .topic nor
+            # .to_json(), so MessageBus.publish() failed silently (the
+            # AttributeError was swallowed and the message dropped).
+            wire = Message(
+                message_id=str(uuid.uuid4()),
+                message_type=_MSG_TYPE_TO_MESSAGE_TYPE.get(msg_type, MessageType.EVENT),
+                source_agent=self.agent_id,
+                target_agent=recipient,
+                topic=f"agent.{recipient}",
+                payload={
+                    "action": msg_type,
+                    "parameters": {"content": sanitized, "msg_type": msg_type},
+                    "sender": self.agent_id,
+                    "recipient": recipient,
+                },
             )
-            self.bus.publish(msg)
+            self.bus.publish(wire)
         self._history.append({"action": "send_message", "to": recipient, "content": sanitized})
 
     def receive_message(self, message: AgentMessage):

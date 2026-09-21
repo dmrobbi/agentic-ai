@@ -8,6 +8,8 @@ Provides asynchronous message passing between agents using Redis pub/sub.
 import json
 import ast
 import logging
+import threading
+import time
 import uuid
 from dataclasses import dataclass, field, asdict
 from datetime import datetime
@@ -91,6 +93,7 @@ class MessageBus:
         channel_prefix: str = "agentic_ai",
         dead_letter_queue: str = "dlq",
         backend=None,
+        client: Optional["redis.Redis"] = None,
     ):
         """
         Initialize message bus.
@@ -102,14 +105,20 @@ class MessageBus:
             backend: Optional pluggable messaging backend. If provided,
                 overrides Redis. If None, tries Redis then falls back to
                 MemoryBackend.
+            client: Optional pre-built Redis client (e.g. a shared test
+                server). When given, redis_url is ignored and connect()
+                uses this client; disconnect() will not close it.
         """
         self.redis_url = redis_url
         self.channel_prefix = channel_prefix
         self.dead_letter_queue = dead_letter_queue
+        self._external_client = client
         self._redis: Optional[redis.Redis] = None
         self._pubsub: Optional[redis.client.PubSub] = None
         self._subscribers: Dict[str, List[Callable]] = {}
         self._running = False
+        self._pump_thread: Optional[threading.Thread] = None
+        self._pump_lock = threading.Lock()
         self.backend = backend
         if backend is None:
             try:
@@ -121,22 +130,29 @@ class MessageBus:
                 logger.info("Redis unavailable, using in-memory messaging backend")
 
     def connect(self) -> None:
-        """Connect to Redis."""
-        self._redis = redis.from_url(
-            self.redis_url,
-            decode_responses=True,
-            socket_connect_timeout=5,
-            socket_timeout=5,
-        )
+        """Connect to Redis (or adopt an injected client, e.g. for tests)."""
+        if self._external_client is not None:
+            self._redis = self._external_client
+        else:
+            self._redis = redis.from_url(
+                self.redis_url,
+                decode_responses=True,
+                socket_connect_timeout=5,
+                socket_timeout=5,
+            )
         self._pubsub = self._redis.pubsub()  # type: ignore[union-attr]
         logger.info(f"Connected to Redis: {self.redis_url}")
 
     def disconnect(self) -> None:
-        """Disconnect from Redis."""
+        """Disconnect from Redis and stop the subscriber pump."""
         self._running = False
+        if self._pump_thread is not None and self._pump_thread.is_alive():
+            self._pump_thread.join(timeout=2)
+        self._pump_thread = None
         if self._pubsub:
             self._pubsub.close()
-        if self._redis:
+        # Only close clients we created; injected clients (tests) stay open.
+        if self._redis is not None and self._external_client is None:
             self._redis.close()  # type: ignore[union-attr]
         logger.info("Disconnected from Redis")
 
@@ -179,11 +195,64 @@ class MessageBus:
 
         if topic not in self._subscribers:
             self._subscribers[topic] = []
-            if self._pubsub:
-                self._pubsub.subscribe(channel, self._on_message)
+            if self._pubsub is None:
+                self.connect()
+            assert self._pubsub is not None
+            # Subscribe by channel NAME only: redis-py's PubSub.subscribe()
+            # treats positional arguments as channel names, and handlers must
+            # be passed as **kwargs if at all. We dispatch ourselves in the
+            # pump loop instead of relying on redis-py's handler protocol.
+            self._pubsub.subscribe(channel)
+            self._start_pump()
 
         self._subscribers[topic].append(callback)
         logger.info(f"Subscribed to {channel}")
+
+    def _start_pump(self) -> None:
+        """Ensure the background pump thread that receives messages is running."""
+        with self._pump_lock:
+            if self._pump_thread is not None and self._pump_thread.is_alive():
+                return
+            self._running = True
+            self._pump_thread = threading.Thread(
+                target=self._pump_loop,
+                name=f"agentic-ai-msgbus-{self.channel_prefix}",
+                daemon=True,
+            )
+            self._pump_thread.start()
+
+    @staticmethod
+    def _get_pubsub_message(pubsub: "redis.client.PubSub"):
+        """Fetch the next pubsub message, tolerating kwarg differences
+        between redis-py versions and fakeredis (timeout vs select_timeout)."""
+        try:
+            return pubsub.get_message(timeout=0.5, ignore_subscribe_messages=True)
+        except TypeError:
+            # redis-py < 8 named the wait argument select_timeout
+            return pubsub.get_message(select_timeout=0.5, ignore_subscribe_messages=True)  # type: ignore[call-arg]
+
+    def _pump_loop(self) -> None:
+        """Poll the pubsub connection and dispatch incoming messages."""
+        pubsub = self._pubsub
+        while self._running and pubsub is not None:
+            try:
+                message = self._get_pubsub_message(pubsub)
+            except Exception:
+                if not self._running:
+                    break
+                time.sleep(0.1)
+                continue
+            if message is None:
+                # get_message already waited ~0.5s; poll again immediately
+                continue
+            if not isinstance(message, dict):
+                # Junk response (e.g. a mocked pubsub in tests): sleep so a
+                # fake get_message that never blocks cannot hot-spin this loop.
+                time.sleep(0.1)
+                continue
+            if message.get('type') != 'message':
+                continue
+            self._on_message(message)
 
     def unsubscribe(self, topic: str, callback: Optional[Callable] = None) -> None:
         """
@@ -205,12 +274,21 @@ class MessageBus:
 
     def _on_message(self, message: dict) -> None:
         """Handle incoming pubsub message."""
-        if message['type'] != 'message':
+        if message.get('type') != 'message':
             return
 
         try:
-            msg = Message.from_json(message['data'])
-            topic = message['channel'].replace(f"{self.channel_prefix}:", "")
+            data = message.get('data')
+            if isinstance(data, bytes):
+                data = data.decode('utf-8', errors='replace')
+            if not isinstance(data, str):
+                logger.error("Pubsub message without string payload")
+                return
+            channel_name = message.get('channel', '')
+            if isinstance(channel_name, bytes):
+                channel_name = channel_name.decode('utf-8', errors='replace')
+            msg = Message.from_json(data)
+            topic = channel_name.replace(f"{self.channel_prefix}:", "")
 
             if topic in self._subscribers:
                 for callback in self._subscribers[topic]:

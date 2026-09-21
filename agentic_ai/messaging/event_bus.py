@@ -230,12 +230,13 @@ class EventBus:
         while self._running:
             try:
                 # Read from streams
-                messages = self._redis.xread(streams, count=10, block=block_ms)  # type: ignore[union-attr,arg-type]
+                raw: Any = self._redis.xread(streams, count=10, block=block_ms)  # type: ignore[union-attr,arg-type]
+                messages: List[Any] = list(raw)
 
                 if not messages:
                     continue
 
-                for stream_name, stream_messages in messages:  # type: ignore[union-attr]
+                for stream_name, stream_messages in messages:
                     for message_id, message_data in stream_messages:
                         self._process_message(stream_name, message_id, message_data)
 
@@ -248,12 +249,21 @@ class EventBus:
     def _process_message(self, stream_name: str, message_id: str, message_data: dict) -> None:
         """Process single message from stream."""
         try:
-            event = Event.from_json(message_data['data'])
+            data = message_data.get('data')
+            if isinstance(data, bytes):
+                data = data.decode('utf-8', errors='replace')
+            if not isinstance(data, str):
+                logger.error(f"Malformed event payload in {message_id}")
+                return
+            event = Event.from_json(data)
+            if isinstance(stream_name, bytes):
+                stream_name = stream_name.decode('utf-8', errors='replace')
             event_type = stream_name.replace(f"{self.stream_prefix}:", "")
 
-            # Call specific handlers
-            handlers = self._handlers.get(event_type, [])
-            handlers.extend(self._handlers.get('*', []))  # Wildcard handlers
+            # Call specific handlers. Build a NEW list: the previous code
+            # extend()ed the stored list in place, so wildcard handlers
+            # accumulated on every message (duplicated calls + memory leak).
+            handlers = list(self._handlers.get(event_type, [])) + list(self._handlers.get('*', []))
 
             for handler in handlers:
                 try:
@@ -289,17 +299,24 @@ class EventBus:
 
         stream_key = self._get_stream_key(event_type)
 
-        # Build query
-        start = '-' if not start_time else start_time.timestamp() * 1000
-        end = '+' if not end_time else end_time.timestamp() * 1000
+        # Build query (Redis stream IDs must be integers; int() avoids
+        # invalid IDs like '1763...123.0' produced by float timestamps)
+        start = '-' if not start_time else int(start_time.timestamp() * 1000)
+        end = '+' if not end_time else int(end_time.timestamp() * 1000)
 
         # Read historical events
-        events = self._redis.xrange(stream_key, min=str(start), max=str(end), count=count)  # type: ignore[union-attr,arg-type]
+        raw_events: Any = self._redis.xrange(stream_key, min=str(start), max=str(end), count=count)  # type: ignore[union-attr,arg-type]
+        events: List[Any] = list(raw_events)
 
         replayed = 0
-        for message_id, message_data in events:  # type: ignore[union-attr]
+        for message_id, message_data in events:
             try:
-                event = Event.from_json(message_data['data'])
+                data = message_data.get('data')
+                if isinstance(data, bytes):
+                    data = data.decode('utf-8', errors='replace')
+                if not isinstance(data, str):
+                    continue
+                event = Event.from_json(data)
                 handler(event)
                 replayed += 1
             except Exception as e:
@@ -329,16 +346,22 @@ class EventBus:
         events = []
         start_time = utcnow() - timedelta(days=7)  # Last 7 days
 
-        stream_messages = self._redis.xrange(  # type: ignore[union-attr,arg-type]
+        raw_messages: Any = self._redis.xrange(  # type: ignore[union-attr,arg-type]
             self.event_log_key,
-            min=str(start_time.timestamp() * 1000),
+            min=str(int(start_time.timestamp() * 1000)),
             max='+',
             count=limit
         )
+        stream_messages: List[Any] = list(raw_messages)
 
-        for _, message_data in stream_messages:  # type: ignore[union-attr]
+        for _, message_data in stream_messages:
             try:
-                event = Event.from_json(message_data['data'])
+                data = message_data.get('data')
+                if isinstance(data, bytes):
+                    data = data.decode('utf-8', errors='replace')
+                if not isinstance(data, str):
+                    continue
+                event = Event.from_json(data)
                 if event.correlation_id == correlation_id:
                     events.append(event)
             except (json.JSONDecodeError, TypeError, KeyError, ValueError):

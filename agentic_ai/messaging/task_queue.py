@@ -291,7 +291,11 @@ class TaskQueue:
         if not result:
             return None
 
-        task_json = result[0][0]  # type: ignore[index]
+        task_json = result[0][0]
+        if isinstance(task_json, bytes):
+            task_json = task_json.decode('utf-8', errors='replace')
+        if not isinstance(task_json, str):
+            return None
         task = Task.from_json(task_json)
         task.status = TaskStatus.QUEUED
 
@@ -309,6 +313,10 @@ class TaskQueue:
         due_tasks = self._redis.zrangebyscore(scheduled_key, '-inf', now)  # type: ignore[union-attr]
 
         for task_json in due_tasks:  # type: ignore[union-attr]
+            if isinstance(task_json, bytes):
+                task_json = task_json.decode('utf-8', errors='replace')
+            if not isinstance(task_json, str):
+                continue
             task = Task.from_json(task_json)
 
             # Remove from scheduled
