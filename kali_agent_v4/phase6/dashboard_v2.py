@@ -633,6 +633,13 @@ DASHBOARD_HTML = """
 def dashboard():
     return render_template_string(DASHBOARD_HTML)
 
+
+@app.route('/health')
+def health():
+    """Lightweight health probe for the Docker HEALTHCHECK."""
+    return jsonify({'status': 'healthy', 'service': 'kaliagent-dashboard', 'version': '4.0.0'})
+
+
 @socketio.on('connect')
 def handle_connect():
     print('Client connected to dashboard')

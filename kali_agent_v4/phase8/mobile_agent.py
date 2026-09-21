@@ -105,7 +105,7 @@ class MobileAgent:
         self.findings: List[MobileFinding] = []
         self.apk_info: Optional[APKInfo] = None
         self.ipa_info: Optional[IPAInfo] = None
-        self Decompiled_code = []
+        self.decompiled_code: List[str] = []
         self.secrets = []
         
         print(f"📱 Mobile Agent initialized: {self.agent_id}")

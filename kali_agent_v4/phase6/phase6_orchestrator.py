@@ -57,7 +57,7 @@ class Phase6Orchestrator:
     
     def parse_command(self, natural_language: str) -> dict:
         """Parse natural language command"""
-        return self.nl_command.parse(naturalatural_language)
+        return self.nl_command.parse(natural_language)
     
     def run_demo(self):
         """Run complete Phase 6 demonstration"""

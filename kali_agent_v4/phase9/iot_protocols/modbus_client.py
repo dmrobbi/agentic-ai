@@ -174,8 +174,8 @@ class ModbusClient:
         
         return packet
     
-    def _send_request(self, unit_id: int, function_code: int, 
-                      data: bytes = b') -> Tuple[bool, bytes]:
+    def _send_request(self, unit_id: int, function_code: int,
+                      data: bytes = b'') -> Tuple[bool, bytes]:
         """
         Send Modbus request
         

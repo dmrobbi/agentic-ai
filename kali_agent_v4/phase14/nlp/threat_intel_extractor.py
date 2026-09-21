@@ -24,6 +24,7 @@ logger = logging.getLogger('ThreatIntelExtractor')
 
 # Try to import transformers
 try:
+    import torch
     from transformers import pipeline, AutoTokenizer, AutoModelForTokenClassification
     from transformers import Pipeline
     TRANSFORMERS_AVAILABLE = True
