@@ -4,8 +4,10 @@ services:
   # Backend API Server
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      # Root context: server.py imports agentic_ai.infrastructure.utils,
+      # so the backend image needs the package from the repo root.
+      context: ..
+      dockerfile: dashboard_v2/backend/Dockerfile
     container_name: agentic-dashboard-backend
     ports:
       - "8002:8002"

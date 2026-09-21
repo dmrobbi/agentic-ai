@@ -1,0 +1,17 @@
+# PersistentVolumeClaim for agentic-ai app data.
+# Referenced by kubernetes/deployment.yaml (volume "data", claimName
+# agentic-ai-data-pvc) — previously mounted but never defined, which made
+# every pod unschedulable.
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: agentic-ai-data-pvc
+  namespace: agentic-ai
+  labels:
+    app: agentic-ai
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi

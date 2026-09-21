@@ -12,15 +12,13 @@ services:
     image: agentic-ai:latest
     container_name: agentic-ai
     ports:
-      - "5000:5000"  # API server
-      - "8000:8000"  # Metrics
+      - "8000:8000"  # API server + metrics
     environment:
       - AGENTIC_AI_ENV=development
       - AGENTIC_AI_LOG_LEVEL=DEBUG
-      - REDIS_HOST=redis
-      - REDIS_PORT=6379
+      - REDIS_URL=redis://redis:6379
       - DATABASE_URL=sqlite:///app/data/agentic.db
-      - OLLAMA_HOST=http://ollama:11434
+      - LLM_API_BASE=http://ollama:11434
     volumes:
       - ./data:/app/data
       - ./logs:/app/logs
@@ -34,7 +32,7 @@ services:
     networks:
       - agentic-network
     healthcheck:
-      test: ["CMD", "python", "-c", "import requests; requests.get('http://localhost:5000/health')"]
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
@@ -43,7 +41,7 @@ services:
   # Redis - Message Bus
   # ============================================
   redis:
-    image: registry.example.internal:8443/library/redis:7-alpine
+    image: redis:7-alpine
     container_name: agentic-redis
     ports:
       - "6379:6379"
@@ -91,7 +89,7 @@ services:
   # Prometheus - Metrics Collection
   # ============================================
   prometheus:
-    image: registry.example.internal:8443/prom/prometheus:latest
+    image: prom/prometheus:latest
     container_name: agentic-prometheus
     ports:
       - "9090:9090"
@@ -111,7 +109,7 @@ services:
   # Grafana - Metrics Dashboard
   # ============================================
   grafana:
-    image: registry.example.internal:8443/grafana/grafana:latest
+    image: grafana/grafana:latest
     container_name: agentic-grafana
     ports:
       - "3000:3000"

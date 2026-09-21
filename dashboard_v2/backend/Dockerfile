@@ -9,11 +9,14 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy requirements and install Python dependencies
-COPY requirements.txt .
+COPY dashboard_v2/backend/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application code
-COPY . .
+# Copy application code (build context is the REPO ROOT - see
+# dashboard_v2/docker-compose.yml) plus the agentic_ai package that
+# server.py imports (agentic_ai.infrastructure.utils)
+COPY dashboard_v2/backend/ ./
+COPY agentic_ai/ ./agentic_ai/
 
 # Expose port
 EXPOSE 8002

@@ -33,7 +33,7 @@ services:
 
   # Redis for WebSocket clustering and caching
   redis:
-    image: registry.example.internal:8443/library/redis:7-alpine
+    image: redis:7-alpine
     container_name: kaliagent-redis
     restart: unless-stopped
     expose:
@@ -95,7 +95,7 @@ services:
 
   # Nginx Reverse Proxy (Optional - for HTTPS)
   nginx:
-    image: registry.example.internal:8443/library/nginx:alpine
+    image: nginx:alpine
     container_name: kaliagent-nginx
     restart: unless-stopped
     ports:

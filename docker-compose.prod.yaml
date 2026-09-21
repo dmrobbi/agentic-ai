@@ -3,7 +3,9 @@ version: '3.8'
 services:
   # Agentic AI Application
   app:
-    image: wezzels/agentic-ai:latest
+    # Image pushed by CI: $CI_REGISTRY_IMAGE (GitLab registry). Override
+    # AGENTIC_AI_IMAGE / AGENTIC_AI_IMAGE_TAG for a different registry.
+    image: ${AGENTIC_AI_IMAGE:-registry.example.internal/crab-meat-repos/agentic-ai}:${AGENTIC_AI_IMAGE_TAG:-latest}
     build:
       context: .
       dockerfile: Dockerfile

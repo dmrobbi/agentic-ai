@@ -1,0 +1,31 @@
+# Keep Docker build contexts small: `COPY . .` in Dockerfile and
+# Dockerfile.demo was shipping ~511MB (tracked node_modules, venvs, caches).
+.git
+.gitignore
+.mypy_cache
+.pytest_cache
+**/__pycache__
+**/*.pyc
+**/node_modules
+dashboard/dist
+dashboard/dist.tar.gz
+dashboard_v2/frontend/dist
+kali_agent_v4/venv
+venv
+venv-pptx
+.venv
+data
+logs
+docs/presentations
+docs/papers_stsgym
+examples
+benchmarks
+tests
+kali_agent_v3
+kali_agent_v4
+kali_dashboard
+kaliagent-v4
+*.md
+!README.md
+.claude
+.openclaw

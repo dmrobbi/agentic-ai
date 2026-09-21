@@ -5,7 +5,7 @@ metadata:
   namespace: agentic-ai
   labels:
     app: agentic-ai
-    version: "0.7.0"
+    version: "0.1.0"
 spec:
   replicas: 3
   selector:
@@ -15,7 +15,7 @@ spec:
     metadata:
       labels:
         app: agentic-ai
-        version: "0.7.0"
+        version: "0.1.0"
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "8000"
@@ -28,13 +28,13 @@ spec:
         fsGroup: 1000
       containers:
         - name: agentic-ai
-          image: agentic-ai:0.7.0
-          imagePullPolicy: Always
+          # Same image CI pushes: $CI_REGISTRY_IMAGE (GitLab registry).
+          # Replace registry.example.internal with your registry, or use
+          # helm/agentic-ai with --set image.repository=$CI_REGISTRY_IMAGE.
+          image: registry.example.internal/crab-meat-repos/agentic-ai:0.1.0
+          imagePullPolicy: IfNotPresent
           ports:
             - name: http
-              containerPort: 5000
-              protocol: TCP
-            - name: metrics
               containerPort: 8000
               protocol: TCP
           env:
@@ -42,22 +42,17 @@ spec:
               value: "production"
             - name: AGENTIC_AI_LOG_LEVEL
               value: "INFO"
-            - name: REDIS_HOST
+            - name: REDIS_URL
               valueFrom:
                 configMapKeyRef:
                   name: agentic-ai-config
-                  key: redis-host
-            - name: REDIS_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: agentic-ai-config
-                  key: redis-port
+                  key: redis-url
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
                   name: agentic-ai-secrets
                   key: database-url
-            - name: OLLAMA_HOST
+            - name: LLM_API_BASE
               value: "http://ollama.ollama-system.svc.cluster.local:11434"
           resources:
             requests:
@@ -69,15 +64,15 @@ spec:
           livenessProbe:
             httpGet:
               path: /health
-              port: 5000
+              port: 8000
             initialDelaySeconds: 30
             periodSeconds: 30
             timeoutSeconds: 10
             failureThreshold: 3
           readinessProbe:
             httpGet:
-              path: /ready
-              port: 5000
+              path: /health
+              port: 8000
             initialDelaySeconds: 5
             periodSeconds: 10
             timeoutSeconds: 5

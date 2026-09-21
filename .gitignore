@@ -26,6 +26,15 @@ ENV/
 env/
 .venv/
 
+# Node (never track dependency trees)
+node_modules/
+
+# Build artifacts
+dashboard/dist.tar.gz
+
+# The committed pptx venv skeleton was removed from tracking 2026-09-21
+venv-pptx/
+
 # IDE
 .vscode/
 .idea/

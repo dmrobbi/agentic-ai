@@ -9,8 +9,10 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy application
+# Copy application + the package api_server.py imports
+# (api_server.py does `from agentic_ai.infrastructure.utils import utcnow`)
 COPY api_server.py .
+COPY agentic_ai/ ./agentic_ai/
 
 # Expose port
 EXPOSE 8080

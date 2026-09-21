@@ -11,14 +11,11 @@ metadata:
 spec:
   type: ClusterIP
   ports:
-    - port: 5000
-      targetPort: 5000
-      protocol: TCP
-      name: http
+    # Server (agentic_ai/server.py) binds 8000; /metrics is served on it too
     - port: 8000
       targetPort: 8000
       protocol: TCP
-      name: metrics
+      name: http
   selector:
     app: agentic-ai
 ---
@@ -33,11 +30,11 @@ spec:
   type: LoadBalancer
   ports:
     - port: 80
-      targetPort: 5000
+      targetPort: 8000
       protocol: TCP
       name: http
     - port: 443
-      targetPort: 5000
+      targetPort: 8000
       protocol: TCP
       name: https
   selector:
@@ -70,4 +67,4 @@ spec:
               service:
                 name: agentic-ai
                 port:
-                  number: 5000
+                  number: 8000

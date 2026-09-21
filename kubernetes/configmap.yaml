@@ -4,8 +4,9 @@ metadata:
   name: agentic-ai-config
   namespace: agentic-ai
 data:
-  redis-host: "redis.agentic-ai.svc.cluster.local"
-  redis-port: "6379"
+  # agentic_ai reads REDIS_URL (infrastructure/config.py RedisConfig);
+  # point at your Redis service/host.
+  redis-url: "redis://agentic-ai-redis:6379"
   log-level: "INFO"
   max-workers: "10"
   session-timeout-minutes: "30"

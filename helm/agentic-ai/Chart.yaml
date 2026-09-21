@@ -3,7 +3,8 @@ name: agentic-ai
 description: Enterprise-grade multi-agent AI platform
 type: application
 version: 1.0.0
-appVersion: "1.0.0"
+# Keep in sync with pyproject.toml `version`
+appVersion: "0.1.0"
 keywords:
   - ai
   - agents
