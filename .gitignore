@@ -64,3 +64,7 @@ data/demos/
 scripts/soc/realtime-soc-server-pre-start.sh
 scripts/soc/soc-manager-mcp/pre-start.sh
 scripts/soc/*-pre-start.sh
+
+# OpenClaw session daily memory lives in this checkout (sandboxed runtime);
+# internal host/session details - never publish
+memory/
