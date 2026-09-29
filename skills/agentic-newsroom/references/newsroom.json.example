@@ -1,0 +1,37 @@
+{
+  "state": "~/.openclaw/newsroom/state.json",
+  "site_url": "https://example.com",
+  "page_prefix": "/news/",
+  "primary_count": 10,
+  "rss_count": 15,
+  "archive_hours": 36,
+  "brand": {
+    "name": "Example Newsroom",
+    "copyright": "(c) 2026 Example Co",
+    "nav": [["Home", "/"]]
+  },
+  "copy": {
+    "page_title": "News.",
+    "page_lede": "Executive summaries of real stories on the cyber-control beat - curated and summarized by the Example Newsroom agentic newsroom.",
+    "archive_title": "News archive.",
+    "archive_note": "Stories move here as newer ones arrive; nothing is deleted."
+  },
+  "deploy": {
+    "ssh": "my-site-host",
+    "sudo": true,
+    "web_root": "/var/www/example.com",
+    "owner": "www-data:www-data"
+  },
+  "rss_file": "rss.xml",
+  "counts_cmd": null,
+  "map": {
+    "path": "/etc/nginx/news-go-targets.map"
+  },
+  "unsub": {
+    "log_ssh": "my-site-host",
+    "log_file": "/var/log/nginx/example.com.access.log",
+    "unsub_path": "news/unsub",
+    "watermark": "~/.openclaw/newsroom/.unsub-watermark",
+    "store": "~/.openclaw/newsroom/subscribers.json"
+  }
+}
