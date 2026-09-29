@@ -117,3 +117,19 @@ agenticai audit create \
 # Check progress
 agenticai audit status --audit-id audit-123
 ```
+
+## Run any agent (generic surfaces, no LLM required)
+
+```bash
+agenticai agent list                       # registry: id, class, category
+agenticai agent card security              # dry-run: instantiate + agent card
+agenticai agent ops security               # op menu (Source column: role vs base)
+agenticai agent run security --op scan_code \
+  --args '{"code": "password = \"x\""}'    # one op, JSON out
+agenticai agent run developer --task implement \
+  --payload '{"feature": "x", "language": "python"}'
+```
+
+Agent ids come from `agentic_ai/agents/registry.py` (35 agent ids + base).
+Aliases: chaos→chaos_monkey, vendor→vendor_risk, cloud→cloud_security,
+ml/mlops→ml_ops. Verified examples: skills/agentic-roles/references/.

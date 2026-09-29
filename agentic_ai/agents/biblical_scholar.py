@@ -46,6 +46,7 @@ class ScriptureType(Enum):
     PSALM = "psalm"
     HADITH = "hadith"
     SUTRA = "sutra"
+    WISDOM = "wisdom"
     VEDA = "veda"
     UPANISHAD = "upanishad"
     TORAH = "torah"
@@ -213,7 +214,7 @@ class BiblicalScholarAgent:
             text_id="bhagavad_gita_2_47",
             title="Bhagavad Gita 2:47",
             religion=Religion.HINDUISM,
-            scripture_type=ScriptureType.SUTRAS,
+            scripture_type=ScriptureType.UPANISHAD,
             book_name="Bhagavad Gita",
             chapter=2,
             verse=47,
@@ -232,7 +233,7 @@ class BiblicalScholarAgent:
             text_id="dhammapada_1",
             title="Dhammapada 1:1",
             religion=Religion.BUDDHISM,
-            scripture_type=ScriptureType.SUTRAS,
+            scripture_type=ScriptureType.SUTRA,
             book_name="Dhammapada",
             chapter=1,
             verse=1,
@@ -273,7 +274,7 @@ class BiblicalScholarAgent:
             text_id="leviticus_19_18",
             title="Leviticus 19:18",
             religion=Religion.JUDAISM,
-            scripture_type=Scripturetype.TORAH,
+            scripture_type=ScriptureType.TORAH,
             book_name="Leviticus",
             chapter=19,
             verse=18,
@@ -381,7 +382,7 @@ class BiblicalScholarAgent:
             text_id="tao_te_ching_64",
             title="Tao Te Ching Chapter 64",
             religion=Religion.TAOISM,
-            scripture_type=ScriptureType.SUTRAS,
+            scripture_type=ScriptureType.SCRIPTURE,
             book_name="Tao Te Ching",
             chapter=64,
             content="A journey of a thousand miles begins with a single step.",
@@ -407,7 +408,7 @@ class BiblicalScholarAgent:
             "karma": {Religion.HINDUISM, Religion.BUDDHISM, Religion.JAINISM},
             "dharma": {Religion.HINDUISM, Religion.BUDDHISM, Religion.JAINISM, Religion.SIKHISM},
             "tao": {Religion.TAOISM},
-            "logos": {Religion.CHRISTIANITY, Religion.PHILOSOPHY},
+            "logos": {Religion.CHRISTIANITY, Religion.SECULAR},
         }
 
     # ============================================

@@ -5,9 +5,14 @@ Agentic AI CLI - Command Line Interface
 Interactive CLI for managing Agentic AI agents and operations.
 """
 
+import asyncio
+import inspect
+import json
 import sys
 from datetime import datetime
-from typing import Optional
+from typing import Any, Dict, Optional
+
+from agentic_ai.agents.registry import list_agents, resolve_agent_class
 from agentic_ai.infrastructure.utils import utcnow
 
 try:
@@ -44,6 +49,31 @@ _cloud_agent = None
 _mlops_agent = None
 _message_bus = None
 _task_queue = None
+_agent_instances: Dict[str, Any] = {}
+
+# Retained short aliases for ids that predate the registry.
+_AGENT_ALIASES = {
+    "chaos": "chaos_monkey",
+    "vendor": "vendor_risk",
+    "cloud": "cloud_security",
+    "ml": "ml_ops",
+    "mlops": "ml_ops",
+}
+
+
+def make_agent(agent_name: str, params: Optional[Dict[str, Any]] = None):
+    """Instantiate any registered agent by id (aliases preserved)."""
+    agent_id = _AGENT_ALIASES.get(agent_name.lower(), agent_name.lower())
+    try:
+        cls = resolve_agent_class(agent_id)
+    except KeyError as e:
+        console.print(f"[red]✗[/red] {e}")
+        raise typer.Exit(1)
+    try:
+        return cls(**(params or {}))
+    except TypeError as e:
+        console.print(f"[red]✗[/red] {cls.__name__} init failed: {e}")
+        raise typer.Exit(1)
 
 
 def get_chaos_agent() -> ChaosMonkeyAgent:
@@ -137,53 +167,21 @@ app.add_typer(agent_app, name="agent")
 
 @agent_app.command("list")
 def agent_list():
-    """List all registered agents."""
-    agents = [
-        ("Base Agent", "base", "Core agent functionality"),
-        ("Developer Agent", "developer", "Code implementation and review"),
-        ("QA Agent", "qa", "Testing and quality assurance"),
-        ("SysAdmin Agent", "sysadmin", "System administration"),
-        ("Lead Agent", "lead", "Orchestration and coordination"),
-        ("Sales Agent", "sales", "Sales and lead management"),
-        ("Finance Agent", "finance", "Financial operations"),
-        ("HR Agent", "hr", "Human resources"),
-        ("Marketing Agent", "marketing", "Marketing campaigns"),
-        ("Product Agent", "product", "Product management"),
-        ("Research Agent", "research", "Research and analysis"),
-        ("Support Agent", "support", "Customer support"),
-        ("DevOps Agent", "devops", "DevOps and infrastructure"),
-        ("Data Analyst Agent", "data_analyst", "Data analysis"),
-        ("Integration Agent", "integration", "System integrations"),
-        ("Communications Agent", "communications", "Communications"),
-        ("Security Agent", "security", "Security operations"),
-        ("Compliance Agent", "compliance", "Compliance management"),
-        ("Legal Agent", "legal", "Legal operations"),
-        ("Privacy Agent", "privacy", "Privacy compliance"),
-        ("Risk Agent", "risk", "Risk management"),
-        ("Ethics Agent", "ethics", "Ethics and AI safety"),
-        ("Data Governance Agent", "data_governance", "Data governance"),
-        ("SOC Agent", "soc", "Security operations center"),
-        ("VulnMan Agent", "vulnman", "Vulnerability management"),
-        ("RedTeam Agent", "redteam", "Red team operations"),
-        ("Malware Agent", "malware", "Malware analysis"),
-        ("CloudSecurity Agent", "cloud_security", "Cloud security posture"),
-        ("MLOps Agent", "ml_ops", "ML operations"),
-        ("SupplyChain Agent", "supply_chain", "Software supply chain"),
-        ("Audit Agent", "audit", "Internal audit"),
-        ("VendorRisk Agent", "vendor_risk", "Vendor risk management"),
-        ("ChaosMonkey Agent", "chaos_monkey", "Chaos engineering"),
-    ]
-
-    table = Table(title="Registered Agents", box=box.ROUNDED)
-    table.add_column("Name", style="cyan")
+    """List all registered agents (from agentic_ai.agents.registry)."""
+    reg = list_agents()
+    table = Table(title="Agent Registry", box=box.ROUNDED)
     table.add_column("ID", style="magenta")
+    table.add_column("Class", style="cyan")
+    table.add_column("Category", style="green")
     table.add_column("Description", style="white")
 
-    for name, agent_id, desc in agents:
-        table.add_row(name, agent_id, desc)
+    for agent_id, info in reg.items():
+        table.add_row(agent_id, info["class"], info["category"], info["description"])
 
     console.print(table)
-    console.print(f"\nTotal: [bold]{len(agents)}[/bold] agents")
+    console.print(
+        f"\nTotal: [bold]{len(reg)}[/bold] registered agents - "
+        f"inspect with: agenticai agent card <id> / agenticai agent ops <id>")
 
 
 @agent_app.command("info")
@@ -221,6 +219,126 @@ def agent_info(agent_name: str = typer.Argument(..., help="Agent name or ID")):
             table.add_row(key.replace('_', ' ').title(), str(value))
 
     console.print(table)
+
+
+@agent_app.command("card")
+def agent_card(
+    agent_name: str = typer.Argument(..., help="Agent id (see: agenticai agent list)"),
+    params: str = typer.Option("{}", "--params", help="JSON constructor kwargs"),
+    compact: bool = typer.Option(False, "--compact", help="Single-line JSON output"),
+):
+    """Instantiate an agent and print its agent card. No side effects."""
+    try:
+        ctor = json.loads(params) if params else {}
+    except json.JSONDecodeError as e:
+        console.print(f"[red]✗[/red] --params is not valid JSON: {e}")
+        raise typer.Exit(1)
+    agent = make_agent(agent_name, ctor)
+    try:
+        data = agent.get_agent_card().model_dump()
+    except AttributeError:
+        doc = (type(agent).__doc__ or "").strip().splitlines()
+        data = {"name": type(agent).__name__,
+                "agent_id": getattr(agent, "agent_id", None),
+                "description": doc[0] if doc else ""}
+    print(json.dumps(data, indent=None if compact else 2, default=str))
+
+
+@agent_app.command("ops")
+def agent_ops(
+    agent_name: str = typer.Argument(..., help="Agent id (see: agenticai agent list)"),
+    params: str = typer.Option("{}", "--params", help="JSON constructor kwargs"),
+):
+    """List the public operations of an agent (use with: agent run --op)."""
+    try:
+        ctor = json.loads(params) if params else {}
+    except json.JSONDecodeError as e:
+        console.print(f"[red]✗[/red] --params is not valid JSON: {e}")
+        raise typer.Exit(1)
+    agent = make_agent(agent_name, ctor)
+    cls_name = type(agent).__name__
+    table = Table(title=f"{cls_name} public operations", box=box.ROUNDED)
+    table.add_column("Op", style="cyan")
+    table.add_column("Async", style="magenta", justify="center")
+    table.add_column("Source", style="green")
+    table.add_column("Details", style="white")
+    for name in sorted(dir(type(agent))):
+        if name.startswith("_") or name in ("agent_id", "inference"):
+            continue
+        attr = getattr(agent, name, None)
+        if not callable(attr):
+            continue
+        is_async = inspect.iscoroutinefunction(attr)
+        doc = (inspect.getdoc(attr) or "").splitlines()
+        detail = doc[0].strip()[:60] if doc else ""
+        src = getattr(inspect.getmodule(attr), "__name__", "").rsplit(".", 1)[-1]
+        if src.startswith("agentic_ai"):
+            src = src.rsplit(".", 1)[-1]
+        table.add_row(name, "✓" if is_async else "", src, detail)
+    console.print(table)
+    console.print(
+        f"\nRun one with: agenticai agent run {agent_name} --op <op> --args '{{}}'")
+
+
+@agent_app.command("run")
+def agent_run(
+    agent_name: str = typer.Argument(..., help="Agent id (see: agenticai agent list)"),
+    op: Optional[str] = typer.Option(None, "--op", help="Public method to invoke"),
+    args: str = typer.Option("{}", "--args", help="JSON method kwargs"),
+    params: str = typer.Option("{}", "--params", help="JSON constructor kwargs"),
+    task: Optional[str] = typer.Option(None, "--task",
+                                       help="perform_task task_type (agents that override it)"),
+    payload: str = typer.Option("{}", "--payload", help="JSON payload for --task"),
+):
+    """Instantiate an agent and call one op (or perform_task), printing JSON.
+
+    Built-in domain ops need no LLM. Examples:
+
+      agenticai agent run security --op scan_code \\
+        --args '{"code": "password = \"hunter2\""}'
+
+      agenticai agent run developer --task implement \\
+        --payload '{"task_id": "T1"}'
+    """
+    try:
+        ctor = json.loads(params) if params else {}
+        call_args = json.loads(args) if args else {}
+        call_payload = json.loads(payload) if payload else {}
+    except json.JSONDecodeError as e:
+        console.print(f"[red]✗[/red] --args/--params/--payload must be valid JSON: {e}")
+        raise typer.Exit(1)
+    agent = make_agent(agent_name, ctor)
+    if op:
+        attr = getattr(agent, op, None)
+        if attr is None or not callable(attr):
+            console.print(
+                f"[red]✗[/red] no op '{op}' on {type(agent).__name__} - "
+                f"list with: agenticai agent ops {agent_name}")
+            raise typer.Exit(1)
+        try:
+            if inspect.iscoroutinefunction(attr):
+                result = asyncio.run(attr(**call_args))
+            else:
+                result = attr(**call_args)
+        except Exception as e:
+            console.print(f"[red]✗[/red] {op} failed: {e}")
+            raise typer.Exit(1)
+        print(json.dumps(result, indent=2, default=str))
+        return
+    if task:
+        if not hasattr(agent, "perform_task"):
+            console.print(f"[red]✗[/red] {type(agent).__name__} has no perform_task")
+            raise typer.Exit(1)
+        try:
+            result = asyncio.run(agent.perform_task(task, call_payload))
+        except Exception as e:
+            console.print(f"[red]✗[/red] perform_task failed: {e}")
+            raise typer.Exit(1)
+        print(json.dumps(result, indent=2, default=str))
+        return
+    console.print(
+        f"[yellow]Nothing to do:[/yellow] pass --op or --task "
+        f"(ops list: agenticai agent ops {agent_name})")
 
 
 # ============================================================================

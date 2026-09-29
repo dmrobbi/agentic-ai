@@ -1,6 +1,16 @@
 # Agent Capability Matrix
 
-Complete reference of all 33+ Agentic AI agents and their capabilities.
+Complete reference of the Agentic AI agents. Agent ids are generated from
+`agentic_ai/agents/registry.py`; real callable ops per agent live in
+`skills/agentic-roles/references/role-ops.md` (the per-agent "Capabilities"
+tables below are descriptive, not literal method names - use
+`agenticai agent ops <id>` for the truth). Run any agent without an LLM:
+
+```bash
+agenticai agent card <id>    # dry-run instantiation + agent card
+agenticai agent ops  <id>    # real op menu
+agenticai agent run  <id> --op <op> --args '{...}'
+```
 
 ## Quick Reference
 
@@ -15,7 +25,6 @@ Complete reference of all 33+ Agentic AI agents and their capabilities.
 | `finance` | Finance Agent | Business | 4 | 8 |
 | `hr` | HR Agent | Business | 4 | 8 |
 | `marketing` | Marketing Agent | Business | 4 | 8 |
-| `product` | Product Agent | Business | 4 | 8 |
 | `research` | Research Agent | Data | 4 | 8 |
 | `data_analyst` | Data Analyst Agent | Data | 4 | 8 |
 | `data_governance` | Data Governance Agent | Data | 4 | 8 |
@@ -199,23 +208,6 @@ Complete reference of all 33+ Agentic AI agents and their capabilities.
 | `segment_audience` | Segment audience | `criteria: dict` | `segments: list` |
 
 **File**: `agentic_ai/agents/marketing.py`  
-**Tests**: `tests/test_additional_agents.py` (8 tests)
-
----
-
-### Product Agent (`product.py`)
-
-**Purpose**: Product management and roadmap
-
-**Capabilities**:
-| Capability | Description | Input | Output |
-|------------|-------------|-------|--------|
-| `create_feature` | Create feature request | `title: str, description: str` | `feature: Feature` |
-| `prioritize_backlog` | Prioritize backlog | `features: list, criteria: dict` | `prioritized: list` |
-| `analyze_metrics` | Analyze product metrics | `period: str, metrics: list` | `analysis: ProductAnalysis` |
-| `generate_roadmap` | Generate roadmap | `quarter: str, goals: list` | `roadmap: Roadmap` |
-
-**File**: `agentic_ai/agents/product.py`  
 **Tests**: `tests/test_additional_agents.py` (8 tests)
 
 ---
@@ -544,6 +536,15 @@ Complete reference of all 33+ Agentic AI agents and their capabilities.
 ---
 
 ## Specialized Agents
+
+### Biblical Scholar Agent (`biblical_scholar.py`)
+
+**Purpose**: Cross-tradition scripture research and concept analysis
+(Christianity, Judaism, Islam, Hinduism, Buddhism, Taoism, Sikhism, Bahai,
+Zoroastrianism...). Instantiates clean; ops are generated in
+`skills/agentic-roles/references/role-ops.md`.
+
+---
 
 ### MLOps Agent (`ml_ops.py`)
 
