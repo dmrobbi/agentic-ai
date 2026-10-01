@@ -696,6 +696,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `nmap_scan` |  | kali | Perform Nmap network scan. |
 | `output_guardrail` |  | base | Validate/sanitize output through guardrail pipeline. Returns (sanitize |
 | `perform_task` | async | base | Perform a task. Override in subclasses. |
+| `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
 | `process_message` | async | base | Process an incoming message. Override in subclasses. |
 | `reason` | async | base | Iterative ReAct reasoning loop: think→act→observe. |
 | `reaver_attack` |  | kali | WPS brute force attack. |
@@ -720,6 +721,10 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `tool_guardrail` |  | base | Check if tool call is permitted. Returns is_allowed. |
 | `validate_target` |  | kali | Validate target against whitelist/blacklist. |
 | `volatility_analyze` |  | kali | Memory forensics. |
+| `web_enum_commands` |  | web_pentest | Enumeration command catalog for a target, grouped by step. |
+| `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
+| `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
+| `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
 | `wpscan_scan` |  | kali | WordPress security scan. |
 
 ## kali_v2 - KaliAgentV2
@@ -735,8 +740,13 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `get_state` |  | kali_v2 | Get agent state. |
 | `list_tools` |  | kali_v2 | List available tools. |
 | `match_exploits_for_cve` |  | kali_v2 | Find exploits for a CVE. |
+| `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
 | `recommend_tools_for_target` |  | kali_v2 | Get tool recommendations for a target. |
 | `set_authorization` |  | kali_v2 | Set authorization level. |
+| `web_enum_commands` |  | web_pentest | Enumeration command catalog for a target, grouped by step. |
+| `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
+| `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
+| `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
 
 ## lead - LeadAgent
 

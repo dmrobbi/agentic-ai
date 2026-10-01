@@ -18,6 +18,8 @@ import os
 import re
 import subprocess
 import tempfile
+
+from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 import threading
 import time
 from dataclasses import dataclass, field
@@ -1077,7 +1079,7 @@ class RemediationEngine:
 # Main KaliAgent v2 Class
 # ============================================
 
-class KaliAgentV2:
+class KaliAgentV2(WebPentestMixin):
     """
     Enhanced KaliAgent with modern tools and intelligent features.
     """

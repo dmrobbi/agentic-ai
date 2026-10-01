@@ -9,6 +9,7 @@ Includes safety gates, authorization controls, and automated reporting.
 """
 
 from agentic_ai.agents.base import BaseAgent
+from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 import json
 import logging
 import os
@@ -1314,7 +1315,7 @@ def _validate_command_args(args: list) -> None:
                 raise ValueError(f"Rejected dangerous metacharacter in argument: {arg}")
 
 
-class KaliAgent(BaseAgent):
+class KaliAgent(WebPentestMixin, BaseAgent):
     """
     Kali Linux Tool Orchestration Agent
 
