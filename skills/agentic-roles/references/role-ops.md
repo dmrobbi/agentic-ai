@@ -696,11 +696,16 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `nmap_scan` |  | kali | Perform Nmap network scan. |
 | `output_guardrail` |  | base | Validate/sanitize output through guardrail pipeline. Returns (sanitize |
 | `perform_task` | async | base | Perform a task. Override in subclasses. |
+| `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
 | `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
 | `process_message` | async | base | Process an incoming message. Override in subclasses. |
 | `reason` | async | base | Iterative ReAct reasoning loop: think→act→observe. |
 | `reaver_attack` |  | kali | WPS brute force attack. |
 | `receive_message` |  | base | Receive a message from another agent. |
+| `redteam_catalog` |  | redteam_pentest | Load the generated red-team tool catalog (13 phases, ~725 tools). |
+| `redteam_countermeasures` |  | redteam_pentest | Detection/countermeasure notes for a phase (the blue-team pairing). |
+| `redteam_phase_tools` |  | redteam_pentest | Every tool cataloged under a phase (name, url, purpose, origin |
+| `redteam_tool_lookup` |  | redteam_pentest | Search the whole catalog by tool-name fragment (max 25 hits). |
 | `reflect` | async | base | Self-critique: evaluate response quality and suggest improvements. |
 | `register_tool` |  | base | Register a tool with the agent. |
 | `remove_from_blacklist` |  | kali | Remove IP from blacklist. |
@@ -740,8 +745,13 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `get_state` |  | kali_v2 | Get agent state. |
 | `list_tools` |  | kali_v2 | List available tools. |
 | `match_exploits_for_cve` |  | kali_v2 | Find exploits for a CVE. |
+| `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
 | `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
 | `recommend_tools_for_target` |  | kali_v2 | Get tool recommendations for a target. |
+| `redteam_catalog` |  | redteam_pentest | Load the generated red-team tool catalog (13 phases, ~725 tools). |
+| `redteam_countermeasures` |  | redteam_pentest | Detection/countermeasure notes for a phase (the blue-team pairing). |
+| `redteam_phase_tools` |  | redteam_pentest | Every tool cataloged under a phase (name, url, purpose, origin |
+| `redteam_tool_lookup` |  | redteam_pentest | Search the whole catalog by tool-name fragment (max 25 hits). |
 | `set_authorization` |  | kali_v2 | Set authorization level. |
 | `web_enum_commands` |  | web_pentest | Enumeration command catalog for a target, grouped by step. |
 | `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |

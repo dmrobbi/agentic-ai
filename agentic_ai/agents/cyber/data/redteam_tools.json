@@ -1,0 +1,3802 @@
+{
+ "phases": {
+  "active-directory": {
+   "sections": [
+    "Active Directory Audit and exploit tools",
+    "SMB Null Session Exploitation",
+    "Windows Active Directory Pentest"
+   ],
+   "tools": [
+    {
+     "name": "PowerShellScripts",
+     "url": "https://github.com/Arno0x/PowerShellScripts",
+     "purpose": null
+    },
+    {
+     "name": "SessionGopher",
+     "url": "https://github.com/Arvanaghi/SessionGopher",
+     "purpose": "Extracts saved session data (PuTTY, WinSCP, RDP)"
+    },
+    {
+     "name": "BloodHound",
+     "url": "https://github.com/BloodHoundAD/BloodHound",
+     "purpose": "Active Directory graph analysis of attack paths"
+    },
+    {
+     "name": "SharpHound3",
+     "url": "https://github.com/BloodHoundAD/SharpHound3",
+     "purpose": null
+    },
+    {
+     "name": "BloodHoundQueries",
+     "url": "https://github.com/CompassSecurity/BloodHoundQueries",
+     "purpose": null
+    },
+    {
+     "name": "Get-RBCD-Threaded",
+     "url": "https://github.com/FatRodzianko/Get-RBCD-Threaded",
+     "purpose": null
+    },
+    {
+     "name": "PowerShell-Suite",
+     "url": "https://github.com/FuzzySecurity/PowerShell-Suite",
+     "purpose": null
+    },
+    {
+     "name": "GhostPack",
+     "url": "https://github.com/GhostPack",
+     "purpose": null
+    },
+    {
+     "name": "Certify",
+     "url": "https://github.com/GhostPack/Certify",
+     "purpose": null
+    },
+    {
+     "name": "PSPKIAudit",
+     "url": "https://github.com/GhostPack/PSPKIAudit",
+     "purpose": null
+    },
+    {
+     "name": "Inveigh",
+     "url": "https://github.com/Kevin-Robertson/Inveigh",
+     "purpose": null
+    },
+    {
+     "name": "Powermad",
+     "url": "https://github.com/Kevin-Robertson/Powermad",
+     "purpose": null
+    },
+    {
+     "name": "Sharpmad",
+     "url": "https://github.com/Kevin-Robertson/Sharpmad",
+     "purpose": null
+    },
+    {
+     "name": "DSInternals",
+     "url": "https://github.com/MichaelGrafnetter/DSInternals",
+     "purpose": null
+    },
+    {
+     "name": "PowerShell",
+     "url": "https://github.com/NetSPI/PowerShell",
+     "purpose": null
+    },
+    {
+     "name": "PowerUpSQL",
+     "url": "https://github.com/NetSPI/PowerUpSQL",
+     "purpose": "MSSQL attack toolkit"
+    },
+    {
+     "name": "rbcd_permissions",
+     "url": "https://github.com/NinjaStyle82/rbcd_permissions",
+     "purpose": null
+    },
+    {
+     "name": "NetNTLMtoSilverTicket",
+     "url": "https://github.com/NotMedic/NetNTLMtoSilverTicket",
+     "purpose": null
+    },
+    {
+     "name": "PowerTools",
+     "url": "https://github.com/PowerShellEmpire/PowerTools",
+     "purpose": null
+    },
+    {
+     "name": "PowerSploit",
+     "url": "https://github.com/PowerShellMafia/PowerSploit",
+     "purpose": "PowerShell post-exploitation module collection"
+    },
+    {
+     "name": "Grouper",
+     "url": "https://github.com/S3cur3Th1sSh1t/Grouper",
+     "purpose": null
+    },
+    {
+     "name": "WinPwn",
+     "url": "https://github.com/S3cur3Th1sSh1t/WinPwn",
+     "purpose": null
+    },
+    {
+     "name": "ADRecon",
+     "url": "https://github.com/adrecon/ADRecon",
+     "purpose": null
+    },
+    {
+     "name": "ADACLScanner",
+     "url": "https://github.com/canix1/ADACLScanner",
+     "purpose": null
+    },
+    {
+     "name": "PoshADCS",
+     "url": "https://github.com/cfalta/PoshADCS",
+     "purpose": null
+    },
+    {
+     "name": "awesome-bloodhound",
+     "url": "https://github.com/chryzsh/awesome-bloodhound",
+     "purpose": null
+    },
+    {
+     "name": "ACLight",
+     "url": "https://github.com/cyberark/ACLight",
+     "purpose": null
+    },
+    {
+     "name": "DomainPasswordSpray",
+     "url": "https://github.com/dafthack/DomainPasswordSpray",
+     "purpose": null
+    },
+    {
+     "name": "MailSniper",
+     "url": "https://github.com/dafthack/MailSniper",
+     "purpose": "Exchange mailbox search and inbox-rule hunting"
+    },
+    {
+     "name": "ldapdomaindump",
+     "url": "https://github.com/dirkjanm/ldapdomaindump",
+     "purpose": "AD LDAP domain info dumper"
+    },
+    {
+     "name": "PowerOPS",
+     "url": "https://github.com/fdiskyou/PowerOPS",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-ACLPwn",
+     "url": "https://github.com/fox-it/Invoke-ACLPwn",
+     "purpose": null
+    },
+    {
+     "name": "aclpwn.py",
+     "url": "https://github.com/fox-it/aclpwn.py",
+     "purpose": null
+    },
+    {
+     "name": "PowerMemory",
+     "url": "https://github.com/giMini/PowerMemory",
+     "purpose": null
+    },
+    {
+     "name": "Bloodhound-Custom-Queries",
+     "url": "https://github.com/hausec/Bloodhound-Custom-Queries",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-Phant0m",
+     "url": "https://github.com/hlldz/Invoke-Phant0m",
+     "purpose": null
+    },
+    {
+     "name": "SharpSpray",
+     "url": "https://github.com/jnqpblc/SharpSpray",
+     "purpose": null
+    },
+    {
+     "name": "Max",
+     "url": "https://github.com/knavesec/Max",
+     "purpose": null
+    },
+    {
+     "name": "Grouper2",
+     "url": "https://github.com/l0ss/Grouper2",
+     "purpose": null
+    },
+    {
+     "name": "LAPSToolkit",
+     "url": "https://github.com/leoloobeek/LAPSToolkit",
+     "purpose": null
+    },
+    {
+     "name": "Certipy",
+     "url": "https://github.com/ly4k/Certipy",
+     "purpose": "AD CS enumeration and abuse"
+    },
+    {
+     "name": "nullinux",
+     "url": "https://github.com/m8r0wn/nullinux",
+     "purpose": null
+    },
+    {
+     "name": "DomainPasswordSpray",
+     "url": "https://github.com/mdavis332/DomainPasswordSpray",
+     "purpose": null
+    },
+    {
+     "name": "SharpGPOAbuse",
+     "url": "https://github.com/mwrlabs/SharpGPOAbuse",
+     "purpose": null
+    },
+    {
+     "name": "mimikittenz",
+     "url": "https://github.com/putterpanda/mimikittenz",
+     "purpose": null
+    },
+    {
+     "name": "nishang",
+     "url": "https://github.com/samratashok/nishang",
+     "purpose": "PowerShell offensive framework"
+    },
+    {
+     "name": "ADRecon",
+     "url": "https://github.com/sense-of-security/ADRecon",
+     "purpose": null
+    },
+    {
+     "name": "rbcd-attack",
+     "url": "https://github.com/tothi/rbcd-attack",
+     "purpose": null
+    },
+    {
+     "name": "pingcastle",
+     "url": "https://github.com/vletoux/pingcastle",
+     "purpose": "AD security posture assessment"
+    },
+    {
+     "name": "certi",
+     "url": "https://github.com/zer1t0/certi",
+     "purpose": null
+    }
+   ]
+  },
+  "command-control": {
+   "sections": [
+    "Cobalt Strike Stuff",
+    "Command & Control Frameworks",
+    "Mythic Agents",
+    "Payload Hosting",
+    "Reverse Shellz"
+   ],
+   "tools": [
+    {
+     "name": "WSC2",
+     "url": "https://github.com/Arno0x/WSC2",
+     "purpose": null
+    },
+    {
+     "name": "WebDavC2",
+     "url": "https://github.com/Arno0x/WebDavC2",
+     "purpose": null
+    },
+    {
+     "name": "Empire",
+     "url": "https://github.com/BC-SECURITY/Empire",
+     "purpose": "PowerShell/Python post-exploitation C2"
+    },
+    {
+     "name": "sliver",
+     "url": "https://github.com/BishopFox/sliver",
+     "purpose": "Open-source C2 framework (Go)"
+    },
+    {
+     "name": "MicroBackdoor",
+     "url": "https://github.com/Cr4sh/MicroBackdoor",
+     "purpose": null
+    },
+    {
+     "name": "Erebus",
+     "url": "https://github.com/DeEpinGh0st/Erebus",
+     "purpose": null
+    },
+    {
+     "name": "Empire",
+     "url": "https://github.com/EmpireProject/Empire",
+     "purpose": "PowerShell/Python post-exploitation C2"
+    },
+    {
+     "name": "AggressiveGadgetToJScript",
+     "url": "https://github.com/EncodeGroup/AggressiveGadgetToJScript",
+     "purpose": null
+    },
+    {
+     "name": "AggressiveProxy",
+     "url": "https://github.com/EncodeGroup/AggressiveProxy",
+     "purpose": null
+    },
+    {
+     "name": "BOF-RegSave",
+     "url": "https://github.com/EncodeGroup/BOF-RegSave",
+     "purpose": null
+    },
+    {
+     "name": "HandleKatz_BOF",
+     "url": "https://github.com/EspressoCake/HandleKatz_BOF",
+     "purpose": null
+    },
+    {
+     "name": "PPLDump_BOF",
+     "url": "https://github.com/EspressoCake/PPLDump_BOF",
+     "purpose": null
+    },
+    {
+     "name": "Self_Deletion_BOF",
+     "url": "https://github.com/EspressoCake/Self_Deletion_BOF",
+     "purpose": null
+    },
+    {
+     "name": "C3",
+     "url": "https://github.com/FSecureLABS/C3",
+     "purpose": "Custom C2 channel routing framework"
+    },
+    {
+     "name": "C2concealer",
+     "url": "https://github.com/FortyNorthSecurity/C2concealer",
+     "purpose": null
+    },
+    {
+     "name": "WMImplant",
+     "url": "https://github.com/FortyNorthSecurity/WMImplant",
+     "purpose": null
+    },
+    {
+     "name": "LOLBITS",
+     "url": "https://github.com/Kudaes/LOLBITS",
+     "purpose": null
+    },
+    {
+     "name": "ThunderShell",
+     "url": "https://github.com/Mr-Un1k0d3r/ThunderShell",
+     "purpose": null
+    },
+    {
+     "name": "Apollo",
+     "url": "https://github.com/MythicAgents/Apollo",
+     "purpose": null
+    },
+    {
+     "name": "Nimplant",
+     "url": "https://github.com/MythicAgents/Nimplant",
+     "purpose": null
+    },
+    {
+     "name": "AsyncRAT-C-Sharp",
+     "url": "https://github.com/NYAN-x-CAT/AsyncRAT-C-Sharp",
+     "purpose": null
+    },
+    {
+     "name": "merlin",
+     "url": "https://github.com/Ne0nd0g/merlin",
+     "purpose": "GraphQL-over-HTTP C2 (Go)"
+    },
+    {
+     "name": "SharpExcelibur",
+     "url": "https://github.com/OG-Sadpanda/SharpExcelibur",
+     "purpose": null
+    },
+    {
+     "name": "SharpSword",
+     "url": "https://github.com/OG-Sadpanda/SharpSword",
+     "purpose": null
+    },
+    {
+     "name": "SharpC2",
+     "url": "https://github.com/SharpC2/SharpC2",
+     "purpose": null
+    },
+    {
+     "name": "SourcePoint",
+     "url": "https://github.com/Tylous/SourcePoint",
+     "purpose": null
+    },
+    {
+     "name": "BOFs",
+     "url": "https://github.com/ajpc500/BOFs",
+     "purpose": null
+    },
+    {
+     "name": "Cobalt_Strike_wiki",
+     "url": "https://github.com/aleenzz/Cobalt_Strike_wiki",
+     "purpose": null
+    },
+    {
+     "name": "InlineExecute-Assembly",
+     "url": "https://github.com/anthemtotheego/InlineExecute-Assembly",
+     "purpose": null
+    },
+    {
+     "name": "shad0w",
+     "url": "https://github.com/bats3c/shad0w",
+     "purpose": null
+    },
+    {
+     "name": "CobaltStrikeReflectiveLoader",
+     "url": "https://github.com/boku7/CobaltStrikeReflectiveLoader",
+     "purpose": null
+    },
+    {
+     "name": "spawn",
+     "url": "https://github.com/boku7/spawn",
+     "purpose": null
+    },
+    {
+     "name": "SILENTTRINITY",
+     "url": "https://github.com/byt3bl33d3r/SILENTTRINITY",
+     "purpose": null
+    },
+    {
+     "name": "C2Bridge",
+     "url": "https://github.com/cobbr/C2Bridge",
+     "purpose": null
+    },
+    {
+     "name": "Covenant",
+     "url": "https://github.com/cobbr/Covenant",
+     "purpose": ".NET C2 framework"
+    },
+    {
+     "name": "kubesploit",
+     "url": "https://github.com/cyberark/kubesploit",
+     "purpose": null
+    },
+    {
+     "name": "pwncat",
+     "url": "https://github.com/cytopia/pwncat",
+     "purpose": null
+    },
+    {
+     "name": "AggressorScripts",
+     "url": "https://github.com/harleyQu1nn/AggressorScripts",
+     "purpose": null
+    },
+    {
+     "name": "AggressorCollection",
+     "url": "https://github.com/invokethreatguy/AggressorCollection",
+     "purpose": null
+    },
+    {
+     "name": "Mythic",
+     "url": "https://github.com/its-a-feature/Mythic",
+     "purpose": "Modular C2 platform"
+    },
+    {
+     "name": "pwndrop",
+     "url": "https://github.com/kgretzky/pwndrop",
+     "purpose": null
+    },
+    {
+     "name": "byob",
+     "url": "https://github.com/malwaredllc/byob",
+     "purpose": null
+    },
+    {
+     "name": "RedWarden",
+     "url": "https://github.com/mgeeky/RedWarden",
+     "purpose": null
+    },
+    {
+     "name": "cobalt-arsenal",
+     "url": "https://github.com/mgeeky/cobalt-arsenal",
+     "purpose": null
+    },
+    {
+     "name": "pupy",
+     "url": "https://github.com/n1nj4sec/pupy",
+     "purpose": null
+    },
+    {
+     "name": "PoshC2",
+     "url": "https://github.com/nettitude/PoshC2",
+     "purpose": "Proxy-aware C2 framework"
+    },
+    {
+     "name": "Registry-Recon",
+     "url": "https://github.com/optiv/Registry-Recon",
+     "purpose": null
+    },
+    {
+     "name": "InlineWhispers",
+     "url": "https://github.com/outflanknl/InlineWhispers",
+     "purpose": null
+    },
+    {
+     "name": "CovenantTasks",
+     "url": "https://github.com/py7hagoras/CovenantTasks",
+     "purpose": null
+    },
+    {
+     "name": "QuasarRAT",
+     "url": "https://github.com/quasar/QuasarRAT",
+     "purpose": null
+    },
+    {
+     "name": "unhook-bof",
+     "url": "https://github.com/rsmudge/unhook-bof",
+     "purpose": null
+    },
+    {
+     "name": "BOF_Collection",
+     "url": "https://github.com/rvrsh3ll/BOF_Collection",
+     "purpose": null
+    },
+    {
+     "name": "updog",
+     "url": "https://github.com/sc0tfree/updog",
+     "purpose": null
+    },
+    {
+     "name": "CS-Situational-Awareness-BOF",
+     "url": "https://github.com/trustedsec/CS-Situational-Awareness-BOF",
+     "purpose": null
+    },
+    {
+     "name": "xc",
+     "url": "https://github.com/xct/xc",
+     "purpose": null
+    },
+    {
+     "name": "CredBandit",
+     "url": "https://github.com/xforcered/CredBandit",
+     "purpose": null
+    },
+    {
+     "name": "koadic",
+     "url": "https://github.com/zerosum0x0/koadic",
+     "purpose": null
+    }
+   ]
+  },
+  "credential-access": {
+   "sections": [
+    "Credential harvesting Linux Specific",
+    "Credential harvesting Windows Specific",
+    "Git Specific",
+    "LSASS dumper / process dumper",
+    "POST Exploitation",
+    "Post Exploitation - Phish Credentials"
+   ],
+   "tools": [
+    {
+     "name": "RdpThief",
+     "url": "https://github.com/0x09AL/RdpThief",
+     "purpose": null
+    },
+    {
+     "name": "gimmecredz",
+     "url": "https://github.com/0xmitsurugi/gimmecredz",
+     "purpose": null
+    },
+    {
+     "name": "PasswordFilter",
+     "url": "https://github.com/3gstudent/PasswordFilter",
+     "purpose": null
+    },
+    {
+     "name": "LaZagneForensic",
+     "url": "https://github.com/AlessandroZ/LaZagneForensic",
+     "purpose": null
+    },
+    {
+     "name": "SessionGopher",
+     "url": "https://github.com/Arvanaghi/SessionGopher",
+     "purpose": "Extracts saved session data (PuTTY, WinSCP, RDP)"
+    },
+    {
+     "name": "forkatz",
+     "url": "https://github.com/Barbarisch/forkatz",
+     "purpose": null
+    },
+    {
+     "name": "MirrorDump",
+     "url": "https://github.com/CCob/MirrorDump",
+     "purpose": null
+    },
+    {
+     "name": "PinSwipe",
+     "url": "https://github.com/CCob/PinSwipe",
+     "purpose": null
+    },
+    {
+     "name": "CredsLeaker",
+     "url": "https://github.com/Dviros/CredsLeaker",
+     "purpose": null
+    },
+    {
+     "name": "Gopher",
+     "url": "https://github.com/EncodeGroup/Gopher",
+     "purpose": null
+    },
+    {
+     "name": "BetterSafetyKatz",
+     "url": "https://github.com/Flangvik/BetterSafetyKatz",
+     "purpose": null
+    },
+    {
+     "name": "SharpSecDump",
+     "url": "https://github.com/G0ldenGunSec/SharpSecDump",
+     "purpose": null
+    },
+    {
+     "name": "Lockless",
+     "url": "https://github.com/GhostPack/Lockless",
+     "purpose": null
+    },
+    {
+     "name": "Rubeus",
+     "url": "https://github.com/GhostPack/Rubeus",
+     "purpose": "Kerberos interaction and abuse toolkit"
+    },
+    {
+     "name": "SafetyKatz",
+     "url": "https://github.com/GhostPack/SafetyKatz",
+     "purpose": "Mimikatz/loader combination binary"
+    },
+    {
+     "name": "SharpDPAPI",
+     "url": "https://github.com/GhostPack/SharpDPAPI",
+     "purpose": "DPAPI credential access toolkit"
+    },
+    {
+     "name": "lsassy",
+     "url": "https://github.com/Hackndo/lsassy",
+     "purpose": null
+    },
+    {
+     "name": "PyHook",
+     "url": "https://github.com/IlanKalendarov/PyHook",
+     "purpose": null
+    },
+    {
+     "name": "SharpHook",
+     "url": "https://github.com/IlanKalendarov/SharpHook",
+     "purpose": null
+    },
+    {
+     "name": "targetedKerberoast",
+     "url": "https://github.com/ShutdownRepo/targetedKerberoast",
+     "purpose": null
+    },
+    {
+     "name": "tickey",
+     "url": "https://github.com/TarlogicSecurity/tickey",
+     "purpose": null
+    },
+    {
+     "name": "CertStealer",
+     "url": "https://github.com/TheWover/CertStealer",
+     "purpose": null
+    },
+    {
+     "name": "BADministration",
+     "url": "https://github.com/ThunderGunExpress/BADministration",
+     "purpose": null
+    },
+    {
+     "name": "SharpScribbles",
+     "url": "https://github.com/V1V1/SharpScribbles",
+     "purpose": null
+    },
+    {
+     "name": "SharpPhish",
+     "url": "https://github.com/Yaxser/SharpPhish",
+     "purpose": null
+    },
+    {
+     "name": "spraykatz",
+     "url": "https://github.com/aas-n/spraykatz",
+     "purpose": "Credentials and probing toolkit (Windows)"
+    },
+    {
+     "name": "gitscraper",
+     "url": "https://github.com/adamtlangley/gitscraper",
+     "purpose": null
+    },
+    {
+     "name": "RunasCs",
+     "url": "https://github.com/antonioCoco/RunasCs",
+     "purpose": null
+    },
+    {
+     "name": "ATPMiniDump",
+     "url": "https://github.com/b4rtik/ATPMiniDump",
+     "purpose": null
+    },
+    {
+     "name": "SharpKatz",
+     "url": "https://github.com/b4rtik/SharpKatz",
+     "purpose": null
+    },
+    {
+     "name": "SharpMiniDump",
+     "url": "https://github.com/b4rtik/SharpMiniDump",
+     "purpose": null
+    },
+    {
+     "name": "fakelogonscreen",
+     "url": "https://github.com/bitsadmin/fakelogonscreen",
+     "purpose": null
+    },
+    {
+     "name": "3snake",
+     "url": "https://github.com/blendin/3snake",
+     "purpose": null
+    },
+    {
+     "name": "SharpRDPHijack",
+     "url": "https://github.com/bohops/SharpRDPHijack",
+     "purpose": null
+    },
+    {
+     "name": "Carbuncle",
+     "url": "https://github.com/checkymander/Carbuncle",
+     "purpose": null
+    },
+    {
+     "name": "SharpCloud",
+     "url": "https://github.com/chrismaddalena/SharpCloud",
+     "purpose": null
+    },
+    {
+     "name": "HandleKatz",
+     "url": "https://github.com/codewhitesec/HandleKatz",
+     "purpose": null
+    },
+    {
+     "name": "MiniDump",
+     "url": "https://github.com/cube0x0/MiniDump",
+     "purpose": null
+    },
+    {
+     "name": "LsassSilentProcessExit",
+     "url": "https://github.com/deepinstinct/LsassSilentProcessExit",
+     "purpose": null
+    },
+    {
+     "name": "dirtycow.github.io",
+     "url": "https://github.com/dirtycow/dirtycow.github.io",
+     "purpose": null
+    },
+    {
+     "name": "SharpChromium",
+     "url": "https://github.com/djhohnstein/SharpChromium",
+     "purpose": null
+    },
+    {
+     "name": "SharpWeb",
+     "url": "https://github.com/djhohnstein/SharpWeb",
+     "purpose": null
+    },
+    {
+     "name": "WireTap",
+     "url": "https://github.com/djhohnstein/WireTap",
+     "purpose": null
+    },
+    {
+     "name": "truffleHog",
+     "url": "https://github.com/dxa4481/truffleHog",
+     "purpose": null
+    },
+    {
+     "name": "KnockOutlook",
+     "url": "https://github.com/eksperience/KnockOutlook",
+     "purpose": null
+    },
+    {
+     "name": "Internal-Monologue",
+     "url": "https://github.com/eladshamir/Internal-Monologue",
+     "purpose": "NTLMv1 hash capture without LSASS access"
+    },
+    {
+     "name": "Windows-Post-Exploitation",
+     "url": "https://github.com/emilyanncr/Windows-Post-Exploitation",
+     "purpose": null
+    },
+    {
+     "name": "mimikatz",
+     "url": "https://github.com/gentilkiwi/mimikatz",
+     "purpose": "Windows credential extraction"
+    },
+    {
+     "name": "pickl3",
+     "url": "https://github.com/hlldz/pickl3",
+     "purpose": null
+    },
+    {
+     "name": "mimipenguin",
+     "url": "https://github.com/huntergregal/mimipenguin",
+     "purpose": null
+    },
+    {
+     "name": "SharpDoor",
+     "url": "https://github.com/infosecn1nja/SharpDoor",
+     "purpose": null
+    },
+    {
+     "name": "SharpHandler",
+     "url": "https://github.com/jfmaes/SharpHandler",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-Vnc",
+     "url": "https://github.com/klsecservices/Invoke-Vnc",
+     "purpose": null
+    },
+    {
+     "name": "DonPAPI",
+     "url": "https://github.com/login-securite/DonPAPI",
+     "purpose": null
+    },
+    {
+     "name": "SafetyDump",
+     "url": "https://github.com/m0rv4i/SafetyDump",
+     "purpose": null
+    },
+    {
+     "name": "CursedChrome",
+     "url": "https://github.com/mandatoryprogrammer/CursedChrome",
+     "purpose": null
+    },
+    {
+     "name": "HackBrowserData",
+     "url": "https://github.com/moonD4rk/HackBrowserData",
+     "purpose": null
+    },
+    {
+     "name": "sshLooterC",
+     "url": "https://github.com/mthbernardes/sshLooterC",
+     "purpose": null
+    },
+    {
+     "name": "post-exploitation",
+     "url": "https://github.com/mubix/post-exploitation",
+     "purpose": null
+    },
+    {
+     "name": "SharpClipHistory",
+     "url": "https://github.com/mwrlabs/SharpClipHistory",
+     "purpose": "Clipboard history harvesting"
+    },
+    {
+     "name": "LAPSDumper",
+     "url": "https://github.com/n00py/LAPSDumper",
+     "purpose": null
+    },
+    {
+     "name": "mimipy",
+     "url": "https://github.com/n1nj4sec/mimipy",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-PowerThIEf",
+     "url": "https://github.com/nettitude/Invoke-PowerThIEf",
+     "purpose": null
+    },
+    {
+     "name": "Dumpert",
+     "url": "https://github.com/outflanknl/Dumpert",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-WCMDump",
+     "url": "https://github.com/peewpw/Invoke-WCMDump",
+     "purpose": null
+    },
+    {
+     "name": "MultiRDP",
+     "url": "https://github.com/qwqdanchum/MultiRDP",
+     "purpose": null
+    },
+    {
+     "name": "chlonium",
+     "url": "https://github.com/rxwx/chlonium",
+     "purpose": null
+    },
+    {
+     "name": "DecryptAutoLogon",
+     "url": "https://github.com/securesean/DecryptAutoLogon",
+     "purpose": null
+    },
+    {
+     "name": "SharpLoginPrompt",
+     "url": "https://github.com/shantanu561993/SharpLoginPrompt",
+     "purpose": null
+    },
+    {
+     "name": "pypykatz",
+     "url": "https://github.com/skelsec/pypykatz",
+     "purpose": null
+    },
+    {
+     "name": "SharpClipboard",
+     "url": "https://github.com/slyd0g/SharpClipboard",
+     "purpose": null
+    },
+    {
+     "name": "SharpLAPS",
+     "url": "https://github.com/swisskyrepo/SharpLAPS",
+     "purpose": null
+    },
+    {
+     "name": "sAINT",
+     "url": "https://github.com/tiagorlampert/sAINT",
+     "purpose": null
+    },
+    {
+     "name": "gitleaks",
+     "url": "https://github.com/zricethezav/gitleaks",
+     "purpose": null
+    }
+   ]
+  },
+  "defense-eval": {
+   "sections": [
+    "Forensics",
+    "Red-Team SIEM",
+    "Reverse Engineering / decompiler"
+   ],
+   "tools": [
+    {
+     "name": "dnSpy",
+     "url": "https://github.com/0xd4d/dnSpy",
+     "purpose": null
+    },
+    {
+     "name": "PowerForensics",
+     "url": "https://github.com/Invoke-IR/PowerForensics",
+     "purpose": null
+    },
+    {
+     "name": "ghidra",
+     "url": "https://github.com/NationalSecurityAgency/ghidra",
+     "purpose": null
+    },
+    {
+     "name": "Loki",
+     "url": "https://github.com/Neo23x0/Loki",
+     "purpose": null
+    },
+    {
+     "name": "PSRecon",
+     "url": "https://github.com/gfoss/PSRecon",
+     "purpose": null
+    },
+    {
+     "name": "ILSpy",
+     "url": "https://github.com/icsharpcode/ILSpy",
+     "purpose": null
+    },
+    {
+     "name": "PowerShellArsenal",
+     "url": "https://github.com/mattifestation/PowerShellArsenal",
+     "purpose": null
+    },
+    {
+     "name": "RedELK",
+     "url": "https://github.com/outflanknl/RedELK",
+     "purpose": null
+    }
+   ]
+  },
+  "evasion": {
+   "sections": [
+    "AMSI Bypass restriction Bypass",
+    "Android",
+    "Android / Nethunter",
+    "EDR Evasion - Logging Evasion",
+    "Go",
+    "Loader / Packer / Injectors",
+    "Payload Generation / AV-Evasion / Malware Creation",
+    "Rust",
+    "Shellcode Injection",
+    "Useful Binary Modification tools",
+    "VBA"
+   ],
+   "tools": [
+    {
+     "name": "using-icmp-to-deliver-shellcode",
+     "url": "https://blog.romanrii.com/using-icmp-to-deliver-shellcode",
+     "purpose": null
+    },
+    {
+     "name": "Injector",
+     "url": "https://github.com/0xDivyanshu/Injector",
+     "purpose": null
+    },
+    {
+     "name": "Office-DDE-Payloads",
+     "url": "https://github.com/0xdeadbeefJERKY/Office-DDE-Payloads",
+     "purpose": null
+    },
+    {
+     "name": "Windows-EventLog-Bypass",
+     "url": "https://github.com/3gstudent/Windows-EventLog-Bypass",
+     "purpose": null
+    },
+    {
+     "name": "ProcessInjection",
+     "url": "https://github.com/3xpl01tc0d3r/ProcessInjection",
+     "purpose": null
+    },
+    {
+     "name": "SLib",
+     "url": "https://github.com/Aetsu/SLib",
+     "purpose": null
+    },
+    {
+     "name": "AhMyth-Android-RAT",
+     "url": "https://github.com/AhMyth/AhMyth-Android-RAT",
+     "purpose": null
+    },
+    {
+     "name": "EmbedInHTML",
+     "url": "https://github.com/Arno0x/EmbedInHTML",
+     "purpose": null
+    },
+    {
+     "name": "ShellcodeWrapper",
+     "url": "https://github.com/Arno0x/ShellcodeWrapper",
+     "purpose": null
+    },
+    {
+     "name": "CheckPlease",
+     "url": "https://github.com/Arvanaghi/CheckPlease",
+     "purpose": null
+    },
+    {
+     "name": "Pazuzu",
+     "url": "https://github.com/BorjaMerino/Pazuzu",
+     "purpose": null
+    },
+    {
+     "name": "BananaPhone",
+     "url": "https://github.com/C-Sto/BananaPhone",
+     "purpose": null
+    },
+    {
+     "name": "PwnyForm",
+     "url": "https://github.com/CCob/PwnyForm",
+     "purpose": null
+    },
+    {
+     "name": "SharpBlock",
+     "url": "https://github.com/CCob/SharpBlock",
+     "purpose": null
+    },
+    {
+     "name": "Callback_Shellcode_Injection",
+     "url": "https://github.com/ChaitanyaHaritash/Callback_Shellcode_Injection",
+     "purpose": null
+    },
+    {
+     "name": "UuidShellcodeExec",
+     "url": "https://github.com/ChoiSG/UuidShellcodeExec",
+     "purpose": null
+    },
+    {
+     "name": "JSMeter",
+     "url": "https://github.com/Cn33liz/JSMeter",
+     "purpose": null
+    },
+    {
+     "name": "MSBuildShell",
+     "url": "https://github.com/Cn33liz/MSBuildShell",
+     "purpose": null
+    },
+    {
+     "name": "StarFighters",
+     "url": "https://github.com/Cn33liz/StarFighters",
+     "purpose": null
+    },
+    {
+     "name": "Go4aRun",
+     "url": "https://github.com/D00MFist/Go4aRun",
+     "purpose": null
+    },
+    {
+     "name": "Dr0p1t-Framework",
+     "url": "https://github.com/D4Vinci/Dr0p1t-Framework",
+     "purpose": null
+    },
+    {
+     "name": "NativePayload_CBT",
+     "url": "https://github.com/DamonMohammadbagher/NativePayload_CBT",
+     "purpose": null
+    },
+    {
+     "name": "Pluto",
+     "url": "https://github.com/Dewera/Pluto",
+     "purpose": null
+    },
+    {
+     "name": "amber",
+     "url": "https://github.com/EgeBalci/amber",
+     "purpose": null
+    },
+    {
+     "name": "sgn",
+     "url": "https://github.com/EgeBalci/sgn",
+     "purpose": "Encoder that evades signature-based detection of shellcode"
+    },
+    {
+     "name": "AMSI.fail",
+     "url": "https://github.com/Flangvik/AMSI.fail",
+     "purpose": null
+    },
+    {
+     "name": "SharpDllProxy",
+     "url": "https://github.com/Flangvik/SharpDllProxy",
+     "purpose": null
+    },
+    {
+     "name": "EXCELntDonut",
+     "url": "https://github.com/FortyNorthSecurity/EXCELntDonut",
+     "purpose": "Excel macro payload generator"
+    },
+    {
+     "name": "hot-manchego",
+     "url": "https://github.com/FortyNorthSecurity/hot-manchego",
+     "purpose": null
+    },
+    {
+     "name": "UrbanBishop",
+     "url": "https://github.com/FuzzySecurity/Sharp-Suite/tree/master/UrbanBishop",
+     "purpose": null
+    },
+    {
+     "name": "SharpTransactedLoad",
+     "url": "https://github.com/G0ldenGunSec/SharpTransactedLoad",
+     "purpose": null
+    },
+    {
+     "name": "SharpUnhooker",
+     "url": "https://github.com/GetRektBoy724/SharpUnhooker",
+     "purpose": null
+    },
+    {
+     "name": "TripleS",
+     "url": "https://github.com/GetRektBoy724/TripleS",
+     "purpose": null
+    },
+    {
+     "name": "GreatSCT",
+     "url": "https://github.com/GreatSCT/GreatSCT",
+     "purpose": null
+    },
+    {
+     "name": "ntlm_theft",
+     "url": "https://github.com/Greenwolf/ntlm_theft",
+     "purpose": null
+    },
+    {
+     "name": "Salsa-tools",
+     "url": "https://github.com/Hackplayers/Salsa-tools",
+     "purpose": null
+    },
+    {
+     "name": "BadAssMacros",
+     "url": "https://github.com/Inf0secRabbit/BadAssMacros",
+     "purpose": null
+    },
+    {
+     "name": "gargoyle",
+     "url": "https://github.com/JLospinoso/gargoyle",
+     "purpose": null
+    },
+    {
+     "name": "VBA-Macro-Projects",
+     "url": "https://github.com/JohnWoodman/VBA-Macro-Projects",
+     "purpose": null
+    },
+    {
+     "name": "stealthInjector",
+     "url": "https://github.com/JohnWoodman/stealthInjector",
+     "purpose": null
+    },
+    {
+     "name": "DInvoke_rs",
+     "url": "https://github.com/Kudaes/DInvoke_rs",
+     "purpose": null
+    },
+    {
+     "name": "delete-self-poc",
+     "url": "https://github.com/LloydLabs/delete-self-poc",
+     "purpose": null
+    },
+    {
+     "name": "SpaceRunner",
+     "url": "https://github.com/Mr-B0b/SpaceRunner",
+     "purpose": null
+    },
+    {
+     "name": "MaliciousMacroGenerator",
+     "url": "https://github.com/Mr-Un1k0d3r/MaliciousMacroGenerator",
+     "purpose": null
+    },
+    {
+     "name": "PowerLessShell",
+     "url": "https://github.com/Mr-Un1k0d3r/PowerLessShell",
+     "purpose": null
+    },
+    {
+     "name": "UniByAv",
+     "url": "https://github.com/Mr-Un1k0d3r/UniByAv",
+     "purpose": null
+    },
+    {
+     "name": "go-shellcode",
+     "url": "https://github.com/Ne0nd0g/go-shellcode",
+     "purpose": null
+    },
+    {
+     "name": "Invisi-Shell",
+     "url": "https://github.com/OmerYa/Invisi-Shell",
+     "purpose": null
+    },
+    {
+     "name": "VBad",
+     "url": "https://github.com/Pepitoh/VBad",
+     "purpose": null
+    },
+    {
+     "name": "PPLKiller",
+     "url": "https://github.com/RedCursorSecurityConsulting/PPLKiller",
+     "purpose": null
+    },
+    {
+     "name": "OffensivePH",
+     "url": "https://github.com/RedSection/OffensivePH",
+     "purpose": null
+    },
+    {
+     "name": "shellcode-through-ICMP",
+     "url": "https://github.com/RomanRII/shellcode-through-ICMP",
+     "purpose": null
+    },
+    {
+     "name": "AMSITrigger",
+     "url": "https://github.com/RythmStick/AMSITrigger",
+     "purpose": null
+    },
+    {
+     "name": "Amsi-Bypass-Powershell",
+     "url": "https://github.com/S3cur3Th1sSh1t/Amsi-Bypass-Powershell",
+     "purpose": null
+    },
+    {
+     "name": "Nim_CBT_Shellcode",
+     "url": "https://github.com/S3cur3Th1sSh1t/Nim_CBT_Shellcode",
+     "purpose": null
+    },
+    {
+     "name": "OffensiveVBA",
+     "url": "https://github.com/S3cur3Th1sSh1t/OffensiveVBA",
+     "purpose": null
+    },
+    {
+     "name": "AlternativeShellcodeExec",
+     "url": "https://github.com/S4R1N/AlternativeShellcodeExec",
+     "purpose": null
+    },
+    {
+     "name": "boobsnail",
+     "url": "https://github.com/STMCyber/boobsnail",
+     "purpose": null
+    },
+    {
+     "name": "TheFatRat",
+     "url": "https://github.com/Screetsec/TheFatRat",
+     "purpose": null
+    },
+    {
+     "name": "BlockEtw",
+     "url": "https://github.com/Soledge/BlockEtw",
+     "purpose": null
+    },
+    {
+     "name": "SleepyCrypt",
+     "url": "https://github.com/SolomonSklash/SleepyCrypt",
+     "purpose": null
+    },
+    {
+     "name": "SyscallPOC",
+     "url": "https://github.com/SolomonSklash/SyscallPOC",
+     "purpose": null
+    },
+    {
+     "name": "CPLDropper",
+     "url": "https://github.com/TestingPens/CPLDropper",
+     "purpose": null
+    },
+    {
+     "name": "DInvoke",
+     "url": "https://github.com/TheWover/DInvoke",
+     "purpose": null
+    },
+    {
+     "name": "donut",
+     "url": "https://github.com/TheWover/donut",
+     "purpose": "Payload to shellcode generator/executor"
+    },
+    {
+     "name": "Limelighter",
+     "url": "https://github.com/Tylous/Limelighter",
+     "purpose": null
+    },
+    {
+     "name": "xlsxPoison",
+     "url": "https://github.com/X-C3LL/xlsxPoison",
+     "purpose": null
+    },
+    {
+     "name": "Backstab",
+     "url": "https://github.com/Yaxser/Backstab",
+     "purpose": null
+    },
+    {
+     "name": "PR0CESS",
+     "url": "https://github.com/aaaddress1/PR0CESS",
+     "purpose": null
+    },
+    {
+     "name": "wowInjector",
+     "url": "https://github.com/aaaddress1/wowInjector",
+     "purpose": null
+    },
+    {
+     "name": "xlsKami",
+     "url": "https://github.com/aaaddress1/xlsKami",
+     "purpose": null
+    },
+    {
+     "name": "HellsGate",
+     "url": "https://github.com/am0nsec/HellsGate",
+     "purpose": null
+    },
+    {
+     "name": "SharpHellsGate",
+     "url": "https://github.com/am0nsec/SharpHellsGate",
+     "purpose": null
+    },
+    {
+     "name": "Mapping-Injection",
+     "url": "https://github.com/antonioCoco/Mapping-Injection",
+     "purpose": null
+    },
+    {
+     "name": "DoppelGate",
+     "url": "https://github.com/asaurusrex/DoppelGate",
+     "purpose": null
+    },
+    {
+     "name": "DarkLoadLibrary",
+     "url": "https://github.com/bats3c/DarkLoadLibrary",
+     "purpose": null
+    },
+    {
+     "name": "EvtMute",
+     "url": "https://github.com/bats3c/EvtMute",
+     "purpose": null
+    },
+    {
+     "name": "Ghost-In-The-Logs",
+     "url": "https://github.com/bats3c/Ghost-In-The-Logs",
+     "purpose": null
+    },
+    {
+     "name": "darkarmour",
+     "url": "https://github.com/bats3c/darkarmour",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2017-0199",
+     "url": "https://github.com/bhdresh/CVE-2017-0199",
+     "purpose": null
+    },
+    {
+     "name": "nopowershell",
+     "url": "https://github.com/bitsadmin/nopowershell",
+     "purpose": null
+    },
+    {
+     "name": "UltimateWDACBypassList",
+     "url": "https://github.com/bohops/UltimateWDACBypassList",
+     "purpose": null
+    },
+    {
+     "name": "Ninja_UUID_Dropper",
+     "url": "https://github.com/boku7/Ninja_UUID_Dropper",
+     "purpose": null
+    },
+    {
+     "name": "CheekyBlinder",
+     "url": "https://github.com/br-sn/CheekyBlinder",
+     "purpose": null
+    },
+    {
+     "name": "UCantSeeM3",
+     "url": "https://github.com/call-042PE/UCantSeeM3",
+     "purpose": null
+    },
+    {
+     "name": "PowerShellArmoury",
+     "url": "https://github.com/cfalta/PowerShellArmoury",
+     "purpose": null
+    },
+    {
+     "name": "Hijacker",
+     "url": "https://github.com/chrisk44/Hijacker",
+     "purpose": null
+    },
+    {
+     "name": "spoofing-office-macro",
+     "url": "https://github.com/christophetd/spoofing-office-macro",
+     "purpose": null
+    },
+    {
+     "name": "InsecurePowerShell",
+     "url": "https://github.com/cobbr/InsecurePowerShell",
+     "purpose": null
+    },
+    {
+     "name": "LittleCorporal",
+     "url": "https://github.com/connormcgarr/LittleCorporal",
+     "purpose": null
+    },
+    {
+     "name": "Alaris",
+     "url": "https://github.com/cribdragg3r/Alaris",
+     "purpose": null
+    },
+    {
+     "name": "luckystrike",
+     "url": "https://github.com/curi0usJack/luckystrike",
+     "purpose": null
+    },
+    {
+     "name": "Evasor",
+     "url": "https://github.com/cyberark/Evasor",
+     "purpose": null
+    },
+    {
+     "name": "CSharpSetThreadContext",
+     "url": "https://github.com/djhohnstein/CSharpSetThreadContext",
+     "purpose": null
+    },
+    {
+     "name": "ScatterBrain",
+     "url": "https://github.com/djhohnstein/ScatterBrain",
+     "purpose": "Browser implant/data collector"
+    },
+    {
+     "name": "DynamicDllLoader",
+     "url": "https://github.com/dretax/DynamicDllLoader",
+     "purpose": null
+    },
+    {
+     "name": "RCE-0-day-for-GhostScript-9.50",
+     "url": "https://github.com/duc-nt/RCE-0-day-for-GhostScript-9.50",
+     "purpose": null
+    },
+    {
+     "name": "Generate-Macro",
+     "url": "https://github.com/enigma0x3/Generate-Macro",
+     "purpose": null
+    },
+    {
+     "name": "wifi-bruteforcer-fsecurify",
+     "url": "https://github.com/faizann24/wifi-bruteforcer-fsecurify",
+     "purpose": null
+    },
+    {
+     "name": "CheckSafeBoot",
+     "url": "https://github.com/fashionproof/CheckSafeBoot",
+     "purpose": null
+    },
+    {
+     "name": "OfficePurge",
+     "url": "https://github.com/fireeye/OfficePurge",
+     "purpose": null
+    },
+    {
+     "name": "phantom-dll-hollower-poc",
+     "url": "https://github.com/forrest-orr/phantom-dll-hollower-poc",
+     "purpose": null
+    },
+    {
+     "name": "msfpc",
+     "url": "https://github.com/g0tmi1k/msfpc",
+     "purpose": null
+    },
+    {
+     "name": "PowerDropper",
+     "url": "https://github.com/gigajew/PowerDropper",
+     "purpose": null
+    },
+    {
+     "name": "avet",
+     "url": "https://github.com/govolution/avet",
+     "purpose": null
+    },
+    {
+     "name": "dll_to_exe",
+     "url": "https://github.com/hasherezade/dll_to_exe",
+     "purpose": null
+    },
+    {
+     "name": "exe_to_dll",
+     "url": "https://github.com/hasherezade/exe_to_dll",
+     "purpose": null
+    },
+    {
+     "name": "module_overloading",
+     "url": "https://github.com/hasherezade/module_overloading",
+     "purpose": null
+    },
+    {
+     "name": "pe_to_shellcode",
+     "url": "https://github.com/hasherezade/pe_to_shellcode",
+     "purpose": null
+    },
+    {
+     "name": "process_ghosting",
+     "url": "https://github.com/hasherezade/process_ghosting",
+     "purpose": null
+    },
+    {
+     "name": "transacted_hollowing",
+     "url": "https://github.com/hasherezade/transacted_hollowing",
+     "purpose": null
+    },
+    {
+     "name": "SpookFlare",
+     "url": "https://github.com/hlldz/SpookFlare",
+     "purpose": null
+    },
+    {
+     "name": "MaliciousMacroMSBuild",
+     "url": "https://github.com/infosecn1nja/MaliciousMacroMSBuild",
+     "purpose": null
+    },
+    {
+     "name": "faxhell",
+     "url": "https://github.com/ionescu007/faxhell",
+     "purpose": null
+    },
+    {
+     "name": "PPLdump",
+     "url": "https://github.com/itm4n/PPLdump",
+     "purpose": null
+    },
+    {
+     "name": "VBA-RunPE",
+     "url": "https://github.com/itm4n/VBA-RunPE",
+     "purpose": null
+    },
+    {
+     "name": "universal-syscall-64",
+     "url": "https://github.com/jackullrich/universal-syscall-64",
+     "purpose": null
+    },
+    {
+     "name": "concealed_position",
+     "url": "https://github.com/jacob-baines/concealed_position",
+     "purpose": null
+    },
+    {
+     "name": "PSAttack",
+     "url": "https://github.com/jaredhaight/PSAttack",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-DLLClone",
+     "url": "https://github.com/jfmaes/Invoke-DLLClone",
+     "purpose": null
+    },
+    {
+     "name": "SharpNukeEventLog",
+     "url": "https://github.com/jfmaes/SharpNukeEventLog",
+     "purpose": null
+    },
+    {
+     "name": "SysWhispers2",
+     "url": "https://github.com/jthuraisamy/SysWhispers2",
+     "purpose": null
+    },
+    {
+     "name": "TelemetrySourcerer",
+     "url": "https://github.com/jthuraisamy/TelemetrySourcerer",
+     "purpose": null
+    },
+    {
+     "name": "herpaderping",
+     "url": "https://github.com/jxy-s/herpaderping",
+     "purpose": null
+    },
+    {
+     "name": "trigen",
+     "url": "https://github.com/karttoon/trigen",
+     "purpose": null
+    },
+    {
+     "name": "SharpSelfDelete",
+     "url": "https://github.com/klezVirus/SharpSelfDelete",
+     "purpose": null
+    },
+    {
+     "name": "inceptor",
+     "url": "https://github.com/klezVirus/inceptor",
+     "purpose": null
+    },
+    {
+     "name": "ImpulsiveDLLHijack",
+     "url": "https://github.com/knight0x07/ImpulsiveDLLHijack",
+     "purpose": null
+    },
+    {
+     "name": "shellcodeloader",
+     "url": "https://github.com/knownsec/shellcodeloader",
+     "purpose": null
+    },
+    {
+     "name": "SysWhispers2_x86",
+     "url": "https://github.com/mai1zhi2/SysWhispers2_x86",
+     "purpose": null
+    },
+    {
+     "name": "GoPEInjection",
+     "url": "https://github.com/malware-unicorn/GoPEInjection",
+     "purpose": null
+    },
+    {
+     "name": "spotter",
+     "url": "https://github.com/matterpreter/spotter",
+     "purpose": null
+    },
+    {
+     "name": "CACTUSTORCH",
+     "url": "https://github.com/mdsecactivebreach/CACTUSTORCH",
+     "purpose": null
+    },
+    {
+     "name": "SharpShooter",
+     "url": "https://github.com/mdsecactivebreach/SharpShooter",
+     "purpose": null
+    },
+    {
+     "name": "ExecuteAssembly",
+     "url": "https://github.com/med0x2e/ExecuteAssembly",
+     "purpose": null
+    },
+    {
+     "name": "GadgetToJScript",
+     "url": "https://github.com/med0x2e/GadgetToJScript",
+     "purpose": null
+    },
+    {
+     "name": "NoAmci",
+     "url": "https://github.com/med0x2e/NoAmci",
+     "purpose": null
+    },
+    {
+     "name": "SigFlip",
+     "url": "https://github.com/med0x2e/SigFlip",
+     "purpose": null
+    },
+    {
+     "name": "genxlm",
+     "url": "https://github.com/med0x2e/genxlm",
+     "purpose": null
+    },
+    {
+     "name": "ShellcodeFluctuation",
+     "url": "https://github.com/mgeeky/ShellcodeFluctuation",
+     "purpose": null
+    },
+    {
+     "name": "Stracciatella",
+     "url": "https://github.com/mgeeky/Stracciatella",
+     "purpose": null
+    },
+    {
+     "name": "ThreadStackSpoofer",
+     "url": "https://github.com/mgeeky/ThreadStackSpoofer",
+     "purpose": null
+    },
+    {
+     "name": "UnhookMe",
+     "url": "https://github.com/mgeeky/UnhookMe",
+     "purpose": null
+    },
+    {
+     "name": "Macrome",
+     "url": "https://github.com/michaelweber/Macrome",
+     "purpose": null
+    },
+    {
+     "name": "Upsilon",
+     "url": "https://github.com/mobdk/Upsilon",
+     "purpose": null
+    },
+    {
+     "name": "DarkLoadLibrary",
+     "url": "https://github.com/moloch--/DarkLoadLibrary",
+     "purpose": null
+    },
+    {
+     "name": "rsg",
+     "url": "https://github.com/mthbernardes/rsg",
+     "purpose": null
+    },
+    {
+     "name": "wePWNise",
+     "url": "https://github.com/mwrlabs/wePWNise",
+     "purpose": null
+    },
+    {
+     "name": "Winpayloads",
+     "url": "https://github.com/nccgroup/Winpayloads",
+     "purpose": null
+    },
+    {
+     "name": "demiguise",
+     "url": "https://github.com/nccgroup/demiguise",
+     "purpose": null
+    },
+    {
+     "name": "RunPE",
+     "url": "https://github.com/nettitude/RunPE",
+     "purpose": null
+    },
+    {
+     "name": "Dent",
+     "url": "https://github.com/optiv/Dent",
+     "purpose": null
+    },
+    {
+     "name": "ScareCrow",
+     "url": "https://github.com/optiv/ScareCrow",
+     "purpose": null
+    },
+    {
+     "name": "EvilClippy",
+     "url": "https://github.com/outflanknl/EvilClippy",
+     "purpose": null
+    },
+    {
+     "name": "PowerShdll",
+     "url": "https://github.com/p3nt4/PowerShdll",
+     "purpose": null
+    },
+    {
+     "name": "PSByPassCLM",
+     "url": "https://github.com/padovah4ck/PSByPassCLM",
+     "purpose": null
+    },
+    {
+     "name": "CarbonCopy",
+     "url": "https://github.com/paranoidninja/CarbonCopy",
+     "purpose": null
+    },
+    {
+     "name": "hiding-your-syscalls",
+     "url": "https://github.com/passthehashbrowns/hiding-your-syscalls",
+     "purpose": null
+    },
+    {
+     "name": "suspendedunhook",
+     "url": "https://github.com/passthehashbrowns/suspendedunhook",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-PSImage",
+     "url": "https://github.com/peewpw/Invoke-PSImage",
+     "purpose": null
+    },
+    {
+     "name": "Xeexe-TopAntivirusEvasion",
+     "url": "https://github.com/persianhydra/Xeexe-TopAntivirusEvasion",
+     "purpose": null
+    },
+    {
+     "name": "stager.dll",
+     "url": "https://github.com/phackt/stager.dll",
+     "purpose": null
+    },
+    {
+     "name": "PEzor",
+     "url": "https://github.com/phra/PEzor",
+     "purpose": null
+    },
+    {
+     "name": "Shellcode-Injection-Techniques",
+     "url": "https://github.com/plackyhacker/Shellcode-Injection-Techniques",
+     "purpose": null
+    },
+    {
+     "name": "Suspended-Thread-Injection",
+     "url": "https://github.com/plackyhacker/Suspended-Thread-Injection",
+     "purpose": null
+    },
+    {
+     "name": "c-sharp-memory-injection",
+     "url": "https://github.com/pwndizzle/c-sharp-memory-injection",
+     "purpose": null
+    },
+    {
+     "name": "FakeImageExploiter",
+     "url": "https://github.com/r00t-3xp10it/FakeImageExploiter",
+     "purpose": null
+    },
+    {
+     "name": "AmsiScanBufferBypass",
+     "url": "https://github.com/rasta-mouse/AmsiScanBufferBypass",
+     "purpose": null
+    },
+    {
+     "name": "GadgetToJScript",
+     "url": "https://github.com/rasta-mouse/GadgetToJScript",
+     "purpose": null
+    },
+    {
+     "name": "RuralBishop",
+     "url": "https://github.com/rasta-mouse/RuralBishop",
+     "purpose": null
+    },
+    {
+     "name": "ppdump-public",
+     "url": "https://github.com/realoriginal/ppdump-public",
+     "purpose": null
+    },
+    {
+     "name": "AMSI_Ordinal_Bypass",
+     "url": "https://github.com/rmdavy/AMSI_Ordinal_Bypass",
+     "purpose": null
+    },
+    {
+     "name": "HeapsOfFun",
+     "url": "https://github.com/rmdavy/HeapsOfFun",
+     "purpose": null
+    },
+    {
+     "name": "NoMSBuild",
+     "url": "https://github.com/rvrsh3ll/NoMSBuild",
+     "purpose": null
+    },
+    {
+     "name": "dropengine",
+     "url": "https://github.com/s0lst1c3/dropengine",
+     "purpose": null
+    },
+    {
+     "name": "memory-module-loader",
+     "url": "https://github.com/scythe-io/memory-module-loader",
+     "purpose": null
+    },
+    {
+     "name": "AllTheThingsExec",
+     "url": "https://github.com/secdev-01/AllTheThingsExec",
+     "purpose": null
+    },
+    {
+     "name": "kwetza",
+     "url": "https://github.com/sensepost/kwetza",
+     "purpose": null
+    },
+    {
+     "name": "macro_pack",
+     "url": "https://github.com/sevagas/macro_pack",
+     "purpose": null
+    },
+    {
+     "name": "GoPurple",
+     "url": "https://github.com/sh4hin/GoPurple",
+     "purpose": null
+    },
+    {
+     "name": "UrbanBishopLocal",
+     "url": "https://github.com/slyd0g/UrbanBishopLocal",
+     "purpose": null
+    },
+    {
+     "name": "DInjector",
+     "url": "https://github.com/snovvcrash/DInjector",
+     "purpose": null
+    },
+    {
+     "name": "HackTheWorld",
+     "url": "https://github.com/stormshadow07/HackTheWorld",
+     "purpose": null
+    },
+    {
+     "name": "injection",
+     "url": "https://github.com/theevilbit/injection",
+     "purpose": null
+    },
+    {
+     "name": "AmsiHook",
+     "url": "https://github.com/tomcarver16/AmsiHook",
+     "purpose": null
+    },
+    {
+     "name": "PowerLessShell",
+     "url": "https://github.com/tothi/PowerLessShell",
+     "purpose": null
+    },
+    {
+     "name": "OffensiveRust",
+     "url": "https://github.com/trickster0/OffensiveRust",
+     "purpose": null
+    },
+    {
+     "name": "nps_payload",
+     "url": "https://github.com/trustedsec/nps_payload",
+     "purpose": null
+    },
+    {
+     "name": "unicorn",
+     "url": "https://github.com/trustedsec/unicorn",
+     "purpose": null
+    },
+    {
+     "name": "tricky.lnk",
+     "url": "https://github.com/xillwillx/tricky.lnk",
+     "purpose": null
+    },
+    {
+     "name": "DripLoader",
+     "url": "https://github.com/xinbailu/DripLoader",
+     "purpose": null
+    },
+    {
+     "name": "NautilusProject",
+     "url": "https://github.com/xpn/NautilusProject",
+     "purpose": null
+    },
+    {
+     "name": "powerstager",
+     "url": "https://github.com/z0noxz/powerstager",
+     "purpose": null
+    }
+   ]
+  },
+  "exfiltration": {
+   "sections": [
+    "Data Exfiltration - DNS/ICMP/Wifi Exfiltration"
+   ],
+   "tools": [
+    {
+     "name": "DNSExfiltrator",
+     "url": "https://github.com/Arno0x/DNSExfiltrator",
+     "purpose": null
+    },
+    {
+     "name": "icmptunnel",
+     "url": "https://github.com/DhavalKapil/icmptunnel",
+     "purpose": "ICMP backdoor tunnel"
+    },
+    {
+     "name": "SharpExfiltrate",
+     "url": "https://github.com/Flangvik/SharpExfiltrate",
+     "purpose": null
+    },
+    {
+     "name": "Egress-Assess",
+     "url": "https://github.com/FortyNorthSecurity/Egress-Assess",
+     "purpose": null
+    },
+    {
+     "name": "Tunna",
+     "url": "https://github.com/SECFORCE/Tunna",
+     "purpose": null
+    },
+    {
+     "name": "dnscat2",
+     "url": "https://github.com/iagox86/dnscat2",
+     "purpose": "DNS-tunneled C2 channel"
+    },
+    {
+     "name": "DNSStager",
+     "url": "https://github.com/mhaskar/DNSStager",
+     "purpose": null
+    },
+    {
+     "name": "DNSlivery",
+     "url": "https://github.com/no0be/DNSlivery",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-TmpDavFS",
+     "url": "https://github.com/p3nt4/Invoke-TmpDavFS",
+     "purpose": null
+    },
+    {
+     "name": "FlyingCarpet",
+     "url": "https://github.com/spieglt/FlyingCarpet",
+     "purpose": null
+    },
+    {
+     "name": "chashell",
+     "url": "https://github.com/sysdream/chashell",
+     "purpose": null
+    }
+   ]
+  },
+  "initial-access": {
+   "sections": [
+    "Default Credential Lookup",
+    "Default Credential Scanner",
+    "Domain Auth + Exploitation",
+    "Exchange RCE-exploits",
+    "Login Brute Force + Wordlist attacks",
+    "MobileIron RCE"
+   ],
+   "tools": [
+    {
+     "name": "new-azure-active-directory-password-brute-forcing-flaw-has-no-fix",
+     "url": "https://arstechnica.com/information-technology/2021/09/new-azure-active-directory-password-brute-forcing-flaw-has-no-fix/",
+     "purpose": null
+    },
+    {
+     "name": "BruteX",
+     "url": "https://github.com/1N3/BruteX",
+     "purpose": null
+    },
+    {
+     "name": "easBrowseSharefile",
+     "url": "https://github.com/3gstudent/easBrowseSharefile",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2020-17144-EXP",
+     "url": "https://github.com/Airboi/CVE-2020-17144-EXP",
+     "purpose": null
+    },
+    {
+     "name": "win-brute-logon",
+     "url": "https://github.com/DarkCoderSc/win-brute-logon",
+     "purpose": null
+    },
+    {
+     "name": "peas",
+     "url": "https://github.com/FSecureLABS/peas",
+     "purpose": null
+    },
+    {
+     "name": "EyeWitness",
+     "url": "https://github.com/FortyNorthSecurity/EyeWitness",
+     "purpose": "Screenshot and identify live web endpoints"
+    },
+    {
+     "name": "Spray",
+     "url": "https://github.com/Greenwolf/Spray",
+     "purpose": null
+    },
+    {
+     "name": "default-http-login-hunter",
+     "url": "https://github.com/InfosecMatter/default-http-login-hunter",
+     "purpose": null
+    },
+    {
+     "name": "OutlookSend",
+     "url": "https://github.com/RedLectroid/OutlookSend",
+     "purpose": null
+    },
+    {
+     "name": "cve-2020-0688",
+     "url": "https://github.com/Ridter/cve-2020-0688",
+     "purpose": null
+    },
+    {
+     "name": "msspray",
+     "url": "https://github.com/SecurityRiskAdvisors/msspray",
+     "purpose": null
+    },
+    {
+     "name": "raindance",
+     "url": "https://github.com/True-Demon/raindance",
+     "purpose": null
+    },
+    {
+     "name": "Passhunt",
+     "url": "https://github.com/Viralmaniar/Passhunt",
+     "purpose": null
+    },
+    {
+     "name": "SprayingToolkit",
+     "url": "https://github.com/byt3bl33d3r/SprayingToolkit",
+     "purpose": null
+    },
+    {
+     "name": "WitnessMe",
+     "url": "https://github.com/byt3bl33d3r/WitnessMe",
+     "purpose": null
+    },
+    {
+     "name": "MSOLSpray",
+     "url": "https://github.com/dafthack/MSOLSpray",
+     "purpose": null
+    },
+    {
+     "name": "MailSniper",
+     "url": "https://github.com/dafthack/MailSniper",
+     "purpose": "Exchange mailbox search and inbox-rule hunting"
+    },
+    {
+     "name": "RDPSpray",
+     "url": "https://github.com/dafthack/RDPSpray",
+     "purpose": null
+    },
+    {
+     "name": "crowbar",
+     "url": "https://github.com/galkan/crowbar",
+     "purpose": null
+    },
+    {
+     "name": "o365enum",
+     "url": "https://github.com/gremwell/o365enum",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2020-15505",
+     "url": "https://github.com/httpvoid/CVE-Reverse/tree/master/CVE-2020-15505",
+     "purpose": null
+    },
+    {
+     "name": "DefaultCreds-cheat-sheet",
+     "url": "https://github.com/ihebski/DefaultCreds-cheat-sheet",
+     "purpose": null
+    },
+    {
+     "name": "TeamsUserEnum",
+     "url": "https://github.com/immunIT/TeamsUserEnum",
+     "purpose": null
+    },
+    {
+     "name": "CredMaster",
+     "url": "https://github.com/knavesec/CredMaster",
+     "purpose": null
+    },
+    {
+     "name": "patator",
+     "url": "https://github.com/lanjelot/patator",
+     "purpose": null
+    },
+    {
+     "name": "LyncSniper",
+     "url": "https://github.com/mdsecresearch/LyncSniper",
+     "purpose": null
+    },
+    {
+     "name": "Carnivore",
+     "url": "https://github.com/nccgroup/Carnivore",
+     "purpose": null
+    },
+    {
+     "name": "AzureAD_Autologon_Brute",
+     "url": "https://github.com/nyxgeek/AzureAD_Autologon_Brute",
+     "purpose": null
+    },
+    {
+     "name": "lyncsmash",
+     "url": "https://github.com/nyxgeek/lyncsmash",
+     "purpose": null
+    },
+    {
+     "name": "o365recon",
+     "url": "https://github.com/nyxgeek/o365recon",
+     "purpose": null
+    },
+    {
+     "name": "onedrive_user_enum",
+     "url": "https://github.com/nyxgeek/onedrive_user_enum",
+     "purpose": null
+    },
+    {
+     "name": "adfsbrute",
+     "url": "https://github.com/ricardojoserf/adfsbrute",
+     "purpose": null
+    },
+    {
+     "name": "NTLMRecon",
+     "url": "https://github.com/sachinkamath/NTLMRecon",
+     "purpose": null
+    },
+    {
+     "name": "ruler",
+     "url": "https://github.com/sensepost/ruler",
+     "purpose": null
+    },
+    {
+     "name": "peas",
+     "url": "https://github.com/snovvcrash/peas",
+     "purpose": null
+    },
+    {
+     "name": "aad-sso-enum-brute-spray",
+     "url": "https://github.com/treebuilder/aad-sso-enum-brute-spray",
+     "purpose": null
+    },
+    {
+     "name": "fireprox",
+     "url": "https://github.com/ustayready/fireprox",
+     "purpose": null
+    },
+    {
+     "name": "brutespray",
+     "url": "https://github.com/x90skysn3k/brutespray",
+     "purpose": null
+    },
+    {
+     "name": "RDPassSpray",
+     "url": "https://github.com/xFreed0m/RDPassSpray",
+     "purpose": null
+    },
+    {
+     "name": "changeme",
+     "url": "https://github.com/ztgrace/changeme",
+     "purpose": null
+    },
+    {
+     "name": "tuning-peas-for-fun-and-profit.html",
+     "url": "https://snovvcrash.rocks/2020/08/22/tuning-peas-for-fun-and-profit.html",
+     "purpose": null
+    }
+   ]
+  },
+  "lateral-movement": {
+   "sections": [
+    "Lateral Movement",
+    "Network Share Scanner",
+    "Pivot",
+    "Wrapper for various tools"
+   ],
+   "tools": [
+    {
+     "name": "1ffe59031d42c08603a3bde0ff678feb",
+     "url": "https://gist.github.com/gladiatx0r/1ffe59031d42c08603a3bde0ff678feb",
+     "purpose": null
+    },
+    {
+     "name": "VPNPivot",
+     "url": "https://github.com/0x36/VPNPivot",
+     "purpose": null
+    },
+    {
+     "name": "MoveKit",
+     "url": "https://github.com/0xthirteen/MoveKit",
+     "purpose": null
+    },
+    {
+     "name": "SharpMove",
+     "url": "https://github.com/0xthirteen/SharpMove",
+     "purpose": null
+    },
+    {
+     "name": "SharpRDP",
+     "url": "https://github.com/0xthirteen/SharpRDP",
+     "purpose": null
+    },
+    {
+     "name": "WMIHACKER",
+     "url": "https://github.com/360-Linton-Lab/WMIHACKER",
+     "purpose": null
+    },
+    {
+     "name": "icebreaker",
+     "url": "https://github.com/DanMcInerney/icebreaker",
+     "purpose": null
+    },
+    {
+     "name": "RestrictedAdmin",
+     "url": "https://github.com/GhostPack/RestrictedAdmin",
+     "purpose": null
+    },
+    {
+     "name": "WebclientServiceScanner",
+     "url": "https://github.com/Hackndo/WebclientServiceScanner",
+     "purpose": null
+    },
+    {
+     "name": "evil-winrm",
+     "url": "https://github.com/Hackplayers/evil-winrm",
+     "purpose": null
+    },
+    {
+     "name": "apt2",
+     "url": "https://github.com/MooseDojo/apt2",
+     "purpose": null
+    },
+    {
+     "name": "SCShell",
+     "url": "https://github.com/Mr-Un1k0d3r/SCShell",
+     "purpose": null
+    },
+    {
+     "name": "PivotSuite",
+     "url": "https://github.com/RedTeamOperations/PivotSuite",
+     "purpose": null
+    },
+    {
+     "name": "LiquidSnake",
+     "url": "https://github.com/RiccardoAncarani/LiquidSnake",
+     "purpose": null
+    },
+    {
+     "name": "PowerSharpPack",
+     "url": "https://github.com/S3cur3Th1sSh1t/PowerSharpPack",
+     "purpose": null
+    },
+    {
+     "name": "Vegile",
+     "url": "https://github.com/Screetsec/Vegile",
+     "purpose": null
+    },
+    {
+     "name": "Snaffler",
+     "url": "https://github.com/SnaffCon/Snaffler",
+     "purpose": "Share and file discovery for loot"
+    },
+    {
+     "name": "portia",
+     "url": "https://github.com/SpiderLabs/portia",
+     "purpose": null
+    },
+    {
+     "name": "mssqlproxy",
+     "url": "https://github.com/blackarrowsec/mssqlproxy",
+     "purpose": null
+    },
+    {
+     "name": "pivotnacci",
+     "url": "https://github.com/blackarrowsec/pivotnacci",
+     "purpose": null
+    },
+    {
+     "name": "GhostBuild",
+     "url": "https://github.com/bohops/GhostBuild",
+     "purpose": null
+    },
+    {
+     "name": "WSMan-WinRM",
+     "url": "https://github.com/bohops/WSMan-WinRM",
+     "purpose": null
+    },
+    {
+     "name": "CrackMapExec",
+     "url": "https://github.com/byt3bl33d3r/CrackMapExec",
+     "purpose": "Swiss-army SMB/WinRM/MSSQL validation and command execution"
+    },
+    {
+     "name": "DeathStar",
+     "url": "https://github.com/byt3bl33d3r/DeathStar",
+     "purpose": null
+    },
+    {
+     "name": "Zolom",
+     "url": "https://github.com/checkymander/Zolom",
+     "purpose": null
+    },
+    {
+     "name": "sshiva",
+     "url": "https://github.com/checkymander/sshiva",
+     "purpose": null
+    },
+    {
+     "name": "SharpMapExec",
+     "url": "https://github.com/cube0x0/SharpMapExec",
+     "purpose": null
+    },
+    {
+     "name": "SharpSystemTriggers",
+     "url": "https://github.com/cube0x0/SharpSystemTriggers",
+     "purpose": null
+    },
+    {
+     "name": "ADCollector",
+     "url": "https://github.com/dev-2null/ADCollector",
+     "purpose": null
+    },
+    {
+     "name": "PKINITtools",
+     "url": "https://github.com/dirkjanm/PKINITtools",
+     "purpose": null
+    },
+    {
+     "name": "krbrelayx",
+     "url": "https://github.com/dirkjanm/krbrelayx",
+     "purpose": null
+    },
+    {
+     "name": "SharpShares",
+     "url": "https://github.com/djhohnstein/SharpShares",
+     "purpose": "Network share enumeration"
+    },
+    {
+     "name": "pingtunnel",
+     "url": "https://github.com/esrrhs/pingtunnel",
+     "purpose": null
+    },
+    {
+     "name": "hunter",
+     "url": "https://github.com/fdiskyou/hunter",
+     "purpose": null
+    },
+    {
+     "name": "reGeorg-Weblogic",
+     "url": "https://github.com/hayasec/reGeorg-Weblogic",
+     "purpose": null
+    },
+    {
+     "name": "nextnet",
+     "url": "https://github.com/hdm/nextnet",
+     "purpose": null
+    },
+    {
+     "name": "chisel",
+     "url": "https://github.com/jpillora/chisel",
+     "purpose": "HTTP tunneling proxy/jump host"
+    },
+    {
+     "name": "SharpNoPSExec",
+     "url": "https://github.com/juliourena/SharpNoPSExec",
+     "purpose": null
+    },
+    {
+     "name": "rpivot",
+     "url": "https://github.com/klsecservices/rpivot",
+     "purpose": null
+    },
+    {
+     "name": "SpoolSample",
+     "url": "https://github.com/leechristensen/SpoolSample",
+     "purpose": null
+    },
+    {
+     "name": "SpoolSamplerNET",
+     "url": "https://github.com/leftp/SpoolSamplerNET",
+     "purpose": null
+    },
+    {
+     "name": "VmdkReader",
+     "url": "https://github.com/leftp/VmdkReader",
+     "purpose": null
+    },
+    {
+     "name": "rpc2socks",
+     "url": "https://github.com/lexfo/rpc2socks",
+     "purpose": null
+    },
+    {
+     "name": "CSExec",
+     "url": "https://github.com/malcomvetter/CSExec",
+     "purpose": null
+    },
+    {
+     "name": "MoveScheduler",
+     "url": "https://github.com/mez-0/MoveScheduler",
+     "purpose": null
+    },
+    {
+     "name": "SharpShares",
+     "url": "https://github.com/mitchmoser/SharpShares",
+     "purpose": "Network share enumeration"
+    },
+    {
+     "name": "IOXIDResolver",
+     "url": "https://github.com/mubix/IOXIDResolver",
+     "purpose": null
+    },
+    {
+     "name": "ABPTTS",
+     "url": "https://github.com/nccgroup/ABPTTS",
+     "purpose": null
+    },
+    {
+     "name": "SocksOverRDP",
+     "url": "https://github.com/nccgroup/SocksOverRDP",
+     "purpose": null
+    },
+    {
+     "name": "WMIcmd",
+     "url": "https://github.com/nccgroup/WMIcmd",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-SocksProxy",
+     "url": "https://github.com/p3nt4/Invoke-SocksProxy",
+     "purpose": null
+    },
+    {
+     "name": "PortBender",
+     "url": "https://github.com/praetorian-inc/PortBender",
+     "purpose": null
+    },
+    {
+     "name": "MiscTools",
+     "url": "https://github.com/rasta-mouse/MiscTools",
+     "purpose": null
+    },
+    {
+     "name": "GMSAPasswordReader",
+     "url": "https://github.com/rvazarkar/GMSAPasswordReader",
+     "purpose": null
+    },
+    {
+     "name": "Rubeus-Rundll32",
+     "url": "https://github.com/rvrsh3ll/Rubeus-Rundll32",
+     "purpose": null
+    },
+    {
+     "name": "SharpCOM",
+     "url": "https://github.com/rvrsh3ll/SharpCOM",
+     "purpose": null
+    },
+    {
+     "name": "ssf",
+     "url": "https://github.com/securesocketfunneling/ssf",
+     "purpose": null
+    },
+    {
+     "name": "reGeorg",
+     "url": "https://github.com/sensepost/reGeorg",
+     "purpose": null
+    },
+    {
+     "name": "SharpChisel",
+     "url": "https://github.com/shantanu561993/SharpChisel",
+     "purpose": null
+    },
+    {
+     "name": "ligolo",
+     "url": "https://github.com/sysdream/ligolo",
+     "purpose": "Tunneling/pivoting with a TUN interface"
+    },
+    {
+     "name": "ligolo-ng",
+     "url": "https://github.com/tnpitsecurity/ligolo-ng",
+     "purpose": null
+    },
+    {
+     "name": "PetitPotam",
+     "url": "https://github.com/topotam/PetitPotam",
+     "purpose": "NTLM coercion to certificate abuse chain"
+    },
+    {
+     "name": "egressbuster",
+     "url": "https://github.com/trustedsec/egressbuster",
+     "purpose": null
+    },
+    {
+     "name": "bypass-firewalls-by-DNS-history",
+     "url": "https://github.com/vincentcox/bypass-firewalls-by-DNS-history",
+     "purpose": null
+    },
+    {
+     "name": "SauronEye",
+     "url": "https://github.com/vivami/SauronEye",
+     "purpose": null
+    },
+    {
+     "name": "cornershot",
+     "url": "https://github.com/zeronetworks/cornershot",
+     "purpose": null
+    }
+   ]
+  },
+  "network-attacks": {
+   "sections": [
+    "Network Attacks",
+    "Sniffing / Evaluation / Filtering",
+    "Specific MITM service Exploitation"
+   ],
+   "tools": [
+    {
+     "name": "LANs.py",
+     "url": "https://github.com/DanMcInerney/LANs.py",
+     "purpose": null
+    },
+    {
+     "name": "net-creds",
+     "url": "https://github.com/DanMcInerney/net-creds",
+     "purpose": null
+    },
+    {
+     "name": "WSuspicious",
+     "url": "https://github.com/GoSecure/WSuspicious",
+     "purpose": null
+    },
+    {
+     "name": "pyrdp",
+     "url": "https://github.com/GoSecure/pyrdp",
+     "purpose": null
+    },
+    {
+     "name": "pywsus",
+     "url": "https://github.com/GoSecure/pywsus",
+     "purpose": null
+    },
+    {
+     "name": "InveighZero",
+     "url": "https://github.com/Kevin-Robertson/InveighZero",
+     "purpose": null
+    },
+    {
+     "name": "Invoke-TheHash",
+     "url": "https://github.com/Kevin-Robertson/Invoke-TheHash",
+     "purpose": null
+    },
+    {
+     "name": "Responder",
+     "url": "https://github.com/SpiderLabs/Responder",
+     "purpose": "LLMNR/NBT-NS/MDNS poisoner for credential capture"
+    },
+    {
+     "name": "PcapXray",
+     "url": "https://github.com/Srinivas11789/PcapXray",
+     "purpose": null
+    },
+    {
+     "name": "Seth",
+     "url": "https://github.com/SySS-Research/Seth",
+     "purpose": null
+    },
+    {
+     "name": "davil",
+     "url": "https://github.com/audibleblink/davil",
+     "purpose": null
+    },
+    {
+     "name": "bettercap",
+     "url": "https://github.com/bettercap/bettercap",
+     "purpose": null
+    },
+    {
+     "name": "bettercap",
+     "url": "https://github.com/evilsocket/bettercap",
+     "purpose": null
+    },
+    {
+     "name": "mitm6",
+     "url": "https://github.com/fox-it/mitm6",
+     "purpose": "IPv6 DNS takeover for AD environments"
+    },
+    {
+     "name": "evilgrade",
+     "url": "https://github.com/infobyte/evilgrade",
+     "purpose": null
+    },
+    {
+     "name": "ssh-mitm",
+     "url": "https://github.com/jtesta/ssh-mitm",
+     "purpose": null
+    },
+    {
+     "name": "PCredz",
+     "url": "https://github.com/lgandx/PCredz",
+     "purpose": null
+    },
+    {
+     "name": "Responder",
+     "url": "https://github.com/lgandx/Responder",
+     "purpose": "LLMNR/NBT-NS/MDNS poisoner for credential capture"
+    },
+    {
+     "name": "Farmer",
+     "url": "https://github.com/mdsecactivebreach/Farmer",
+     "purpose": null
+    },
+    {
+     "name": "SharpWebServer",
+     "url": "https://github.com/mgeeky/SharpWebServer",
+     "purpose": null
+    },
+    {
+     "name": "BruteShark",
+     "url": "https://github.com/odedshimon/BruteShark",
+     "purpose": null
+    },
+    {
+     "name": "wsuxploit",
+     "url": "https://github.com/pimps/wsuxploit",
+     "purpose": null
+    },
+    {
+     "name": "morpheus",
+     "url": "https://github.com/r00t-3xp10it/morpheus",
+     "purpose": null
+    },
+    {
+     "name": "injectify",
+     "url": "https://github.com/samdenty/injectify",
+     "purpose": null
+    },
+    {
+     "name": "ridrelay",
+     "url": "https://github.com/skorov/ridrelay",
+     "purpose": null
+    }
+   ]
+  },
+  "persistence": {
+   "sections": [
+    "Backdoor finder",
+    "Persistence on windows"
+   ],
+   "tools": [
+    {
+     "name": "ForgeCert",
+     "url": "https://github.com/GhostPack/ForgeCert",
+     "purpose": null
+    },
+    {
+     "name": "DAMP",
+     "url": "https://github.com/HarmJ0y/DAMP",
+     "purpose": null
+    },
+    {
+     "name": "printjacker",
+     "url": "https://github.com/RedSection/printjacker",
+     "purpose": null
+    },
+    {
+     "name": "pyForgeCert",
+     "url": "https://github.com/Ridter/pyForgeCert",
+     "purpose": null
+    },
+    {
+     "name": "pywhisker",
+     "url": "https://github.com/ShutdownRepo/pywhisker",
+     "purpose": null
+    },
+    {
+     "name": "doublepulsar-detection-script",
+     "url": "https://github.com/countercept/doublepulsar-detection-script",
+     "purpose": null
+    },
+    {
+     "name": "Whisker",
+     "url": "https://github.com/eladshamir/Whisker",
+     "purpose": null
+    },
+    {
+     "name": "SharPersist",
+     "url": "https://github.com/fireeye/SharPersist",
+     "purpose": null
+    },
+    {
+     "name": "Sticky-Keys-Slayer",
+     "url": "https://github.com/linuz/Sticky-Keys-Slayer",
+     "purpose": null
+    },
+    {
+     "name": "SharpHide",
+     "url": "https://github.com/outflanknl/SharpHide",
+     "purpose": null
+    },
+    {
+     "name": "sticky_keys_hunter",
+     "url": "https://github.com/ztgrace/sticky_keys_hunter",
+     "purpose": null
+    }
+   ]
+  },
+  "privilege-escalation": {
+   "sections": [
+    "Linux Privilege Escalation / Audit",
+    "T3 Enumeration",
+    "Windows Privilege Abuse (Privilege Escalation)",
+    "Windows Privilege Escalation / Audit"
+   ],
+   "tools": [
+    {
+     "name": "Tokenvator",
+     "url": "https://github.com/0xbadjuju/Tokenvator",
+     "purpose": null
+    },
+    {
+     "name": "JAWS",
+     "url": "https://github.com/411Hall/JAWS",
+     "purpose": "Windows enumeration in PowerShell"
+    },
+    {
+     "name": "WINspect",
+     "url": "https://github.com/A-mIn3/WINspect",
+     "purpose": null
+    },
+    {
+     "name": "BeRoot",
+     "url": "https://github.com/AlessandroZ/BeRoot",
+     "purpose": "Privilege escalation path checker (Windows/Linux)"
+    },
+    {
+     "name": "SUID3NUM",
+     "url": "https://github.com/Anon-Exploiter/SUID3NUM",
+     "purpose": null
+    },
+    {
+     "name": "byeintegrity8-uac",
+     "url": "https://github.com/AzAgarampur/byeintegrity8-uac",
+     "purpose": null
+    },
+    {
+     "name": "BadPotato",
+     "url": "https://github.com/BeichenDream/BadPotato",
+     "purpose": null
+    },
+    {
+     "name": "lynis",
+     "url": "https://github.com/CISOfy/lynis",
+     "purpose": null
+    },
+    {
+     "name": "siofra",
+     "url": "https://github.com/Cybereason/siofra",
+     "purpose": null
+    },
+    {
+     "name": "pspy",
+     "url": "https://github.com/DominicBreuker/pspy",
+     "purpose": null
+    },
+    {
+     "name": "SharpBypassUAC",
+     "url": "https://github.com/FatRodzianko/SharpBypassUAC",
+     "purpose": null
+    },
+    {
+     "name": "Seatbelt",
+     "url": "https://github.com/GhostPack/Seatbelt",
+     "purpose": null
+    },
+    {
+     "name": "SharpUp",
+     "url": "https://github.com/GhostPack/SharpUp",
+     "purpose": "C# Windows privilege escalation checks"
+    },
+    {
+     "name": "Robber",
+     "url": "https://github.com/MojtabaTajik/Robber",
+     "purpose": null
+    },
+    {
+     "name": "MIDA-Multitool",
+     "url": "https://github.com/NullArray/MIDA-Multitool",
+     "purpose": null
+    },
+    {
+     "name": "RootHelper",
+     "url": "https://github.com/NullArray/RootHelper",
+     "purpose": null
+    },
+    {
+     "name": "linux-kernel-exploits",
+     "url": "https://github.com/SecWiki/linux-kernel-exploits",
+     "purpose": null
+    },
+    {
+     "name": "windows-kernel-exploits",
+     "url": "https://github.com/SecWiki/windows-kernel-exploits",
+     "purpose": null
+    },
+    {
+     "name": "SUDO_KILLER",
+     "url": "https://github.com/TH3xACE/SUDO_KILLER",
+     "purpose": null
+    },
+    {
+     "name": "Lovely-Potato",
+     "url": "https://github.com/TsukiCTF/Lovely-Potato",
+     "purpose": null
+    },
+    {
+     "name": "Exploits",
+     "url": "https://github.com/WindowsExploits/Exploits",
+     "purpose": null
+    },
+    {
+     "name": "WindowsExploits",
+     "url": "https://github.com/abatchy17/WindowsExploits",
+     "purpose": null
+    },
+    {
+     "name": "static-binaries",
+     "url": "https://github.com/andrew-d/static-binaries",
+     "purpose": null
+    },
+    {
+     "name": "RemotePotato0",
+     "url": "https://github.com/antonioCoco/RemotePotato0",
+     "purpose": null
+    },
+    {
+     "name": "RoguePotato",
+     "url": "https://github.com/antonioCoco/RoguePotato",
+     "purpose": null
+    },
+    {
+     "name": "RogueWinRM",
+     "url": "https://github.com/antonioCoco/RogueWinRM",
+     "purpose": null
+    },
+    {
+     "name": "yodo",
+     "url": "https://github.com/b3rito/yodo",
+     "purpose": null
+    },
+    {
+     "name": "linux-soft-exploit-suggester",
+     "url": "https://github.com/belane/linux-soft-exploit-suggester",
+     "purpose": null
+    },
+    {
+     "name": "wesng",
+     "url": "https://github.com/bitsadmin/wesng",
+     "purpose": null
+    },
+    {
+     "name": "linPEAS",
+     "url": "https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/linPEAS",
+     "purpose": null
+    },
+    {
+     "name": "winPEAS",
+     "url": "https://github.com/carlospolop/privilege-escalation-awesome-scripts-suite/tree/master/winPEAS",
+     "purpose": "Windows privilege escalation enumeration"
+    },
+    {
+     "name": "HostRecon",
+     "url": "https://github.com/dafthack/HostRecon",
+     "purpose": null
+    },
+    {
+     "name": "linux-smart-enumeration",
+     "url": "https://github.com/diego-treitos/linux-smart-enumeration",
+     "purpose": null
+    },
+    {
+     "name": "vuls",
+     "url": "https://github.com/future-architect/vuls",
+     "purpose": null
+    },
+    {
+     "name": "Priv2Admin",
+     "url": "https://github.com/gtworek/Priv2Admin",
+     "purpose": null
+    },
+    {
+     "name": "ADAPE-Script",
+     "url": "https://github.com/hausec/ADAPE-Script",
+     "purpose": null
+    },
+    {
+     "name": "tas",
+     "url": "https://github.com/hc0d3r/tas",
+     "purpose": null
+    },
+    {
+     "name": "UACME",
+     "url": "https://github.com/hfiref0x/UACME",
+     "purpose": null
+    },
+    {
+     "name": "dirty_sock",
+     "url": "https://github.com/initstring/dirty_sock",
+     "purpose": null
+    },
+    {
+     "name": "uptux",
+     "url": "https://github.com/initstring/uptux",
+     "purpose": null
+    },
+    {
+     "name": "unix-privesc-check",
+     "url": "https://github.com/inquisb/unix-privesc-check",
+     "purpose": null
+    },
+    {
+     "name": "FullPowers",
+     "url": "https://github.com/itm4n/FullPowers",
+     "purpose": null
+    },
+    {
+     "name": "Perfusion",
+     "url": "https://github.com/itm4n/Perfusion",
+     "purpose": null
+    },
+    {
+     "name": "PrintSpoofer",
+     "url": "https://github.com/itm4n/PrintSpoofer",
+     "purpose": null
+    },
+    {
+     "name": "PrivescCheck",
+     "url": "https://github.com/itm4n/PrivescCheck",
+     "purpose": null
+    },
+    {
+     "name": "UsoDllLoader",
+     "url": "https://github.com/itm4n/UsoDllLoader",
+     "purpose": null
+    },
+    {
+     "name": "modDetective",
+     "url": "https://github.com/itsKindred/modDetective",
+     "purpose": null
+    },
+    {
+     "name": "linux-exploit-suggester-2",
+     "url": "https://github.com/jondonas/linux-exploit-suggester-2",
+     "purpose": null
+    },
+    {
+     "name": "traitor",
+     "url": "https://github.com/liamg/traitor",
+     "purpose": null
+    },
+    {
+     "name": "linux-exploit-suggester",
+     "url": "https://github.com/mzet-/linux-exploit-suggester",
+     "purpose": null
+    },
+    {
+     "name": "GTFOBLookup",
+     "url": "https://github.com/nccgroup/GTFOBLookup",
+     "purpose": null
+    },
+    {
+     "name": "AutoLocalPrivilegeEscalation",
+     "url": "https://github.com/ngalongc/AutoLocalPrivilegeEscalation",
+     "purpose": null
+    },
+    {
+     "name": "sudo_inject",
+     "url": "https://github.com/nongiach/sudo_inject",
+     "purpose": null
+    },
+    {
+     "name": "jndiat",
+     "url": "https://github.com/quentinhardy/jndiat",
+     "purpose": "JNDI injection exploitation toolkit"
+    },
+    {
+     "name": "Sherlock",
+     "url": "https://github.com/rasta-mouse/Sherlock",
+     "purpose": "PowerShell local vulnerability detection"
+    },
+    {
+     "name": "LinEnum",
+     "url": "https://github.com/rebootuser/LinEnum",
+     "purpose": "Linux local enumeration and priv-esc suggestions"
+    },
+    {
+     "name": "WinPwnage",
+     "url": "https://github.com/rootm0s/WinPwnage",
+     "purpose": null
+    },
+    {
+     "name": "rattler",
+     "url": "https://github.com/sensepost/rattler",
+     "purpose": null
+    },
+    {
+     "name": "swap_digger",
+     "url": "https://github.com/sevagas/swap_digger",
+     "purpose": null
+    },
+    {
+     "name": "KeyTabExtract",
+     "url": "https://github.com/sosdave/KeyTabExtract",
+     "purpose": null
+    },
+    {
+     "name": "EfsPotato",
+     "url": "https://github.com/zcgonvh/EfsPotato",
+     "purpose": null
+    },
+    {
+     "name": "linuxprivchecker.py",
+     "url": "https://raw.githubusercontent.com/sleventyeleven/linuxprivchecker/master/linuxprivchecker.py",
+     "purpose": null
+    }
+   ]
+  },
+  "recon-osint": {
+   "sections": [
+    "Check Email Accounts",
+    "Domain Finding / Subdomain Enumeration",
+    "Email Gathering",
+    "File Search / Metadata extraction",
+    "General Recon"
+   ],
+   "tools": [
+    {
+     "name": "FOCA",
+     "url": "https://github.com/ElevenPaths/FOCA",
+     "purpose": null
+    },
+    {
+     "name": "EyeWitness",
+     "url": "https://github.com/FortyNorthSecurity/EyeWitness",
+     "purpose": "Screenshot and identify live web endpoints"
+    },
+    {
+     "name": "Rock-ON",
+     "url": "https://github.com/SilverPoision/Rock-ON",
+     "purpose": null
+    },
+    {
+     "name": "SimplyEmail",
+     "url": "https://github.com/SimplySecurity/SimplyEmail",
+     "purpose": null
+    },
+    {
+     "name": "subbrute",
+     "url": "https://github.com/TheRook/subbrute",
+     "purpose": null
+    },
+    {
+     "name": "domained",
+     "url": "https://github.com/TypeError/domained",
+     "purpose": null
+    },
+    {
+     "name": "Sublist3r",
+     "url": "https://github.com/aboul3la/Sublist3r",
+     "purpose": null
+    },
+    {
+     "name": "amass",
+     "url": "https://github.com/caffix/amass",
+     "purpose": null
+    },
+    {
+     "name": "GatherContacts",
+     "url": "https://github.com/clr2of8/GatherContacts",
+     "purpose": null
+    },
+    {
+     "name": "PowerMeta",
+     "url": "https://github.com/dafthack/PowerMeta",
+     "purpose": null
+    },
+    {
+     "name": "dnsrecon",
+     "url": "https://github.com/darkoperator/dnsrecon",
+     "purpose": null
+    },
+    {
+     "name": "ScrapedIn",
+     "url": "https://github.com/dchrastil/ScrapedIn",
+     "purpose": null
+    },
+    {
+     "name": "domain_analyzer",
+     "url": "https://github.com/eldraco/domain_analyzer",
+     "purpose": null
+    },
+    {
+     "name": "dnsenum",
+     "url": "https://github.com/fwaeytens/dnsenum",
+     "purpose": null
+    },
+    {
+     "name": "InSpy",
+     "url": "https://github.com/leapsecurity/InSpy",
+     "purpose": null
+    },
+    {
+     "name": "discover",
+     "url": "https://github.com/leebaird/discover",
+     "purpose": null
+    },
+    {
+     "name": "Infoga",
+     "url": "https://github.com/m4ll0k/Infoga",
+     "purpose": null
+    },
+    {
+     "name": "CrossLinked",
+     "url": "https://github.com/m8r0wn/CrossLinked",
+     "purpose": null
+    },
+    {
+     "name": "holehe",
+     "url": "https://github.com/megadose/holehe",
+     "purpose": null
+    },
+    {
+     "name": "aquatone",
+     "url": "https://github.com/michenriksen/aquatone",
+     "purpose": null
+    },
+    {
+     "name": "EmailGen",
+     "url": "https://github.com/navisecdelta/EmailGen",
+     "purpose": null
+    },
+    {
+     "name": "Striker",
+     "url": "https://github.com/s0md3v/Striker",
+     "purpose": null
+    },
+    {
+     "name": "Zen",
+     "url": "https://github.com/s0md3v/Zen",
+     "purpose": null
+    },
+    {
+     "name": "subfinder",
+     "url": "https://github.com/subfinder/subfinder",
+     "purpose": null
+    }
+   ]
+  },
+  "web-services": {
+   "sections": [
+    "Confluence Exploit",
+    "Crawler",
+    "Dameware",
+    "FPM port",
+    "File / Directory / Parameter discovery",
+    "Framework Discovery",
+    "Framework Scanner / Exploitation",
+    "IKE",
+    "Intel AMT Exploitation",
+    "JIRA",
+    "MSSQL",
+    "Network- / Service-level Vulnerability Scanner",
+    "Open X11",
+    "Oracle",
+    "Printers",
+    "REST API Audit",
+    "SAML Login",
+    "SAP Exploitation",
+    "SNMP",
+    "Scanner / Exploitation-Frameworks / Automation",
+    "Sharepoint exploitation",
+    "Solarwinds",
+    "Sonicwall VPN",
+    "Swagger File API Attack",
+    "Telerik UI for ASP.NET AJAX Exploit",
+    "VSphere VCenter",
+    "Web Exploitation Tools",
+    "Web Vulnerability Scanner / Burp Plugins",
+    "Weblogic Exploitation",
+    "iLO Exploitation",
+    "vmware vCenter Exploits"
+   ],
+   "tools": [
+    {
+     "name": "Jiraffe",
+     "url": "https://github.com/0x48piraj/Jiraffe",
+     "purpose": null
+    },
+    {
+     "name": "viewgen",
+     "url": "https://github.com/0xacb/viewgen",
+     "purpose": null
+    },
+    {
+     "name": "weblogicScanner",
+     "url": "https://github.com/0xn0ne/weblogicScanner",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2017-10271",
+     "url": "https://github.com/1337g/CVE-2017-10271",
+     "purpose": null
+    },
+    {
+     "name": "Sn1per",
+     "url": "https://github.com/1N3/Sn1per",
+     "purpose": "Automated recon and attack surface scanner"
+    },
+    {
+     "name": "GadgetProbe",
+     "url": "https://github.com/BishopFox/GadgetProbe",
+     "purpose": null
+    },
+    {
+     "name": "oxml_xxe",
+     "url": "https://github.com/BuffaloWill/oxml_xxe",
+     "purpose": null
+    },
+    {
+     "name": "PRETty",
+     "url": "https://github.com/BusesCanFly/PRETty",
+     "purpose": null
+    },
+    {
+     "name": "dirscraper",
+     "url": "https://github.com/Cillian-Collins/dirscraper",
+     "purpose": null
+    },
+    {
+     "name": "p0wnedShell",
+     "url": "https://github.com/Cn33liz/p0wnedShell",
+     "purpose": null
+    },
+    {
+     "name": "DeathMetal",
+     "url": "https://github.com/Coalfire-Research/DeathMetal",
+     "purpose": null
+    },
+    {
+     "name": "CMSmap",
+     "url": "https://github.com/Dionach/CMSmap",
+     "purpose": null
+    },
+    {
+     "name": "WhatWaf",
+     "url": "https://github.com/Ekultek/WhatWaf",
+     "purpose": null
+    },
+    {
+     "name": "weblogic_rce",
+     "url": "https://github.com/FlyfishSec/weblogic_rce",
+     "purpose": null
+    },
+    {
+     "name": "RCEvil.NET",
+     "url": "https://github.com/Illuminopi/RCEvil.NET",
+     "purpose": null
+    },
+    {
+     "name": "SharpSphere",
+     "url": "https://github.com/JamesCooteUK/SharpSphere",
+     "purpose": null
+    },
+    {
+     "name": "JSFScan.sh",
+     "url": "https://github.com/KathanP19/JSFScan.sh",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2018-2894",
+     "url": "https://github.com/LandGrey/CVE-2018-2894",
+     "purpose": null
+    },
+    {
+     "name": "SAML2Spray",
+     "url": "https://github.com/LuemmelSec/SAML2Spray",
+     "purpose": null
+    },
+    {
+     "name": "gobuster",
+     "url": "https://github.com/OJ/gobuster",
+     "purpose": null
+    },
+    {
+     "name": "LFiFreak",
+     "url": "https://github.com/OsandaMalith/LFiFreak",
+     "purpose": null
+    },
+    {
+     "name": "PRET",
+     "url": "https://github.com/RUB-NDS/PRET",
+     "purpose": null
+    },
+    {
+     "name": "ikeforce",
+     "url": "https://github.com/SpiderLabs/ikeforce",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2019-2890",
+     "url": "https://github.com/SukaraLin/CVE-2019-2890",
+     "purpose": null
+    },
+    {
+     "name": "CMSeeK",
+     "url": "https://github.com/Tuhinshubhra/CMSeeK",
+     "purpose": null
+    },
+    {
+     "name": "desharialize",
+     "url": "https://github.com/Voulnet/desharialize",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2020-2551",
+     "url": "https://github.com/Y4er/CVE-2020-2551",
+     "purpose": null
+    },
+    {
+     "name": "ilo4_toolbox",
+     "url": "https://github.com/airbus-seclab/ilo4_toolbox",
+     "purpose": null
+    },
+    {
+     "name": "fuxploider",
+     "url": "https://github.com/almandin/fuxploider",
+     "purpose": null
+    },
+    {
+     "name": "phpggc",
+     "url": "https://github.com/ambionics/phpggc",
+     "purpose": null
+    },
+    {
+     "name": "archerysec",
+     "url": "https://github.com/archerysec/archerysec",
+     "purpose": null
+    },
+    {
+     "name": "CrackMapExec",
+     "url": "https://github.com/byt3bl33d3r/CrackMapExec",
+     "purpose": "Swiss-army SMB/WinRM/MSSQL validation and command execution"
+    },
+    {
+     "name": "SAP_GW_RCE_exploit",
+     "url": "https://github.com/chipik/SAP_GW_RCE_exploit",
+     "purpose": null
+    },
+    {
+     "name": "domi-owned",
+     "url": "https://github.com/coldfusion39/domi-owned",
+     "purpose": null
+    },
+    {
+     "name": "OPCDE",
+     "url": "https://github.com/comaeio/OPCDE",
+     "purpose": null
+    },
+    {
+     "name": "SSRF-Testing",
+     "url": "https://github.com/cujanovic/SSRF-Testing",
+     "purpose": null
+    },
+    {
+     "name": "HackBar",
+     "url": "https://github.com/d3vilbug/HackBar",
+     "purpose": null
+    },
+    {
+     "name": "VisualDoor",
+     "url": "https://github.com/darrenmartyn/VisualDoor",
+     "purpose": null
+    },
+    {
+     "name": "ParamSpider",
+     "url": "https://github.com/devanshbatham/ParamSpider",
+     "purpose": null
+    },
+    {
+     "name": "droopescan",
+     "url": "https://github.com/droope/droopescan",
+     "purpose": null
+    },
+    {
+     "name": "XXEinjector",
+     "url": "https://github.com/enjoiz/XXEinjector",
+     "purpose": null
+    },
+    {
+     "name": "tplmap",
+     "url": "https://github.com/epinna/tplmap",
+     "purpose": null
+    },
+    {
+     "name": "Java-Deserialization-Scanner",
+     "url": "https://github.com/federicodotta/Java-Deserialization-Scanner",
+     "purpose": null
+    },
+    {
+     "name": "Astra",
+     "url": "https://github.com/flipkart-incubator/Astra",
+     "purpose": null
+    },
+    {
+     "name": "p0wny-shell",
+     "url": "https://github.com/flozz/p0wny-shell",
+     "purpose": "Minimal PHP webshell"
+    },
+    {
+     "name": "ysoserial",
+     "url": "https://github.com/frohoff/ysoserial",
+     "purpose": null
+    },
+    {
+     "name": "sap_ms",
+     "url": "https://github.com/gelim/sap_ms",
+     "purpose": null
+    },
+    {
+     "name": "vmware_vcenter_cve_2020_3952",
+     "url": "https://github.com/guardicore/vmware_vcenter_cve_2020_3952",
+     "purpose": null
+    },
+    {
+     "name": "GyoiThon",
+     "url": "https://github.com/gyoisamurai/GyoiThon",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2021-26084_Confluence",
+     "url": "https://github.com/h3v0x/CVE-2021-26084_Confluence",
+     "purpose": null
+    },
+    {
+     "name": "fpmvuln",
+     "url": "https://github.com/hannob/fpmvuln",
+     "purpose": null
+    },
+    {
+     "name": "snallygaster",
+     "url": "https://github.com/hannob/snallygaster",
+     "purpose": null
+    },
+    {
+     "name": "snmpwn",
+     "url": "https://github.com/hatlord/snmpwn",
+     "purpose": null
+    },
+    {
+     "name": "automatic-api-attack-tool",
+     "url": "https://github.com/imperva/automatic-api-attack-tool",
+     "purpose": null
+    },
+    {
+     "name": "GitTools",
+     "url": "https://github.com/internetwache/GitTools",
+     "purpose": null
+    },
+    {
+     "name": "IIS-ShortName-Scanner",
+     "url": "https://github.com/irsdl/IIS-ShortName-Scanner",
+     "purpose": null
+    },
+    {
+     "name": "lolcrawler",
+     "url": "https://github.com/jonaslejon/lolcrawler",
+     "purpose": null
+    },
+    {
+     "name": "dcrawl",
+     "url": "https://github.com/kgretzky/dcrawl",
+     "purpose": null
+    },
+    {
+     "name": "weblogic-scan",
+     "url": "https://github.com/kingkaki/weblogic-scan",
+     "purpose": null
+    },
+    {
+     "name": "gau",
+     "url": "https://github.com/lc/gau",
+     "purpose": null
+    },
+    {
+     "name": "gitjacker",
+     "url": "https://github.com/liamg/gitjacker",
+     "purpose": null
+    },
+    {
+     "name": "AutoNSE",
+     "url": "https://github.com/m4ll0k/AutoNSE",
+     "purpose": null
+    },
+    {
+     "name": "WAScan",
+     "url": "https://github.com/m4ll0k/WAScan",
+     "purpose": null
+    },
+    {
+     "name": "WPSeku",
+     "url": "https://github.com/m4ll0k/WPSeku",
+     "purpose": null
+    },
+    {
+     "name": "parameth",
+     "url": "https://github.com/maK-/parameth",
+     "purpose": null
+    },
+    {
+     "name": "dirsearch",
+     "url": "https://github.com/maurosoria/dirsearch",
+     "purpose": null
+    },
+    {
+     "name": "server-status_PWN",
+     "url": "https://github.com/mazen160/server-status_PWN",
+     "purpose": null
+    },
+    {
+     "name": "restler-fuzzer",
+     "url": "https://github.com/microsoft/restler-fuzzer",
+     "purpose": null
+    },
+    {
+     "name": "solarflare",
+     "url": "https://github.com/mubix/solarflare",
+     "purpose": null
+    },
+    {
+     "name": "WPForce",
+     "url": "https://github.com/n00py/WPForce",
+     "purpose": null
+    },
+    {
+     "name": "autopwn",
+     "url": "https://github.com/nccgroup/autopwn",
+     "purpose": null
+    },
+    {
+     "name": "dirble",
+     "url": "https://github.com/nccgroup/dirble",
+     "purpose": null
+    },
+    {
+     "name": "freddy",
+     "url": "https://github.com/nccgroup/freddy",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2019-18935",
+     "url": "https://github.com/noperator/CVE-2019-18935",
+     "purpose": null
+    },
+    {
+     "name": "xcat",
+     "url": "https://github.com/orf/xcat",
+     "purpose": null
+    },
+    {
+     "name": "ysoserial.net",
+     "url": "https://github.com/pwntester/ysoserial.net",
+     "purpose": null
+    },
+    {
+     "name": "jndiat",
+     "url": "https://github.com/quentinhardy/jndiat",
+     "purpose": "JNDI injection exploitation toolkit"
+    },
+    {
+     "name": "msdat",
+     "url": "https://github.com/quentinhardy/msdat",
+     "purpose": null
+    },
+    {
+     "name": "odat",
+     "url": "https://github.com/quentinhardy/odat",
+     "purpose": null
+    },
+    {
+     "name": "wordpress-exploit-framework",
+     "url": "https://github.com/rastating/wordpress-exploit-framework",
+     "purpose": null
+    },
+    {
+     "name": "joomscan",
+     "url": "https://github.com/rezasp/joomscan",
+     "purpose": null
+    },
+    {
+     "name": "SharpSMBSpray",
+     "url": "https://github.com/rvrsh3ll/SharpSMBSpray",
+     "purpose": null
+    },
+    {
+     "name": "Arjun",
+     "url": "https://github.com/s0md3v/Arjun",
+     "purpose": null
+    },
+    {
+     "name": "Breacher",
+     "url": "https://github.com/s0md3v/Breacher",
+     "purpose": null
+    },
+    {
+     "name": "Photon",
+     "url": "https://github.com/s0md3v/Photon",
+     "purpose": null
+    },
+    {
+     "name": "XSStrike",
+     "url": "https://github.com/s0md3v/XSStrike",
+     "purpose": null
+    },
+    {
+     "name": "vulscan",
+     "url": "https://github.com/scipag/vulscan",
+     "purpose": null
+    },
+    {
+     "name": "SPartan",
+     "url": "https://github.com/sensepost/SPartan",
+     "purpose": null
+    },
+    {
+     "name": "xrdp",
+     "url": "https://github.com/sensepost/xrdp",
+     "purpose": null
+    },
+    {
+     "name": "awesome-burp-extensions",
+     "url": "https://github.com/snoopysecurity/awesome-burp-extensions",
+     "purpose": null
+    },
+    {
+     "name": "BurpSuite_403Bypasser",
+     "url": "https://github.com/sting8k/BurpSuite_403Bypasser",
+     "purpose": null
+    },
+    {
+     "name": "Wordpresscan",
+     "url": "https://github.com/swisskyrepo/Wordpresscan",
+     "purpose": null
+    },
+    {
+     "name": "webshell",
+     "url": "https://github.com/tennc/webshell",
+     "purpose": null
+    },
+    {
+     "name": "routersploit",
+     "url": "https://github.com/threat9/routersploit",
+     "purpose": null
+    },
+    {
+     "name": "angularjs-csti-scanner",
+     "url": "https://github.com/tijme/angularjs-csti-scanner",
+     "purpose": null
+    },
+    {
+     "name": "V3n0M-Scanner",
+     "url": "https://github.com/v3n0m-Scanner/V3n0M-Scanner",
+     "purpose": null
+    },
+    {
+     "name": "nmap-vulners",
+     "url": "https://github.com/vulnersCom/nmap-vulners",
+     "purpose": null
+    },
+    {
+     "name": "CVE-2019-3980",
+     "url": "https://github.com/warferik/CVE-2019-3980",
+     "purpose": null
+    },
+    {
+     "name": "Typo-Enumerator",
+     "url": "https://github.com/whoot/Typo-Enumerator",
+     "purpose": null
+    },
+    {
+     "name": "wpscan",
+     "url": "https://github.com/wpscanteam/wpscan",
+     "purpose": "WordPress vulnerability scanner"
+    },
+    {
+     "name": "OWASP-Nettacker",
+     "url": "https://github.com/zdresearch/OWASP-Nettacker",
+     "purpose": null
+    },
+    {
+     "name": "44005",
+     "url": "https://www.exploit-db.com/exploits/44005",
+     "purpose": null
+    }
+   ]
+  }
+ },
+ "meta": {
+  "source": "gist z0rs/e1c640e2892cb6737602fec5d5496480 (Red-Teaming tool.md, 2023) - links re-attributed to in-house phases",
+  "generated": "2026-10-01",
+  "policy": "names + repository links + purposes only; no payloads, no exploit code, no evasion snippets. Use only on authorized targets.",
+  "totals": {
+   "phases": 13,
+   "tools": 725,
+   "links_seen": 1071,
+   "note": "unattributed links live in doc/index sections the phase map does not cover"
+  }
+ }
+}
