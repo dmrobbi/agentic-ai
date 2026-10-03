@@ -57,15 +57,36 @@ invented; that is the brand.
 - **Day 5**: the measured retro — before/after first-party deltas
   (`snapshot_counters` twice, `blitz_report`) + queue conversion stats.
 
-## Guardrails (non-negotiable, code-enforced)
+## Guardrails (code-enforced; the owner flips policies via set_policy)
 
-- Draft-only: the social agent has no posting path; every send, post, and
-  mail is the human's.
+- Per-activity authorization is THE gate: every post and email reply
+  enters the authorized-activities queue through an explicit
+  authorize_activity call - the owner's decision, logged with the
+  approval path it took (owner_approved or auto_approve_drafts). No
+  queue entry self-materializes; the ticker executes only authorized
+  records, at their scheduled optimal time.
+- Loosening policies (owner decision 2026-10-03): auto_approve_drafts ON
+  (a DRAFTED post may authorize without the owner_approved mark) and
+  reply_style rich (a reply may add ONE house-scrubbed context paragraph
+  from a caller-supplied published note). Both flip back via set_policy;
+  flips persist in the shared store, so the ticker follows the same
+  rules.
+- Limited-information replies: the request text is never echoed; the
+  reply carries only published material; no pricing, no commitments;
+  composed by the fleet and mailed via the verified reports@ mailbox
+  (credentials read at execute-time, never printed) with the human
+  supervision sign-off line.
+- House scrub patterns are non-negotiable: drafted posts AND reply
+  context notes pass them; hits are rejected at the desk.
 - Verified links only: any URL is fetched live before it ships.
 - Measured numbers only: stats come from one shared measured source;
   `brand_check` flags everything else.
 - No engagement bait, no fake personas, no astroturfing.
-- Hostile mentions escalate to the owner; they never get drafted replies.
+- Hostile mentions escalate to the owner; they never get drafted
+  replies.
+- Full audit: authorizations, retries (capped at 3 = failed_final), and
+  executions land in the activity audit log plus the chassis
+  transparency log.
 
 ## KPIs (the blitz_report math)
 
