@@ -36,6 +36,7 @@ EXPECTED_TOOLS = sorted([
     "content_calendar", "repurpose", "draft_post", "post_queue",
     "mark_status", "mark_published", "engagement_draft", "listen_report",
     "metrics_report", "brand_check", "crisis_note", "week_summary",
+    "hand_off", "hand_to_sales", "site_counters", "advocacy_pack",
 ])
 
 ARTICLE = {
@@ -488,3 +489,108 @@ class TestDispatch:
         result = await agent.perform_task(
             "brand_check", {"text": "unhackable promise"})
         assert result["status"] == "flagged"
+
+
+class TestHandOff:
+    def test_requires_owner_approved(self, monkeypatch):
+        agent = make_agent("sm-ho-1")
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.draft_post(channel="linkedin", hook="One")
+        result = agent.hand_off("POST-0001")
+        assert "error" in result
+        assert "state_machine" in result
+        agent.mark_status("POST-0001", "owner_approved")
+        result = agent.hand_off("POST-0001")
+        assert result["status"] == "staged"
+        assert result["payload"]["channel"] == "linkedin"
+        queue = agent.post_queue()
+        assert queue["by_status"] == {PostStatus.HANDED_OFF: 1}
+
+    def test_payload_shape_and_unknown(self, monkeypatch):
+        agent = make_agent("sm-ho-2")
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.draft_post(channel="x", hook="Two",
+                         link="https://example.gov/d/",
+                         hashtags=["#a", "#b"])
+        agent.mark_status("POST-0001", "owner_approved")
+        result = agent.hand_off("POST-0001")
+        payload = result["payload"]
+        assert "https://example.gov/d/" in payload["body"]
+        assert payload["hashtags"] == ["#a", "#b"]
+        assert "error" in agent.hand_off("POST-9999")
+
+
+class TestHandToSales:
+    def test_creates_and_dedupes(self, tmp_path):
+        store = StateStore(db_path=str(tmp_path / "hs.sqlite"))
+        agent = make_agent("sm-hts-1", state_store=store)
+        agent.listen_report(entries=[
+            {"source": "x", "author": "Dana White",
+             "text": "we need this at our shop"}])
+        result = agent.hand_to_sales("MENT-0001", company="White Labs")
+        assert result["status"] == "handed"
+        assert result["lead_id"] == "LEAD-0001"
+        mention = [m for m in agent.mentions if m.mention_id == "MENT-0001"][0]
+        assert mention.responded is True
+        assert "LEAD-0001" in mention.notes
+        # fresh agent, same store: a second warm mention from the same
+        # author must NOT create a second lead
+        fresh = make_agent("sm-hts-1", state_store=store)
+        fresh.listen_report(entries=[
+            {"source": "x", "author": "Dana White", "text": "still interested"}])
+        second = fresh.hand_to_sales("MENT-0002")
+        assert second["lead_id"] == "LEAD-0001"
+        sales = fresh._sales_agent()
+        assert len(sales.leads) == 1
+
+    def test_unknown_mention(self):
+        agent = make_agent("sm-hts-2")
+        assert "error" in agent.hand_to_sales("MENT-9999")
+
+
+class TestSiteCounters:
+    def test_read_ok(self, monkeypatch):
+        agent = make_agent("sm-ctr-1")
+        fake_stdout = json.dumps({"visits": 109,
+                                  "clicks": {"eo": 3, "nist": 4}})
+        monkeypatch.setattr(agent, "_run", MagicMock(return_value=MagicMock(
+            returncode=0, stdout=fake_stdout, stderr="")))
+        result = agent.site_counters()
+        assert result["status"] == "ok"
+        assert result["home_visits"] == 109
+        assert result["article_clicks"]["eo"] == 3
+        assert result["total_clicks"] == 7
+
+    def test_failure_path(self, monkeypatch):
+        agent = make_agent("sm-ctr-2")
+        monkeypatch.setattr(agent, "_run", MagicMock(return_value=MagicMock(
+            returncode=1, stdout="", stderr="boom")))
+        assert "error" in agent.site_counters()
+
+
+class TestAdvocacy:
+    def test_bundle(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-adv-1",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.draft_post(channel="linkedin", hook="Launch note")
+        agent.mark_published("POST-0001", url="https://example.gov/x/",
+                             metrics={"impressions": 100})
+        result = agent.advocacy_pack(month="2026-10")
+        assert result["status"] == "ok"
+        assert result["pieces"] == 3  # story li + story x + published post
+        assert "Founder-personal drafts" in result["markdown"]
+        assert "Advocacy pack - 2026-10" in result["markdown"]
+        assert result["requires_owner_send"] is True
+
+    def test_bad_month(self):
+        agent = make_agent("sm-adv-2")
+        assert "error" in agent.advocacy_pack(month="October")
+
+    def test_empty_month_is_honest(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-adv-3",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        result = agent.advocacy_pack(month="2026-01")
+        assert result["pieces"] == 0
+        assert "Advocacy pack - 2026-01" in result["markdown"]

@@ -35,7 +35,9 @@ AGENT_REGISTRY: Dict[str, Tuple[str, str, str, str]] = {
     "social_media": ("agentic_ai.agents.social_media", "SocialMediaAgent",
                      "Business",
                      "Social channels: calendars, platform-native drafts "
-                     "(draft-only), engagement, listening, metrics"),
+                     "(draft-only), engagement, listening, metrics, "
+                     "hand-off staging, warm-mention CRM handoff, "
+                     "advocacy packs"),
     # Data
     "research": ("agentic_ai.agents.research", "ResearchAgent", "Data",
                  "Research and analysis"),

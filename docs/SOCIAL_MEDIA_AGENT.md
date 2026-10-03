@@ -187,3 +187,25 @@ carries the dated New badge under the existing 15-day auto-removal.
 4. /team/ regen: lede 35->36 sweep (also the assembler gates), Business
    division lede updates automatically, NEW_MARKS gains social_media
 5. Optional same-day: CLI card check (`agenticai agent card social_media`)
+
+## Second wave — built 2026-10-03 (credential-free v2 core)
+
+- `hand_off(post_id)`: stages the platform-ready payload for the owner's
+  click; state machine drafted -> owner_approved -> handed_off ->
+  published (the owner records publishes via mark_published). No post
+  credentials exist anywhere.
+- `hand_to_sales(mention_id)`: the owner's warm-mention trigger - marks a
+  handled mention as a CRM lead through a state-sharing SalesAgent
+  (dedupe by email when present, else by author name across
+  social-source leads). No lead is created from unprompted social data;
+  the call itself is the policy gate.
+- `site_counters()`: pulls the site's own cookie-free counters (home
+  visits + per-article clicks) - first-party truth to sanity-check
+  platform-reported social numbers against.
+- `advocacy_pack(month)`: founder-personal bundle - the month's newsroom
+  stories + published queue records as up to 6 founder-voice drafts
+  (verified links only); sent from the owner's own account, in the
+  owner's voice.
+
+Still owner-gated (need credentials and a decision): LinkedIn/X publishing
+APIs, listening APIs, per-post scheduled automation.

@@ -35,7 +35,7 @@ from dataclasses import asdict, dataclass, field
 from typing import Any, Dict, List, Optional
 
 from agentic_ai.agents.base import BaseAgent, Permission
-from agentic_ai.agents.sales import PROOF_POINTS as MEASURED_STATS
+from agentic_ai.agents.sales import PROOF_POINTS as MEASURED_STATS, SalesAgent
 
 logger = logging.getLogger(__name__)
 
@@ -193,6 +193,7 @@ class SocialMediaAgent(BaseAgent):
         self.mentions: List[MentionRecord] = []
         self._seq: Dict[str, int] = {"post": 0, "mention": 0}
         self._loaded = False
+        self._sales: Optional[SalesAgent] = None  # cached CRM bridge, state-sharing
         self._tools = {
             "content_calendar": self.content_calendar,
             "repurpose": self.repurpose,
@@ -206,6 +207,10 @@ class SocialMediaAgent(BaseAgent):
             "brand_check": self.brand_check,
             "crisis_note": self.crisis_note,
             "week_summary": self.week_summary,
+            "hand_off": self.hand_off,
+            "hand_to_sales": self.hand_to_sales,
+            "site_counters": self.site_counters,
+            "advocacy_pack": self.advocacy_pack,
         }
 
     # ============================================
@@ -852,8 +857,197 @@ class SocialMediaAgent(BaseAgent):
                 "requires_owner_send": True}
 
     # ============================================
-    # Dispatch
+    # Hand-off staging + CRM bridge + counters (v2 core; credential-free)
     # ============================================
+
+    def hand_off(self, post_id: str = "") -> Dict[str, Any]:
+        """Stage a platform-ready payload for the owner's click.
+
+        Requires the draft to be owner_approved first. The state machine is
+        drafted -> owner_approved -> handed_off -> published (owner records
+        the actual publish via mark_published). The staged payload is data
+        for a human hand - this agent holds no post credentials.
+        """
+        self._ensure_loaded()
+        post = self._find_post(post_id)
+        if post is None:
+            return {"error": f"Post {post_id} not found"}
+        if post.status != PostStatus.OWNER_APPROVED:
+            return {"error": f"Post {post_id} is {post.status!r}; hand_off "
+                    "needs owner_approved",
+                    "hint": "mark_status(post_id, 'owner_approved') first",
+                    "state_machine": "drafted -> owner_approved -> "
+                                    "handed_off -> published"}
+        payload = {
+            "channel": post.channel,
+            "body": post.body,
+            "link": post.link or None,
+            "hashtags": list(post.hashtags),
+            "notes": list(post.notes),
+        }
+        post.status = PostStatus.HANDED_OFF
+        post.notes = [*post.notes, "handed off "
+                      + datetime.datetime.now().strftime("%Y-%m-%d %H:%M")]
+        self._persist()
+        return {"status": "staged", "post_id": post.post_id,
+                "post_status": post.status,
+                "payload": payload,
+                "note": "owner-click only - no post credentials exist here"}
+
+    def _sales_agent(self) -> SalesAgent:
+        """A sales agent sharing this agent's state store (instance-cached,
+        distinct agent id so the two chassis states never share a slot)."""
+        if self._sales is None:
+            self._sales = SalesAgent(agent_id=self.agent_id + "-crm",
+                                     state_store=self.state_store)
+        return self._sales
+
+    def hand_to_sales(self, mention_id: str = "", value: float = 0.0,
+                      company: str = "", email: str = "") -> Dict[str, Any]:
+        """Turn an owner-picked mention into a CRM lead.
+
+        This call IS the policy gate: no lead is ever created from unprompted
+        social data - the owner decides which mention is warm. Dedupes by
+        email when provided, else by author name across social-source leads.
+        """
+        self._ensure_loaded()
+        mention = None
+        for record in self.mentions:
+            if record.mention_id == mention_id:
+                mention = record
+                break
+        if mention is None:
+            return {"error": f"Mention {mention_id} not found",
+                    "hint": "mentions enter via engagement_draft or listen_report"}
+        author = mention.author or "social-mention"
+        sales = self._sales_agent()
+        sales._ensure_loaded()  # load persisted CRM state before dedupe (the
+        # sales agent loads lazily inside its own ops; bypassing that reads
+        # an empty list and would create duplicate leads)
+        existing = None
+        for lead in sales.leads:
+            if email and lead.email and lead.email.lower() == email.lower():
+                existing = lead
+                break
+            if lead.name == author and lead.source.startswith("social:"):
+                existing = lead
+                break
+        if existing is None:
+            result = sales.create_lead(lead_name=author, company=company,
+                                       email=email, value=value,
+                                       source="social:%s:%s" % (
+                                           mention.source, mention.mention_id))
+            lead_id = result.get("lead_id", "")
+        else:
+            lead_id = existing.lead_id
+        mention.responded = True
+        mention.notes = "handed to sales: " + lead_id
+        self._persist()
+        return {"status": "handed", "mention_id": mention.mention_id,
+                "lead_id": lead_id,
+                "via": "sales agent sharing this state store"}
+
+    def _run(self, cmd: List[str], timeout: int = 60) -> subprocess.CompletedProcess:
+        """Run a read-only helper command (monkeypatch seam for tests)."""
+        return subprocess.run(cmd, capture_output=True, text=True, timeout=timeout)
+
+    def site_counters(self) -> Dict[str, Any]:
+        """Pull the site's own cookie-free counters (home visits + per-article
+        clicks) - first-party truth to sanity-check platform-reported social
+        numbers. Read-only pull from the mail host.
+        """
+        self._ensure_loaded()
+        result = self._run(["ssh", "-o", "ConnectTimeout=12", "-o",
+                            "BatchMode=yes", "mail", "sudo", "python3",
+                            "/usr/local/bin/bedim-news-counts.py"], timeout=90)
+        if result.returncode != 0:
+            return {"error": "counter pull failed",
+                    "detail": (result.stderr or "")[-160:]}
+        lines = [l for l in (result.stdout or "").strip().splitlines() if l.strip()]
+        if not lines:
+            return {"error": "counter output empty"}
+        try:
+            counts = json.loads(lines[-1])
+        except ValueError:
+            return {"error": "counter output not JSON", "tail": lines[-1][-120:]}
+        clicks = counts.get("clicks", {})
+        return {"status": "ok",
+                "home_visits": int(counts.get("visits", 0) or 0),
+                "article_clicks": {k: int(v) for k, v in clicks.items()},
+                "total_clicks": sum(int(v) for v in clicks.values()),
+                "source": "bedim-news-counts.py (first-party, cookie-free)",
+                "note": "use this to sanity-check platform-reported social CTR"}
+
+    def advocacy_pack(self, month: str = "") -> Dict[str, Any]:
+        """Founder-led bundle: drafts for the owner's PERSONAL posting.
+
+        Compiles the month's newsroom stories and published queue records
+        into up to 6 founder-voice drafts (verified links only). Sent from
+        the owner's own account, in the owner's voice; nothing posts itself.
+        """
+        self._ensure_loaded()
+        month = (month or datetime.date.today().strftime("%Y-%m")).strip()
+        if not re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", month):
+            return {"error": "month must be YYYY-MM", "example": "2026-10"}
+        stories = []
+        try:
+            with open(self.news_state) as f:
+                state = json.load(f)
+        except (OSError, ValueError):
+            state = {}
+        for pool in ("articles", "archive"):
+            for article in state.get(pool, []):
+                if (article.get("added_at", "") or "")[:7] == month:
+                    stories.append(article)
+        published = [p for p in self.posts
+                     if p.status == PostStatus.PUBLISHED and p.published_at
+                     and p.published_at.strftime("%Y-%m") == month]
+        pieces = []
+        for story in stories[:3]:
+            url = story.get("url", "")
+            if not url or not self._link_ok(url):
+                continue
+            title = self._first_sentences(story.get("title", ""), 110)
+            pieces.append({
+                "channel": Channel.LINKEDIN,
+                "body": "\n\n".join([
+                    "What I am reading into this:",
+                    self._first_sentences(story.get("summary", ""), 240),
+                    url]),
+                "hashtags": self._hashtags_for(story.get("category", "")),
+            })
+            pieces.append({
+                "channel": Channel.X,
+                "body": self._first_sentences(title + " " + url,
+                                              LIMITS[Channel.X]),
+                "hashtags": [],
+            })
+        for post in published[:3]:
+            limit = LIMITS.get(post.channel, LIMITS[Channel.OTHER])
+            pieces.append({
+                "channel": post.channel,
+                "body": self._first_sentences(post.body, limit - 60) + " "
+                        + (post.published_url or post.link or ""),
+                "hashtags": list(post.hashtags),
+            })
+        md = ["Advocacy pack - " + month, "",
+              "Founder-personal drafts: send from your own account, in your "
+              "own voice.", ""]
+        for i, piece in enumerate(pieces, 1):
+            md.append("%d. (%s)" % (i, piece["channel"]))
+            md.append(piece["body"])
+            if piece.get("hashtags"):
+                md.append(" " + " ".join(piece["hashtags"]))
+            md.append("")
+        md.append("Drafted " + datetime.date.today().isoformat()
+                  + " by the fleet's social agent. Verified links only; "
+                    "nothing posts by itself.")
+        return {"status": "ok", "month": month,
+                "sources": {"stories": len(stories),
+                            "published_posts": len(published)},
+                "pieces": len(pieces),
+                "markdown": "\n".join(md),
+                "requires_owner_send": True}
 
     async def perform_task(self, task_type: str = "",
                            payload: Optional[Dict[str, Any]] = None,
