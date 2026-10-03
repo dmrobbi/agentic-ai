@@ -38,7 +38,9 @@ AGENT_REGISTRY: Dict[str, Tuple[str, str, str, str]] = {
                      "(draft-only), engagement, listening, metrics, "
                      "hand-off staging, warm-mention CRM handoff, "
                      "advocacy packs, authorized posting + limited-info "
-                     "email replies (human-gated)"),
+                     "email replies (per-activity authorization; "
+                     "auto-approve-drafts + rich-reply policies, "
+                     "set_policy re-tightens)"),
     # Data
     "research": ("agentic_ai.agents.research", "ResearchAgent", "Data",
                  "Research and analysis"),

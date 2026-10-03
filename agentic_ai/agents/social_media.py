@@ -215,6 +215,18 @@ PEAKS: Dict[str, Dict[str, Any]] = {
 }
 
 
+# Loosening policies on the posting gate (owner decision 2026-10-03:
+# auto-approved drafts + richer replies ON as the defaults). Calling
+# set_policy IS the owner's decision (same discipline as
+# authorize_activity); flips persist in the shared store so the
+# autonomous ticker sees the same rules.
+DEFAULT_POLICIES: Dict[str, Any] = {
+    "auto_approve_drafts": True,   # drafted posts (not just owner_approved) may authorize
+    "reply_style": "rich",         # allow a scrubbed published context paragraph in replies
+}
+POLICY_STORE_KEY = "activity_policies"
+
+
 @dataclass
 class AuthorizedActivity:
     """An owner-authorized activity the agent autonomously executes.
@@ -264,6 +276,7 @@ class SocialMediaAgent(BaseAgent):
         self._seq: Dict[str, int] = {"post": 0, "mention": 0, "blitz": 0}
         self._loaded = False
         self._sales: Optional[SalesAgent] = None  # cached CRM bridge, state-sharing
+        self._policy_overrides: Dict[str, Any] = {}  # in-memory policy flips
         self._tools = {
             "content_calendar": self.content_calendar,
             "repurpose": self.repurpose,
@@ -290,6 +303,7 @@ class SocialMediaAgent(BaseAgent):
             "tick_activities": self.tick_activities,
             "activity_log": self.activity_log,
             "draft_reply": self.draft_reply,
+            "set_policy": self.set_policy,
         }
 
     # ============================================
@@ -1387,6 +1401,43 @@ class SocialMediaAgent(BaseAgent):
     # The posting path: authorized activities, autonomous optimal-timing
     # ============================================
 
+    def _load_policies(self) -> Dict[str, Any]:
+        """Effective loosening policies: code defaults overridden by the
+        persisted store (set_policy) and this instance's in-memory flips."""
+        policies = dict(DEFAULT_POLICIES)
+        if self.state_store is not None:
+            stored = self.state_store.load(POLICY_STORE_KEY, default=None)
+            if isinstance(stored, dict):
+                policies.update({k: v for k, v in stored.items()
+                                 if k in DEFAULT_POLICIES})
+        policies.update(self._policy_overrides)
+        return policies
+
+    def set_policy(self, key: str = "", value=None) -> Dict[str, Any]:
+        """THE owner policy gate on the loosened posting path: flip
+        auto_approve_drafts (bool) or reply_style (minimal|rich) at
+        runtime. Calling this IS the decision; the flip persists in the
+        shared store so the autonomous ticker sees the same rules."""
+        if key not in DEFAULT_POLICIES:
+            return {"error": f"Unknown policy {key!r}",
+                    "valid_keys": sorted(DEFAULT_POLICIES),
+                    "current": self._load_policies()}
+        if value is None:
+            return {"error": "set_policy needs a value",
+                    "current": self._load_policies()}
+        if key == "auto_approve_drafts":
+            value = bool(value)
+        else:
+            value = str(value).strip().lower()
+            if value not in ("minimal", "rich"):
+                return {"error": "reply_style must be 'minimal' or 'rich'",
+                        "current": self._load_policies()}
+        self._policy_overrides[key] = value
+        if self.state_store is not None:
+            self.state_store.save(POLICY_STORE_KEY, self._load_policies())
+        self.log("set_policy", {"key": key, "value": value})
+        return {"status": "ok", "policies": self._load_policies()}
+
     def _load_activities(self) -> List[AuthorizedActivity]:
         """The shared authorized-activity queue (its own store key - the
         owner's authorizing session and the autonomous ticker both hit
@@ -1477,6 +1528,29 @@ class SocialMediaAgent(BaseAgent):
         return (now + datetime.timedelta(days=7)).replace(
             hour=spec["hour"], minute=0, second=0, microsecond=0)
 
+    def _reply_payload(self, request_text: str,
+                       context_note: str = "") -> Dict[str, Any]:
+        """Reply payload honoring the reply_style policy. The request text
+        is never echoed; a rich reply adds ONLY a caller-supplied
+        published context paragraph (house-scrubbed; nothing invented -
+        an absent note yields exactly the minimal template)."""
+        payload = dict(self._minimal_reply(request_text))
+        note = (context_note or "").strip()
+        if self._load_policies().get("reply_style") == "rich" and note:
+            hits = self._scrub_hits(note)
+            if hits:
+                return {"error": "context_note failed the house scrub "
+                                 "patterns", "scrub_hits": hits}
+            flat = " ".join(note.split())[:280]
+            lines = payload["body"].split("\n")
+            idx = next(i for i, line in enumerate(lines)
+                       if line.startswith("I am not able"))
+            paragraph = ["", "More context, from what is published: " + flat]
+            payload["body"] = "\n".join(lines[:idx] + paragraph + lines[idx:])
+            payload["style"] = "rich"
+        payload.setdefault("style", "minimal")
+        return payload
+
     def _minimal_reply(self, request_text: str) -> Dict[str, str]:
         """Limited-information reply: canned and minimal by construction -
         the request text is never echoed, no pricing, no commitments, one
@@ -1498,19 +1572,27 @@ class SocialMediaAgent(BaseAgent):
         ])
         return {"subject": "Re: your request to Bedim Security", "body": body}
 
-    def draft_reply(self, request_text: str = "", email: str = "") -> Dict[str, Any]:
-        """Render the limited-information reply for an inbound request
-        (draft-only: nothing mails until authorize + execute)."""
+    def draft_reply(self, request_text: str = "", email: str = "",
+                    context_note: str = "") -> Dict[str, Any]:
+        """Render the reply for an inbound request (draft-only: nothing
+        mails until authorize + execute). Style follows the reply_style
+        policy; a rich style adds only a scrubbed published context
+        paragraph - the request text is never echoed."""
         self._ensure_loaded()
         if not request_text.strip() or "@" not in (email or ""):
             return {"error": "draft_reply needs the request text and a target email"}
-        draft = self._minimal_reply(request_text)
+        draft = self._reply_payload(request_text, context_note)
+        if "error" in draft:
+            return draft
         return {"status": "drafted", "draft": draft, "target": email,
                 "requires_owner_send": True,
-                "note": "the request text is not echoed; the reply is canned-minimal"}
+                "reply_style": draft.get("style"),
+                "note": "the request text is not echoed; the reply "
+                        "carries only published material"}
 
     def authorize_activity(self, kind: str = "post", post_id: str = "",
                            request_text: str = "", email: str = "",
+                           context_note: str = "",
                            scheduled_for=None) -> Dict[str, Any]:
         """THE owner gate: authorize an activity (post or email reply) for
         autonomous execution at its optimal time. Calling this is the
@@ -1523,18 +1605,27 @@ class SocialMediaAgent(BaseAgent):
             post = self._find_post(post_id)
             if post is None:
                 return {"error": f"Post {post_id} not found"}
-            if post.status != PostStatus.OWNER_APPROVED:
+            policy = self._load_policies()
+            if post.status == PostStatus.OWNER_APPROVED:
+                approval = "owner_approved"
+            elif policy.get("auto_approve_drafts") \
+                    and post.status == PostStatus.DRAFTED:
+                approval = "auto_approve_drafts"
+            else:
                 return {"error": "authorization needs an owner_approved draft",
                         "state_machine": "drafted -> owner_approved -> "
                                         "authorized-activity",
-                        "hint": "mark_status(post_id, 'owner_approved') first"}
+                        "hint": "mark_status(post_id, 'owner_approved') first",
+                        "policy": policy}
             payload = {"channel": post.channel, "body": post.body,
                        "link": post.link or None, "hashtags": list(post.hashtags)}
             ref = post.post_id
         elif kind == "email_reply":
             if not request_text.strip() or "@" not in (email or ""):
                 return {"error": "an email reply needs the request text and a target email"}
-            payload = self._minimal_reply(request_text)
+            payload = self._reply_payload(request_text, context_note)
+            if "error" in payload:
+                return payload
             ref = "request-paste"
         else:
             return {"error": f"Unknown kind {kind!r}",
@@ -1552,10 +1643,13 @@ class SocialMediaAgent(BaseAgent):
             kind=kind, ref=ref,
             target=(payload.get("channel") if kind == "post" else email),
             payload=payload, scheduled_for=scheduled_at)
-        activity.log.append({"event": "authorized",
-                             "at": datetime.datetime.now().isoformat(),
-                             "by": "owner",
-                             "scheduled_for": scheduled_at.isoformat()})
+        entry = {"event": "authorized",
+                 "at": datetime.datetime.now().isoformat(),
+                 "by": "owner",
+                 "scheduled_for": scheduled_at.isoformat()}
+        if kind == "post":
+            entry["approval"] = approval
+        activity.log.append(entry)
         queue = self._load_activities()
         queue.append(activity)
         self._save_activities(queue)

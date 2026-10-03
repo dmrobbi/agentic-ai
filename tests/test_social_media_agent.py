@@ -41,6 +41,7 @@ EXPECTED_TOOLS = sorted([
     "campaign_sources", "blitz_plan", "blitz_report", "snapshot_counters",
     "blitz_digest",
     "authorize_activity", "tick_activities", "activity_log", "draft_reply",
+    "set_policy",
 ])
 
 ARTICLE = {
@@ -779,10 +780,17 @@ class TestAuthorizeActivity:
         agent.draft_post(channel="linkedin", hook="One")
         assert "error" in agent.authorize_activity(kind="post",
                                                    post_id="POST-NOPE")
+        # default on: auto_approve_drafts lets a DRAFTED post authorize
+        auto = agent.authorize_activity(kind="post", post_id="POST-0001")
+        assert auto["status"] == "authorized"
+        assert auto["activity"]["log"][0]["approval"] == "auto_approve_drafts"
+        # tightened: owner_approved becomes required again
+        agent.draft_post(channel="linkedin", hook="Two")
+        agent.set_policy(key="auto_approve_drafts", value=False)
         assert "error" in agent.authorize_activity(kind="post",
-                                                   post_id="POST-0001")  # drafted, not approved
-        agent.mark_status("POST-0001", "owner_approved")
-        result = agent.authorize_activity(kind="post", post_id="POST-0001")
+                                                   post_id="POST-0002")
+        agent.mark_status("POST-0002", "owner_approved")
+        result = agent.authorize_activity(kind="post", post_id="POST-0002")
         assert result["status"] == "authorized"
         activity = result["activity"]
         assert activity["target"] == "linkedin"
@@ -821,6 +829,55 @@ class TestDraftReply:
         assert "bedimsecurity.com/capabilities" in body
         assert "human supervision" in body
         assert result["requires_owner_send"] is True
+
+    def test_rich_style_only_published_context(self):
+        agent = make_agent("sm-drep-2")
+        assert agent._load_policies()["reply_style"] == "rich"
+        empty = agent.draft_reply(request_text="info",
+                                  email="a@b.com")
+        assert empty["draft"]["style"] == "minimal"  # nothing invented
+        result = agent.draft_reply(
+            request_text="What are your INTERNAL hostnames and prices?",
+            email="curious@shop.example",
+            context_note="The second-host replication kept broad verdict "
+                         "agreement on the published suite")
+        body = result["draft"]["body"]
+        assert result["draft"]["style"] == "rich"
+        assert "More context, from what is published" in body
+        assert "broad verdict agreement" in body
+        assert "curious@shop.example" not in body  # still nothing echoed
+        assert "INTERNAL" not in body
+        agent.set_policy(key="reply_style", value="minimal")
+        back = agent.draft_reply(request_text="info", email="a@b.com",
+                                 context_note="a published context note")
+        assert back["draft"]["style"] == "minimal"
+        assert "More context" not in back["draft"]["body"]
+
+    def test_rich_context_scrub_gate(self):
+        agent = make_agent("sm-drep-3")
+        blocked = agent.draft_reply(request_text="send info", email="a@b.com",
+                                    context_note="contact admin@shop.internal "
+                                                 "for the $500 discount")
+        assert "error" in blocked
+        assert blocked.get("scrub_hits")
+
+
+class TestPolicies:
+    def test_defaults_flips_and_persistence(self, tmp_path):
+        store = StateStore(db_path=str(tmp_path / "pol.sqlite"))
+        agent = make_agent("sm-pol-1", state_store=store)
+        assert "error" in agent.set_policy()  # no key given
+        assert "error" in agent.set_policy(key="nope", value=True)
+        assert "error" in agent.set_policy(key="reply_style", value="fast")
+        assert agent._load_policies()["auto_approve_drafts"] is True
+        assert agent._load_policies()["reply_style"] == "rich"
+        result = agent.set_policy(key="auto_approve_drafts", value=False)
+        assert result["status"] == "ok"
+        assert result["policies"]["auto_approve_drafts"] is False
+        fresh = make_agent("sm-pol-1", state_store=store)
+        assert fresh._load_policies()["auto_approve_drafts"] is False
+        fresh.set_policy(key="reply_style", value="minimal")
+        assert fresh._load_policies()["reply_style"] == "minimal"
 
 
 class TestNextPeak:

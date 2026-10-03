@@ -239,3 +239,19 @@ the agentic-ai-activity-ticker automation (15m).
 
 Next wave (needs credentials/decision): inbound-mailbox monitoring (IMAP),
 the social transports (LinkedIn/X/Mastodon/Bluesky tokens), DM handling.
+
+Policy state (owner decision 2026-10-03, now the code defaults): the gate
+itself is unchanged - every post still needs a per-activity
+authorize_activity call. Two loosening policies are live, flippable at
+runtime via set_policy (the call IS the decision; flips persist in the
+shared store under activity_policies):
+
+- auto_approve_drafts (ON): a DRAFTED post authorizes directly, with the
+  approval recorded in the activity log (owner_approved or
+  auto_approve_drafts). Set false to require the owner_approved mark
+  again.
+- reply_style (rich): replies may carry ONE extra contextual paragraph,
+  built only from a caller-supplied published note (house-scrub hits are
+  rejected at the desk; the request text is still never echoed; no note
+  = exactly the minimal template). Set "minimal" for the pure canned
+  template.
