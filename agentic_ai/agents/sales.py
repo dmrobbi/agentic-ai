@@ -142,6 +142,9 @@ PROOF_POINTS: List[str] = [
     "65% of decisions hitting a 90-second model ceiling -> 0",
     "74% less GPU energy per decision, 16x decision latency, 94.6% decision agreement over a 452-decision soak",
     "$0 per-alert model spend: the alert path runs on local hardware, bound to loopback",
+    "Second-host replication (2026-09-28): the same 300-state eval on a "
+    "second host - 1.6x faster, 100% identical answers, 20% less energy "
+    "per decision",
 ]
 
 CAPABILITIES_URL = "https://bedimsecurity.com/capabilities"
