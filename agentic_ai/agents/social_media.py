@@ -172,6 +172,29 @@ class MentionRecord:
     notes: str = ""
 
 
+@dataclass
+class BlitzPiece:
+    """One piece of a publishing blitz: a topic, its drafts, its state."""
+    piece_id: str
+    title: str
+    angle: str = ""
+    source_ref: str = ""  # provenance: newsroom id / commit sha / stats label
+    channels: List[str] = field(default_factory=list)
+    post_ids: List[str] = field(default_factory=list)
+    status: str = "planned"  # planned -> drafted -> published
+
+
+@dataclass
+class Blitz:
+    """A coordinated publishing campaign (multi-piece, multi-channel)."""
+    blitz_id: str
+    name: str
+    created_at: datetime = field(default_factory=datetime.datetime.now)
+    pieces: List[BlitzPiece] = field(default_factory=list)
+    status: str = "planned"  # planned -> drafted -> approved -> live -> closed
+    snapshot_before: Optional[str] = None
+
+
 class SocialMediaAgent(BaseAgent):
     """Social media agent: calendars, drafts, engagement, listening, metrics.
 
@@ -191,7 +214,9 @@ class SocialMediaAgent(BaseAgent):
         self.posts: List[PostDraft] = []
         self.calendar: List[CalendarEntry] = []
         self.mentions: List[MentionRecord] = []
-        self._seq: Dict[str, int] = {"post": 0, "mention": 0}
+        self.blitzes: List[Blitz] = []
+        self.snapshots: List[Dict[str, Any]] = []
+        self._seq: Dict[str, int] = {"post": 0, "mention": 0, "blitz": 0}
         self._loaded = False
         self._sales: Optional[SalesAgent] = None  # cached CRM bridge, state-sharing
         self._tools = {
@@ -211,6 +236,11 @@ class SocialMediaAgent(BaseAgent):
             "hand_to_sales": self.hand_to_sales,
             "site_counters": self.site_counters,
             "advocacy_pack": self.advocacy_pack,
+            "campaign_sources": self.campaign_sources,
+            "blitz_plan": self.blitz_plan,
+            "blitz_report": self.blitz_report,
+            "snapshot_counters": self.snapshot_counters,
+            "blitz_digest": self.blitz_digest,
         }
 
     # ============================================
@@ -227,7 +257,8 @@ class SocialMediaAgent(BaseAgent):
             logger.warning("SocialMediaAgent: load failed, starting empty: %s", exc)
             return
         if not isinstance(state, dict) or not any(
-                k in state for k in ("posts", "mentions", "calendar")):
+                k in state for k in ("posts", "mentions", "calendar",
+                                     "blitzes", "snapshots")):
             return
         self._deserialize(state)
 
@@ -245,6 +276,8 @@ class SocialMediaAgent(BaseAgent):
             "posts": [self._dump_post(p) for p in self.posts],
             "calendar": [asdict(c) for c in self.calendar],
             "mentions": [self._dump_mention(m) for m in self.mentions],
+            "blitzes": [self._dump_blitz(b) for b in self.blitzes],
+            "snapshots": self.snapshots,
             "seq": self._seq,
         }
 
@@ -303,15 +336,19 @@ class SocialMediaAgent(BaseAgent):
 
     def _deserialize(self, state: Dict[str, Any]) -> None:
         seq = state.get("seq")
-        self._seq = seq if isinstance(seq, dict) else {"post": 0, "mention": 0}
+        self._seq = seq if isinstance(seq, dict) else {"post": 0, "mention": 0,
+                                                       "blitz": 0}
         self.posts = [self._load_post(e) for e in state.get("posts", []) if isinstance(e, dict)]
         self.calendar = [CalendarEntry(**{k: v for k, v in e.items()
                                           if k in CalendarEntry.__dataclass_fields__})
                          for e in state.get("calendar", []) if isinstance(e, dict)]
         self.mentions = [self._load_mention(e) for e in state.get("mentions", []) if isinstance(e, dict)]
+        self.blitzes = [self._load_blitz(e) for e in state.get("blitzes", []) if isinstance(e, dict)]
+        self.snapshots = [s for s in state.get("snapshots", []) if isinstance(s, dict)]
         counts = {
             "post": ("POST-", [p.post_id for p in self.posts]),
             "mention": ("MENT-", [m.mention_id for m in self.mentions]),
+            "blitz": ("BLITZ-", [b.blitz_id for b in self.blitzes]),
         }
         for kind, (prefix, ids) in counts.items():
             max_seen = int(self._seq.get(kind, 0))
@@ -1047,6 +1084,254 @@ class SocialMediaAgent(BaseAgent):
                             "published_posts": len(published)},
                 "pieces": len(pieces),
                 "markdown": "\n".join(md),
+                "requires_owner_send": True}
+
+    # ============================================
+    # Publishing blitz machinery (campaigns, sources, snapshots, digest)
+    # ============================================
+
+    def _dump_blitz(self, blitz: Blitz) -> Dict[str, Any]:
+        """Flatten a blitz into a JSON-safe dict (pieces nested)."""
+        return {
+            "blitz_id": blitz.blitz_id,
+            "name": blitz.name,
+            "created_at": blitz.created_at.isoformat(),
+            "status": blitz.status,
+            "snapshot_before": blitz.snapshot_before,
+            "pieces": [{
+                "piece_id": p.piece_id, "title": p.title, "angle": p.angle,
+                "source_ref": p.source_ref, "channels": list(p.channels),
+                "post_ids": list(p.post_ids), "status": p.status,
+            } for p in blitz.pieces],
+        }
+
+    def _load_blitz(self, data: Dict[str, Any]) -> Blitz:
+        """Rebuild a Blitz (and its pieces) from a persisted dict."""
+        blitz = Blitz(
+            blitz_id=data.get("blitz_id", ""),
+            name=data.get("name", ""),
+            created_at=self._dt(data.get("created_at")) or datetime.datetime.now(),
+            status=data.get("status", "planned"),
+        )
+        snapshot = data.get("snapshot_before")
+        if isinstance(snapshot, str):
+            blitz.snapshot_before = snapshot
+        for piece_data in data.get("pieces", []):
+            if not isinstance(piece_data, dict):
+                continue
+            blitz.pieces.append(BlitzPiece(
+                piece_id=piece_data.get("piece_id", ""),
+                title=piece_data.get("title", ""),
+                angle=piece_data.get("angle", ""),
+                source_ref=piece_data.get("source_ref", ""),
+                channels=list(piece_data.get("channels", [])),
+                post_ids=list(piece_data.get("post_ids", [])),
+                status=piece_data.get("status", "planned"),
+            ))
+        return blitz
+
+    def campaign_sources(self) -> Dict[str, Any]:
+        """Deterministic candidate material for a publishing blitz: recent
+        newsroom stories, public repo commit subjects, and the fleet's
+        measured stats.
+        """
+        stories = []
+        try:
+            with open(self.news_state) as f:
+                state = json.load(f)
+        except (OSError, ValueError):
+            state = {}
+        for article in state.get("articles", [])[:8]:
+            stories.append({k: article.get(k, "") for k in
+                            ("id", "title", "source", "url", "category",
+                             "added_at")})
+        git_result = self._run(["git", "-C", "/home/wez/agentic-ai",
+                                "log", "--oneline", "-15"], timeout=30)
+        subjects = []
+        if git_result.returncode == 0:
+            for line in git_result.stdout.splitlines():
+                _, _, subject = line.partition(" ")
+                if subject:
+                    subjects.append(subject)
+        return {"status": "ok",
+                "stories": stories,
+                "commit_topics": subjects,
+                "measured": list(MEASURED_STATS),
+                "capabilities_url": CAPABILITIES_URL,
+                "note": "commit subjects come from the public repo log; "
+                        "stories come from the newsroom state (read-only)"}
+
+    def blitz_plan(self, name: str = "",
+                   pieces: Optional[List[Dict[str, Any]]] = None,
+                   channels: Optional[List[str]] = None) -> Dict[str, Any]:
+        """Plan a publishing blitz: pieces -> platform drafts (draft-only).
+
+        pieces: optional [{title, angle?, source_ref?, link?, channels?}];
+        when absent, auto-seeds from campaign_sources (newest stories + top
+        commit topics). Every draft goes through the real queue path with
+        link verification; nothing posts by itself.
+        """
+        self._ensure_loaded()
+        name = (name or "").strip()
+        if not name:
+            return {"error": "a blitz needs a name"}
+        if any(b.name == name for b in self.blitzes):
+            return {"error": f"blitz named {name!r} already exists",
+                    "existing": [b.blitz_id for b in self.blitzes
+                                 if b.name == name]}
+        if pieces is None:
+            sources = self.campaign_sources()
+            pieces = [{"title": s["title"], "angle": "published story",
+                       "source_ref": "news:" + s["id"], "link": s["url"]}
+                      for s in sources["stories"][:3]]
+            pieces += [{"title": t, "angle": "from this week's public commits",
+                        "source_ref": "commit:" + t[:40],
+                        "link": CAPABILITIES_URL}
+                       for t in sources["commit_topics"][:2]]
+        if not pieces:
+            return {"error": "no pieces to plan and none could be auto-seeded"}
+        blitz_id = self._next_id("BLITZ-", "blitz")
+        blitz = Blitz(blitz_id=blitz_id, name=name)
+        for i, raw in enumerate(pieces[:6], 1):
+            piece = BlitzPiece(
+                piece_id=f"{blitz_id}-P{i}",
+                title=(raw.get("title") or "").strip(),
+                angle=(raw.get("angle") or "").strip(),
+                source_ref=(raw.get("source_ref") or "").strip(),
+                channels=list(raw.get("channels") or channels or
+                              [Channel.LINKEDIN, Channel.X]))
+            if not piece.title:
+                continue
+            for channel in piece.channels:
+                draft_result = self.draft_post(
+                    channel=channel, hook=piece.title, angle=piece.angle,
+                    link=raw.get("link", ""))
+                if "post" in draft_result:
+                    piece.post_ids.append(draft_result["post"]["post_id"])
+            piece.status = "drafted" if piece.post_ids else "planned-empty"
+            blitz.pieces.append(piece)
+        blitz.status = ("drafted" if any(p.status == "drafted"
+                                         for p in blitz.pieces) else "planned")
+        self.blitzes.append(blitz)
+        self._persist()
+        return {"status": "planned", "blitz": self._dump_blitz(blitz),
+                "drafts_created": sum(len(p.post_ids) for p in blitz.pieces),
+                "requires_owner_send": True}
+
+    def snapshot_counters(self, label: str = "") -> Dict[str, Any]:
+        """Capture a named before/after point of the site's first-party
+        counters (immutable label; duplicate labels are refused).
+        """
+        self._ensure_loaded()
+        label = (label or "").strip()
+        if not label:
+            return {"error": "a snapshot needs a label"}
+        if any(s.get("label") == label for s in self.snapshots):
+            return {"error": f"snapshot {label!r} already exists",
+                    "hint": "snapshots are immutable named points"}
+        pull = self.site_counters()
+        if "error" in pull:
+            return pull
+        snapshot = {"label": label,
+                    "created_at": datetime.datetime.now().isoformat(),
+                    "home_visits": pull.get("home_visits", 0),
+                    "article_clicks": pull.get("article_clicks", {}),
+                    "total_clicks": pull.get("total_clicks", 0)}
+        self.snapshots.append(snapshot)
+        self._persist()
+        return {"status": "captured", "snapshot": snapshot}
+
+    def blitz_report(self) -> Dict[str, Any]:
+        """Rollout status for the newest blitz: per-piece and per-draft
+        states, plus before/after first-party deltas when two snapshots
+        exist. Report-only; mutates nothing.
+        """
+        self._ensure_loaded()
+        if not self.blitzes:
+            return {"status": "empty", "note": "no blitz planned yet"}
+        blitz = self.blitzes[-1]
+        pieces = []
+        for piece in blitz.pieces:
+            draft_states = []
+            for post_id in piece.post_ids:
+                post = self._find_post(post_id)
+                draft_states.append({"post_id": post_id,
+                                     "status": post.status if post else "missing"})
+            pieces.append({"piece_id": piece.piece_id, "title": piece.title,
+                           "status": piece.status, "channels": piece.channels,
+                           "drafts": draft_states})
+        deltas = None
+        if len(self.snapshots) >= 2:
+            before, after = self.snapshots[-2], self.snapshots[-1]
+            deltas = {"from": before.get("label", ""),
+                      "to": after.get("label", ""),
+                      "home_visits_delta": int(after.get("home_visits", 0))
+                                           - int(before.get("home_visits", 0)),
+                      "total_clicks_delta": int(after.get("total_clicks", 0))
+                                            - int(before.get("total_clicks", 0)),
+                      "source": "first-party site counters"}
+        by_status: Dict[str, int] = {}
+        for post in self.posts:
+            by_status[post.status] = by_status.get(post.status, 0) + 1
+        return {"status": "ok", "blitz_id": blitz.blitz_id, "name": blitz.name,
+                "blitz_status": blitz.status, "pieces": pieces,
+                "queue": {"total": len(self.posts), "by_status": by_status},
+                "deltas": deltas}
+
+    def blitz_digest(self, month: str = "") -> Dict[str, Any]:
+        """Render a special-edition digest DRAFT from the newest blitz's
+        pieces (plus the month's published posts): markdown ready for the
+        owner to send through the newsroom's own digest machinery
+        (send_digest.py handles the mailbox send, owner-gated).
+        """
+        self._ensure_loaded()
+        month = (month or datetime.date.today().strftime("%Y-%m")).strip()
+        if not re.fullmatch(r"\d{4}-(0[1-9]|1[0-2])", month):
+            return {"error": "month must be YYYY-MM", "example": "2026-10"}
+        materials = []
+        for piece in (self.blitzes[-1].pieces if self.blitzes else []):
+            entry = {"title": piece.title, "ref": piece.source_ref or "blitz-piece"}
+            story_id = piece.source_ref.replace("news:", "", 1) \
+                if piece.source_ref.startswith("news:") else None
+            if story_id:
+                try:
+                    with open(self.news_state) as f:
+                        news = json.load(f)
+                except (OSError, ValueError):
+                    news = {}
+                for pool in ("articles", "archive"):
+                    for article in news.get(pool, []):
+                        if article.get("id") == story_id:
+                            entry["url"] = article.get("url", "")
+                            break
+            materials.append(entry)
+        published = [p for p in self.posts
+                     if p.status == PostStatus.PUBLISHED and p.published_at
+                     and p.published_at.strftime("%Y-%m") == month]
+        if not materials and not published:
+            return {"status": "empty",
+                    "note": "nothing to digest yet: no blitz pieces and no "
+                            "published posts this month"}
+        lines = ["Subject: What the agent fleet shipped in " + month, ""]
+        if materials:
+            lines.append("The blitz:")
+            for piece in materials:
+                line = "- " + piece["title"]
+                if piece.get("url"):
+                    line += " - " + piece["url"]
+                lines.append(line)
+            lines.append("")
+        if published:
+            lines.append("Published from the queue:")
+            for post in published:
+                lines.append("- " + (post.published_url or post.post_id
+                                     + " on " + post.channel))
+            lines.append("")
+        lines.append("Drafted " + datetime.date.today().isoformat()
+                     + " - send via the newsroom digest machinery "
+                       "(owner-gated). This agent never mails anyone.")
+        return {"status": "drafted" if materials else "ok", "month": month,
+                "markdown": "\n".join(lines),
                 "requires_owner_send": True}
 
     async def perform_task(self, task_type: str = "",

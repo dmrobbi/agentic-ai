@@ -37,6 +37,8 @@ EXPECTED_TOOLS = sorted([
     "mark_status", "mark_published", "engagement_draft", "listen_report",
     "metrics_report", "brand_check", "crisis_note", "week_summary",
     "hand_off", "hand_to_sales", "site_counters", "advocacy_pack",
+    "campaign_sources", "blitz_plan", "blitz_report", "snapshot_counters",
+    "blitz_digest",
 ])
 
 ARTICLE = {
@@ -594,3 +596,174 @@ class TestAdvocacy:
         result = agent.advocacy_pack(month="2026-01")
         assert result["pieces"] == 0
         assert "Advocacy pack - 2026-01" in result["markdown"]
+
+
+class TestCampaignSources:
+    def test_sources(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-src-1",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_run", MagicMock(return_value=MagicMock(
+            returncode=0,
+            stdout="abc123 commit one subject\ndef456 commit two subject\n",
+            stderr="")))
+        sources = agent.campaign_sources()
+        assert sources["status"] == "ok"
+        assert sources["stories"][0]["id"] == "test-eo-story"
+        assert sources["commit_topics"] == ["commit one subject",
+                                            "commit two subject"]
+        assert len(sources["measured"]) >= 5
+        assert sources["capabilities_url"].startswith("https://bedimsecurity.com")
+
+    def test_empty_sources_are_honest(self, monkeypatch):
+        agent = make_agent("sm-src-2")
+        monkeypatch.setattr(agent, "_run", MagicMock(return_value=MagicMock(
+            returncode=1, stdout="", stderr="")))
+        sources = agent.campaign_sources()
+        assert sources["status"] == "ok"
+        assert sources["stories"] == []
+        assert sources["commit_topics"] == []
+
+
+class TestBlitzPlan:
+    def test_explicit_pieces(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-blitz-1",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        result = agent.blitz_plan(
+            name="october-wave",
+            pieces=[{"title": "Piece one", "angle": "angle one",
+                     "link": "https://example.gov/a/"},
+                    {"title": "Piece two", "angle": "angle two",
+                     "link": "https://example.gov/b/",
+                     "channels": ["x"]}])
+        assert result["status"] == "planned"
+        blitz = result["blitz"]
+        assert blitz["name"] == "october-wave"
+        assert len(blitz["pieces"]) == 2
+        assert len(blitz["pieces"][0]["post_ids"]) == 2  # linkedin + x
+        assert len(blitz["pieces"][1]["post_ids"]) == 1  # x only
+        assert blitz["status"] == "drafted"
+        assert result["drafts_created"] == 3
+
+    def test_name_collision(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-blitz-2")
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.blitz_plan(name="wave", pieces=[{"title": "One"}])
+        second = agent.blitz_plan(name="wave", pieces=[{"title": "Another"}])
+        assert "error" in second
+        assert "already exists" in second["error"]
+
+    def test_auto_seed_with_no_sources_is_honest(self, monkeypatch):
+        agent = make_agent("sm-blitz-3")
+        monkeypatch.setattr(agent, "_run", MagicMock(return_value=MagicMock(
+            returncode=1, stdout="", stderr="")))
+        result = agent.blitz_plan(name="empty-wave")
+        assert "error" in result
+
+    def test_empty_name(self):
+        agent = make_agent("sm-blitz-4")
+        assert "error" in agent.blitz_plan(name="")
+
+    def test_titleless_piece_skipped(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-blitz-5",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        result = agent.blitz_plan(name="mixed", pieces=[
+            {"title": "", "angle": "nothing"}, {"title": "Real piece"}])
+        assert len(result["blitz"]["pieces"]) == 1
+        assert result["blitz"]["pieces"][0]["piece_id"].endswith("-P2")
+
+
+class TestSnapshots:
+    def test_capture_and_immutable(self, monkeypatch):
+        agent = make_agent("sm-snap-1")
+        pull = {"status": "ok", "home_visits": 10,
+                "article_clicks": {"eo": 1}, "total_clicks": 1}
+        monkeypatch.setattr(agent, "site_counters", lambda: pull)
+        first = agent.snapshot_counters(label="pre-blitz")
+        assert first["status"] == "captured"
+        assert first["snapshot"]["home_visits"] == 10
+        dup = agent.snapshot_counters(label="pre-blitz")
+        assert "error" in dup
+        assert "immutable" in dup["hint"]
+
+    def test_needs_label(self):
+        agent = make_agent("sm-snap-2")
+        assert "error" in agent.snapshot_counters(label="")
+
+    def test_pull_failure_returns_error(self, monkeypatch):
+        agent = make_agent("sm-snap-3")
+        monkeypatch.setattr(agent, "site_counters",
+                            lambda: {"error": "counter pull failed"})
+        assert "error" in agent.snapshot_counters(label="after")
+
+
+class TestBlitzReport:
+    def test_empty(self):
+        agent = make_agent("sm-rep-1")
+        assert agent.blitz_report()["status"] == "empty"
+
+    def test_with_blitz_and_deltas(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-rep-2",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.blitz_plan(name="wave", pieces=[{"title": "A"}])
+        monkeypatch.setattr(agent, "site_counters", lambda: {"status": "ok",
+            "home_visits": 100, "article_clicks": {}, "total_clicks": 5})
+        agent.snapshot_counters(label="before")
+        monkeypatch.setattr(agent, "site_counters", lambda: {"status": "ok",
+            "home_visits": 180, "article_clicks": {}, "total_clicks": 12})
+        agent.snapshot_counters(label="after")
+        report = agent.blitz_report()
+        assert report["status"] == "ok"
+        assert report["name"] == "wave"
+        assert report["pieces"][0]["drafts"]
+        assert report["deltas"]["home_visits_delta"] == 80
+        assert report["deltas"]["total_clicks_delta"] == 7
+        assert report["queue"]["total"] == 2
+
+
+class TestBlitzDigest:
+    def test_digest_renders(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-dig-1",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.blitz_plan(name="wave",
+                         pieces=[{"title": "A",
+                                  "link": "https://example.gov/a/",
+                                  "source_ref": "news:test-eo-story"}])
+        result = agent.blitz_digest(month="2026-10")
+        assert result["status"] == "drafted"
+        assert "Subject:" in result["markdown"]
+        assert "example.gov/order/" in result["markdown"]  # article resolved
+        assert result["requires_owner_send"] is True
+
+    def test_empty_digest(self, tmp_path):
+        agent = make_agent("sm-dig-2",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        result = agent.blitz_digest(month="2026-10")
+        assert result["status"] == "empty"
+
+    def test_bad_month(self):
+        agent = make_agent("sm-dig-3")
+        assert "error" in agent.blitz_digest(month="now")
+
+
+class TestBlitzPersistence:
+    def test_round_trip_monotonic(self, tmp_path, monkeypatch):
+        store = StateStore(db_path=str(tmp_path / "bl.sqlite"))
+        agent = make_agent("sm-bl-1", state_store=store)
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.blitz_plan(name="wave-a", pieces=[{"title": "One"}])
+        assert agent.blitzes[-1].blitz_id == "BLITZ-0001"
+        fresh = make_agent("sm-bl-1", state_store=store)
+        monkeypatch.setattr(fresh, "_link_ok", lambda url: True)
+        second = fresh.blitz_plan(name="wave-b", pieces=[{"title": "Two"}])
+        assert second["blitz"]["blitz_id"] == "BLITZ-0002"
+        monkeypatch.setattr(fresh, "site_counters", lambda: {"status": "ok",
+            "home_visits": 1, "article_clicks": {}, "total_clicks": 0})
+        assert fresh.snapshot_counters(label="s1")["status"] == "captured"
+        fresh2 = make_agent("sm-bl-1", state_store=store)
+        fresh2.post_queue()  # any op triggers the lazy state load
+        assert len(fresh2.blitzes) == 2
+        assert len(fresh2.snapshots) == 1
