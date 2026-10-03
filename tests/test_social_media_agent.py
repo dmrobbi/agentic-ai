@@ -397,6 +397,12 @@ class TestBrand:
         assert result["scrub_hits"]  # domain + email + /home path
         assert result["status"] == "flagged"
 
+    def test_markdown_paren_urls_cleaned(self, monkeypatch):
+        agent = make_agent("sm-brand-6")
+        monkeypatch.setattr(agent, "_link_ok", lambda url: False)
+        result = agent.brand_check("See [docs](https://example.gov/page).")
+        assert result["dead_links"] == ["https://example.gov/page"]
+
 
 class TestCrisis:
     def test_hold_rules_and_escalation(self):

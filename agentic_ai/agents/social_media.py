@@ -791,7 +791,12 @@ class SocialMediaAgent(BaseAgent):
         unsourced = self._unsourced_numbers(text)
         scrub = self._scrub_hits(text)
         links: List[Dict[str, Any]] = []
-        for url in re.findall(r"https?://\S+", text):
+        for match in re.findall(r"https?://\S+", text):
+            # strip markdown/trailing punctuation - a matched url inside
+            # [text](https://...) otherwise tests the ')' as part of it
+            url = match.rstrip(".,;:!?)\"'")
+            if not url:
+                continue
             links.append({"url": url, "live": self._link_ok(url)})
         dead = [l["url"] for l in links if not l["live"]]
         approved = not (hits_banned or dead or scrub)
