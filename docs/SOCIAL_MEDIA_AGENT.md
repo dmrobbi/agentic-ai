@@ -209,3 +209,33 @@ carries the dated New badge under the existing 15-day auto-removal.
 
 Still owner-gated (need credentials and a decision): LinkedIn/X publishing
 APIs, listening APIs, per-post scheduled automation.
+
+## The posting path — authorized activities (built 2026-10-03)
+
+The draft-only wall remains for anything unauthorized; the posting path is
+an AUTHORIZATION MODEL on top of it:
+
+1. The owner SETS UP an activity: a social post from an owner_approved
+   draft, or a limited-information reply to an inbound request (the request
+   text is never echoed; the reply is canned-minimal: greeting, the
+   published-material pointer, the supervisor-follow-up line - no pricing,
+   no commitments, no internals).
+2. The owner AUTHORIZES it (authorize_activity) - calling it IS the gate;
+   the agent never self-authorizes. The activity is scheduled for its
+   optimal time (PEAKS: next matching weekday at the channel's UTC window;
+   explicit overrides via scheduled_for).
+3. The ticker executes due authorized activities every 15 minutes: email
+   replies mail for real via the verified mailbox (reports@ via STARTTLS
+   587; credentials read at execute-time, never printed); social kinds
+   report blocked_no_transport until platform tokens configure a
+   transport (seams reserved).
+4. Failed attempts retry on later ticks; after 3 the activity is recorded
+   failed_final. Everything lands in the activity audit log
+   (activity_log) plus the chassis transparency log.
+
+Durable shared queue store: SHARED_ACTIVITY_DB (own sqlite blob under
+~/.openclaw/soc/data/agentic-activities/). The autonomous executor runs as
+the agentic-ai-activity-ticker automation (15m).
+
+Next wave (needs credentials/decision): inbound-mailbox monitoring (IMAP),
+the social transports (LinkedIn/X/Mastodon/Bluesky tokens), DM handling.

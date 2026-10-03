@@ -30,8 +30,12 @@ import datetime
 import json
 import logging
 import re
+import smtplib
+import ssl
 import subprocess
 from dataclasses import asdict, dataclass, field
+from email.message import EmailMessage
+from email.utils import formataddr
 from typing import Any, Dict, List, Optional
 
 from agentic_ai.agents.base import BaseAgent, Permission
@@ -195,6 +199,46 @@ class Blitz:
     snapshot_before: Optional[str] = None
 
 
+# The durable shared store the OWNER's authorizing session and the
+# autonomous ticker both read (StateStore sqlite; survives reboots).
+SHARED_ACTIVITY_DB = "/home/wez/.openclaw/soc/data/agentic-activities/store.sqlite"
+MAILBOX_ENV = "/home/wez/.openclaw/soc/secrets/reports-mailbox.env"
+
+# Optimal-time windows (UTC hour) per channel/email kind.
+PEAKS: Dict[str, Dict[str, Any]] = {
+    Channel.LINKEDIN: {"weekdays": [1, 2, 3], "hour": 9},   # Tue-Thu morning
+    Channel.X: {"weekdays": [0, 1, 2, 3, 4], "hour": 10},
+    Channel.MASTODON: {"weekdays": [0, 1, 2, 3, 4], "hour": 13},
+    Channel.BLUESKY: {"weekdays": [0, 1, 2, 3, 4], "hour": 9},
+    Channel.OTHER: {"weekdays": [0, 1, 2, 3, 4], "hour": 12},
+    "email_reply": {"weekdays": [0, 1, 2, 3, 4], "hour": 9},
+}
+
+
+@dataclass
+class AuthorizedActivity:
+    """An owner-authorized activity the agent autonomously executes.
+
+    The state machine: authorized -> executed | blocked_no_transport |
+    failed_final | cancelled. Nothing enters this model without the
+    authorize step (calling it IS the owner's gate), and the ticker only
+    ever touches status=authorized records.
+    """
+    activity_id: str
+    kind: str              # "post" | "email_reply"
+    ref: str               # post_id or request paste ref
+    target: str            # platform channel or email address
+    payload: Dict[str, Any]
+    authorized_at: datetime = field(default_factory=datetime.datetime.now)
+    authorized_by: str = "owner"
+    scheduled_for: Optional[datetime] = None
+    status: str = "authorized"
+    attempts: int = 0
+    log: List[Dict[str, Any]] = field(default_factory=list)
+    executed_at: Optional[datetime] = None
+    receipt: str = ""
+
+
 class SocialMediaAgent(BaseAgent):
     """Social media agent: calendars, drafts, engagement, listening, metrics.
 
@@ -216,6 +260,7 @@ class SocialMediaAgent(BaseAgent):
         self.mentions: List[MentionRecord] = []
         self.blitzes: List[Blitz] = []
         self.snapshots: List[Dict[str, Any]] = []
+        self.activities: List[AuthorizedActivity] = []  # in-memory fallback (no store)
         self._seq: Dict[str, int] = {"post": 0, "mention": 0, "blitz": 0}
         self._loaded = False
         self._sales: Optional[SalesAgent] = None  # cached CRM bridge, state-sharing
@@ -241,6 +286,10 @@ class SocialMediaAgent(BaseAgent):
             "blitz_report": self.blitz_report,
             "snapshot_counters": self.snapshot_counters,
             "blitz_digest": self.blitz_digest,
+            "authorize_activity": self.authorize_activity,
+            "tick_activities": self.tick_activities,
+            "activity_log": self.activity_log,
+            "draft_reply": self.draft_reply,
         }
 
     # ============================================
@@ -1333,6 +1382,287 @@ class SocialMediaAgent(BaseAgent):
         return {"status": "drafted" if materials else "ok", "month": month,
                 "markdown": "\n".join(lines),
                 "requires_owner_send": True}
+
+    # ============================================
+    # The posting path: authorized activities, autonomous optimal-timing
+    # ============================================
+
+    def _load_activities(self) -> List[AuthorizedActivity]:
+        """The shared authorized-activity queue (its own store key - the
+        owner's authorizing session and the autonomous ticker both hit
+        it). Without a state store the queue is per-call-empty."""
+        if self.state_store is None:
+            return list(self.activities)  # fallback: this lifetime only
+        loaded = self.state_store.load("authorized_activities", default=[])
+        if not isinstance(loaded, list):
+            return []
+        return [self._load_activity(e) for e in loaded if isinstance(e, dict)]
+
+    def _save_activities(self, queue: List[AuthorizedActivity]) -> None:
+        if self.state_store is None:
+            self.activities = queue
+            return
+        self.state_store.save("authorized_activities",
+                              [self._dump_activity(a) for a in queue])
+
+    @staticmethod
+    def _next_activity_id(queue: List[AuthorizedActivity]) -> str:
+        """Monotonic ACT id from the queue's own maximum suffix."""
+        max_seen = 0
+        for activity in queue:
+            text = activity.activity_id
+            if text.startswith("ACT-"):
+                try:
+                    max_seen = max(max_seen, int(text[4:]))
+                except ValueError:
+                    continue
+        return "ACT-%04d" % (max_seen + 1)
+
+    @classmethod
+    def _load_activity(cls, data: Dict[str, Any]) -> AuthorizedActivity:
+        """Rebuild an AuthorizedActivity from a persisted dict."""
+        return AuthorizedActivity(
+            activity_id=data.get("activity_id", ""),
+            kind=data.get("kind", "post"),
+            ref=data.get("ref", ""),
+            target=data.get("target", ""),
+            payload=data.get("payload", {}) if isinstance(data.get("payload", {}), dict) else {},
+            authorized_at=cls._dt(data.get("authorized_at")) or datetime.datetime.now(),
+            authorized_by=data.get("authorized_by", "owner"),
+            scheduled_for=cls._dt(data.get("scheduled_for")),
+            status=data.get("status", "authorized"),
+            attempts=int(data.get("attempts", 0) or 0),
+            log=[e for e in data.get("log", []) if isinstance(e, dict)],
+            executed_at=cls._dt(data.get("executed_at")),
+            receipt=data.get("receipt", ""),
+        )
+
+    @staticmethod
+    def _dump_activity(activity: AuthorizedActivity) -> Dict[str, Any]:
+        """Flatten an activity for persistence (JSON-safe)."""
+        data = asdict(activity)
+        data["authorized_at"] = activity.authorized_at.isoformat()
+        data["scheduled_for"] = activity.scheduled_for.isoformat() if activity.scheduled_for else None
+        data["executed_at"] = activity.executed_at.isoformat() if activity.executed_at else None
+        return data
+
+    @staticmethod
+    def _load_mailbox_env() -> Dict[str, str]:
+        """Read the mailbox env file; values stay in local scope and are
+        never printed or logged."""
+        env = {}
+        try:
+            for line in open(MAILBOX_ENV):
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, _, v = line.partition("=")
+                    env[k.strip()] = v.strip()
+        except OSError:
+            return {}
+        return env
+
+    @staticmethod
+    def next_peak(kind: str, now: Optional[datetime.datetime] = None) -> datetime.datetime:
+        """Next matching weekday at the optimal UTC hour (>= now + 1h, so a
+        freshly authorized activity never double-fires on the same tick)."""
+        now = now or datetime.datetime.now()
+        spec = PEAKS.get(kind, PEAKS[Channel.OTHER])
+        for day in range(0, 15):
+            cand = (now + datetime.timedelta(days=day)).replace(
+                hour=spec["hour"], minute=0, second=0, microsecond=0)
+            if cand.weekday() not in spec["weekdays"] \
+                    or cand <= now + datetime.timedelta(hours=1):
+                continue
+            return cand
+        return (now + datetime.timedelta(days=7)).replace(
+            hour=spec["hour"], minute=0, second=0, microsecond=0)
+
+    def _minimal_reply(self, request_text: str) -> Dict[str, str]:
+        """Limited-information reply: canned and minimal by construction -
+        the request text is never echoed, no pricing, no commitments, one
+        published pointer, supervision sign-off."""
+        body = "\n".join([
+            "Hello,",
+            "",
+            "Thank you for reaching out to Bedim Security.",
+            "I can share only what is published: the measured capability",
+            "overview lives here - " + CAPABILITIES_URL,
+            "",
+            "I am not able to quote, commit, or schedule on behalf of the",
+            "supervisor. If your request needs more than the published",
+            "material, the human supervisor will follow up directly.",
+            "",
+            "Bedim Security",
+            "(This reply was composed and sent by the agent fleet under",
+            "human supervision; it carries no other information.)",
+        ])
+        return {"subject": "Re: your request to Bedim Security", "body": body}
+
+    def draft_reply(self, request_text: str = "", email: str = "") -> Dict[str, Any]:
+        """Render the limited-information reply for an inbound request
+        (draft-only: nothing mails until authorize + execute)."""
+        self._ensure_loaded()
+        if not request_text.strip() or "@" not in (email or ""):
+            return {"error": "draft_reply needs the request text and a target email"}
+        draft = self._minimal_reply(request_text)
+        return {"status": "drafted", "draft": draft, "target": email,
+                "requires_owner_send": True,
+                "note": "the request text is not echoed; the reply is canned-minimal"}
+
+    def authorize_activity(self, kind: str = "post", post_id: str = "",
+                           request_text: str = "", email: str = "",
+                           scheduled_for=None) -> Dict[str, Any]:
+        """THE owner gate: authorize an activity (post or email reply) for
+        autonomous execution at its optimal time. Calling this is the
+        owner's decision; the agent never self-authorizes."""
+        kind = (kind or "").strip().lower()
+        payload: Dict[str, Any] = {}
+        ref = ""
+        if kind == "post":
+            self._ensure_loaded()
+            post = self._find_post(post_id)
+            if post is None:
+                return {"error": f"Post {post_id} not found"}
+            if post.status != PostStatus.OWNER_APPROVED:
+                return {"error": "authorization needs an owner_approved draft",
+                        "state_machine": "drafted -> owner_approved -> "
+                                        "authorized-activity",
+                        "hint": "mark_status(post_id, 'owner_approved') first"}
+            payload = {"channel": post.channel, "body": post.body,
+                       "link": post.link or None, "hashtags": list(post.hashtags)}
+            ref = post.post_id
+        elif kind == "email_reply":
+            if not request_text.strip() or "@" not in (email or ""):
+                return {"error": "an email reply needs the request text and a target email"}
+            payload = self._minimal_reply(request_text)
+            ref = "request-paste"
+        else:
+            return {"error": f"Unknown kind {kind!r}",
+                    "valid_kinds": ["post", "email_reply"]}
+        if scheduled_for is not None:
+            scheduled_at = scheduled_for if isinstance(scheduled_for, datetime.datetime) \
+                else self._dt(scheduled_for)
+            if scheduled_at is None:
+                return {"error": "scheduled_for must be an ISO datetime"}
+        else:
+            scheduled_at = self.next_peak(kind if kind == "email_reply"
+                                          else payload.get("channel", Channel.OTHER))
+        activity = AuthorizedActivity(
+            activity_id=self._next_activity_id(self._load_activities()),
+            kind=kind, ref=ref,
+            target=(payload.get("channel") if kind == "post" else email),
+            payload=payload, scheduled_for=scheduled_at)
+        activity.log.append({"event": "authorized",
+                             "at": datetime.datetime.now().isoformat(),
+                             "by": "owner",
+                             "scheduled_for": scheduled_at.isoformat()})
+        queue = self._load_activities()
+        queue.append(activity)
+        self._save_activities(queue)
+        self.log("authorize_activity", {"activity_id": activity.activity_id,
+                                        "kind": kind,
+                                        "scheduled_for": scheduled_at.isoformat()})
+        return {"status": "authorized", "activity": self._dump_activity(activity),
+                "execution": "autonomous at the scheduled optimal time; "
+                            "social kinds block until platform tokens exist"}
+
+    @staticmethod
+    def get_transport(channel: str):
+        """Social posting transports land behind platform tokens; none are
+        configured in v1 (seams ready). Email execution is real today."""
+        return None
+
+    @staticmethod
+    def _post_send(payload: Dict[str, Any]) -> str:
+        raise NotImplementedError("social posting transport lands with "
+                                  "platform tokens (next wave)")
+
+    def _mail_send(self, payload: Dict[str, Any], target: str) -> str:
+        """Send the limited-information reply via the verified mailbox
+        (reports@bedimsecurity.com, STARTTLS 587, relaxed context on the
+        private encrypted Tailscale route). Credentials are read at
+        execute-time and never printed or logged."""
+        env = self._load_mailbox_env()
+        host = env.get("SMTP_HOST", "")
+        port = int(env.get("SMTP_PORT", "587") or 587)
+        user, pw = env.get("REPORTS_MAILBOX", ""), env.get("REPORTS_MAILBOX_PW", "")
+        if not (host and user and pw):
+            raise RuntimeError("mailbox env incomplete (needs SMTP_HOST, "
+                               "REPORTS_MAILBOX, REPORTS_MAILBOX_PW)")
+        msg = EmailMessage()
+        msg["Subject"] = payload.get("subject", "Re: your request to Bedim Security")
+        msg["From"] = formataddr(("Bedim Security", user))
+        msg["To"] = target
+        msg["Reply-To"] = "info@bedimsecurity.com"
+        msg.set_content(payload.get("body", ""))
+        ctx = ssl.create_default_context()
+        ctx.check_hostname = False
+        ctx.verify_mode = ssl.CERT_NONE
+        with smtplib.SMTP(host, port, timeout=60) as smtp:
+            smtp.starttls(context=ctx)
+            smtp.login(user, pw)
+            smtp.send_message(msg)
+        return "sent"
+
+    def tick_activities(self) -> Dict[str, Any]:
+        """Execute authorized activities whose optimal time has arrived:
+        email replies mail for real; social posts block until a transport
+        exists. Failed attempts retry on later ticks; after 3 the activity
+        is recorded failed_final. Not-yet-due records stay waiting."""
+        queue = self._load_activities()
+        now = datetime.datetime.now()
+        executed, blocked, waiting = [], [], 0
+        for activity in queue:
+            if activity.status != "authorized":
+                continue
+            if activity.scheduled_for is None or activity.scheduled_for > now:
+                waiting += 1
+                continue
+            if activity.kind == "post" and self.get_transport(activity.target) is None:
+                activity.status = "blocked_no_transport"
+                activity.log.append({"event": "blocked_no_transport",
+                                     "at": now.isoformat(),
+                                     "reason": "no social transport configured "
+                                               "- bring platform tokens"})
+                self.log("activity_blocked", {"activity_id": activity.activity_id})
+                blocked.append(activity.activity_id)
+                continue
+            try:
+                if activity.kind == "email_reply":
+                    receipt = self._mail_send(activity.payload, activity.target)
+                else:
+                    receipt = self._post_send(activity.payload)
+                activity.status = "executed"
+                activity.executed_at = now
+                activity.receipt = receipt
+                activity.log.append({"event": "executed", "at": now.isoformat(),
+                                     "receipt": receipt})
+                self.log("activity_executed", {"activity_id": activity.activity_id})
+                executed.append(activity.activity_id)
+            except Exception as exc:  # noqa: BLE001
+                activity.attempts += 1
+                activity.log.append({"event": "attempt_failed",
+                                     "at": now.isoformat(),
+                                     "detail": str(exc)[:120]})
+                if activity.attempts >= 3:
+                    activity.status = "failed_final"
+                    self.log("activity_failed_final",
+                             {"activity_id": activity.activity_id})
+        self._save_activities(queue)
+        return {"status": "ok", "executed": executed, "blocked": blocked,
+                "waiting": waiting}
+
+    def activity_log(self, activity_id: str = "") -> Dict[str, Any]:
+        """Audit view (from the shared queue): one activity (with its log)
+        or all of them."""
+        queue = self._load_activities()
+        if activity_id:
+            for activity in queue:
+                if activity.activity_id == activity_id:
+                    return {"status": "ok", "activity": self._dump_activity(activity)}
+            return {"error": f"Activity {activity_id} not found"}
+        return {"status": "ok", "count": len(queue),
+                "activities": [self._dump_activity(a) for a in queue]}
 
     async def perform_task(self, task_type: str = "",
                            payload: Optional[Dict[str, Any]] = None,

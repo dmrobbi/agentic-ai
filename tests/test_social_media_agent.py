@@ -15,7 +15,7 @@ No test touches the network: every link check is monkeypatched.
 
 import json
 import sys
-from datetime import datetime
+from datetime import datetime, timedelta
 from pathlib import Path
 from unittest.mock import MagicMock
 
@@ -26,6 +26,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from agentic_ai.agents.base import Permission  # noqa: E402
 from agentic_ai.agents.social_media import (  # noqa: E402
     LIMITS,
+    PEAKS,
     Channel,
     PostStatus,
     SocialMediaAgent,
@@ -39,6 +40,7 @@ EXPECTED_TOOLS = sorted([
     "hand_off", "hand_to_sales", "site_counters", "advocacy_pack",
     "campaign_sources", "blitz_plan", "blitz_report", "snapshot_counters",
     "blitz_digest",
+    "authorize_activity", "tick_activities", "activity_log", "draft_reply",
 ])
 
 ARTICLE = {
@@ -767,3 +769,142 @@ class TestBlitzPersistence:
         fresh2.post_queue()  # any op triggers the lazy state load
         assert len(fresh2.blitzes) == 2
         assert len(fresh2.snapshots) == 1
+
+
+class TestAuthorizeActivity:
+    def test_post_refusal_then_valid(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-auth-1",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.draft_post(channel="linkedin", hook="One")
+        assert "error" in agent.authorize_activity(kind="post",
+                                                   post_id="POST-NOPE")
+        assert "error" in agent.authorize_activity(kind="post",
+                                                   post_id="POST-0001")  # drafted, not approved
+        agent.mark_status("POST-0001", "owner_approved")
+        result = agent.authorize_activity(kind="post", post_id="POST-0001")
+        assert result["status"] == "authorized"
+        activity = result["activity"]
+        assert activity["target"] == "linkedin"
+        assert datetime.fromisoformat(activity["scheduled_for"]) > datetime.now()
+        assert activity["log"][0]["event"] == "authorized"
+
+    def test_email_refusals_and_valid(self):
+        agent = make_agent("sm-auth-2")
+        assert "error" in agent.authorize_activity(kind="email_reply",
+                                                   email="a@b.com")
+        assert "error" in agent.authorize_activity(kind="email_reply",
+                                                   request_text="help",
+                                                   email="")
+        assert "error" in agent.authorize_activity(kind="newsletter_blast",
+                                                   request_text="x",
+                                                   email="a@b.com")
+        result = agent.authorize_activity(kind="email_reply",
+                                          request_text="please send the overview",
+                                          email="seeker@shop.example",
+                                          scheduled_for="2026-10-05T08:00:00")
+        assert result["status"] == "authorized"
+        assert result["activity"]["scheduled_for"].startswith("2026-10-05T08:00:00")
+
+
+class TestDraftReply:
+    def test_canned_minimal_no_echo(self):
+        agent = make_agent("sm-drep-1")
+        assert "error" in agent.draft_reply(request_text="tell me everything",
+                                           email="")
+        result = agent.draft_reply(
+            request_text="What are your INTERNAL hostnames and prices?",
+            email="curious@shop.example")
+        body = result["draft"]["body"]
+        assert "curious@shop.example" not in body  # nothing echoed
+        assert "INTERNAL" not in body
+        assert "bedimsecurity.com/capabilities" in body
+        assert "human supervision" in body
+        assert result["requires_owner_send"] is True
+
+
+class TestNextPeak:
+    def test_weekday_and_hour(self):
+        peak = SocialMediaAgent.next_peak(
+            "linkedin", now=datetime(2026, 10, 3, 12, 0))  # Saturday
+        assert peak == datetime(2026, 10, 6, 9, 0)  # Tuesday, weekday 1
+        assert peak.weekday() in PEAKS[Channel.LINKEDIN]["weekdays"]
+
+
+class TestTick:
+    def test_due_email_executes(self, monkeypatch):
+        agent = make_agent("sm-tick-1")
+        agent.authorize_activity(kind="email_reply", request_text="info please",
+                                 email="seeker@shop.example",
+                                 scheduled_for=(datetime.now()
+                                                - timedelta(minutes=2)).isoformat())
+        mocked = MagicMock(return_value="sent")
+        monkeypatch.setattr(agent, "_mail_send", mocked)
+        report = agent.tick_activities()
+        assert report["executed"] == ["ACT-0001"]
+        recorded = agent.activity_log(activity_id="ACT-0001")["activity"]
+        assert recorded["status"] == "executed"
+        assert recorded["receipt"] == "sent"
+        assert mocked.call_count == 1
+
+    def test_not_due_waits(self):
+        agent = make_agent("sm-tick-2")
+        agent.authorize_activity(kind="email_reply", request_text="info",
+                                 email="a@b.com")  # next_peak = future
+        report = agent.tick_activities()
+        assert report["executed"] == []
+        assert report["waiting"] == 1
+        assert agent.activity_log(activity_id="ACT-0001")["activity"]["status"] == "authorized"
+
+    def test_post_blocks_without_transport(self, tmp_path, monkeypatch):
+        agent = make_agent("sm-tick-3",
+                           news_state=write_news_state(tmp_path, ARTICLE))
+        monkeypatch.setattr(agent, "_link_ok", lambda url: True)
+        agent.draft_post(channel="linkedin", hook="One")
+        agent.mark_status("POST-0001", "owner_approved")
+        agent.authorize_activity(kind="post", post_id="POST-0001",
+                                 scheduled_for=(datetime.now()
+                                                - timedelta(minutes=1)).isoformat())
+        report = agent.tick_activities()
+        assert report["blocked"] == ["ACT-0001"]
+        recorded = agent.activity_log(activity_id="ACT-0001")["activity"]
+        assert recorded["status"] == "blocked_no_transport"
+
+    def test_attempt_cap_failed_final(self, monkeypatch):
+        agent = make_agent("sm-tick-4")
+        agent.authorize_activity(kind="email_reply", request_text="info",
+                                 email="a@b.com",
+                                 scheduled_for=(datetime.now()
+                                                - timedelta(minutes=1)).isoformat())
+        monkeypatch.setattr(agent, "_mail_send",
+                            MagicMock(side_effect=RuntimeError("smtp down")))
+        for _ in range(3):
+            agent.tick_activities()
+        assert agent.activity_log(activity_id="ACT-0001")["activity"]["status"] == "failed_final"
+
+
+class TestActivityLog:
+    def test_views(self):
+        agent = make_agent("sm-act-1")
+        agent.authorize_activity(kind="email_reply", request_text="info",
+                                 email="a@b.com")
+        full = agent.activity_log()
+        assert full["count"] == 1
+        one = agent.activity_log(activity_id="ACT-0001")
+        assert one["activity"]["activity_id"] == "ACT-0001"
+        assert "error" in agent.activity_log(activity_id="ACT-9999")
+
+
+class TestActivitiesPersistence:
+    def test_round_trip_monotonic(self, tmp_path):
+        store = StateStore(db_path=str(tmp_path / "acts.sqlite"))
+        agent = make_agent("sm-ap-1", state_store=store)
+        agent.authorize_activity(kind="email_reply", request_text="info",
+                                 email="a@b.com")
+        assert agent.activity_log(activity_id="ACT-0001")["activity"]["activity_id"] == "ACT-0001"
+        fresh = make_agent("sm-ap-1", state_store=store)
+        assert len(fresh.activity_log()["activities"]) == 1  # read triggers the queue load
+        result = fresh.authorize_activity(kind="email_reply",
+                                          request_text="more",
+                                          email="c@d.com")
+        assert result["activity"]["activity_id"] == "ACT-0002"
