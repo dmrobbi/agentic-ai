@@ -186,7 +186,9 @@ class Opportunity:
 
 
 class SalesAgent(BaseAgent):
-    """Sales agent for CRM, productized pricing, and pipeline management."""
+    """Sales agent: CRM, BANT/ICP qualification, productized price book,
+    quotes, proposals, pipeline forecasting, and draft-only outbound.
+    Human-supervised; never sends anything unaided."""
 
     agent_type = "sales"
     permission = Permission.STANDARD
