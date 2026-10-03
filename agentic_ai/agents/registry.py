@@ -25,7 +25,8 @@ AGENT_REGISTRY: Dict[str, Tuple[str, str, str, str]] = {
              "Orchestration and coordination"),
     # Business
     "sales": ("agentic_ai.agents.sales", "SalesAgent", "Business",
-              "Sales and lead management"),
+              "Sales: leads, BANT/ICP qualification, productized price book, "
+              "quotes, proposals, pipeline forecast, outreach drafts"),
     "finance": ("agentic_ai.agents.finance", "FinanceAgent", "Business",
                 "Financial operations"),
     "hr": ("agentic_ai.agents.hr", "HRAgent", "Business", "Human resources"),
