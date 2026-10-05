@@ -40,10 +40,11 @@ def test_catalog_lane_list_and_steps():
     assert index["lanes"] == ["domain", "email", "persona"]
     domain = mixin.osint_step_catalog("domain")
     assert domain["steps"][0]["step"] == "registrar"
-    assert domain["steps"][0]["commands"] == ["whois lab-asset.example"]
-    # the crt.sh row substitutes inside the single-quoted curl:
+    # PINNED: the catalog carries RAW templates ({target} stays a
+    # placeholder by contract; the analysts substitute at run time).
+    assert domain["steps"][0]["commands"] == ["whois {target}"]
     ct = domain["steps"][2]["commands"][0]
-    assert "crt.sh/?q=%25.lab-asset.example" in ct
+    assert "crt.sh/?q=%25.{target}" in ct
     email = mixin.osint_step_catalog("email")
     # the API key = a placeholder, never a real key:
     joined = " ".join(c for s in email["steps"] for c in s["commands"])
