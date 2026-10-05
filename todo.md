@@ -358,7 +358,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; proposals well-formed; the DB unchanged by this task.
   - **Depends:** KA-001, KA-012. **Feeds:** KA-INT-2.
 
-- [ ] **KA-030 · Exploit-test runbook** — [BUILDER][S][none] (OPT-30)
+- [x] **KA-030 · Exploit-test runbook** — [BUILDER][S][none] (OPT-30)
   - **Owns:** `docs/KA-EXPLOIT-TESTS.md`, `Makefile` (battery targets — integration-
     reviewed)
   - **Goal:** how to run the batteries locally: venv, fixtures, lab markers, ordering.
