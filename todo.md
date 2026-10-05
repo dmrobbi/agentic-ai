@@ -451,7 +451,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** modbus/S7 planners + firmware flow; air-gapped-lab requirement.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-044 · PostExploitMixin** — [BUILDER][M][lab] (OPT-44)
+- [x] **KA-044 · PostExploitMixin** — [BUILDER][M][lab] (OPT-44)
   - **Owns:** `agentic_ai/agents/cyber/postexp.py`, `tests/test_postexp_ops.py`
   - **Acceptance:** enumeration strategy + evidence-only policy gates.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
