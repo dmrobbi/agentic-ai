@@ -539,7 +539,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/budgets.py` (new), `tests/test_budgets.py`
 - [x] **KA-063 · Staging verification** — [BUILDER][S][none] (OPT-63)
   - **Owns:** `agentic_ai/agents/cyber/staging_check.py` (new), `tests/test_staging_check.py`
-- [ ] **KA-064 · Doctor tool-version matrix** — [BUILDER][S][none] (OPT-64)
+- [x] **KA-064 · Doctor tool-version matrix** — [BUILDER][S][none] (OPT-64)
   - **Owns:** `docs/ka_tool_versions.json` (new), `tests/test_tool_versions.py`
 - [ ] **KA-INT-4 · Phase-4 wiring** — [INTEGRATION][M][none]
   - **Acceptance:** the gates compose (order pinned: consent → auth → blast-radius →

@@ -1,0 +1,790 @@
+{
+  "_meta": {
+    "generated_at": "2026-10-05T19:15:46Z",
+    "task": "KA-064 doctor tool-version matrix",
+    "artifact": "doctor-check SPEC for the kali chassis toolset; planning artifact only - no tool was executed to build it",
+    "scan_scope": "agentic_ai/agents/cyber/*.py modules defining a `class *Mixin` (the landed mixin planners)",
+    "scan_rule": "tool tokens are measured from the modules' string-literal planning material at generation time; planner_modules per tool = the modules whose command strings invoke it",
+    "inclusion_rule": "a tool enters the matrix when it is INVOKED inside a kali-side planning command string: a command segment head (split on newlines/;/pipes), a python3<tool>.py script invocation, or a documented embedded invocation (openssl). Aliases: myth -> mythril (the mythril catalog row invokes Mythril via its legacy 'myth' CLI).",
+    "excluded_classes": {
+      "target-host syntax": "postexp/privesc host-enum and arc command strings plus ad_pentest's nltest and container_pentest's in-container enum (cat/ls/mount) run on the compromised host, container, or device console - not the kali toolset; their binaries (whoami, netstat, reg, sc, schtasks, netsh, show, config, ...) are out of matrix",
+      "transport-core": "POSIX-obligatory pipe/compound conveniences invoked mid-pipeline (grep, head, sort, tee) plus interpreters used purely as script transport (python3) are not doctor entries; the script tools themselves (smuggler, xsstrike, graphql-cop) are",
+      "template-less catalog ids": "chain_ops analyzer ids with template=None are offered methodology rows without an invoked binary and stay out until their invocation lands",
+      "named-not-invoked": "tools referenced by name in activities/checklists without a command string",
+      "data catalogs": "tool names inside generated data catalogs consumed by mixin modules (data/xss_tools.json, redteam_pentest's gist-sourced tool catalog) follow the catalog contract and stay out of this module-string matrix"
+    },
+    "excluded_mentions": {
+      "cdk": "container escape toolkit named in the container_pentest tool checklist; no invoked command string in the tree",
+      "clairvoyance": "named alongside inql as an introspection helper in an api_pentest activity string; never invoked",
+      "deepce": "docker enumeration toolkit named in the container_pentest tool checklist; no invoked command string",
+      "dnsmasq": "named in a wireless_pentest activity note (rogue-AP lab net); never invoked",
+      "frida": "named in a mobile_pentest dynamic-lane note; no invoked command string",
+      "impacket": "referenced inside postexp lateral-exec forbidden-class patterns (target-side arc syntax)",
+      "inql": "named in an api_pentest activity string (graphql tooling context); never invoked",
+      "kube-bench": "k8s CIS benchmark named in the container_pentest tool checklist; no invoked command string",
+      "kubehound": "k8s graphing toolkit named in the container_pentest tool checklist; no invoked command string",
+      "manticore": "chain_ops analyzer row id with template=None (no invoked binary in the tree)",
+      "medusa": "chain_ops analyzer row id with template=None (no invoked binary in the tree)",
+      "move-analyzer": "chain_ops analyzer row id with template=None (no invoked binary in the tree)",
+      "cargo-contract-audit": "chain_ops analyzer row id with template=None (no invoked binary in the tree)",
+      "woke": "chain_ops analyzer row id with template=None (no invoked binary in the tree)"
+    },
+    "out_of_scan_modules_note": "the chassis (kali.py, kali_v2.py) and the plain modules are outside the landed-mixin scan scope by the task's enumeration rule; the chassis composes these mixins and inherits this toolset",
+    "minimum_versions_policy": "no minimum version is documented anywhere in the fleet tree for these tools; every minimum_version is null with the per-tool note. INT-5+ owns the live doctor execution and may add documented floors later - in the same task that documents them.",
+    "where_checked_policy": "where_checked values are the first-choice documented probes a doctor would run; INT-5+ validates flags live and falls back (-V/-v/--help/no-arg banner) where a tool has no version flag. None were executed here.",
+    "aliases": {
+      "myth": "mythril"
+    },
+    "drift_canaries_zero_hit": [
+      "amass",
+      "dirsearch",
+      "feroxbuster",
+      "gau",
+      "john",
+      "kerbrute",
+      "mitm6",
+      "nc",
+      "onesixtyone",
+      "responder",
+      "snmpwalk",
+      "socat",
+      "theharvester",
+      "wfuzz"
+    ],
+    "sources": [
+      "agentic_ai/agents/cyber/ad_pentest.py",
+      "agentic_ai/agents/cyber/api_pentest.py",
+      "agentic_ai/agents/cyber/chain_ops.py",
+      "agentic_ai/agents/cyber/cloud_pentest.py",
+      "agentic_ai/agents/cyber/container_pentest.py",
+      "agentic_ai/agents/cyber/forensics_ops.py",
+      "agentic_ai/agents/cyber/full_engagement.py",
+      "agentic_ai/agents/cyber/ics_iot.py",
+      "agentic_ai/agents/cyber/malware_ops.py",
+      "agentic_ai/agents/cyber/mobile_pentest.py",
+      "agentic_ai/agents/cyber/network_device.py",
+      "agentic_ai/agents/cyber/osint_pentest.py",
+      "agentic_ai/agents/cyber/postexp.py",
+      "agentic_ai/agents/cyber/privesc.py",
+      "agentic_ai/agents/cyber/redteam_pentest.py",
+      "agentic_ai/agents/cyber/socialeng_ops.py",
+      "agentic_ai/agents/cyber/web_pentest.py",
+      "agentic_ai/agents/cyber/webauth_ops.py",
+      "agentic_ai/agents/cyber/wireless_pentest.py",
+      "agentic_ai/agents/cyber/xss_exploit.py"
+    ]
+  },
+  "tools": [
+    {
+      "name": "ab",
+      "purpose": "ApacheBench load probes for the race-condition rows (web_pentest race-probes step).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "ab -V",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "aderyn",
+      "purpose": "Rust static analyzer producing detector reports over a solidity workspace (chain_ops static-analyzer lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "aderyn --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "aircrack-ng",
+      "purpose": "Lab-key WPA capture cracking (wireless_pentest capture and rogue-AP lanes).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "aircrack-ng --version",
+      "planner_modules": [
+        "wireless_pentest.py"
+      ]
+    },
+    {
+      "name": "airmon-ng",
+      "purpose": "Monitor-mode setup for the lab RF lanes (wireless_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "airmon-ng --version",
+      "planner_modules": [
+        "wireless_pentest.py"
+      ]
+    },
+    {
+      "name": "airodump-ng",
+      "purpose": "Lab channel sweeps and rogue-AP capture rows (wireless_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "airodump-ng --version",
+      "planner_modules": [
+        "wireless_pentest.py"
+      ]
+    },
+    {
+      "name": "anvil",
+      "purpose": "Local anvil fork template that backs chain lab runs (chain_ops local-fork labels).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "anvil --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "apktool",
+      "purpose": "APK unpacking for the static mobile lanes (mobile_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "apktool --version",
+      "planner_modules": [
+        "mobile_pentest.py"
+      ]
+    },
+    {
+      "name": "arjun",
+      "purpose": "Hidden-parameter discovery on API/web targets (api_pentest param-discovery, web_pentest pollution/idor classes).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "arjun --version",
+      "planner_modules": [
+        "api_pentest.py",
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "binwalk",
+      "purpose": "Signature/entropy scans and firmware extraction (ics_iot firmware arc, malware_ops static catalog).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "binwalk --version",
+      "planner_modules": [
+        "ics_iot.py",
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "cadaver",
+      "purpose": "WebDAV client probes following the davtest checks (web_pentest webdav-traversal class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "cadaver --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "commix",
+      "purpose": "Command-injection probe baseline (web_pentest cmd-injection class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "commix --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "crackmapexec",
+      "purpose": "SMB share/AD sweep rows run from the operator box against the lab DC (ad_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "crackmapexec --version",
+      "planner_modules": [
+        "ad_pentest.py"
+      ]
+    },
+    {
+      "name": "curl",
+      "purpose": "HTTP probe transport for recon/enum/vuln checks across the web, api, osint, webauth and xss lanes.",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "curl --version",
+      "planner_modules": [
+        "api_pentest.py",
+        "osint_pentest.py",
+        "web_pentest.py",
+        "webauth_ops.py",
+        "xss_exploit.py"
+      ]
+    },
+    {
+      "name": "dalfox",
+      "purpose": "XSS probe commands including blind scans (web_pentest xss class, xss_exploit fuzzing lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "dalfox version",
+      "planner_modules": [
+        "web_pentest.py",
+        "xss_exploit.py"
+      ]
+    },
+    {
+      "name": "davtest",
+      "purpose": "WebDAV upload/execute checks (web_pentest webdav-traversal class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "davtest --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "dig",
+      "purpose": "DNS recon: A/AAAA/MX/NS/TXT, axfr, reverse PTR and rebinding probes (ad_pentest, osint_pentest, web_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "dig -v",
+      "planner_modules": [
+        "ad_pentest.py",
+        "osint_pentest.py",
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "dirb",
+      "purpose": "Directory brute-force alternative row (web_pentest dir-brute step).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "dirb -v",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "echidna",
+      "purpose": "Property-based solidity fuzzing against broken invariants on lab forks (chain_ops property-fuzzing rows).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "echidna --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "enum4linux",
+      "purpose": "Null-SMB AD enumeration rows (ad_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "enum4linux --version",
+      "planner_modules": [
+        "ad_pentest.py"
+      ]
+    },
+    {
+      "name": "exiftool",
+      "purpose": "Metadata/EXIF extraction (forensics_ops metadata arc, malware_ops document lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "exiftool -ver",
+      "planner_modules": [
+        "forensics_ops.py",
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "ffuf",
+      "purpose": "Content/parameter fuzzing (web_pentest api rows, xss_exploit fuzzing lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "ffuf -V",
+      "planner_modules": [
+        "web_pentest.py",
+        "xss_exploit.py"
+      ]
+    },
+    {
+      "name": "file",
+      "purpose": "File-magic identification that gates the unpack route (ics_iot acquire-verify, malware_ops identify).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "file --version",
+      "planner_modules": [
+        "ics_iot.py",
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "fls",
+      "purpose": "Filesystem listing for disk artifacts (forensics_ops disk arc).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "fls -V",
+      "planner_modules": [
+        "forensics_ops.py"
+      ]
+    },
+    {
+      "name": "forge",
+      "purpose": "Foundry invariant suites over stateful lab forks (chain_ops foundry-invariant row).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "forge --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "ganache",
+      "purpose": "Local ganache fork template backing chain lab runs (chain_ops local-fork labels).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "ganache --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "gobuster",
+      "purpose": "Directory/vhost/JS enumeration (api_pentest route-enum, web_pentest discovery + SBOM rows).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "gobuster version",
+      "planner_modules": [
+        "api_pentest.py",
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "graphql-cop",
+      "purpose": "GraphQL endpoint audit run from the tool's repo script (web_pentest graphql class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "python3 graphql-cop.py --help",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "hardhat",
+      "purpose": "Local hardhat network fork template (chain_ops local-fork labels).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "hardhat --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "hashcat",
+      "purpose": "Hash review row (--show) inside the auth class (web_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "hashcat --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "hostapd",
+      "purpose": "Rogue-AP lab infrastructure (wireless_pentest rogue-ap lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "hostapd -v",
+      "planner_modules": [
+        "wireless_pentest.py"
+      ]
+    },
+    {
+      "name": "hydra",
+      "purpose": "HTTP login brute-force baseline row (web_pentest auth class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "hydra -V",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "icat",
+      "purpose": "Inode-level file extraction from disk artifacts (forensics_ops extract step).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "icat -V",
+      "planner_modules": [
+        "forensics_ops.py"
+      ]
+    },
+    {
+      "name": "interactsh-client",
+      "purpose": "OOB callback capture for XSS verification (xss_exploit callback-infra lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "interactsh-client -version",
+      "planner_modules": [
+        "xss_exploit.py"
+      ]
+    },
+    {
+      "name": "iw",
+      "purpose": "Interface mode setup for the lab wireless lanes (wireless_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "iw --version",
+      "planner_modules": [
+        "wireless_pentest.py"
+      ]
+    },
+    {
+      "name": "jadx",
+      "purpose": "APK/DEX source export for static review (mobile_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "jadx --version",
+      "planner_modules": [
+        "mobile_pentest.py"
+      ]
+    },
+    {
+      "name": "jq",
+      "purpose": "JSON parsing of osint curl pipelines, e.g. the cert-transparency row (osint_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "jq --version",
+      "planner_modules": [
+        "osint_pentest.py"
+      ]
+    },
+    {
+      "name": "ldapsearch",
+      "purpose": "LDAP anonymous/base enumeration rows (ad_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "ldapsearch -VV",
+      "planner_modules": [
+        "ad_pentest.py"
+      ]
+    },
+    {
+      "name": "maigret",
+      "purpose": "Deep username sweep across sites (osint_pentest persona lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "maigret --version",
+      "planner_modules": [
+        "osint_pentest.py"
+      ]
+    },
+    {
+      "name": "mbpoll",
+      "purpose": "Modbus TCP/RTU read classes on lab PLCs (ics_iot modbus lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "mbpoll --version",
+      "planner_modules": [
+        "ics_iot.py"
+      ]
+    },
+    {
+      "name": "mmls",
+      "purpose": "Partition-table walk for disk artifacts (forensics_ops disk arc).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "mmls -V",
+      "planner_modules": [
+        "forensics_ops.py"
+      ]
+    },
+    {
+      "name": "mythril",
+      "purpose": "EVM bytecode symbolic analysis; the catalog rows invoke it via the legacy 'myth' CLI (chain_ops symbolic-execution lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "mythril --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "nikto",
+      "purpose": "Automated scanner row (web_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "nikto -Version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "nmap",
+      "purpose": "Service discovery: web top-ports sweeps and ICS modbus/s7 nse scripts (web_pentest, ics_iot).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "nmap --version",
+      "planner_modules": [
+        "ics_iot.py",
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "nslookup",
+      "purpose": "AD SRV DC-discovery row (ad_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "nslookup -version",
+      "planner_modules": [
+        "ad_pentest.py"
+      ]
+    },
+    {
+      "name": "nuclei",
+      "purpose": "Severity-targeted web scans and race-probe templates (web_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "nuclei -version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "objdump",
+      "purpose": "Import-table inspection for binary samples (malware_ops).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "objdump --version",
+      "planner_modules": [
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "olevba",
+      "purpose": "Macro scan of document samples (malware_ops).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "olevba --version",
+      "planner_modules": [
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "openssl",
+      "purpose": "Lab callback listener certificate generation (xss_exploit https-listener row command).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "openssl version",
+      "planner_modules": [
+        "xss_exploit.py"
+      ]
+    },
+    {
+      "name": "otool",
+      "purpose": "iOS library listing for IPA lanes (mobile_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "otool -V",
+      "planner_modules": [
+        "mobile_pentest.py"
+      ]
+    },
+    {
+      "name": "phpggc",
+      "purpose": "Deserialization gadget-chain list row (web_pentest serialization-baseline).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "phpggc --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "semgrep",
+      "purpose": "Rule-pinned static analysis over lab contracts (chain_ops semgrep-contracts row).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "semgrep --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "sha256sum",
+      "purpose": "Evidence hash-chaining across forensics, malware, ics and chain artifacts.",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "sha256sum --version",
+      "planner_modules": [
+        "chain_ops.py",
+        "forensics_ops.py",
+        "ics_iot.py",
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "sherlock",
+      "purpose": "Username sweep across sites (osint_pentest persona lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "sherlock --version",
+      "planner_modules": [
+        "osint_pentest.py"
+      ]
+    },
+    {
+      "name": "slither",
+      "purpose": "Solidity detector framework rows (chain_ops static-analyzer lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "slither --version",
+      "planner_modules": [
+        "chain_ops.py"
+      ]
+    },
+    {
+      "name": "smbclient",
+      "purpose": "Null-session share/session listing rows (ad_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "smbclient -V",
+      "planner_modules": [
+        "ad_pentest.py"
+      ]
+    },
+    {
+      "name": "ssdeep",
+      "purpose": "Fuzzy-hash anchor for sample copies (malware_ops).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "ssdeep -V",
+      "planner_modules": [
+        "malware_ops.py"
+      ]
+    },
+    {
+      "name": "sslscan",
+      "purpose": "TLS posture check row (web_pentest tls-tests class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "sslscan --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "strings",
+      "purpose": "String triage on firmware, samples and ipa strings (ics_iot, malware_ops, mobile_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "strings --version",
+      "planner_modules": [
+        "ics_iot.py",
+        "malware_ops.py",
+        "mobile_pentest.py"
+      ]
+    },
+    {
+      "name": "subfinder",
+      "purpose": "Passive subdomain enumeration (osint_pentest, web_pentest recon).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "subfinder -version",
+      "planner_modules": [
+        "osint_pentest.py",
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "tcpdump",
+      "purpose": "Passive lab captures on the OT tap (ics_iot).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "tcpdump --version",
+      "planner_modules": [
+        "ics_iot.py"
+      ]
+    },
+    {
+      "name": "testssl.sh",
+      "purpose": "TLS assessment rows (web_pentest assessment phase + STIG mapping).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "testssl.sh --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "volatility",
+      "purpose": "Memory-forensics process/network artifact rows (forensics_ops memory arc).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "volatility --version",
+      "planner_modules": [
+        "forensics_ops.py"
+      ]
+    },
+    {
+      "name": "wafw00f",
+      "purpose": "WAF fingerprinting baseline and evasion rows (web_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "wafw00f --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "waybackurls",
+      "purpose": "Archived-URL enumeration row (web_pentest prototype-pollution class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "waybackurls -version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "whatweb",
+      "purpose": "Technology fingerprint rows (web_pentest tech-id step + SBOM phase).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "whatweb --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "whois",
+      "purpose": "Registrar recon rows (osint_pentest, web_pentest).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "whois --version",
+      "planner_modules": [
+        "osint_pentest.py",
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "wpscan",
+      "purpose": "WordPress enumeration rows (web_pentest cms class).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "wpscan --version",
+      "planner_modules": [
+        "web_pentest.py"
+      ]
+    },
+    {
+      "name": "xsstrike",
+      "purpose": "XSS scanner run from its repo script (xss_exploit fuzzing lane).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "python3 xsstrike.py --help",
+      "planner_modules": [
+        "xss_exploit.py"
+      ]
+    },
+    {
+      "name": "yara",
+      "purpose": "Packed rule scans over the sample kinds (malware_ops static catalog).",
+      "minimum_version": null,
+      "minimum_version_note": "no minimum version for this tool is documented in the fleet tree (modules or docs) as of this file's generated_at; the doctor verifies presence and logs the tool's own version output for drift visibility",
+      "where_checked": "yara --version",
+      "planner_modules": [
+        "malware_ops.py"
+      ]
+    }
+  ]
+}
