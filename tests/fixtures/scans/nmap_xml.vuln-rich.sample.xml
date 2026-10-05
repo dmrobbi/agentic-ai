@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- KA-022 scan fixture: an nmap XML whose script rows carry CVE tokens
+     so the parse -> extract -> match pipeline has real cargo. Host RFC
+     5737; synthetic. Consuming: tests/test_scan_to_plan.py -->
+<nmaprun>
+<host>
+  <status state="up"/>
+  <address addr="192.0.2.10" addrtype="ipv4"/>
+  <ports>
+    <port protocol="tcp" portid="445"><state state="open"/><service name="microsoft-ds" product="Windows"/>
+      <script id="smb-vuln-ms17-010" output="VULNERABLE: CVE-2017-0144 EternalBlue present"/>
+    </port>
+  </ports>
+</host>
+<host>
+  <status state="up"/>
+  <address addr="192.0.2.31" addrtype="ipv4"/>
+  <ports>
+    <port protocol="tcp" portid="80"><state state="open"/><service name="http" product="Apache Tomcat"/>
+      <script id="http-log4shell" output="probe hit: CVE-2021-44228 jndi"/>
+    </port>
+  </ports>
+</host>
+</nmaprun>

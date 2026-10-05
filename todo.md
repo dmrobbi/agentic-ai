@@ -303,7 +303,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; report template documented.
   - **Depends:** KA-010. **Feeds:** KA-INT-2.
 
-- [ ] **KA-022 · Synthetic-scan battery** — [BUILDER][M][none] (OPT-22)
+- [x] **KA-022 · Synthetic-scan battery** — [BUILDER][M][none] (OPT-22)
   - **Owns:** `tests/fixtures/scans/` (template corpus), `tests/test_scan_to_plan.py`
   - **Goal:** "scan in → plan out": template-generated nmap/sqlmap/nuclei → matching +
     recommendations end-to-end.
