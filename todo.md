@@ -420,7 +420,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** domain/email/persona enum planners.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-038 · ForensicsMixin** — [BUILDER][S][none] (OPT-38)
+- [x] **KA-038 · ForensicsMixin** — [BUILDER][S][none] (OPT-38)
   - **Owns:** `agentic_ai/agents/cyber/forensics_ops.py`, `tests/test_forensics_ops.py`
   - **Acceptance:** volatility/fls/exiftool analyst workflows + evidence handling.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
