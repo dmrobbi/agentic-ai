@@ -317,7 +317,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green offline; live mode documented.
   - **Depends:** KA-F02. **Feeds:** KA-INT-2.
 
-- [ ] **KA-024 · XSS-ops context assertions** — [BUILDER][S][none] (OPT-24)
+- [x] **KA-024 · XSS-ops context assertions** — [BUILDER][S][none] (OPT-24)
   - **Owns:** `tests/test_xss_ops_extended.py`
   - **Goal:** callback steps use only catalog tools; countermeasures cross-check vs
     prevention; per-context plan assertions.
