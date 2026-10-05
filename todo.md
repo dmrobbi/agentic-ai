@@ -400,7 +400,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** per-cloud enum planners + IAM blast-radius checklists + detection.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-034 · ContainerMixin** — [BUILDER][M][none] (OPT-34)
+- [x] **KA-034 · ContainerMixin** — [BUILDER][M][none] (OPT-34)
   - **Owns:** `agentic_ai/agents/cyber/container_pentest.py`, `tests/test_container_ops.py`
   - **Acceptance:** escape-surface planners + k8s RBAC checklist + tool catalog.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
