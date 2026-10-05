@@ -107,7 +107,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-1.
 
-- [ ] **KA-061 · Safe-mode proof** — [BUILDER][S][none] (OPT-61)
+- [x] **KA-061 · Safe-mode proof** — [BUILDER][S][none] (OPT-61)
   - **Owns:** `tests/test_safe_mode_semantics.py`
   - **Goal:** a test proving safe_mode blocks mutation-class commands and lets
     read/scans through; if the current semantics fail the proof, write the FAILING test
