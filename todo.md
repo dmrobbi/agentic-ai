@@ -506,7 +506,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 
 ## P4 — Safety layer (11 builders + 1 integration; track C remainder)
 
-- [ ] **KA-053 · Blast-radius classifier** — [BUILDER][M][none] (OPT-53)
+- [x] **KA-053 · Blast-radius classifier** — [BUILDER][M][none] (OPT-53)
   - **Owns:** `agentic_ai/agents/cyber/blast_radius.py` (new), `tests/test_blast_radius.py`
   - **Acceptance:** command → {read|scan|exploit-class} tagging + the authorization
     requirement mapping.
