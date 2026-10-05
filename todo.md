@@ -254,7 +254,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green offline; the script has an opt-in live mode.
   - **Depends:** KA-F02. **Feeds:** KA-INT-2.
 
-- [ ] **KA-013 · Cross-generation op parity** — [BUILDER][S][none] (OPT-13)
+- [x] **KA-013 · Cross-generation op parity** — [BUILDER][S][none] (OPT-13)
   - **Owns:** `tests/test_generation_parity.py`
   - **Goal:** kali, kali_v2, kali_agent_v4 CLI commands behave identically where they
     overlap (drift test; v4 read-only comparisons only).
