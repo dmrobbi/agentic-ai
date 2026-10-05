@@ -395,7 +395,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     policy tag; lab battery hook marker.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-033 · CloudMixin** — [BUILDER][M][none] (OPT-33)
+- [x] **KA-033 · CloudMixin** — [BUILDER][M][none] (OPT-33)
   - **Owns:** `agentic_ai/agents/cyber/cloud_pentest.py`, `tests/test_cloud_pentest_ops.py`
   - **Acceptance:** per-cloud enum planners + IAM blast-radius checklists + detection.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
