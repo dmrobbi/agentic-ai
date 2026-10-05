@@ -62,7 +62,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** `pytest tests/test_cve_eval.py` green; no network; corpus committed.
   - **Depends:** KA-F02. **Feeds:** KA-INT-1, later KA-029.
 
-- [ ] **KA-006 · execute_tool branch matrix** — [BUILDER][S][none] (OPT-6)
+- [x] **KA-006 · execute_tool branch matrix** — [BUILDER][S][none] (OPT-6)
   - **Owns:** `tests/test_execute_tool_matrix.py`
   - **Goal:** every branch of the tool-execution state machine pinned: unknown tool,
     auth-level rejections (each AuthorizationLevel), missing required args, whitelist /
