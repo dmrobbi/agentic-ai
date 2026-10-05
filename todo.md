@@ -72,7 +72,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
     a branch checklist comment).
   - **Depends:** KA-F01. **Feeds:** KA-INT-1.
 
-- [ ] **KA-014 · Guardrail integration pins** — [BUILDER][M][none] (OPT-14)
+- [x] **KA-014 · Guardrail integration pins** — [BUILDER][M][none] (OPT-14)
   - **Owns:** `tests/test_kali_guardrails_integration.py`
   - **Goal:** prove every `execute_tool` call passes input/tool/output guardrails:
     spy-stub the three guardrails, assert call order + blocking behavior.
