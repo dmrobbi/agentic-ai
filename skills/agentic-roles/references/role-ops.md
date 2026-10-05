@@ -698,6 +698,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `perform_task` | async | base | Perform a task. Override in subclasses. |
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
 | `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
+| `plan_xss_exploit` |  | xss_exploit | The 7-phase XSS methodology plan for a target. |
 | `process_message` | async | base | Process an incoming message. Override in subclasses. |
 | `reason` | async | base | Iterative ReAct reasoning loop: think→act→observe. |
 | `reaver_attack` |  | kali | WPS brute force attack. |
@@ -731,6 +732,10 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
 | `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
 | `wpscan_scan` |  | kali | WordPress security scan. |
+| `xss_callback_commands` |  | xss_exploit | OOB/callback infrastructure commands for a callback host name. |
+| `xss_countermeasures` |  | xss_exploit | Prevention + detection pairing for the blue team. |
+| `xss_filter_strategy` |  | xss_exploit | Filter/CSP evasion STRATEGY classes with in-house notes |
+| `xss_tool_lookup` |  | xss_exploit | Search the whole catalog by tool-name fragment (max 25 hits). |
 
 ## kali_v2 - KaliAgentV2
 
@@ -747,6 +752,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `match_exploits_for_cve` |  | kali_v2 | Find exploits for a CVE. |
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
 | `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
+| `plan_xss_exploit` |  | xss_exploit | The 7-phase XSS methodology plan for a target. |
 | `recommend_tools_for_target` |  | kali_v2 | Get tool recommendations for a target. |
 | `redteam_catalog` |  | redteam_pentest | Load the generated red-team tool catalog (13 phases, ~725 tools). |
 | `redteam_countermeasures` |  | redteam_pentest | Detection/countermeasure notes for a phase (the blue-team pairing). |
@@ -757,6 +763,10 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
 | `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
 | `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
+| `xss_callback_commands` |  | xss_exploit | OOB/callback infrastructure commands for a callback host name. |
+| `xss_countermeasures` |  | xss_exploit | Prevention + detection pairing for the blue team. |
+| `xss_filter_strategy` |  | xss_exploit | Filter/CSP evasion STRATEGY classes with in-house notes |
+| `xss_tool_lookup` |  | xss_exploit | Search the whole catalog by tool-name fragment (max 25 hits). |
 
 ## lead - LeadAgent
 
