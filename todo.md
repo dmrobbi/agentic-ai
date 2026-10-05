@@ -296,7 +296,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-008. **Feeds:** KA-INT-2.
 
-- [ ] **KA-021 · laya-loop replay eval (planner)** — [BUILDER][L][none] (OPT-21)
+- [x] **KA-021 · laya-loop replay eval (planner)** — [BUILDER][L][none] (OPT-21)
   - **Owns:** `agentic_ai/agents/cyber/laya_replay.py` (new), `tests/test_laya_replay.py`
   - **Goal:** replay flagged-alert audit rows through matching + planning; precision
     report (the audit-log shape fixture committed; no live SOC calls).
