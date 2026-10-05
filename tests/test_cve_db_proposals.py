@@ -2,8 +2,8 @@
 become pending-review proposals; the DB is NEVER touched; both feed
 shapes accepted; the window/malformed/duplicate lanes count into
 skipped with reasons; the queue renders. The full-run test uses the
-committed KA-002 snapshot's 156 routed rows (as-of pinned 2026-10-05:
-exactly 2 proposals, 154 skipped). No network anywhere."""
+committed KA-002 snapshot's 298 routed rows (as-of pinned 2026-10-05:
+exactly 2 proposals, 296 skipped). No network anywhere."""
 from __future__ import annotations
 
 import json
@@ -38,7 +38,7 @@ def test_full_run_counts_marker_and_queue(tmp_path):
     entries = feed["coverage"]["entries"]
     proc, queue = _run(tmp_path, {"entries": entries})
     assert proc.returncode == 0, proc.stdout + proc.stderr
-    assert "CVE-DB-PROPOSE-OK proposals=2 skipped=154" in proc.stdout
+    assert "CVE-DB-PROPOSE-OK proposals=2 skipped=296" in proc.stdout
     text = queue.read_text(encoding="utf-8")
     for cve in EXPECTED_PROPOSALS:
         assert cve in text
@@ -54,7 +54,7 @@ def test_proposal_rows_carry_reference_urls(tmp_path):
     text = queue.read_text(encoding="utf-8")
     import re
     urls = re.findall(r"https?://[^\s|<]+", text)
-    assert len(urls) >= 6  # the measured reference count for the window
+    assert len(urls) >= 8  # the measured reference count for the window
 
 
 def test_window_boundary_malformed_and_duplicate(tmp_path):

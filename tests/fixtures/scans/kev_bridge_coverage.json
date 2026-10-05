@@ -1,28 +1,28 @@
 {
  "meta": {
   "name": "kevstig coverage snapshot (KA-067)",
-  "fetched_at": "2026-10-05T02:04:31Z",
+  "fetched_at": "2026-10-05T15:02:06+00:00",
   "source_url": "https://bedimsecurity.com/capabilities/kevstig/api/coverage.json",
-  "provenance": "Real static-API snapshot, TRIMMED for tests: the full platforms array (11 rows) + 9 of 1734 entry rows (4 newest unrouted + 5 routed, verbatim). Counts are the real 2026-10-04 refresh numbers (catalog 1734 / routed 273 / uncovered 1461). The fetch tail was torn mid-stream; late-array rows (2017-2022 era, incl. every CVE the internal exploit DB knows) are NOT in the decoded set - the known-cve fan-out demo lives in the TEST as a labeled synthetic overlay, never in this fixture. Public data only.",
+  "provenance": "Real static-API snapshot, TRIMMED for tests: the full platforms array (22 rows) + 9 of 1734 entry rows (4 newest unrouted + 5 routed, verbatim). Counts are the real 2026-10-05 refresh numbers (catalog 1734 / routed 298 / uncovered 1436), built from the repo's own kevstig.py deploy run of 15:02 UTC (complete body; the earlier torn-fetch slice is superseded). No fixture row decodes to the internal exploit DB - the known-cve fan-out demo lives in the TEST as a labeled synthetic overlay, never in this fixture. Public data only.",
   "trimmed": {
    "entries_total": 1734,
    "entries_in_fixture": 9
   }
  },
  "coverage": {
-  "generated_at": "2026-10-04T20:34:59+00:00",
+  "generated_at": "2026-10-05T15:02:06+00:00",
   "catalog_date": "2026-10-04T18:52:56.0635Z",
   "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
   "catalog_count": 1734,
-  "routed_count": 273,
-  "uncovered_count": 1461,
+  "routed_count": 298,
+  "uncovered_count": 1436,
   "platforms": [
    {
     "platform": "windows",
     "label": "Microsoft Windows (all editions)",
     "ckls": 4,
     "rules_maintained": 1084,
-    "kev_routed_total": 179,
+    "kev_routed_total": 178,
     "kev_routed_30d": 2,
     "newest_KEV": "2026-09-08"
    },
@@ -36,10 +36,46 @@
     "newest_KEV": "2026-08-18"
    },
    {
+    "platform": "exchange",
+    "label": "Microsoft Exchange",
+    "ckls": 7,
+    "rules_maintained": 432,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-04-13"
+   },
+   {
+    "platform": "vsphere65",
+    "label": "VMware vSphere 6.5",
+    "ckls": 3,
+    "rules_maintained": 180,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
     "platform": "vsphere67",
-    "label": "VMware vSphere (all versions)",
-    "ckls": 2,
-    "rules_maintained": 136,
+    "label": "VMware vSphere 6.7",
+    "ckls": 12,
+    "rules_maintained": 502,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
+    "platform": "vsphere70",
+    "label": "VMware vSphere 7.0",
+    "ckls": 12,
+    "rules_maintained": 491,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
+    "platform": "vsphere80",
+    "label": "VMware vSphere 8.0",
+    "ckls": 12,
+    "rules_maintained": 487,
     "kev_routed_total": 18,
     "kev_routed_30d": 0,
     "newest_KEV": "2026-08-18"
@@ -81,6 +117,60 @@
     "newest_KEV": "2026-08-26"
    },
    {
+    "platform": "vrops6",
+    "label": "VMware vRealize Operations 6.x",
+    "ckls": 5,
+    "rules_maintained": 517,
+    "kev_routed_total": 3,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-03-03"
+   },
+   {
+    "platform": "citrix",
+    "label": "Citrix Virtual Apps and Desktops",
+    "ckls": 13,
+    "rules_maintained": 49,
+    "kev_routed_total": 2,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2021-11-03"
+   },
+   {
+    "platform": "outlook",
+    "label": "Microsoft Outlook",
+    "ckls": 2,
+    "rules_maintained": 146,
+    "kev_routed_total": 2,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2025-02-06"
+   },
+   {
+    "platform": "workspace_one",
+    "label": "VMware Workspace ONE UEM",
+    "ckls": 1,
+    "rules_maintained": 20,
+    "kev_routed_total": 1,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-03-09"
+   },
+   {
+    "platform": "horizon",
+    "label": "VMware Horizon 7.13",
+    "ckls": 3,
+    "rules_maintained": 57,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "nsx",
+    "label": "VMware NSX",
+    "ckls": 13,
+    "rules_maintained": 131,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
     "platform": "proxmox",
     "label": "Proxmox VE",
     "ckls": 0,
@@ -112,6 +202,15 @@
     "label": "Ubuntu 24.04 LTS",
     "ckls": 1,
     "rules_maintained": 188,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "vra7",
+    "label": "VMware vRealize Automation 7.x",
+    "ckls": 8,
+    "rules_maintained": 611,
     "kev_routed_total": 0,
     "kev_routed_30d": 0,
     "newest_KEV": ""
@@ -212,7 +311,10 @@
     "dateAdded": "2026-08-18",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/38017 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-59310",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },

@@ -3,27 +3,27 @@
   "name": "kevstig coverage snapshot (KA-002, routed slice)",
   "generated": "2026-10-05",
   "source_url": "https://bedimsecurity.com/capabilities/kevstig/api/coverage.json",
-  "provenance": "Real API data; ROUTED-ONLY slice (156 of the API's 273 routed) built from the fetch spill (the body's tail was torn by the 750KB fetch cap, so later/older rows never arrived). Counts stay the live numbers; the entries = the decoded routed rows verbatim; feeds the KA-029 expansion queue.",
+  "provenance": "Real API data; FULL ROUTED slice (298 of the API's 298 routed entries) built from the repo's own kevstig.py deploy run of 2026-10-05 15:02 UTC (complete body; the earlier torn 750KB-fetch-spill slice of 156 rows is superseded - it stopped before 2021-era rows and hid the one DB-known CVE). Counts stay the live numbers; the entries = the decoded routed rows verbatim; feeds the KA-029 expansion queue. Public data only.",
   "live_counts": {
    "catalog_count": 1734,
-   "routed_count": 273,
-   "uncovered_count": 1461
+   "routed_count": 298,
+   "uncovered_count": 1436
   }
  },
  "coverage": {
-  "generated_at": "2026-10-04T20:34:59+00:00",
+  "generated_at": "2026-10-05T15:02:06+00:00",
   "catalog_date": "2026-10-04T18:52:56.0635Z",
   "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
   "catalog_count": 1734,
-  "routed_count": 273,
-  "uncovered_count": 1461,
+  "routed_count": 298,
+  "uncovered_count": 1436,
   "platforms": [
    {
     "platform": "windows",
     "label": "Microsoft Windows (all editions)",
     "ckls": 4,
     "rules_maintained": 1084,
-    "kev_routed_total": 179,
+    "kev_routed_total": 178,
     "kev_routed_30d": 2,
     "newest_KEV": "2026-09-08"
    },
@@ -37,10 +37,46 @@
     "newest_KEV": "2026-08-18"
    },
    {
+    "platform": "exchange",
+    "label": "Microsoft Exchange",
+    "ckls": 7,
+    "rules_maintained": 432,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-04-13"
+   },
+   {
+    "platform": "vsphere65",
+    "label": "VMware vSphere 6.5",
+    "ckls": 3,
+    "rules_maintained": 180,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
     "platform": "vsphere67",
-    "label": "VMware vSphere (all versions)",
-    "ckls": 2,
-    "rules_maintained": 136,
+    "label": "VMware vSphere 6.7",
+    "ckls": 12,
+    "rules_maintained": 502,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
+    "platform": "vsphere70",
+    "label": "VMware vSphere 7.0",
+    "ckls": 12,
+    "rules_maintained": 491,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
+    "platform": "vsphere80",
+    "label": "VMware vSphere 8.0",
+    "ckls": 12,
+    "rules_maintained": 487,
     "kev_routed_total": 18,
     "kev_routed_30d": 0,
     "newest_KEV": "2026-08-18"
@@ -82,6 +118,60 @@
     "newest_KEV": "2026-08-26"
    },
    {
+    "platform": "vrops6",
+    "label": "VMware vRealize Operations 6.x",
+    "ckls": 5,
+    "rules_maintained": 517,
+    "kev_routed_total": 3,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-03-03"
+   },
+   {
+    "platform": "citrix",
+    "label": "Citrix Virtual Apps and Desktops",
+    "ckls": 13,
+    "rules_maintained": 49,
+    "kev_routed_total": 2,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2021-11-03"
+   },
+   {
+    "platform": "outlook",
+    "label": "Microsoft Outlook",
+    "ckls": 2,
+    "rules_maintained": 146,
+    "kev_routed_total": 2,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2025-02-06"
+   },
+   {
+    "platform": "workspace_one",
+    "label": "VMware Workspace ONE UEM",
+    "ckls": 1,
+    "rules_maintained": 20,
+    "kev_routed_total": 1,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-03-09"
+   },
+   {
+    "platform": "horizon",
+    "label": "VMware Horizon 7.13",
+    "ckls": 3,
+    "rules_maintained": 57,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "nsx",
+    "label": "VMware NSX",
+    "ckls": 13,
+    "rules_maintained": 131,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
     "platform": "proxmox",
     "label": "Proxmox VE",
     "ckls": 0,
@@ -113,6 +203,15 @@
     "label": "Ubuntu 24.04 LTS",
     "ckls": 1,
     "rules_maintained": 188,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "vra7",
+    "label": "VMware vRealize Automation 7.x",
+    "ckls": 8,
+    "rules_maintained": 611,
     "kev_routed_total": 0,
     "kev_routed_30d": 0,
     "newest_KEV": ""
@@ -169,7 +268,10 @@
     "dateAdded": "2026-08-18",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/38017 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-59310",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -239,6 +341,19 @@
     "coveredByMaintenance": true
    },
    {
+    "cve": "CVE-2023-21529",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Deserialization of Untrusted Data Vulnerability",
+    "description": "Microsoft Exchange Server contains a deserialization of untrusted data that allows an authenticated attacker to achieve remote code execution.",
+    "dateAdded": "2026-04-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-21529 ; https://nvd.nist.gov/vuln/detail/CVE-2023-21529",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
     "cve": "CVE-2023-36424",
     "vendor": "Microsoft",
     "product": "Windows",
@@ -248,6 +363,32 @@
     "note": "https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2023-36424 ; https://nvd.nist.gov/vuln/detail/CVE-2023-36424",
     "platforms": [
      "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-22054",
+    "vendor": "Omnissa",
+    "product": "Workspace One UEM",
+    "name": "Omnissa Workspace ONE Server-Side Request Forgery",
+    "description": "Omnissa Workspace One UEM formerly known as VMware Workspace One UEM contains a server-side request forgery (SSRF) vulnerability that could allow a malicious actor with network access to UEM to send their requests without authentication and",
+    "dateAdded": "2026-03-09",
+    "note": "https://web.archive.org/web/20211222154335/https://www.vmware.com/security/advisories/VMSA-2021-0029.html ; https://nvd.nist.gov/vuln/detail/CVE-2021-22054",
+    "platforms": [
+     "workspace_one"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-22719",
+    "vendor": "Broadcom",
+    "product": "VMware Aria Operations",
+    "name": "Broadcom VMware Aria Operations Command Injection Vulnerability",
+    "description": "Broadcom VMware Aria Operations formerly known as vRealize Operations (vROps) contains a command injection vulnerability that allows an unauthenticated attacker to execute arbitrary commands, potentially leading to remote code execution dur",
+    "dateAdded": "2026-03-03",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/36947 ; https://knowledge.broadcom.com/external/article/430349 ; https://nvd.nist.gov/vuln/detail/CVE-2026-22719",
+    "platforms": [
+     "vrops6"
     ],
     "coveredByMaintenance": true
    },
@@ -338,7 +479,10 @@
     "dateAdded": "2026-01-23",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24453 ; https://nvd.nist.gov/vuln/detail/CVE-2024-37079",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -378,6 +522,19 @@
     "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-62215 ; https://nvd.nist.gov/vuln/detail/CVE-2025-62215",
     "platforms": [
      "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-41244",
+    "vendor": "Broadcom",
+    "product": "VMware Aria Operations and VMware Tools",
+    "name": "Broadcom VMware Aria Operations and VMware Tools Privilege Defined with Unsafe Actions Vulnerability",
+    "description": "Broadcom VMware Aria Operations and VMware Tools contain a privilege defined with unsafe actions vulnerability. A malicious local actor with non-administrative privileges having access to a VM with VMware Tools installed and managed by Aria",
+    "dateAdded": "2025-10-30",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/36149 ; https://nvd.nist.gov/vuln/detail/CVE-2025-41244",
+    "platforms": [
+     "vrops6"
     ],
     "coveredByMaintenance": true
    },
@@ -689,7 +846,10 @@
     "dateAdded": "2025-03-04",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390 ; https://nvd.nist.gov/vuln/detail/CVE-2025-22226",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -702,7 +862,10 @@
     "dateAdded": "2025-03-04",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390 ; https://nvd.nist.gov/vuln/detail/CVE-2025-22225",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -715,7 +878,10 @@
     "dateAdded": "2025-03-04",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390 ; https://nvd.nist.gov/vuln/detail/CVE-2025-22224",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -768,6 +934,19 @@
     "note": "https://community.sophos.com/b/security-blog/posts/advisory-buffer-overflow-vulnerability-in-user-portal ; https://nvd.nist.gov/vuln/detail/CVE-2020-15069",
     "platforms": [
      "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-21413",
+    "vendor": "Microsoft",
+    "product": "Office Outlook",
+    "name": "Microsoft Outlook Improper Input Validation Vulnerability",
+    "description": "Microsoft Outlook contains an improper input validation vulnerability that allows for remote code execution. Successful exploitation of this vulnerability would allow an attacker to bypass the Office Protected View and open in editing mode ",
+    "dateAdded": "2025-02-06",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-21413 ; https://nvd.nist.gov/vuln/detail/CVE-2024-21413",
+    "platforms": [
+     "outlook"
     ],
     "coveredByMaintenance": true
    },
@@ -845,7 +1024,10 @@
     "dateAdded": "2024-11-20",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24968 ; https://nvd.nist.gov/vuln/detail/CVE-2024-38813",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -858,7 +1040,10 @@
     "dateAdded": "2024-11-20",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24968 ; https://nvd.nist.gov/vuln/detail/CVE-2024-38812",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -980,6 +1165,19 @@
     "coveredByMaintenance": true
    },
    {
+    "cve": "CVE-2021-31196",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Information Disclosure Vulnerability",
+    "description": "Microsoft Exchange Server contains an information disclosure vulnerability that allows for remote code execution.",
+    "dateAdded": "2024-08-21",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2021-31196; https://nvd.nist.gov/vuln/detail/CVE-2021-31196",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
     "cve": "CVE-2024-38107",
     "vendor": "Microsoft",
     "product": "Windows",
@@ -1066,7 +1264,10 @@
     "dateAdded": "2024-07-30",
     "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24505;   https://nvd.nist.gov/vuln/detail/CVE-2024-37085",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -1079,7 +1280,10 @@
     "dateAdded": "2024-07-17",
     "note": "https://www.vmware.com/security/advisories/VMSA-2022-0009.html;  https://nvd.nist.gov/vuln/detail/CVE-2022-22948",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -1162,6 +1366,19 @@
     "coveredByMaintenance": true
    },
    {
+    "cve": "CVE-2024-21410",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Privilege Escalation Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2024-02-15",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-21410; https://nvd.nist.gov/vuln/detail/CVE-2024-21410",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
     "cve": "CVE-2024-21412",
     "vendor": "Microsoft",
     "product": "Windows",
@@ -1196,7 +1413,10 @@
     "dateAdded": "2024-01-22",
     "note": "https://www.vmware.com/security/advisories/VMSA-2023-0023.html;  https://nvd.nist.gov/vuln/detail/CVE-2023-34048",
     "platforms": [
-     "vsphere67"
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    },
@@ -1353,6 +1573,19 @@
     "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-32049; https://nvd.nist.gov/vuln/detail/CVE-2023-32049",
     "platforms": [
      "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-35311",
+    "vendor": "Microsoft",
+    "product": "Outlook",
+    "name": "Microsoft Outlook Security Feature Bypass Vulnerability",
+    "description": "Microsoft Outlook contains a security feature bypass vulnerability that allows an attacker to bypass the Microsoft Outlook Security Notice prompt.",
+    "dateAdded": "2023-07-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-35311;  https://nvd.nist.gov/vuln/detail/CVE-2023-35311",
+    "platforms": [
+     "outlook"
     ],
     "coveredByMaintenance": true
    },
@@ -1541,6 +1774,19 @@
     "coveredByMaintenance": true
    },
    {
+    "cve": "CVE-2022-41080",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Privilege Escalation Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for privilege escalation. This vulnerability is chainable with CVE-2022-41082, which allows for remote code execution.",
+    "dateAdded": "2023-01-10",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2022-41080;  https://nvd.nist.gov/vuln/detail/CVE-2022-41080",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
     "cve": "CVE-2023-21674",
     "vendor": "Microsoft",
     "product": "Windows",
@@ -1628,6 +1874,32 @@
     "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2022-41033;  https://nvd.nist.gov/vuln/detail/CVE-2022-41033",
     "platforms": [
      "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41082",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for authenticated remote code execution. Dubbed \"ProxyNotShell,\" this vulnerability is chainable with CVE-2022-41040 which allows for the remote code execution.",
+    "dateAdded": "2022-09-30",
+    "note": "https://msrc-blog.microsoft.com/2022/09/29/customer-guidance-for-reported-zero-day-vulnerabilities-in-microsoft-exchange-server/;  https://nvd.nist.gov/vuln/detail/CVE-2022-41082",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41040",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Server-Side Request Forgery Vulnerability",
+    "description": "Microsoft Exchange Server allows for server-side request forgery. Dubbed \"ProxyNotShell,\" this vulnerability is chainable with CVE-2022-41082 which allows for remote code execution.",
+    "dateAdded": "2022-09-30",
+    "note": "https://msrc-blog.microsoft.com/2022/09/29/customer-guidance-for-reported-zero-day-vulnerabilities-in-microsoft-exchange-server/;  https://nvd.nist.gov/vuln/detail/CVE-2022-41040",
+    "platforms": [
+     "exchange"
     ],
     "coveredByMaintenance": true
    },
@@ -2150,6 +2422,1733 @@
     "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-34484",
     "platforms": [
      "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-34486",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Event Tracing Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Event Tracing contains an unspecified vulnerability which can allow for privilege escalation.",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-34486",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-8440",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "An elevation of privilege vulnerability exists when Windows improperly handles calls to Advanced Local Procedure Call (ALPC).",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-8440",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-0213",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows COM Aggregate Marshaler allows for privilege escalation when an attacker runs a specially crafted application.",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-0213",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-0040",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "The kernel in Microsoft Windows allows local users to gain privileges via a crafted application.",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2016-0040",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-2426",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Adobe Type Manager Library Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists in Microsoft Windows when the Windows Adobe Type Manager Library improperly handles specially crafted OpenType fonts.",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-2426",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2013-1690",
+    "vendor": "Mozilla",
+    "product": "Firefox and Thunderbird",
+    "name": "Mozilla Firefox and Thunderbird Denial-of-Service Vulnerability",
+    "description": "Mozilla Firefox and Thunderbird do not properly handle onreadystatechange events in conjunction with page reloading, which allows remote attackers to cause a denial-of-service (DoS) or possibly execute malicious code via a crafted web site.",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2013-1690",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2010-4398",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Stack-Based Buffer Overflow Vulnerability",
+    "description": "Stack-based buffer overflow in the RtlQueryRegistryValues function in win32k.sys in Microsoft Windows allows local users to gain privileges, and bypass the User Account Control (UAC) feature.",
+    "dateAdded": "2022-03-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2010-4398",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-21999",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Print Spooler Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Print Spooler contains an unspecified vulnerability which can allow for privilege escalation.",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-21999",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-8414",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Shell Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists when the Windows Shell does not properly validate file paths.",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-8414",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-3881",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE",
+    "name": "Cisco IOS and IOS XE Remote Code Execution Vulnerability",
+    "description": "A vulnerability in the Cisco Cluster Management Protocol (CMP) processing code in Cisco IOS and Cisco IOS XE Software could allow an unauthenticated, remote attacker to cause a reload of an affected device or remotely execute code with elev",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-3881",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-0146",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SMB Remote Code Execution Vulnerability",
+    "description": "The SMBv1 server in Microsoft Windows allows remote attackers to perform remote code execution.",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-0146",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2014-6332",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Object Linking & Embedding (OLE) Automation Array Remote Code Execution Vulnerability",
+    "description": "OleAut32.dll in OLE in Microsoft Windows allows remote attackers to remotely execute code via a crafted web site.",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2014-6332",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2010-3035",
+    "vendor": "Cisco",
+    "product": "IOS XR",
+    "name": "Cisco IOS XR Border Gateway Protocol (BGP) Denial-of-Service Vulnerability",
+    "description": "Cisco IOS XR, when BGP is the configured routing feature, allows remote attackers to cause a denial-of-service (DoS).",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2010-3035",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2009-2055",
+    "vendor": "Cisco",
+    "product": "IOS XR",
+    "name": "Cisco IOS XR Border Gateway Protocol (BGP) Denial-of-Service Vulnerability",
+    "description": "Cisco IOS XR,when BGP is the configured routing feature, allows remote attackers to cause a denial-of-service (DoS).",
+    "dateAdded": "2022-03-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2009-2055",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1405",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Universal Plug and Play (UPnP) Service Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows UPnP service improperly allows COM object creation.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1405",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1322",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows improperly handles authentication requests. An attacker who successfully exploited this vulnerability could run processes in an elevated context.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1322",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1315",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Error Reporting Manager Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows Error Reporting manager improperly handles hard links. An attacker who successfully exploited this vulnerability could overwrite a targeted file leading to an elevated status.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1315",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1253",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Deployment Server Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows AppX Deployment Server improperly handles junctions.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1253",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1129",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Deployment Service (AppXSVC) Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows AppXSVC improperly handles hard links. An attacker who successfully exploited this vulnerability could run processes in an elevated context.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1129",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1064",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Deployment Service (AppXSVC) Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows AppXSVC improperly handles hard links. An attacker who successfully exploited this vulnerability could run processes in an elevated context.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1064",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-0841",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Deployment Service (AppXSVC) Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows AppXSVC improperly handles hard links. An attacker who successfully exploited this vulnerability could run processes in an elevated context.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-0841",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-0543",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows improperly handles authentication requests. An attacker who successfully exploited this vulnerability could run processes in an elevated context.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-0543",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-0101",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Transaction Manager Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows Transaction Manager improperly handles objects in memory.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-0101",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-3309",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows kernel fails to properly handle objects in memory. An attacker who successfully exploited this vulnerability could run arbitrary code in kernel mode.",
+    "dateAdded": "2022-03-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2016-3309",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-26486",
+    "vendor": "Mozilla",
+    "product": "Firefox",
+    "name": "Mozilla Firefox Use-After-Free Vulnerability",
+    "description": "Mozilla Firefox contains a use-after-free vulnerability in WebGPU IPC Framework which can be exploited to perform arbitrary code execution.",
+    "dateAdded": "2022-03-07",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-26486",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-26485",
+    "vendor": "Mozilla",
+    "product": "Firefox",
+    "name": "Mozilla Firefox Use-After-Free Vulnerability",
+    "description": "Mozilla Firefox contains a use-after-free vulnerability in XSLT parameter processing which can be exploited to perform arbitrary code execution.",
+    "dateAdded": "2022-03-07",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-26485",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-21973",
+    "vendor": "VMware",
+    "product": "vCenter Server and Cloud Foundation",
+    "name": "VMware vCenter Server and Cloud Foundation Server Side Request Forgery (SSRF) Vulnerability",
+    "description": "VMware vCenter Server and Cloud Foundation Server contain a SSRF vulnerability due to improper validation of URLs in a vCenter Server plugin. This allows for information disclosure.",
+    "dateAdded": "2022-03-07",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-21973",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-41379",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Installer Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Installer contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-41379",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-8581",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists in Microsoft Exchange Server. An attacker who successfully exploited this vulnerability could attempt to impersonate any other user of the Exchange server.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-8581",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0174",
+    "vendor": "Cisco",
+    "product": "IOS XE Software",
+    "name": "Cisco IOS Software and Cisco IOS XE Software Improper Input Validation Vulnerability",
+    "description": "A vulnerability in the DHCP option 82 encapsulation functionality of Cisco IOS Software and Cisco IOS XE Software could allow for denial-of-service (DoS).",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0174",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0173",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software Improper Input Validation Vulnerability",
+    "description": "A vulnerability in the Cisco IOS Software and Cisco IOS XE Software function that restores encapsulated option 82 information in DHCP Version 4 (DHCPv4) packets can allow for denial-of-service (DoS).",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0173",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0172",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software Improper Input Validation Vulnerability",
+    "description": "A vulnerability in the DHCP option 82 encapsulation functionality of Cisco IOS Software and Cisco IOS XE Software could allow for denial-of-service (DoS).",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0172",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0159",
+    "vendor": "Cisco",
+    "product": "IOS Software and Cisco IOS XE Software",
+    "name": "Cisco IOS and XE Software Internet Key Exchange Version 1 Denial-of-Service Vulnerability",
+    "description": "A vulnerability in the implementation of Internet Key Exchange Version 1 (IKEv1) functionality in Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, remote attacker to cause an affected device to reload, resulting ",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0159",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0158",
+    "vendor": "Cisco",
+    "product": "IOS Software and Cisco IOS XE Software",
+    "name": "Cisco IOS and XE Software Internet Key Exchange Memory Leak Vulnerability",
+    "description": "A vulnerability in the implementation of Internet Key Exchange Version 1 (IKEv1) functionality in Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, remote attacker to cause an affected device to reload, resulting ",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0158",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0156",
+    "vendor": "Cisco",
+    "product": "IOS Software and Cisco IOS XE Software",
+    "name": "Cisco IOS Software and Cisco IOS XE Software Smart Install Denial-of-Service Vulnerability",
+    "description": "A vulnerability in the Smart Install feature of Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, remote attacker to trigger a reload of an affected device, resulting in a denial-of-service (DoS) condition.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0156",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0151",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS Software and Cisco IOS XE Software Quality of Service Remote Code Execution Vulnerability",
+    "description": "A vulnerability in the quality of service (QoS) subsystem of Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, remote attacker to cause a denial of service (DoS) condition or execute arbitrary code with elevated p",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0151",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6743",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6743",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6740",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code on an affected system or cause an affected system to reload",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6740",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6739",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code on an affected system or cause an affected system to reload",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6739",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6738",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6738",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6737",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6737",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6736",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6736",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6663",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS Software and Cisco IOS XE Software Denial-of-Service Vulnerability",
+    "description": "A vulnerability in the Autonomic Networking feature of Cisco IOS Software and Cisco IOS XE Software could allow an unauthenticated, adjacent attacker to cause autonomic nodes of an affected system to reload, resulting in denial-of-service (",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6663",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6627",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS Software and Cisco IOS XE Software UDP Packet Processing Denial-of-Service Vulnerability",
+    "description": "A vulnerability in the UDP processing code of Cisco IOS and IOS XE could allow an unauthenticated, remote attacker to cause the input queue of an affected system to hold UDP packets, causing an interface queue wedge and denial of service.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-6627",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-12319",
+    "vendor": "Cisco",
+    "product": "IOS XE Software",
+    "name": "Cisco IOS XE Software Ethernet Virtual Private Network Border Gateway Protocol Denial-of-Service Vulnerability",
+    "description": "A vulnerability in the Border Gateway Protocol (BGP) over an Ethernet Virtual Private Network (EVPN) for Cisco IOS XE Software could allow an unauthenticated, remote attacker to cause the device to reload, resulting in a denial of service (",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-12319",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-12240",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software DHCP Remote Code Execution Vulnerability",
+    "description": "The Dynamic Host Configuration Protocol (DHCP) relay subsystem of Cisco IOS and Cisco IOS XE Software contains a vulnerability that could allow an unauthenticated, remote attacker to execute arbitrary code and gain full control of an affect",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-12240",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-12237",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software Internet Key Exchange Denial-of-Service Vulnerability",
+    "description": "A vulnerability in the Internet Key Exchange Version 2 (IKEv2) module of Cisco IOS and Cisco IOS XE could allow an unauthenticated, remote attacker to cause high CPU utilization, traceback messages, or a reload of an affected device that le",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-12237",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-0099",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Secondary Logon Service Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists in Microsoft Windows if the Windows Secondary Logon Service fails to properly manage request handles in memory. An attacker who successfully exploited this vulnerability could run arbitrary code a",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2016-0099",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2014-4114",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Object Linking & Embedding (OLE) Remote Code Execution Vulnerability",
+    "description": "A vulnerability exists in Windows Object Linking & Embedding (OLE) that could allow remote code execution if a user opens a file that contains a specially crafted OLE object.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2014-4114",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2013-5065",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows NDProxy.sys in the kernel contains an improper input validation vulnerability which can allow a local attacker to escalate privileges.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2013-5065",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2013-1675",
+    "vendor": "Mozilla",
+    "product": "Firefox",
+    "name": "Mozilla Firefox Information Disclosure Vulnerability",
+    "description": "Mozilla Firefox does not properly initialize data structures for the nsDOMSVGZoomEvent::mPreviousScale and nsDOMSVGZoomEvent::mNewScale functions, which allows remote attackers to obtain sensitive information from process memory via a craft",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2013-1675",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2010-0232",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Exception Handler Vulnerability",
+    "description": "The kernel in Microsoft Windows, when access to 16-bit applications is enabled on a 32-bit x86 platform, does not properly validate certain BIOS calls, which allows local users to gain privileges.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2010-0232",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2009-1123",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Improper Input Validation Vulnerability",
+    "description": "The kernel in Microsoft Windows does not properly validate changes to unspecified kernel objects, which allows local users to gain privileges via a crafted application.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2009-1123",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2004-0210",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "A privilege elevation vulnerability exists in the POSIX subsystem. This vulnerability could allow a logged on user to take complete control of the system.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2004-0210",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2002-0367",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "smss.exe debugging subsystem in Microsoft Windows does not properly authenticate programs that connect to other programs, which allows local users to gain administrator or SYSTEM privileges.",
+    "dateAdded": "2022-03-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2002-0367",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2014-6352",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Code Injection Vulnerability",
+    "description": "Microsoft Windows allow remote attackers to execute arbitrary code via a crafted OLE object.",
+    "dateAdded": "2022-02-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2014-6352",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-8174",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows VBScript Engine Out-of-Bounds Write Vulnerability",
+    "description": "A remote code execution vulnerability exists in the way that the VBScript engine handles objects in memory, aka \"Windows VBScript Engine Remote Code Execution\"",
+    "dateAdded": "2022-02-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-8174",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22620",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS Webkit Use-After-Free Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS WebKit contain a use-after-free vulnerability that leads to code execution when processing maliciously crafted web content. This vulnerability could impact HTML parsers that use WebKit, including but not limited",
+    "dateAdded": "2022-02-11",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-22620",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-36934",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SAM Local Privilege Escalation Vulnerability",
+    "description": "If a Volume Shadow Copy (VSS) shadow copy of the system drive is available, users can read the SAM file which would allow any user to escalate privileges to SYSTEM level.",
+    "dateAdded": "2022-02-10",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-36934",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-8464",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Shell (.lnk) Remote Code Execution Vulnerability",
+    "description": "Windows Shell in multiple versions of Microsoft Windows allows local users or remote attackers to execute arbitrary code via a crafted .LNK file",
+    "dateAdded": "2022-02-10",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-8464",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-1130",
+    "vendor": "Apple",
+    "product": "OS X",
+    "name": "Apple OS X Authentication Bypass Vulnerability",
+    "description": "The XPC implementation in Admin Framework in Apple OS X before 10.10.3 allows local users to bypass authentication and obtain admin privileges.",
+    "dateAdded": "2022-02-10",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-1130",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2014-4404",
+    "vendor": "Apple",
+    "product": "OS X",
+    "name": "Apple OS X Heap-Based Buffer Overflow Vulnerability",
+    "description": "Heap-based buffer overflow in IOHIDFamily in Apple OS X, which affects, iOS before 8 and Apple TV before 7, allows attackers to execute arbitrary code in a privileged context.",
+    "dateAdded": "2022-02-10",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2014-4404",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22587",
+    "vendor": "Apple",
+    "product": "iOS and macOS",
+    "name": "Apple Memory Corruption Vulnerability",
+    "description": "Apple IOMobileFrameBuffer contains a memory corruption vulnerability which can allow a malicious application to execute arbitrary code with kernel privileges.",
+    "dateAdded": "2022-01-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-22587",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-0787",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Background Intelligent Transfer Service (BITS) Improper Privilege Management Vulnerability",
+    "description": "Microsoft Windows BITS is vulnerable to to a privilege elevation vulnerability if it improperly handles symbolic links. An actor can exploit this vulnerability to execute arbitrary code with system-level privileges.",
+    "dateAdded": "2022-01-28",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-0787",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-25296",
+    "vendor": "Nagios",
+    "product": "Nagios XI",
+    "name": "Nagios XI OS Command Injection",
+    "description": "Nagios XI contains a vulnerability which can lead to OS command injection on the Nagios XI server.",
+    "dateAdded": "2022-01-18",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-25296",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-25297",
+    "vendor": "Nagios",
+    "product": "Nagios XI",
+    "name": "Nagios XI OS Command Injection",
+    "description": "Nagios XI contains a vulnerability which can lead to OS command injection on the Nagios XI server.",
+    "dateAdded": "2022-01-18",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-25297",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-25298",
+    "vendor": "Nagios",
+    "product": "Nagios XI",
+    "name": "Nagios XI OS Command Injection",
+    "description": "Nagios XI contains a vulnerability which can lead to OS command injection on the Nagios XI server.",
+    "dateAdded": "2022-01-18",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-25298",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-33766",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Information Disclosure",
+    "description": "Microsoft Exchange Server contains an information disclosure vulnerability which can allow an unauthenticated attacker to steal email traffic from target.",
+    "dateAdded": "2022-01-18",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-33766",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-21975",
+    "vendor": "VMware",
+    "product": "vRealize Operations Manager API",
+    "name": "VMware Server Side Request Forgery in vRealize Operations Manager API",
+    "description": "Server Side Request Forgery (SSRF) in vRealize Operations Manager API prior to 8.4 may allow a malicious actor with network access to the vRealize Operations Manager API to perform a SSRF attack to steal administrative credentials.",
+    "dateAdded": "2022-01-18",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-21975",
+    "platforms": [
+     "vrops6"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-22017",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Improper Access Control",
+    "description": "Rhttproxy as used in vCenter Server contains a vulnerability due to improper implementation of URI normalization.",
+    "dateAdded": "2022-01-10",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-22017",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-43890",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Installer Spoofing Vulnerability",
+    "description": "Microsoft Windows AppX Installer contains a spoofing vulnerability which has a high impacts to confidentiality, integrity, and availability.",
+    "dateAdded": "2021-12-15",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-43890",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-40449",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Win32k Privilege Escalation Vulnerability",
+    "description": "Unspecified vulnerability allows for an authenticated user to escalate privileges.",
+    "dateAdded": "2021-11-17",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-40449",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-42321",
+    "vendor": "Microsoft",
+    "product": "Exchange",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "An authenticated attacker could leverage improper validation in cmdlet arguments within Microsoft Exchange and perform remote code execution.",
+    "dateAdded": "2021-11-17",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-42321",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-30858",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, macOS Use-After-Free Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS WebKit contain a use-after-free vulnerability that leads to code execution when processing maliciously crafted web content. This vulnerability could impact HTML parsers that use WebKit, including but not limited",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-30858",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-6223",
+    "vendor": "Apple",
+    "product": "iOS and macOS",
+    "name": "Apple iOS and macOS Group Facetime Vulnerability",
+    "description": "Apple iOS and macOS Group FaceTime contains an unspecified vulnerability where the call initiator can cause the recipient's Apple device to answer unknowingly or without user interaction.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-6223",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-1870",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS WebKit Remote Code Execution Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS WebKit contain an unspecified logic vulnerability that allows a remote attacker to execute code. This vulnerability could impact HTML parsers that use WebKit, including but not limited to Apple Safari and non-Ap",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-1870",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-1871",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS WebKit Remote Code Execution Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS WebKit contain an unspecified logic vulnerability that allows a remote attacker to execute code. This vulnerability could impact HTML parsers that use WebKit, including but not limited to Apple Safari and non-Ap",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-1871",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-30713",
+    "vendor": "Apple",
+    "product": "macOS",
+    "name": "Apple macOS Unspecified Vulnerability",
+    "description": "Apple macOS Transparency, Consent, and Control (TCC) contains an unspecified permissions issue which may allow a malicious application to bypass privacy preferences.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-30713",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-30657",
+    "vendor": "Apple",
+    "product": "macOS",
+    "name": "Apple macOS Unspecified Vulnerability",
+    "description": "Apple macOS contains an unspecified logic issue in System Preferences that may allow a malicious application to bypass Gatekeeper checks.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-30657",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-30869",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS Type Confusion Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS contain a type confusion vulnerability in the XNU which may allow a malicious application to execute code with kernel privileges.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-30869",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0171",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE",
+    "name": "Cisco IOS and IOS XE Software Smart Install Remote Code Execution Vulnerability",
+    "description": "Cisco IOS and IOS XE Software improperly validates packet data, allowing an unauthenticated, remote attacker to trigger a reload of an affected device, cause a denial-of-service (DoS) condition, or perform code execution on the affected dev",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-0171",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-3118",
+    "vendor": "Cisco",
+    "product": "IOS XR",
+    "name": "Cisco IOS XR Software Discovery Protocol Format String Vulnerability",
+    "description": "Cisco IOS XR improperly validates string input from certain fields in Cisco Discovery Protocol messages. Exploitation could allow an unauthenticated, adjacent attacker to execute code with administrative privileges or cause a reload on an a",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-3118",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-3566",
+    "vendor": "Cisco",
+    "product": "IOS XR",
+    "name": "Cisco IOS XR Software DVMRP Memory Exhaustion Vulnerability",
+    "description": "Cisco IOS XR Distance Vector Multicast Routing Protocol (DVMRP) incorrectly handles Internet Group Management Protocol (IGMP) packets. Exploitation could allow an unauthenticated, remote attacker to immediately crash the IGMP process or mak",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-3566",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-3569",
+    "vendor": "Cisco",
+    "product": "IOS XR",
+    "name": "Cisco IOS XR Software DVMRP Memory Exhaustion Vulnerability",
+    "description": "Cisco IOS XR Distance Vector Multicast Routing Protocol (DVMRP) incorrectly handles Internet Group Management Protocol (IGMP) packets. Exploitation could allow an unauthenticated, remote attacker to immediately crash the IGMP process or mak",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-3569",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-13608",
+    "vendor": "Citrix",
+    "product": "StoreFront Server",
+    "name": "Citrix StoreFront Server XML External Entity (XXE) Processing Vulnerability",
+    "description": "Citrix StoreFront Server contains an XML External Entity (XXE) processing vulnerability that may allow an unauthenticated attacker to retrieve potentially sensitive information.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-13608",
+    "platforms": [
+     "citrix"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-11634",
+    "vendor": "Citrix",
+    "product": "Workspace Application and Receiver for Windows",
+    "name": "Citrix Workspace Application and Receiver for Windows Remote Code Execution Vulnerability",
+    "description": "Citrix Workspace Application and Receiver for Windows contains remote code execution vulnerability resulting from local drive access preferences not being enforced into the clients' local drives.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-11634",
+    "platforms": [
+     "citrix"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2014-1812",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Group Policy Preferences Password Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Active Directory contains a privilege escalation vulnerability due to the way it distributes passwords that are configured using Group Policy preferences. An authenticated attacker who successfully exploits the vulnerabili",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2014-1812",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-31955",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Information Disclosure Vulnerability",
+    "description": "Microsoft Windows Kernel contains an unspecified vulnerability that allows for information disclosure. Successful exploitation allows attackers to read the contents of kernel memory from a user-mode process.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-31955",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-33739",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Desktop Window Manager (DWM) Core Library Privilege Escalation Vulnerability",
+    "description": "Microsoft Desktop Window Manager (DWM) Core Library contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-33739",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-0185",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Media Center Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Media Center contains a remote code execution vulnerability when Windows Media Center opens a specially crafted Media Center link (.mcl) file that references malicious code.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2016-0185",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-0683",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Installer Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Installer contains a privilege escalation vulnerability when MSI packages process symbolic links, which allows attackers to bypass access restrictions to add or remove files.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-0683",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-17087",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows kernel contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-17087",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-33742",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows MSHTML Platform Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows MSHTML Platform contains an unspecified vulnerability that allows for remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-33742",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-33771",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows kernel contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-33771",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-31956",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NTFS Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows New Technology File System (NTFS) contains an unspecified vulnerability that allows attackers to escalate privileges via a specially crafted application.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-31956",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-31979",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows kernel contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-31979",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-0938",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Adobe Font Manager Library Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Adobe Font Manager Library contains an unspecified vulnerability when handling specially crafted multi-master fonts (Adobe Type 1 PostScript format) that allows for remote code execution for all systems except Windows 10. ",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-0938",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-17144",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server improperly validates cmdlet arguments which allow an attacker to perform remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-17144",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-0986",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows kernel contains an unspecified vulnerability when handling objects in memory that allows attackers to escalate privileges and execute code in kernel mode.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-0986",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-1020",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Adobe Font Manager Library Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Adobe Font Manager Library contains an unspecified vulnerability when handling specially crafted multi-master fonts (Adobe Type 1 PostScript format) that allows for remote code execution for all systems except Windows 10. ",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-1020",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-34523",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Privilege Escalation Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-34523",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-36948",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Update Medic Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Update Medic Service contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-36948",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-0688",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Validation Key Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server Validation Key fails to properly create unique keys at install time, allowing for remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-0688",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-0143",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Server Message Block (SMBv1) Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Server Message Block 1.0 (SMBv1) contains an unspecified vulnerability that allows for remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-0143",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-34473",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-34473",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-1464",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Spoofing Vulnerability",
+    "description": "Microsoft Windows contains a spoofing vulnerability when Windows incorrectly validates file signatures, allowing an attacker to bypass security features and load improperly signed files.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-1464",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-34527",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Print Spooler Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Print Spooler contains an unspecified vulnerability due to the Windows Print Spooler service improperly performing privileged file operations. Successful exploitation allows an attacker to perform remote code execution wit",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 21-04 (https://www.cisa.gov/news-events/directives/ed-21-04-mitigate-windows-print-spooler-service-vulnerability) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 21-04. https://nvd.nist.gov/vuln/detail/CVE-2021-34527",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-31207",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Security Feature Bypass Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for security feature bypass.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-31207",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-1350",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows DNS Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows DNS Servers fail to properly handle requests, allowing an attacker to perform remote code execution in the context of the Local System Account. The vulnerability is also known under the moniker of SIGRed.",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 20-03 (https://www.cisa.gov/news-events/directives/ed-20-03-mitigate-windows-dns-server-remote-code-execution-vulnerability-july-2020-patch-tuesday) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 20-03. https://nvd.nist.gov/vuln/detail/CVE-2020-1350",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-36942",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Local Security Authority (LSA) Spoofing Vulnerability",
+    "description": "Microsoft Windows Local Security Authority (LSA) contains a spoofing vulnerability allowing an unauthenticated attacker to call a method on the LSARPC interface and coerce the domain controller to authenticate against another server using N",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-36942",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1215",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows contains an unspecified vulnerability due to the way ws2ifsl.sys (Winsock) handles objects in memory, allowing for privilege escalation. Successful exploitation allows an attacker to execute code with elevated privileges.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1215",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-26855",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for remote code execution. This vulnerability is part of the ProxyLogon exploit chain.",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 21-02 (https://www.cisa.gov/news-events/directives/ed-21-02-mitigate-microsoft-exchange-premises-product-vulnerabilities) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 21-02. https://nvd.nist.gov/vuln/detail/CVE-2021-26855",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-26858",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for remote code execution. This vulnerability is part of the ProxyLogon exploit chain.",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 21-02 (https://www.cisa.gov/news-events/directives/ed-21-02-mitigate-microsoft-exchange-premises-product-vulnerabilities) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 21-02. https://nvd.nist.gov/vuln/detail/CVE-2021-26858",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-27065",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for remote code execution. This vulnerability is part of the ProxyLogon exploit chain.",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 21-02 (https://www.cisa.gov/news-events/directives/ed-21-02-mitigate-microsoft-exchange-premises-product-vulnerabilities) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 21-02. https://nvd.nist.gov/vuln/detail/CVE-2021-27065",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-1675",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Print Spooler Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Print Spooler contains an unspecified vulnerability that allows for remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-1675",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-34448",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Scripting Engine Memory Corruption Vulnerability",
+    "description": "Microsoft Windows Scripting Engine contains an unspecified vulnerability that allows for memory corruption.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-34448",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-0601",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows CryptoAPI Spoofing Vulnerability",
+    "description": "Microsoft Windows CryptoAPI (Crypt32.dll) contains a spoofing vulnerability in the way it validates Elliptic Curve Cryptography (ECC) certificates. An attacker could exploit the vulnerability by using a spoofed code-signing certificate to s",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 20-02 (https://www.cisa.gov/news-events/directives/ed-20-02-mitigate-windows-vulnerabilities-january-2020-patch-tuesday) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 20-02. https://nvd.nist.gov/vuln/detail/CVE-2020-0601",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-26857",
+    "vendor": "Microsoft",
+    "product": "Exchange Server",
+    "name": "Microsoft Exchange Server Remote Code Execution Vulnerability",
+    "description": "Microsoft Exchange Server contains an unspecified vulnerability that allows for remote code execution. This vulnerability is part of the ProxyLogon exploit chain.",
+    "dateAdded": "2021-11-03",
+    "note": "Reference CISA's ED 21-02 (https://www.cisa.gov/news-events/directives/ed-21-02-mitigate-microsoft-exchange-premises-product-vulnerabilities) for further guidance and requirements. Note: The due date for addressing this vulnerability aligns with the requirements outlined in ED 21-02. https://nvd.nist.gov/vuln/detail/CVE-2021-26857",
+    "platforms": [
+     "exchange"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1214",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Common Log File System (CLFS) Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) driver improperly handles objects in memory which can allow for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1214",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-0863",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Error Reporting (WER) Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Error Reporting (WER) contains a privilege escalation vulnerability due to the way it handles files, allowing for code execution in kernel mode.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-0863",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-36955",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) driver contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-36955",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-6819",
+    "vendor": "Mozilla",
+    "product": "Firefox and Thunderbird",
+    "name": "Mozilla Firefox And Thunderbird Use-After-Free Vulnerability",
+    "description": "Mozilla Firefox and Thunderbird contain a race condition vulnerability when running the nsDocShell destructor under certain conditions. The race condition creates a use-after-free vulnerability, causing unspecified impacts.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-6819",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-6820",
+    "vendor": "Mozilla",
+    "product": "Firefox and Thunderbird",
+    "name": "Mozilla Firefox And Thunderbird Use-After-Free Vulnerability",
+    "description": "Mozilla Firefox and Thunderbird contain a race condition vulnerability when handling a ReadableStream under certain conditions. The race condition creates a use-after-free vulnerability, causing unspecified impacts.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-6820",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-17026",
+    "vendor": "Mozilla",
+    "product": "Firefox and Thunderbird",
+    "name": "Mozilla Firefox And Thunderbird Type Confusion Vulnerability",
+    "description": "Mozilla Firefox and Thunderbird contain a type confusion vulnerability due to incorrect alias information in the IonMonkey JIT compiler when setting array elements.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-17026",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-15949",
+    "vendor": "Nagios",
+    "product": "Nagios XI",
+    "name": "Nagios XI Remote Code Execution Vulnerability",
+    "description": "Nagios XI contains a remote code execution vulnerability in which a user can modify the check_plugin executable and insert malicious commands to execute as root.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-15949",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-5544",
+    "vendor": "VMware",
+    "product": "VMware ESXi and Horizon DaaS",
+    "name": "VMware ESXi and Horizon DaaS OpenSLP Heap-Based Buffer Overflow Vulnerability",
+    "description": "VMware ESXi and Horizon Desktop as a Service (DaaS) OpenSLP contains a heap-based buffer overflow vulnerability that allows an attacker with network access to port 427 to overwrite the heap of the OpenSLP service to perform remote code exec",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-5544",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-3992",
+    "vendor": "VMware",
+    "product": "ESXi",
+    "name": "VMware ESXi OpenSLP Use-After-Free Vulnerability",
+    "description": "VMware ESXi OpenSLP contains a use-after-free vulnerability that allows an attacker residing in the management network with access to port 427 to perform remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-3992",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-22005",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server File Upload Vulnerability",
+    "description": "VMware vCenter Server contains a file upload vulnerability in the Analytics service that allows a user with network access to port 443 to execute code.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-22005",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-3952",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Information Disclosure Vulnerability",
+    "description": "VMware vCenter Server contains an information disclosure vulnerability in the VMware Directory Service (vmdir) when the Platform Services Controller (PSC) does not correctly implement access controls. Successful exploitation allows an attac",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-3952",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-21972",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Remote Code Execution Vulnerability",
+    "description": "VMware vCenter Server vSphere Client contains a remote code execution vulnerability in a vCenter Server plugin which allows an attacker with network access to port 443 to execute commands with unrestricted privileges on the underlying opera",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-21972",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-21985",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Improper Input Validation Vulnerability",
+    "description": "VMware vSphere Client contains an improper input validation vulnerability in the Virtual SAN Health Check plug-in, which is enabled by default in vCenter Server, which allows for remote code execution.",
+    "dateAdded": "2021-11-03",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-21985",
+    "platforms": [
+     "vsphere65",
+     "vsphere67",
+     "vsphere70",
+     "vsphere80"
     ],
     "coveredByMaintenance": true
    }

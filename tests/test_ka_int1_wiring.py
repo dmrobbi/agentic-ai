@@ -45,7 +45,7 @@ def test_v1_agent_drives_the_module_ops(tmp_path):
     assert result["summary"]["unplannable"] == 4
     fan = agent.kevstig_fan_out(KEV_COVERAGE)
     assert fan["counts"]["catalog_count"] == 1734
-    assert len(fan["recommendations"]) == 7
+    assert len(fan["recommendations"]) == 10
     src = tmp_path / "ev"
     src.mkdir()
     (src / "note.txt").write_bytes(b"wired evidence")
@@ -64,7 +64,7 @@ def test_v2_agent_drives_the_module_ops(tmp_path):
     result = agent.verify_soc_findings(SOC_FINDINGS)
     assert result["summary"]["planned"] == 8
     fan = agent.kevstig_fan_out(KEV_COVERAGE)
-    assert fan["counts"]["routed_count"] == 273
+    assert fan["counts"]["routed_count"] == 298
     src = tmp_path / "ev2"
     src.mkdir()
     (src / "note.txt").write_bytes(b"v2 wired")

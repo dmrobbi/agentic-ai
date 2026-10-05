@@ -56,8 +56,8 @@ def test_catalog_equation_holds():
 def test_multi_platform_overlap_invariant():
     routed_total = sum(p["kev_routed_total"] for p in COVERAGE["platforms"])
     assert routed_total >= COVERAGE["routed_count"]
-    assert routed_total == 279  # the live snapshot's measured sum
-    assert COVERAGE["routed_count"] == 273
+    assert routed_total == 358  # the live snapshot's measured sum (22 rows)
+    assert COVERAGE["routed_count"] == 298
 
 
 def test_route_coverage_output_schema():
@@ -67,7 +67,7 @@ def test_route_coverage_output_schema():
         "recommendations", "unrouted_sample", "notes",
     }
     assert result["counts"] == {
-        "catalog_count": 1734, "routed_count": 273, "uncovered_count": 1461}
+        "catalog_count": 1734, "routed_count": 298, "uncovered_count": 1436}
     for rec in result["recommendations"]:
         assert set(rec) == {
             "cve", "platform", "known", "exploit_name",
@@ -82,16 +82,17 @@ def test_routed_extraction_and_platform_grouping():
     assert len(grouping["windows"]) == 2
     assert grouping["rhel7"] == ["CVE-2015-3246"]
     assert "vsphere67" in grouping and "macos" in grouping
-    # group rows exceed routed rows (one entry routed to 3 RHEL baselines)
-    assert sum(len(v) for v in grouping.values()) == 7
+    # group rows exceed routed rows (one entry routed to 3 RHEL baselines,
+    # one vCenter entry routed to all four vSphere rows)
+    assert sum(len(v) for v in grouping.values()) == 10
 
 
 def test_recommendations_unknown_path_is_the_majority():
-    # every committed row is 2026-era: none in the internal exploit DB -
+    # every committed row decodes to nothing in the internal exploit DB -
     # the honest-majority artifact the upstream tool publishes on purpose
     result = route_coverage(COVERAGE)
     recs = result["recommendations"]
-    assert len(recs) == 7
+    assert len(recs) == 10
     assert all(r["known"] is False for r in recs)
     assert all(r["exploit_name"] is None for r in recs)
 

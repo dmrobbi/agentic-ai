@@ -1,9 +1,11 @@
 """KA-002 - KEV-driven matching eval: the committed kevstig snapshot's
 routed CVEs fed to CVEMatchingEngine.match_cve; a measured coverage
 report renders as a small table in the summary; the measured gap gates
-KA-029's expansion queue (0 of 156 routed known at curation - the
-honest artifact). The live-refresh variant stays opt-in and documented
-(the snapshot is the offline mirror; tests never touch the network)."""
+KA-029's expansion queue (1 of 298 routed known at curation - ProxyShell;
+the honest artifact; the superseded torn-fetch slice of 156 rows stopped
+before 2021-era rows and hid it). The live-refresh variant stays opt-in
+and documented (the snapshot is the offline mirror; tests never touch
+the network)."""
 
 from __future__ import annotations
 
@@ -48,20 +50,22 @@ def test_snapshot_shape():
     for entry in ROUTED:
         assert entry["coveredByMaintenance"] is True
         assert entry["platforms"], entry["cve"]
-    # the counts stay the LIVE API's numbers; the entries = the trimmed
-    # routed slice (the doc'd mismatch: 156 of 273 routed are present)
+    # the counts stay the LIVE API's numbers; the entries = the full
+    # routed slice (298 of 298 routed are present)
     assert COVERAGE["catalog_count"] == 1734
-    assert COVERAGE["routed_count"] == 273
-    assert len(ROUTED) == 156
+    assert COVERAGE["routed_count"] == 298
+    assert len(ROUTED) == 298
 
 
 def test_every_routed_cve_reaches_match_cve():
     rows = _eval_report()
     assert len(rows) == len(ROUTED)
     known = [r for r in rows if r["known"]]
-    # THE MEASURED GAP at curation (2026-10-05): none of the 156 routed
-    # rows decode to the 6-entry internal DB - the expansion queue's fuel
-    assert known == [], known
+    # THE MEASURED GAP at curation (2026-10-05): exactly one of the 298
+    # routed rows decodes to the 6-entry internal DB - ProxyShell; the
+    # remaining 297 are the expansion queue's fuel
+    assert [(r["cve"], r["exploit_name"]) for r in known] == [
+        ("CVE-2021-34473", "ProxyShell")], known
     assert len(CVE_EXPLOIT_DB) == 6  # the eval mutated nothing
 
 
@@ -80,9 +84,9 @@ def test_coverage_report_renders_small_table():
     ]
     text = "\n".join(table)
     print("\nKA-002 coverage report:\n" + text)  # renders in -s and logs
-    assert "| routed in snapshot | 156 |" in text
-    assert "| known to the internal DB | 0 |" in text
-    assert "| coverage % | 0.0% |" in text
+    assert "| routed in snapshot | 298 |" in text
+    assert "| known to the internal DB | 1 |" in text
+    assert "| coverage % | 0.3% |" in text
     assert "| expansion-queue gate | open |" in text
 
 
@@ -110,4 +114,4 @@ def test_synthetic_known_row_branches_the_gate():
 def test_overlap_invariant_holds_in_snapshot():
     routed_total = sum(p["kev_routed_total"] for p in COVERAGE["platforms"])
     assert routed_total >= COVERAGE["routed_count"]
-    assert routed_total == 279  # the live snapshot's measured sum
+    assert routed_total == 358  # the live snapshot's measured sum (22 rows)
