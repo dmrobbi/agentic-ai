@@ -275,7 +275,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green (use pytest-timeout to bound it).
   - **Depends:** KA-006. **Feeds:** KA-INT-2.
 
-- [ ] **KA-017 · Evidence hash-chain verify** — [BUILDER][M][none] (OPT-17)
+- [x] **KA-017 · Evidence hash-chain verify** — [BUILDER][M][none] (OPT-17)
   - **Owns:** `agentic_ai/agents/cyber/evidence_chain.py` (new), `tests/test_evidence_chain.py`
   - **Goal:** hash-chained evidence entries + tamper detection (v4 discipline
     generalized as a pure module).
