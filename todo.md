@@ -440,7 +440,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** REST/GraphQL planners + auth-surface catalogs.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-042 · SocialEngMixin** — [BUILDER][M][lab] (OPT-42)
+- [x] **KA-042 · SocialEngMixin** — [BUILDER][M][lab] (OPT-42)
   - **Owns:** `agentic_ai/agents/cyber/socialeng_ops.py`, `tests/test_socialeng_ops.py`
   - **Acceptance:** simulation planners with CONSENT gates (the op refuses without a
     consent record); lab-only policy.
