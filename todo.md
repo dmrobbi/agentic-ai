@@ -154,7 +154,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-1.
 
-- [ ] **KA-095 · pve-lab battery target playbook** — [BUILDER][M][lab] (OPT-95)
+- [x] **KA-095 · pve-lab battery target playbook** — [BUILDER][M][lab] (OPT-95)
   - **Owns:** `docs/KA-LAB-TARGET.md` (new), `scripts/lab/pve-lab-battery.sh` (new)
   - **Goal:** the standard battery target: a pve-lab VM with snapshot-reset between
     runs; the playbook scripts reset + verification; documents the TCG/lab net facts.
