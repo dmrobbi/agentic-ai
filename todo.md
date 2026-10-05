@@ -247,7 +247,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-003. **Feeds:** KA-INT-2.
 
-- [ ] **KA-012 · CVE_EXPLOIT_DB staleness gate** — [BUILDER][M][none] (OPT-12)
+- [x] **KA-012 · CVE_EXPLOIT_DB staleness gate** — [BUILDER][M][none] (OPT-12)
   - **Owns:** `tests/test_cve_db_staleness.py`, `scripts/ka/cve_db_check.py`
   - **Goal:** every DB entry's reference resolves — offline mirror mode (committed
     snapshot) for CI + a live-nightly variant (schedule = P5 decision).
