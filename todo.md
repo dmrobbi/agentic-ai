@@ -310,7 +310,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F02, KA-003. **Feeds:** KA-INT-2.
 
-- [ ] **KA-023 · Catalog link-rotation test** — [BUILDER][M][none] (OPT-23)
+- [x] **KA-023 · Catalog link-rotation test** — [BUILDER][M][none] (OPT-23)
   - **Owns:** `tests/test_catalog_links.py`, `scripts/ka/catalog_check.py`
   - **Goal:** the catalogs' URLs re-verified: offline mirror mode (committed hash
     snapshot) for CI + opt-in live mode; dead links flagged in a report file.
