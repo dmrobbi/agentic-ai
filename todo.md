@@ -405,7 +405,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** escape-surface planners + k8s RBAC checklist + tool catalog.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-035 · MobileMixin** — [BUILDER][M][none] (OPT-35)
+- [x] **KA-035 · MobileMixin** — [BUILDER][M][none] (OPT-35)
   - **Owns:** `agentic_ai/agents/cyber/mobile_pentest.py`, `tests/test_mobile_ops.py`
   - **Acceptance:** APK/IPA static+dynamic planners + detection notes.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
