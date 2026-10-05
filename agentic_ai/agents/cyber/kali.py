@@ -12,6 +12,23 @@ from agentic_ai.agents.base import BaseAgent
 from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 from agentic_ai.agents.cyber.redteam_pentest import RedTeamMixin
 from agentic_ai.agents.cyber.xss_exploit import XssMixin
+from agentic_ai.agents.cyber.privesc import PrivescMixin
+from agentic_ai.agents.cyber.ad_pentest import ADMixin
+from agentic_ai.agents.cyber.cloud_pentest import CloudMixin
+from agentic_ai.agents.cyber.container_pentest import ContainerMixin
+from agentic_ai.agents.cyber.mobile_pentest import MobileMixin
+from agentic_ai.agents.cyber.wireless_pentest import WirelessMixin
+from agentic_ai.agents.cyber.osint_pentest import OSINTMixin
+from agentic_ai.agents.cyber.forensics_ops import ForensicsMixin
+from agentic_ai.agents.cyber.malware_ops import MalwareAnalysisMixin
+from agentic_ai.agents.cyber.network_device import NetworkDeviceMixin
+from agentic_ai.agents.cyber.api_pentest import APIPentestMixin
+from agentic_ai.agents.cyber.socialeng_ops import SocialEngMixin
+from agentic_ai.agents.cyber.ics_iot import IcsIoTMixin
+from agentic_ai.agents.cyber.postexp import PostExploitMixin
+from agentic_ai.agents.cyber.webauth_ops import WebAuthMixin
+from agentic_ai.agents.cyber.chain_ops import ContractAnalysisMixin
+from agentic_ai.agents.cyber.full_engagement import FullEngagementMixin
 from agentic_ai.agents.cyber.auth_expiry import (
     AuthGrant,
     sweep as sweep_auth_expiry,
@@ -1340,7 +1357,7 @@ def _validate_command_args(args: list) -> None:
                 raise ValueError(f"Rejected dangerous metacharacter in argument: {arg}")
 
 
-class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
+class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin, PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin, XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin, ForensicsMixin, BaseAgent):
     """
     Kali Linux Tool Orchestration Agent
 

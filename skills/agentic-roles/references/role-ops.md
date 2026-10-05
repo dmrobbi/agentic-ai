@@ -646,9 +646,21 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 
 | Op | Async | Source | Details |
 |---|---|---|---|
+| `ad_command_catalog` |  | ad_pentest | The per-step command catalog (target/dc injected) (KA-032). |
+| `ad_detection_notes` |  | ad_pentest | The blue-team pairing (TTP-level notes) (KA-032). |
+| `ad_index` |  | ad_pentest | The module's own shapes (a stable API for the composer) (KA-032). |
 | `add_to_blacklist` |  | kali | Add IP to blacklist (always blocked). |
 | `aircrack_crack` |  | kali | WiFi password cracking. |
 | `amass_enum` |  | kali | Subdomain enumeration with Amass. |
+| `analyzer_catalog` |  | chain_ops | 17 static-analyzer/symbolic/fuzz/repo-audit rows (+lab_fork flags) (KA-046). |
+| `analyzer_lookup` |  | chain_ops | One analyzer row by id (KA-046). |
+| `api_auth_surface_catalog` |  | api_pentest | Per-style auth-surface rows (surface/check/detection) (KA-041). |
+| `api_index` |  | api_pentest | REST/GraphQL style list + module policy (KA-041). |
+| `api_policy` |  | api_pentest | planning_only + lab_or_authorized_targets_only rows (KA-041). |
+| `api_step_catalog` |  | api_pentest | Per-style discovery/enum command steps (raw templates) (KA-041). |
+| `api_vuln_classes` |  | api_pentest | Per-style vuln-class name list (KA-041). |
+| `api_vuln_commands` |  | api_pentest | Per-class SAFE command sets for a scrubbed target (KA-041). |
+| `audit_config` |  | network_device | Offline config audit vs per-vendor rule rows (findings with severity) (KA-040). |
 | `authorize_tool` |  | kali | Consult an engagement RBAC role against the tool DB (KA-051). |
 | `binwalk_analyze` |  | kali | Firmware analysis. |
 | `bloodhound_collect` |  | kali | Active Directory reconnaissance. |
@@ -658,11 +670,22 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `can_read` |  | base | Check if agent has read permission. |
 | `can_write` |  | base | Check if agent has write permission. |
 | `cewl_generate` |  | kali | Custom wordlist generator. |
+| `channel_measurement` |  | socialeng_ops | Per-channel measurement metrics ({metric,definition,source}) (KA-042). |
 | `check_authorization` |  | kali | Check if tool execution is authorized. |
+| `classify_postexp_command` |  | postexp | Command -> mutation-class classification (10 classes) (KA-044). |
 | `clear_ip_whitelist` |  | kali | Clear IP whitelist. |
+| `cloud_detection_notes` |  | cloud_pentest | Cloud detection/countermeasure notes (KA-033). |
+| `cloud_index` |  | cloud_pentest | Cloud kinds + policy overview (KA-033). |
+| `config_audit_rules` |  | network_device | Curated hardening rule rows across 4 vendor CLIs (KA-040). |
 | `connect_metasploit` |  | kali | Connect to Metasploit RPC. |
+| `container_index` |  | container_pentest | Container ops + policy overview (KA-034). |
+| `container_tool_catalog` |  | container_pentest | Container tool catalog (KA-034). |
+| `contract_nets` |  | chain_ops | Net label vocab (testnet allowed / mainnet refused) (KA-046). |
+| `contract_policy` |  | chain_ops | testnet_only + planning-only policy rows (KA-046). |
 | `create_evidence_bundle` |  | kali | Per-engagement evidence bundle: tar + manifest + sha256 (KA-082). |
 | `crunch_generate` |  | kali | Wordlist generator. |
+| `device_enum_catalog` |  | network_device | Per-kind show-class enum command templates (read-only) (KA-040). |
+| `device_index` |  | network_device | Kinds + vendors + lab-only policy overview (KA-040). |
 | `dirb_scan` |  | kali | Web content scanner. |
 | `disable_audit_logging` |  | kali | Disable audit logging. |
 | `disable_dry_run` |  | kali | Disable dry-run mode. |
@@ -675,6 +698,13 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `execute_metasploit_exploit` |  | kali | Execute a Metasploit exploit. |
 | `execute_tool` |  | kali | Execute a Kali Linux tool. |
 | `ffuf_fuzz` |  | kali | Fast web fuzzer. |
+| `finding_class_catalog` |  | chain_ops | 18 finding classes with analyzer pairings (KA-046). |
+| `firmware_flow` |  | ics_iot | The 6-phase static-only firmware flow (air-gapped lab required) (KA-043). |
+| `firmware_step_catalog` |  | ics_iot | Raw {image} step templates per firmware phase (KA-043). |
+| `forensics_index` |  | forensics_ops | Analyst workflows + policy overview (KA-038). |
+| `forensics_policy` |  | forensics_ops | Read-only-on-originals policy rows (KA-038). |
+| `forensics_step_catalog` |  | forensics_ops | Per-kind analyst step catalog (KA-038). |
+| `full_engagement_index` |  | full_engagement | Composition contract: families, core arc, extension lanes (KA-050). |
 | `generate_id` |  | base | Generate a unique ID with the given prefix (static version). |
 | `generate_playbook_report` |  | kali | Generate playbook execution report. |
 | `generate_report` |  | kali | Generate execution report. |
@@ -687,22 +717,67 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `get_transparency_log` |  | base | Get the transparency log entries. |
 | `gobuster_scan` |  | kali | Directory/DNS brute-force with Gobuster. |
 | `hydra_bruteforce` |  | kali | Brute force login with Hydra. |
+| `iam_blast_radius_checklist` |  | cloud_pentest | IAM blast-radius checklist rows (KA-033). |
+| `ics_iot_detection_notes` |  | ics_iot | OT detection TTP-order notes (KA-043). |
+| `ics_iot_index` |  | ics_iot | Protocols + ops + policy overview (KA-043). |
 | `input_guardrail` |  | base | Validate/sanitize input through guardrail pipeline. Returns (sanitized |
 | `john_crack` |  | kali | Crack passwords with John the Ripper. |
 | `joomscan_scan` |  | kali | Joomla vulnerability scanner. |
+| `jwt_analysis` |  | webauth_ops | Decoded-claims JWT assessment (never decodes/holds key material) (KA-045). |
+| `k8s_rbac_checklist` |  | container_pentest | K8s RBAC checklist rows (KA-034). |
 | `kevstig_fan_out` |  | kali | kevstig coverage.json -> routed CVEs + matching recommendations (KA-067). |
 | `list_tools` |  | kali | List available tools. |
 | `log` |  | base | Log an action for transparency. |
+| `malware_index` |  | malware_ops | The four sample kinds + module policy overview (KA-039). |
+| `malware_policy` |  | malware_ops | static_first + detonate_sandbox_only policy rows (KA-039). |
 | `medusa_bruteforce` |  | kali | Parallel brute forcer. |
 | `metasploit_session_command` |  | kali | Execute command in Metasploit session. |
+| `mobile_detection_notes` |  | mobile_pentest | Mobile detection notes (KA-035). |
+| `mobile_index` |  | mobile_pentest | APK/IPA ops + policy overview (KA-035). |
 | `nikto_scan` |  | kali | Perform Nikto web server scan. |
 | `nmap_scan` |  | kali | Perform Nmap network scan. |
+| `oauth_flow_catalog` |  | webauth_ops | The 5 OAuth grant catalogs incl. deprecated implicit/password rows (KA-045). |
+| `oauth_grant_assessment` |  | webauth_ops | Per-grant assessment arc (KA-045). |
+| `osint_detection_notes` |  | osint_pentest | OSINT detection notes (KA-037). |
+| `osint_index` |  | osint_pentest | OSINT lanes + policy overview (KA-037). |
+| `osint_step_catalog` |  | osint_pentest | Per-lane read-only step catalog (KA-037). |
 | `output_guardrail` |  | base | Validate/sanitize output through guardrail pipeline. Returns (sanitize |
 | `perform_task` | async | base | Perform a task. Override in subclasses. |
+| `plan_ad` |  | ad_pentest | The 6-phase lab-only AD plan (KA-032). |
+| `plan_analyzer_sweep` |  | chain_ops | Ordered analyzer sweep plan (lab_fork flags respected) (KA-046). |
+| `plan_api` |  | api_pentest | The 7-phase REST or GraphQL methodology arc (KA-041). |
+| `plan_cloud` |  | cloud_pentest | The 6-phase sandbox-account plan per cloud (KA-033). |
+| `plan_container_escape` |  | container_pentest | Escape-surface planner arcs (KA-034). |
+| `plan_contract_audit` |  | chain_ops | The 7-phase testnet-only contract audit arc (KA-046). |
+| `plan_detonation` |  | malware_ops | Detonation plan; refuses without a sandbox record (sandbox-only gate) (KA-039). |
+| `plan_device_audit` |  | network_device | The 6-phase lab-only device audit arc (KA-040). |
+| `plan_finding_triage` |  | chain_ops | Findings -> analyzer/tool triage mapping (KA-046). |
+| `plan_forensics` |  | forensics_ops | The analyst arc per kind (KA-038). |
+| `plan_full_engagement` |  | full_engagement | Composes recon -> web -> xss -> privesc (+extension lanes) into one scrubbed plan (KA-050). |
+| `plan_impersonation_exercise` |  | socialeng_ops | Consent-gated impersonation exercise plan (scenario classes only) (KA-042). |
+| `plan_mobile_apk` |  | mobile_pentest | APK static-first planner (KA-035). |
+| `plan_mobile_ipa` |  | mobile_pentest | IPA static-first planner (KA-035). |
+| `plan_modbus` |  | ics_iot | Modbus TCP/RTU read-only arc (passive tap) (KA-043). |
+| `plan_osint` |  | osint_pentest | Per-lane OSINT plan (KA-037). |
+| `plan_phishing_simulation` |  | socialeng_ops | Consent-gated phishing simulation plan (structure only, no payloads) (KA-042). |
+| `plan_postexp` |  | postexp | Per-arc 5-phase evidence-only plan (KA-044). |
+| `plan_privesc` |  | privesc | The 6-phase escalation plan for a target on a platform (KA-031). |
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
-| `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
+| `plan_s7` |  | ics_iot | S7comm read-only arc (port 102) (KA-043). |
+| `plan_static` |  | malware_ops | The 6-phase static analysis arc (acquire/triage/static/family/gate/report) (KA-039). |
+| `plan_web_pentest` |  | web_pentest | Return the 12-phase engagement plan for a target. |
+| `plan_webauth` |  | webauth_ops | The 7-phase SSO/OAuth/JWT methodology arc (KA-045). |
+| `plan_wireless_capture` |  | wireless_pentest | Monitor-mode capture planner (KA-036). |
 | `plan_xss_exploit` |  | xss_exploit | The 7-phase XSS methodology plan for a target. |
+| `postexp_arcs` |  | postexp | The 4 evidence-only arcs + aliases (KA-044). |
+| `postexp_credential_classes` |  | postexp | Credential-SURFACE rows (locations only, never contents) (KA-044). |
+| `postexp_gate` |  | postexp | Refuses every mutation-class step in a plan (re-plan reasons) (KA-044). |
+| `postexp_policy` |  | postexp | evidence_only + mutation_forbidden rows (KA-044). |
+| `postexp_step_catalog` |  | postexp | Per-arc read-only step catalogs (KA-044). |
+| `privesc_capability_lookup` |  | privesc | Index rows for a binary name (case-insensitive; optional platform filter) (KA-031). |
+| `privesc_index` |  | privesc | Load the committed capability index (KA-031). |
 | `process_message` | async | base | Process an incoming message. Override in subclasses. |
+| `protocol_command_catalog` |  | ics_iot | Per-protocol read-only command rows for a scrubbed target (KA-043). |
 | `reason` | async | base | Iterative ReAct reasoning loop: think→act→observe. |
 | `reaver_attack` |  | kali | WPS brute force attack. |
 | `receive_message` |  | base | Receive a message from another agent. |
@@ -714,6 +789,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `register_tool` |  | base | Register a tool with the agent. |
 | `remove_from_blacklist` |  | kali | Remove IP from blacklist. |
 | `revoke_authorization` |  | kali | Revoke authorization. |
+| `rogue_ap_playbook` |  | wireless_pentest | The rogue-AP play (lab-RF-tagged; consent noted in phase 1) (KA-036). |
 | `role_allows_dry_run` |  | kali | Planning/inspection is unrestricted for every role (KA-051). |
 | `run_ad_audit_playbook` |  | kali | Run Active Directory audit playbook. |
 | `run_password_audit_playbook` |  | kali | Run password cracking playbook. |
@@ -724,19 +800,31 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `send_message` |  | base | Send a message to another agent. |
 | `set_authorization` |  | kali | Set authorization level for tool execution. |
 | `set_ip_whitelist` |  | kali | Set IP whitelist (only these targets allowed). |
+| `soc_watch_pairing` |  | socialeng_ops | SOC detection watch rows paired to an exercise (KA-042). |
+| `socialeng_index` |  | socialeng_ops | Ops + policy overview (KA-042). |
+| `socialeng_policy` |  | socialeng_ops | lab_only/consent_required/no_payload_generation rows (KA-042). |
 | `sqlmap_scan` |  | kali | Perform SQLMap SQL injection scan. |
+| `static_step_catalog` |  | malware_ops | Per-kind read-only step templates ({sample} placeholders) (KA-039). |
 | `subfinder_scan` |  | kali | Subdomain discovery. |
+| `testnet_gate` |  | chain_ops | Net label/address gate (refuses mainnet forms) (KA-046). |
 | `theharvester_scan` |  | kali | Email and subdomain harvesting. |
 | `think` | async | base | Use LLM inference to reason about something. Optionally validate again |
 | `tool_guardrail` |  | base | Check if tool call is permitted. Returns is_allowed. |
 | `validate_target` |  | kali | Validate target against whitelist/blacklist. |
+| `verify_evidence_bundle` |  | kali | Verify a bundle against its manifest (tamper detection; KA-082). |
+| `verify_soc_findings` |  | kali | SOC findings -> per-finding verification plans; planners only (KA-066). |
 | `volatility_analyze` |  | kali | Memory forensics. |
 | `web_enum_commands` |  | web_pentest | Enumeration command catalog for a target, grouped by step. |
 | `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
 | `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
 | `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
-| `verify_evidence_bundle` |  | kali | Verify a bundle against its manifest (tamper detection; KA-082). |
-| `verify_soc_findings` |  | kali | SOC findings -> per-finding verification plans; planners only (KA-066). |
+| `webauth_index` |  | webauth_ops | Ops + policy overview (KA-045). |
+| `webauth_policy` |  | webauth_ops | No-secrets/planning-only policy rows (KA-045). |
+| `webauth_redirect_checks` |  | webauth_ops | Structural redirect-URI checks per client type (KA-045). |
+| `webauth_sso_surface` |  | webauth_ops | OIDC/SAML handshake check rows (KA-045). |
+| `webauth_token_storage` |  | webauth_ops | Token storage positions + SOC detection pairings (KA-045). |
+| `wireless_detection_notes` |  | wireless_pentest | Wireless detection notes (KA-036). |
+| `wireless_index` |  | wireless_pentest | Wireless ops + policy overview (KA-036). |
 | `wpscan_scan` |  | kali | WordPress security scan. |
 | `xss_callback_commands` |  | xss_exploit | OOB/callback infrastructure commands for a callback host name. |
 | `xss_countermeasures` |  | xss_exploit | Prevention + detection pairing for the blue team. |
@@ -749,32 +837,120 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 
 | Op | Async | Source | Details |
 |---|---|---|---|
+| `ad_command_catalog` |  | ad_pentest | The per-step command catalog (target/dc injected) (KA-032). |
+| `ad_detection_notes` |  | ad_pentest | The blue-team pairing (TTP-level notes) (KA-032). |
+| `ad_index` |  | ad_pentest | The module's own shapes (a stable API for the composer) (KA-032). |
+| `analyzer_catalog` |  | chain_ops | 17 static-analyzer/symbolic/fuzz/repo-audit rows (+lab_fork flags) (KA-046). |
+| `analyzer_lookup` |  | chain_ops | One analyzer row by id (KA-046). |
+| `api_auth_surface_catalog` |  | api_pentest | Per-style auth-surface rows (surface/check/detection) (KA-041). |
+| `api_index` |  | api_pentest | REST/GraphQL style list + module policy (KA-041). |
+| `api_policy` |  | api_pentest | planning_only + lab_or_authorized_targets_only rows (KA-041). |
+| `api_step_catalog` |  | api_pentest | Per-style discovery/enum command steps (raw templates) (KA-041). |
+| `api_vuln_classes` |  | api_pentest | Per-style vuln-class name list (KA-041). |
+| `api_vuln_commands` |  | api_pentest | Per-class SAFE command sets for a scrubbed target (KA-041). |
+| `audit_config` |  | network_device | Offline config audit vs per-vendor rule rows (findings with severity) (KA-040). |
 | `authorize_tool` |  | kali_v2 | Consult an engagement RBAC role against the tool DB (KA-051). |
+| `channel_measurement` |  | socialeng_ops | Per-channel measurement metrics ({metric,definition,source}) (KA-042). |
 | `check_authorization` |  | kali_v2 | Check if tool can be executed. |
+| `classify_postexp_command` |  | postexp | Command -> mutation-class classification (10 classes) (KA-044). |
+| `cloud_detection_notes` |  | cloud_pentest | Cloud detection/countermeasure notes (KA-033). |
+| `cloud_index` |  | cloud_pentest | Cloud kinds + policy overview (KA-033). |
+| `config_audit_rules` |  | network_device | Curated hardening rule rows across 4 vendor CLIs (KA-040). |
+| `container_index` |  | container_pentest | Container ops + policy overview (KA-034). |
+| `container_tool_catalog` |  | container_pentest | Container tool catalog (KA-034). |
+| `contract_nets` |  | chain_ops | Net label vocab (testnet allowed / mainnet refused) (KA-046). |
+| `contract_policy` |  | chain_ops | testnet_only + planning-only policy rows (KA-046). |
 | `create_evidence_bundle` |  | kali_v2 | Per-engagement evidence bundle: tar + manifest + sha256 (KA-082). |
+| `device_enum_catalog` |  | network_device | Per-kind show-class enum command templates (read-only) (KA-040). |
+| `device_index` |  | network_device | Kinds + vendors + lab-only policy overview (KA-040). |
 | `disable_dry_run` |  | kali_v2 | Disable dry-run mode. |
 | `enable_dry_run` |  | kali_v2 | Enable dry-run mode. |
+| `finding_class_catalog` |  | chain_ops | 18 finding classes with analyzer pairings (KA-046). |
+| `firmware_flow` |  | ics_iot | The 6-phase static-only firmware flow (air-gapped lab required) (KA-043). |
+| `firmware_step_catalog` |  | ics_iot | Raw {image} step templates per firmware phase (KA-043). |
+| `forensics_index` |  | forensics_ops | Analyst workflows + policy overview (KA-038). |
+| `forensics_policy` |  | forensics_ops | Read-only-on-originals policy rows (KA-038). |
+| `forensics_step_catalog` |  | forensics_ops | Per-kind analyst step catalog (KA-038). |
+| `full_engagement_index` |  | full_engagement | Composition contract: families, core arc, extension lanes (KA-050). |
 | `generate_remediation_plan` |  | kali_v2 | Generate remediation plan for findings. |
 | `get_state` |  | kali_v2 | Get agent state. |
+| `iam_blast_radius_checklist` |  | cloud_pentest | IAM blast-radius checklist rows (KA-033). |
+| `ics_iot_detection_notes` |  | ics_iot | OT detection TTP-order notes (KA-043). |
+| `ics_iot_index` |  | ics_iot | Protocols + ops + policy overview (KA-043). |
+| `jwt_analysis` |  | webauth_ops | Decoded-claims JWT assessment (never decodes/holds key material) (KA-045). |
+| `k8s_rbac_checklist` |  | container_pentest | K8s RBAC checklist rows (KA-034). |
 | `kevstig_fan_out` |  | kali_v2 | kevstig coverage.json -> routed CVEs + matching recommendations (KA-067). |
 | `list_tools` |  | kali_v2 | List available tools. |
+| `malware_index` |  | malware_ops | The four sample kinds + module policy overview (KA-039). |
+| `malware_policy` |  | malware_ops | static_first + detonate_sandbox_only policy rows (KA-039). |
 | `match_exploits_for_cve` |  | kali_v2 | Find exploits for a CVE. |
+| `mobile_detection_notes` |  | mobile_pentest | Mobile detection notes (KA-035). |
+| `mobile_index` |  | mobile_pentest | APK/IPA ops + policy overview (KA-035). |
+| `oauth_flow_catalog` |  | webauth_ops | The 5 OAuth grant catalogs incl. deprecated implicit/password rows (KA-045). |
+| `oauth_grant_assessment` |  | webauth_ops | Per-grant assessment arc (KA-045). |
+| `osint_detection_notes` |  | osint_pentest | OSINT detection notes (KA-037). |
+| `osint_index` |  | osint_pentest | OSINT lanes + policy overview (KA-037). |
+| `osint_step_catalog` |  | osint_pentest | Per-lane read-only step catalog (KA-037). |
+| `plan_ad` |  | ad_pentest | The 6-phase lab-only AD plan (KA-032). |
+| `plan_analyzer_sweep` |  | chain_ops | Ordered analyzer sweep plan (lab_fork flags respected) (KA-046). |
+| `plan_api` |  | api_pentest | The 7-phase REST or GraphQL methodology arc (KA-041). |
+| `plan_cloud` |  | cloud_pentest | The 6-phase sandbox-account plan per cloud (KA-033). |
+| `plan_container_escape` |  | container_pentest | Escape-surface planner arcs (KA-034). |
+| `plan_contract_audit` |  | chain_ops | The 7-phase testnet-only contract audit arc (KA-046). |
+| `plan_detonation` |  | malware_ops | Detonation plan; refuses without a sandbox record (sandbox-only gate) (KA-039). |
+| `plan_device_audit` |  | network_device | The 6-phase lab-only device audit arc (KA-040). |
+| `plan_finding_triage` |  | chain_ops | Findings -> analyzer/tool triage mapping (KA-046). |
+| `plan_forensics` |  | forensics_ops | The analyst arc per kind (KA-038). |
+| `plan_full_engagement` |  | full_engagement | Composes recon -> web -> xss -> privesc (+extension lanes) into one scrubbed plan (KA-050). |
+| `plan_impersonation_exercise` |  | socialeng_ops | Consent-gated impersonation exercise plan (scenario classes only) (KA-042). |
+| `plan_mobile_apk` |  | mobile_pentest | APK static-first planner (KA-035). |
+| `plan_mobile_ipa` |  | mobile_pentest | IPA static-first planner (KA-035). |
+| `plan_modbus` |  | ics_iot | Modbus TCP/RTU read-only arc (passive tap) (KA-043). |
+| `plan_osint` |  | osint_pentest | Per-lane OSINT plan (KA-037). |
+| `plan_phishing_simulation` |  | socialeng_ops | Consent-gated phishing simulation plan (structure only, no payloads) (KA-042). |
+| `plan_postexp` |  | postexp | Per-arc 5-phase evidence-only plan (KA-044). |
+| `plan_privesc` |  | privesc | The 6-phase escalation plan for a target on a platform (KA-031). |
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
-| `plan_web_pentest` |  | web_pentest | Return the 8-phase engagement plan for a target. |
+| `plan_s7` |  | ics_iot | S7comm read-only arc (port 102) (KA-043). |
+| `plan_static` |  | malware_ops | The 6-phase static analysis arc (acquire/triage/static/family/gate/report) (KA-039). |
+| `plan_web_pentest` |  | web_pentest | Return the 12-phase engagement plan for a target. |
+| `plan_webauth` |  | webauth_ops | The 7-phase SSO/OAuth/JWT methodology arc (KA-045). |
+| `plan_wireless_capture` |  | wireless_pentest | Monitor-mode capture planner (KA-036). |
 | `plan_xss_exploit` |  | xss_exploit | The 7-phase XSS methodology plan for a target. |
+| `postexp_arcs` |  | postexp | The 4 evidence-only arcs + aliases (KA-044). |
+| `postexp_credential_classes` |  | postexp | Credential-SURFACE rows (locations only, never contents) (KA-044). |
+| `postexp_gate` |  | postexp | Refuses every mutation-class step in a plan (re-plan reasons) (KA-044). |
+| `postexp_policy` |  | postexp | evidence_only + mutation_forbidden rows (KA-044). |
+| `postexp_step_catalog` |  | postexp | Per-arc read-only step catalogs (KA-044). |
+| `privesc_capability_lookup` |  | privesc | Index rows for a binary name (case-insensitive; optional platform filter) (KA-031). |
+| `privesc_index` |  | privesc | Load the committed capability index (KA-031). |
+| `protocol_command_catalog` |  | ics_iot | Per-protocol read-only command rows for a scrubbed target (KA-043). |
 | `recommend_tools_for_target` |  | kali_v2 | Get tool recommendations for a target. |
 | `redteam_catalog` |  | redteam_pentest | Load the generated red-team tool catalog (13 phases, ~725 tools). |
 | `redteam_countermeasures` |  | redteam_pentest | Detection/countermeasure notes for a phase (the blue-team pairing). |
 | `redteam_phase_tools` |  | redteam_pentest | Every tool cataloged under a phase (name, url, purpose, origin |
 | `redteam_tool_lookup` |  | redteam_pentest | Search the whole catalog by tool-name fragment (max 25 hits). |
+| `rogue_ap_playbook` |  | wireless_pentest | The rogue-AP play (lab-RF-tagged; consent noted in phase 1) (KA-036). |
 | `role_allows_dry_run` |  | kali_v2 | Planning/inspection is unrestricted for every role (KA-051). |
 | `set_authorization` |  | kali_v2 | Set authorization level. |
+| `soc_watch_pairing` |  | socialeng_ops | SOC detection watch rows paired to an exercise (KA-042). |
+| `socialeng_index` |  | socialeng_ops | Ops + policy overview (KA-042). |
+| `socialeng_policy` |  | socialeng_ops | lab_only/consent_required/no_payload_generation rows (KA-042). |
+| `static_step_catalog` |  | malware_ops | Per-kind read-only step templates ({sample} placeholders) (KA-039). |
+| `testnet_gate` |  | chain_ops | Net label/address gate (refuses mainnet forms) (KA-046). |
 | `verify_evidence_bundle` |  | kali_v2 | Verify a bundle against its manifest (tamper detection; KA-082). |
 | `verify_soc_findings` |  | kali_v2 | SOC findings -> per-finding verification plans; planners only (KA-066). |
 | `web_enum_commands` |  | web_pentest | Enumeration command catalog for a target, grouped by step. |
 | `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
 | `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
 | `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
+| `webauth_index` |  | webauth_ops | Ops + policy overview (KA-045). |
+| `webauth_policy` |  | webauth_ops | No-secrets/planning-only policy rows (KA-045). |
+| `webauth_redirect_checks` |  | webauth_ops | Structural redirect-URI checks per client type (KA-045). |
+| `webauth_sso_surface` |  | webauth_ops | OIDC/SAML handshake check rows (KA-045). |
+| `webauth_token_storage` |  | webauth_ops | Token storage positions + SOC detection pairings (KA-045). |
+| `wireless_detection_notes` |  | wireless_pentest | Wireless detection notes (KA-036). |
+| `wireless_index` |  | wireless_pentest | Wireless ops + policy overview (KA-036). |
 | `xss_callback_commands` |  | xss_exploit | OOB/callback infrastructure commands for a callback host name. |
 | `xss_countermeasures` |  | xss_exploit | Prevention + detection pairing for the blue team. |
 | `xss_filter_strategy` |  | xss_exploit | Filter/CSP evasion STRATEGY classes with in-house notes |

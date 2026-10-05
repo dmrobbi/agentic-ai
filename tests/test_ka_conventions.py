@@ -19,12 +19,33 @@ import pytest
 from agentic_ai.agents.cyber.redteam_pentest import RedTeamMixin
 from agentic_ai.agents.cyber.web_pentest import WebPentestMixin, wp_scrub_target
 from agentic_ai.agents.cyber.xss_exploit import XssMixin
+from agentic_ai.agents.cyber.ad_pentest import ADMixin
+from agentic_ai.agents.cyber.api_pentest import APIPentestMixin
+from agentic_ai.agents.cyber.chain_ops import ContractAnalysisMixin
+from agentic_ai.agents.cyber.cloud_pentest import CloudMixin
+from agentic_ai.agents.cyber.container_pentest import ContainerMixin
+from agentic_ai.agents.cyber.forensics_ops import ForensicsMixin
+from agentic_ai.agents.cyber.ics_iot import IcsIoTMixin
+from agentic_ai.agents.cyber.full_engagement import FullEngagementMixin
+from agentic_ai.agents.cyber.malware_ops import MalwareAnalysisMixin
+from agentic_ai.agents.cyber.mobile_pentest import MobileMixin
+from agentic_ai.agents.cyber.network_device import NetworkDeviceMixin
+from agentic_ai.agents.cyber.osint_pentest import OSINTMixin
+from agentic_ai.agents.cyber.postexp import PostExploitMixin
+from agentic_ai.agents.cyber.privesc import PrivescMixin
+from agentic_ai.agents.cyber.socialeng_ops import SocialEngMixin
+from agentic_ai.agents.cyber.webauth_ops import WebAuthMixin
+from agentic_ai.agents.cyber.wireless_pentest import WirelessMixin
 from agentic_ai.agents.registry import create_agent, resolve_agent_class
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-BASELINE_SUITE_TOTAL = 3189
+BASELINE_SUITE_TOTAL = 3196
 
-EXPECTED_MIXINS = (WebPentestMixin, RedTeamMixin, XssMixin)
+EXPECTED_MIXINS = (WebPentestMixin, RedTeamMixin, XssMixin, PrivescMixin,
+    ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin,
+    OSINTMixin, ForensicsMixin, MalwareAnalysisMixin, NetworkDeviceMixin,
+    APIPentestMixin, SocialEngMixin, IcsIoTMixin, PostExploitMixin,
+    WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin)
 
 
 def _collected_test_total():

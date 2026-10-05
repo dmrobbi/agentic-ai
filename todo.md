@@ -21,9 +21,15 @@ shared wiring (agent class lines, role-ops.md, registry/docs sync) happens ONLY 
   owner-gated and follow kali_agent_v4's evidence discipline.
 - Nothing copies external prose/code verbatim; credit sources as in-house re-authoring.
 
-**Current state of the tree:** main at the P2 tip (all P2 builders + INT-2 wiring/fixes landed); suite pin = BASELINE_SUITE_TOTAL in tests/test_ka_conventions.py; mixins:
-web_pentest, redteam_pentest, xss_exploit; catalogs: redteam_tools.json (725/13),
-xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
+**Current state of the tree:** main at the P3 tip (all 20 P3 builders + INT-3 wiring
+landed; P0-P2 done); suite pin = BASELINE_SUITE_TOTAL in tests/test_ka_conventions.py;
+chassis (kali.py + kali_v2.py carry all 20 mixins): web_pentest, redteam_pentest,
+xss_exploit (originals) + privesc, ad_pentest, cloud_pentest, container_pentest,
+mobile_pentest, wireless_pentest, osint_pentest, forensics_ops (KA-031..038) +
+malware_ops, network_device, api_pentest, socialeng_ops, ics_iot, postexp, webauth_ops,
+chain_ops (KA-039..046) + full_engagement (KA-050, composes the 11 methodology
+families). Web catalog: 12 phases / 20 vuln classes. Catalogs: redteam_tools.json
+(725/13), xss_tools.json (15/5), cms_flows.json (24 flows).
 
 ---
 
@@ -491,7 +497,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     composition contract documented).
   - **Depends:** KA-F01 (+ any P3 mixins that exist).  **Feeds:** KA-INT-3.
 
-- [ ] **KA-INT-3 · Phase-3 wiring** — [INTEGRATION][M][none]
+- [x] **KA-INT-3 · Phase-3 wiring** — [INTEGRATION][M][none]
   - **Owns (SHARED):** kali.py + kali_v2.py class wiring, role-ops.md rows,
     AGENT_MATRIX.md, the KA-047/048 spec'd edits applied to web_pentest.py.
   - **Acceptance:** suite green; both remotes lockstep; docs synced.

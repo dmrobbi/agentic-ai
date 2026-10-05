@@ -551,6 +551,24 @@ agenticai agent run  <id> --op <op> --args '{...}'
 | `verify_soc_findings` | SOC findings -> verification plans | `findings: list` | `plan: dict` |
 | `kevstig_fan_out` | kevstig coverage -> recommendations | `coverage: dict` | `report: dict` |
 | `create_evidence_bundle` | Evidence bundle: tar + manifest + sha256 | `source_dir, out_path, engagement_id` | `bundle: dict` |
+| `plan_privesc` | 6-phase escalation plan + capability index | `target, platform` | `plan: dict` |
+| `plan_ad` | 6-phase lab-only AD assessment plan | `scope: str` | `plan: dict` |
+| `plan_cloud` | Per-cloud sandbox-account plan + IAM blast radius | `target, cloud` | `plan: dict` |
+| `plan_container_escape` | Container escape-surface planner + RBAC/tool catalogs | `target` | `plan: dict` |
+| `plan_mobile_apk` | APK static-first planner (IPA sibling op) | `path, ...` | `plan: dict` |
+| `plan_wireless_capture` | Monitor-mode capture planner + rogue-AP play | `target, ...` | `plan: dict` |
+| `plan_osint` | Per-lane OSINT planners (domain/email/persona) | `lane, ...` | `plan: dict` |
+| `plan_forensics` | Analyst arcs per kind + evidence handling | `target, kind` | `plan: dict` |
+| `plan_static` | Static-first malware analysis arc (4 sample kinds) | `sample_label, kind` | `plan: dict` |
+| `plan_detonation` | Detonation plan; refuses without a sandbox record | `sample_label, sandbox` | `plan/refusal` |
+| `plan_device_audit` | Lab-only device audit plan + offline config audit | `device_label, kind` | `plan: dict` |
+| `plan_api` | REST/GraphQL methodology arcs + auth-surface catalogs | `target, style` | `plan: dict` |
+| `plan_phishing_simulation` | Consent-gated simulation plan (impersonation sibling op) | `consent, audience_label` | `plan: dict` |
+| `plan_modbus` | Modbus TCP/RTU read-only arc (S7 + firmware siblings) | `target_label, staging` | `plan: dict` |
+| `plan_postexp` | Evidence-only post-exploitation arcs + mutation gate | `target, arc` | `plan: dict` |
+| `plan_webauth` | SSO/OAuth/JWT methodology arc (decoded-only) | `target` | `plan: dict` |
+| `plan_contract_audit` | Testnet-only contract audit arc + analyzer sweep | `target, net` | `plan: dict` |
+| `plan_full_engagement` | Composes recon -> web -> xss -> privesc (+ extension lanes) | `target, platform` | `plan: dict` |
 
 **File**: `agentic_ai/agents/cyber/kali.py`  
 **Tests**: `tests/test_kali_agent.py` (44 tests; + the KA matrix/pin suites)
@@ -571,6 +589,24 @@ agenticai agent run  <id> --op <op> --args '{...}'
 | `kevstig_fan_out` | kevstig coverage -> recommendations | `coverage: dict` | `report: dict` |
 | `create_evidence_bundle` | Evidence bundle (engagement explicit) | `source_dir, out_path, engagement_id` | `bundle: dict` |
 | `check_authorization` | Level check for a tool | `tool_name: str` | `(bool, reason)` |
+| `plan_privesc` | 6-phase escalation plan + capability index | `target, platform` | `plan: dict` |
+| `plan_ad` | 6-phase lab-only AD assessment plan | `scope: str` | `plan: dict` |
+| `plan_cloud` | Per-cloud sandbox-account plan + IAM blast radius | `target, cloud` | `plan: dict` |
+| `plan_container_escape` | Container escape-surface planner + RBAC/tool catalogs | `target` | `plan: dict` |
+| `plan_mobile_apk` | APK static-first planner (IPA sibling op) | `path, ...` | `plan: dict` |
+| `plan_wireless_capture` | Monitor-mode capture planner + rogue-AP play | `target, ...` | `plan: dict` |
+| `plan_osint` | Per-lane OSINT planners (domain/email/persona) | `lane, ...` | `plan: dict` |
+| `plan_forensics` | Analyst arcs per kind + evidence handling | `target, kind` | `plan: dict` |
+| `plan_static` | Static-first malware analysis arc (4 sample kinds) | `sample_label, kind` | `plan: dict` |
+| `plan_detonation` | Detonation plan; refuses without a sandbox record | `sample_label, sandbox` | `plan/refusal` |
+| `plan_device_audit` | Lab-only device audit plan + offline config audit | `device_label, kind` | `plan: dict` |
+| `plan_api` | REST/GraphQL methodology arcs + auth-surface catalogs | `target, style` | `plan: dict` |
+| `plan_phishing_simulation` | Consent-gated simulation plan (impersonation sibling op) | `consent, audience_label` | `plan: dict` |
+| `plan_modbus` | Modbus TCP/RTU read-only arc (S7 + firmware siblings) | `target_label, staging` | `plan: dict` |
+| `plan_postexp` | Evidence-only post-exploitation arcs + mutation gate | `target, arc` | `plan: dict` |
+| `plan_webauth` | SSO/OAuth/JWT methodology arc (decoded-only) | `target` | `plan: dict` |
+| `plan_contract_audit` | Testnet-only contract audit arc + analyzer sweep | `target, net` | `plan: dict` |
+| `plan_full_engagement` | Composes recon -> web -> xss -> privesc (+ extension lanes) | `target, platform` | `plan: dict` |
 
 **File**: `agentic_ai/agents/cyber/kali_v2.py`  
 **Tests**: `tests/test_agents_v2.py` (15 tests; + the KA eval/pin suites)

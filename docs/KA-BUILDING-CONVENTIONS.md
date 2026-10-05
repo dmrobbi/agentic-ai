@@ -90,8 +90,9 @@ Planner/mixin modules land at `agentic_ai/agents/cyber/<topic>.py`:
 - Green = the verdict line reads `N passed, 0 failed`. Current
   env-conditional skips (not regressions): `BRUTEFORCE_E2E!=1` (3),
   `WAZUH_API_PASSWORD` unset (2), message-bus without reachable Redis AND
-  without fakeredis (3). A NEW skip reason must be root-caused before
-  merging.
+  without fakeredis (3), owner-gated KA_LAB_BATTERY lab battery (2,
+  tests/lab/test_planner_parity.py). A NEW skip reason must be root-caused
+  before merging.
 - Read the verdict through a grep filter
   (`grep -E "[0-9]+ (passed|failed|error)"`), never from `tail`: the
   opentelemetry console exporter prints a cosmetic ValueError AFTER the

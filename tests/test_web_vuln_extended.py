@@ -121,7 +121,7 @@ SAFE_TARGET = "lab-target.local"
 
 # INT3-WIRING: flip to True in the SAME integration task that merges the
 # doc block into web_pentest.WEB_VULN_CLASSES (see module docstring).
-MODULE_INT3_LANDED = False
+MODULE_INT3_LANDED = True
 
 # Scan mirrors for the scrubber's explicit rejection classes, kept local
 # for readable failures; the scrubber itself is still run on every row.

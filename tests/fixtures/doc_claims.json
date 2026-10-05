@@ -1,11 +1,11 @@
 {
  "claims": [
   {
-   "claim": "The web pentest plan is 8-phase",
+   "claim": "The web pentest plan is 12-phase",
    "source_file": "skills/agentic-roles/references/role-ops.md",
-   "source_text": "Return the 8-phase engagement plan for a target.",
+   "source_text": "Return the 12-phase engagement plan for a target.",
    "test_file": "tests/test_kali_web_pentest.py",
-   "test_name": "test_plan_web_pentest_eight_phases",
+   "test_name": "test_plan_web_pentest_twelve_phases",
    "tested": true
   },
   {

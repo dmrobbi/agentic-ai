@@ -33,9 +33,10 @@ lab_only = pytest.mark.skipif(
 # the documented binaries the planners may emit: the v1 DB's command
 # rows (real binaries) + the measured infra/planner set (KA-024's pins)
 # the planner recon families also emit: whois/dig/wafw00f (measured)
+# KA-INT-3: + arjun (phase-9 business-logic sampler, KA-047)
 DOCUMENTED_INFRA = {"python3", "curl", "openssl", "nginx",
                     "interactsh-client", "nginx-proxy:",
-                    "whois", "dig", "wafw00f"}
+                    "whois", "dig", "wafw00f", "arjun"}
 
 JUICE_TARGET = "http://lab-juice.lab.example:8181"
 OOB_HOST = "oob.lab.example"

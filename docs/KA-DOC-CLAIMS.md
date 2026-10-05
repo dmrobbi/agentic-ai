@@ -7,7 +7,7 @@ named test exists in the suite (import-pinned).
 
 | claim | source | proving test | tested |
 |---|---|---|---|
-| The web pentest plan is 8-phase | `skills/agentic-roles/references/role-ops.md` | `tests/test_kali_web_pentest.py :: test_plan_web_pentest_eight_phases` | yes |
+| The web pentest plan is 12-phase | `skills/agentic-roles/references/role-ops.md` | `tests/test_kali_web_pentest.py :: test_plan_web_pentest_twelve_phases` | yes |
 | The red-team catalog is 13 phases / ~725 tools | `skills/agentic-roles/references/role-ops.md` | `tests/test_redteam_ops.py :: test_catalog_structure` | yes |
 | The XSS methodology plan is 7-phase | `skills/agentic-roles/references/role-ops.md` | `tests/test_xss_ops_extended.py :: test_plan_structure_and_contexts` | yes |
 | Every execute_tool branch is pinned (the 29-branch matrix) | `tests/test_execute_tool_matrix.py` | `tests/test_execute_tool_matrix.py :: test_matrix_branch_checklist_documented` | yes |
