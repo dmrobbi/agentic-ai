@@ -1,0 +1,2158 @@
+{
+ "meta": {
+  "name": "kevstig coverage snapshot (KA-002, routed slice)",
+  "generated": "2026-10-05",
+  "source_url": "https://bedimsecurity.com/capabilities/kevstig/api/coverage.json",
+  "provenance": "Real API data; ROUTED-ONLY slice (156 of the API's 273 routed) built from the fetch spill (the body's tail was torn by the 750KB fetch cap, so later/older rows never arrived). Counts stay the live numbers; the entries = the decoded routed rows verbatim; feeds the KA-029 expansion queue.",
+  "live_counts": {
+   "catalog_count": 1734,
+   "routed_count": 273,
+   "uncovered_count": 1461
+  }
+ },
+ "coverage": {
+  "generated_at": "2026-10-04T20:34:59+00:00",
+  "catalog_date": "2026-10-04T18:52:56.0635Z",
+  "source": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+  "catalog_count": 1734,
+  "routed_count": 273,
+  "uncovered_count": 1461,
+  "platforms": [
+   {
+    "platform": "windows",
+    "label": "Microsoft Windows (all editions)",
+    "ckls": 4,
+    "rules_maintained": 1084,
+    "kev_routed_total": 179,
+    "kev_routed_30d": 2,
+    "newest_KEV": "2026-09-08"
+   },
+   {
+    "platform": "macos",
+    "label": "Apple macOS",
+    "ckls": 2,
+    "rules_maintained": 320,
+    "kev_routed_total": 61,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
+    "platform": "vsphere67",
+    "label": "VMware vSphere (all versions)",
+    "ckls": 2,
+    "rules_maintained": 136,
+    "kev_routed_total": 18,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-18"
+   },
+   {
+    "platform": "firefox",
+    "label": "Mozilla Firefox",
+    "ckls": 1,
+    "rules_maintained": 33,
+    "kev_routed_total": 12,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2024-10-15"
+   },
+   {
+    "platform": "rhel7",
+    "label": "RHEL 7 (EOL track)",
+    "ckls": 1,
+    "rules_maintained": 244,
+    "kev_routed_total": 3,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-26"
+   },
+   {
+    "platform": "rhel8",
+    "label": "RHEL 8",
+    "ckls": 1,
+    "rules_maintained": 369,
+    "kev_routed_total": 3,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-26"
+   },
+   {
+    "platform": "rhel9",
+    "label": "RHEL 9",
+    "ckls": 1,
+    "rules_maintained": 445,
+    "kev_routed_total": 3,
+    "kev_routed_30d": 0,
+    "newest_KEV": "2026-08-26"
+   },
+   {
+    "platform": "proxmox",
+    "label": "Proxmox VE",
+    "ckls": 0,
+    "rules_maintained": 0,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "ubuntu20.04",
+    "label": "Ubuntu 20.04 LTS",
+    "ckls": 1,
+    "rules_maintained": 164,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "ubuntu22.04",
+    "label": "Ubuntu 22.04 LTS",
+    "ckls": 1,
+    "rules_maintained": 179,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   },
+   {
+    "platform": "ubuntu24.04",
+    "label": "Ubuntu 24.04 LTS",
+    "ckls": 1,
+    "rules_maintained": 188,
+    "kev_routed_total": 0,
+    "kev_routed_30d": 0,
+    "newest_KEV": ""
+   }
+  ],
+  "entries": [
+   {
+    "cve": "CVE-2026-81963",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Link Following Vulnerability",
+    "description": "Microsoft Windows Update Stack contains a link following vulnerability that allows a local attacker to escalate privileges locally up to SYSTEM.",
+    "dateAdded": "2026-09-08",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-81963 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-81963",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-85880",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Heap-Based Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows Advanced Local Procedure Call contains a heap-based buffer overflow vulnerability that allows an attacker to elevate privileges locally.",
+    "dateAdded": "2026-09-08",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-85880 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-85880",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-3246",
+    "vendor": "Red Hat",
+    "product": "Libuser",
+    "name": "Red Hat Libuser Race Condition Vulnerability",
+    "description": "Red Hat libuser contains a race condition vulnerability that allows authenticated local users to corrupt the /etc/passwd file to cause a denial of service or privilege escalation. ",
+    "dateAdded": "2026-08-26",
+    "note": "This vulnerability affects an open-source component, third-party library, protocol, or proprietary implementation that could be used by different products. For more information, please see: https://access.redhat.com/articles/1537873 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2015-3246",
+    "platforms": [
+     "rhel7",
+     "rhel8",
+     "rhel9"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-59310",
+    "vendor": "Broadcom",
+    "product": "VMware vCenter",
+    "name": "Broadcom VMware vCenter Path Traversal Vulnerability",
+    "description": "Broadcom VMware vCenter contains a path traversal vulnerability which could allow a threat actor with network access to vCenter to execute arbitrary code.",
+    "dateAdded": "2026-08-18",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/38017 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-59310",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-65400",
+    "vendor": "Apple",
+    "product": "macOS",
+    "name": "Apple macOS Improper Authentication Vulnerability",
+    "description": "Apple macOS contains an improper authentication vulnerability that could allow an attacker on the network to authenticate to Screen Sharing without valid credentials.",
+    "dateAdded": "2026-08-18",
+    "note": "https://support.apple.com/en-us/148170; https://support.apple.com/en-us/148171; https://support.apple.com/en-us/148172 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-65400",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-68820",
+    "vendor": "Microsoft",
+    "product": "Windows Ancillary Function Driver for WinSock ",
+    "name": "Microsoft Windows Ancillary Function Driver for WinSock Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2026-08-11",
+    "note": "https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2026-68820 ; BOD 26-04: https://www.cisa.gov/news-events/directives/bod-26-04-prioritizing-security-updates-based-risk ; Forensics Triage Requirements: https://www.cisa.gov/news-events/directives/bod-26-04-implementation-guidance-prioritizing-security-updates-based-risk ; https://nvd.nist.gov/vuln/detail/CVE-2026-68820",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2008-4250",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows contains a buffer overflow vulnerability in the Windows Server Service that allows remote attackers to execute arbitrary code via a crafted RPC request that triggers an overflow during path canonicalization.",
+    "dateAdded": "2026-05-20",
+    "note": "https://learn.microsoft.com/en-us/security-updates/securitybulletins/2008/ms08-067 ; https://nvd.nist.gov/vuln/detail/CVE-2008-4250",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-32202",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Protection Mechanism Failure Vulnerability",
+    "description": "Microsoft Windows Shell contains a protection mechanism failure vulnerability that allows an unauthorized attacker to perform spoofing over a network.",
+    "dateAdded": "2026-04-28",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-32202 ; https://nvd.nist.gov/vuln/detail/CVE-2026-32202",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-60710",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Link Following Vulnerability",
+    "description": "Microsoft Windows contains a link following vulnerability that allows for privilege escalation",
+    "dateAdded": "2026-04-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-60710 ; https://nvd.nist.gov/vuln/detail/CVE-2025-60710",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36424",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Out-of-Bounds Read Vulnerability",
+    "description": "Microsoft Windows Common Log File System Driver contains an out-of-bounds read vulnerability that could allow a threat actor for privileges escalation",
+    "dateAdded": "2026-04-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2023-36424 ; https://nvd.nist.gov/vuln/detail/CVE-2023-36424",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2008-0015",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": " Microsoft Windows Video ActiveX Control Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Video ActiveX Control contains a remote code execution vulnerability. An attacker could exploit the vulnerability by constructing a specially crafted Web page. When a user views the Web page, the vulnerability could allow ",
+    "dateAdded": "2026-02-17",
+    "note": "https://web.archive.org/web/20110305211119/https://www.microsoft.com/technet/security/bulletin/ms09-032.mspx ; https://nvd.nist.gov/vuln/detail/CVE-2008-0015",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-21513",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft MSHTML Framework Protection Mechanism Failure Vulnerability",
+    "description": "Microsoft MSHTML Framework contains a protection mechanism failure vulnerability that could allow an unauthorized attacker to bypass a security feature over a network.",
+    "dateAdded": "2026-02-10",
+    "note": "https://msrc.microsoft.com/update-guide/advisory/CVE-2026-21513 ; https://nvd.nist.gov/vuln/detail/CVE-2026-21513",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-21525",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NULL Pointer Dereference Vulnerability",
+    "description": "Microsoft Windows Remote Access Connection Manager contains a NULL pointer dereference that could allow an unauthorized attacker to deny service locally.",
+    "dateAdded": "2026-02-10",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21525 ; https://nvd.nist.gov/vuln/detail/CVE-2026-21525",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-21510",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Shell Protection Mechanism Failure Vulnerability",
+    "description": "Microsoft Windows Shell contains a protection mechanism failure vulnerability that could allow an unauthorized attacker to bypass a security feature over a network. ",
+    "dateAdded": "2026-02-10",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21510 ; https://nvd.nist.gov/vuln/detail/CVE-2026-21510 ",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-21533",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Improper Privilege Management Vulnerability",
+    "description": "Microsoft Windows Remote Desktop Services contains an improper privilege management vulnerability that could allow an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2026-02-10",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21533 ; https://nvd.nist.gov/vuln/detail/CVE-2026-21533",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-21519",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Type Confusion Vulnerability",
+    "description": "Microsoft Desktop Windows Manager contains a type confusion vulnerability that could allow an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2026-02-10",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2026-21519 ; https://nvd.nist.gov/vuln/detail/CVE-2026-21519",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-37079",
+    "vendor": "Broadcom",
+    "product": "VMware vCenter Server",
+    "name": "Broadcom VMware vCenter Server Out-of-bounds Write Vulnerability",
+    "description": "Broadcom VMware vCenter Server contains an out-of-bounds write vulnerability in the implementation of the DCERPC protocol. This could allow a malicious actor with network access to vCenter Server to send specially crafted network packets, p",
+    "dateAdded": "2026-01-23",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24453 ; https://nvd.nist.gov/vuln/detail/CVE-2024-37079",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2026-20805",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Information Disclosure Vulnerability",
+    "description": "Microsoft Windows Desktop Windows Manager contains an information disclosure vulnerability that allows an authorized attacker to disclose information locally.",
+    "dateAdded": "2026-01-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2026-20805 ; https://nvd.nist.gov/vuln/detail/CVE-2026-20805",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-62221",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Use After Free Vulnerability",
+    "description": "Microsoft Windows Cloud Files Mini Filter Driver contains a use after free vulnerability that can allow an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-12-09",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-62221 ; https://nvd.nist.gov/vuln/detail/CVE-2025-62221",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-62215",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Race Condition Vulnerability",
+    "description": "Microsoft Windows Kernel contains a race condition vulnerability that allows a local attacker with low-level privileges to escalate privileges. Successful exploitation of this vulnerability could enable the attacker to gain SYSTEM-level acc",
+    "dateAdded": "2025-11-12",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-62215 ; https://nvd.nist.gov/vuln/detail/CVE-2025-62215",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-59287",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Server Update Service (WSUS) Deserialization of Untrusted Data Vulnerability",
+    "description": "Microsoft Windows Server Update Service (WSUS) contains a deserialization of untrusted data vulnerability that allows for remote code execution.",
+    "dateAdded": "2025-10-24",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-59287 ; https://nvd.nist.gov/vuln/detail/CVE-2025-59287",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-33073",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SMB Client Improper Access Control Vulnerability",
+    "description": "Microsoft Windows SMB Client contains an improper access control vulnerability that could allow for privilege escalation. An attacker could execute a specially crafted malicious script to coerce the victim machine to connect back to the att",
+    "dateAdded": "2025-10-20",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2025-33073 ; https://nvd.nist.gov/vuln/detail/CVE-2025-33073",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24990",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Untrusted Pointer Dereference Vulnerability",
+    "description": "Microsoft Windows Agere Modem Driver contains an untrusted pointer dereference vulnerability that allows for privilege escalation. An attacker who successfully exploited this vulnerability could gain administrator privileges.",
+    "dateAdded": "2025-10-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-24990 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24990",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-59230",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Improper Access Control Vulnerability",
+    "description": "Microsoft Windows contains an improper access control vulnerability in Windows Remote Access Connection Manager which could allow an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-10-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-59230 ; https://nvd.nist.gov/vuln/detail/CVE-2025-59230",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-43226",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System Driver contains a privilege escalation vulnerability that could allow a local, privileged attacker to bypass certain security mechanisms.",
+    "dateAdded": "2025-10-06",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2021-43226 ; https://nvd.nist.gov/vuln/detail/CVE-2021-43226",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2013-3918",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Out-of-Bounds Write Vulnerability",
+    "description": "Microsoft Windows contains an out-of-bounds write vulnerability in the InformationCardSigninHelper Class ActiveX control, icardie.dll. An attacker could exploit the vulnerability by constructing a specially crafted webpage. When a user view",
+    "dateAdded": "2025-10-06",
+    "note": "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2013/ms13-090 ; https://nvd.nist.gov/vuln/detail/CVE-2013-3918",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2011-3402",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Kernel contains an unspecified vulnerability in the TrueType font parsing engine in win32k.sys in the kernel-mode drivers that allows remote attackers to execute arbitrary code via crafted font data in a Word document or w",
+    "dateAdded": "2025-10-06",
+    "note": "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2011/ms11-087 ; https://nvd.nist.gov/vuln/detail/CVE-2011-3402",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-20352",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE",
+    "name": "Cisco IOS and IOS XE Software SNMP Denial of Service and Remote Code Execution Vulnerability",
+    "description": "Cisco IOS and IOS XE contains a stack-based buffer overflow vulnerability in the Simple Network Management Protocol (SNMP) subsystem that could allow for denial of service or remote code execution. A successful exploit could allow a low-pri",
+    "dateAdded": "2025-09-29",
+    "note": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-snmp-x4LPhte ; https://nvd.nist.gov/vuln/detail/CVE-2025-20352",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-43300",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS Out-of-Bounds Write Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS contain an out-of-bounds write vulnerability in the Image I/O framework.",
+    "dateAdded": "2025-08-21",
+    "note": "https://support.apple.com/en-us/124925 ; https://support.apple.com/en-us/124926 ; https://support.apple.com/en-us/124927 ; https://support.apple.com/en-us/124928 ; https://support.apple.com/en-us/124929 ; https://nvd.nist.gov/vuln/detail/CVE-2025-43300",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-33053",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": " Microsoft Windows External Control of File Name or Path Vulnerability",
+    "description": "Microsoft Windows contains an external control of file name or path vulnerability that could allow an attacker to execute code from a remote WebDAV location specified by the WorkingDirectory attribute of Internet Shortcut files.",
+    "dateAdded": "2025-06-10",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-33053 ; https://nvd.nist.gov/vuln/detail/CVE-2025-33053",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-32709",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Ancillary Function Driver for WinSock Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a use-after-free vulnerability that allows an authorized attacker to escalate privileges to administrator.",
+    "dateAdded": "2025-05-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-32709 ; https://nvd.nist.gov/vuln/detail/CVE-2025-32709",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-30397",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Scripting Engine Type Confusion Vulnerability",
+    "description": "Microsoft Windows Scripting Engine contains a type confusion vulnerability that allows an unauthorized attacker to execute code over a network via a specially crafted URL.",
+    "dateAdded": "2025-05-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-30397 ; https://nvd.nist.gov/vuln/detail/CVE-2025-30397",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-32706",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Heap-Based Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) Driver contains a heap-based buffer overflow vulnerability that allows an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-05-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-32706 ; https://nvd.nist.gov/vuln/detail/CVE-2025-32706",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-32701",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) Driver contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-05-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-32701 ; https://nvd.nist.gov/vuln/detail/CVE-2025-32701",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-30400",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows DWM Core Library Use-After-Free Vulnerability",
+    "description": "Microsoft Windows DWM Core Library contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-05-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-30400 ; https://nvd.nist.gov/vuln/detail/CVE-2025-30400",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24054",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NTLM Hash Disclosure Spoofing Vulnerability",
+    "description": "Microsoft Windows NTLM contains an external control of file name or path vulnerability that allows an unauthorized attacker to perform spoofing over a network.",
+    "dateAdded": "2025-04-17",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-24054 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24054",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-29824",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) Driver contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-04-08",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-29824 ; https://nvd.nist.gov/vuln/detail/CVE-2025-29824",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24993",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NTFS Heap-Based Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows New Technology File System (NTFS) contains a heap-based buffer overflow vulnerability that allows an unauthorized attacker to execute code locally.",
+    "dateAdded": "2025-03-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-24993 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24993",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24991",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NTFS Out-Of-Bounds Read Vulnerability",
+    "description": "Microsoft Windows New Technology File System (NTFS) contains an out-of-bounds read vulnerability that allows an authorized attacker to disclose information locally.",
+    "dateAdded": "2025-03-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-24991 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24991",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24985",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Fast FAT File System Driver Integer Overflow Vulnerability",
+    "description": "Microsoft Windows Fast FAT File System Driver contains an integer overflow or wraparound vulnerability that allows an unauthorized attacker to execute code locally.",
+    "dateAdded": "2025-03-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-24985 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24985",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24984",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NTFS Information Disclosure Vulnerability",
+    "description": "Microsoft Windows New Technology File System (NTFS) contains an insertion of sensitive Information into log file vulnerability that allows an unauthorized attacker to disclose information with a physical attack. An attacker who successfully",
+    "dateAdded": "2025-03-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-24984 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24984",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-24983",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Win32k Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Win32 Kernel Subsystem contains a use-after-free vulnerability that allows an authorized attacker to elevate privileges locally.",
+    "dateAdded": "2025-03-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-24983 ; https://nvd.nist.gov/vuln/detail/CVE-2025-24983",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-26633",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Management Console (MMC) Improper Neutralization Vulnerability",
+    "description": "Microsoft Windows Management Console (MMC) contains an improper neutralization vulnerability that allows an unauthorized attacker to bypass a security feature locally.",
+    "dateAdded": "2025-03-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-26633 ; https://nvd.nist.gov/vuln/detail/CVE-2025-26633",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-22226",
+    "vendor": "VMware",
+    "product": "ESXi, Workstation, and Fusion",
+    "name": "VMware ESXi, Workstation, and Fusion Information Disclosure Vulnerability",
+    "description": "VMware ESXi, Workstation, and Fusion contain an information disclosure vulnerability due to an out-of-bounds read in HGFS. Successful exploitation allows an attacker with administrative privileges to a virtual machine to leak memory from th",
+    "dateAdded": "2025-03-04",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390 ; https://nvd.nist.gov/vuln/detail/CVE-2025-22226",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-22225",
+    "vendor": "VMware",
+    "product": "ESXi",
+    "name": "VMware ESXi Arbitrary Write Vulnerability",
+    "description": "VMware ESXi contains an arbitrary write vulnerability. Successful exploitation allows an attacker with privileges within the VMX process to trigger an arbitrary kernel write leading to an escape of the sandbox.",
+    "dateAdded": "2025-03-04",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390 ; https://nvd.nist.gov/vuln/detail/CVE-2025-22225",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-22224",
+    "vendor": "VMware",
+    "product": "ESXi and Workstation",
+    "name": "VMware ESXi and Workstation TOCTOU Race Condition Vulnerability",
+    "description": "VMware ESXi and Workstation contain a time-of-check time-of-use (TOCTOU) race condition vulnerability that leads to an out-of-bounds write. Successful exploitation enables an attacker with local administrative privileges on a virtual machin",
+    "dateAdded": "2025-03-04",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390 ; https://nvd.nist.gov/vuln/detail/CVE-2025-22224",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-8639",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Win32k Improper Resource Shutdown or Release Vulnerability",
+    "description": "Microsoft Windows Win32k contains an improper resource shutdown or release vulnerability that allows for local, authenticated privilege escalation. An attacker who successfully exploited this vulnerability could run arbitrary code in kernel",
+    "dateAdded": "2025-03-03",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2018-8639 ; https://nvd.nist.gov/vuln/detail/CVE-2018-8639",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-21418",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Ancillary Function Driver for WinSock Heap-Based Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows Ancillary Function Driver for WinSock contains a heap-based buffer overflow vulnerability that allows for privilege escalation, enabling a local attacker to gain SYSTEM privileges.",
+    "dateAdded": "2025-02-11",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-21418 ; https://nvd.nist.gov/vuln/detail/CVE-2025-21418",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-21391",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Storage Link Following Vulnerability",
+    "description": "Microsoft Windows Storage contains a link following vulnerability that could allow for privilege escalation. This vulnerability could allow an attacker to delete data including data that results in the service being unavailable.",
+    "dateAdded": "2025-02-11",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2025-21391 ; https://nvd.nist.gov/vuln/detail/CVE-2025-21391",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-15069",
+    "vendor": "Sophos",
+    "product": "XG Firewall",
+    "name": "Sophos XG Firewall Buffer Overflow Vulnerability",
+    "description": "Sophos XG Firewall contains a buffer overflow vulnerability that allows for remote code execution via the \"HTTP/S bookmark\" feature.",
+    "dateAdded": "2025-02-06",
+    "note": "https://community.sophos.com/b/security-blog/posts/advisory-buffer-overflow-vulnerability-in-user-portal ; https://nvd.nist.gov/vuln/detail/CVE-2020-15069",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-21335",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Hyper-V NT Kernel Integration VSP Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Hyper-V NT Kernel Integration VSP contains a use-after-free vulnerability that allows a local attacker to gain SYSTEM privileges.",
+    "dateAdded": "2025-01-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-21335 ; https://nvd.nist.gov/vuln/detail/CVE-2025-21335",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-21334",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Hyper-V NT Kernel Integration VSP Use-After-Free Vulnerability",
+    "description": "Microsoft Windows Hyper-V NT Kernel Integration VSP contains a use-after-free vulnerability that allows a local attacker to gain SYSTEM privileges.",
+    "dateAdded": "2025-01-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-21334 ; https://nvd.nist.gov/vuln/detail/CVE-2025-21334",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2025-21333",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Hyper-V NT Kernel Integration VSP Heap-based Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows Hyper-V NT Kernel Integration VSP contains a heap-based buffer overflow vulnerability that allows a local attacker to gain SYSTEM privileges.",
+    "dateAdded": "2025-01-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2025-21333 ; https://nvd.nist.gov/vuln/detail/CVE-2025-21333",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-35250",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel-Mode Driver Untrusted Pointer Dereference Vulnerability ",
+    "description": "Microsoft Windows Kernel-Mode Driver contains an untrusted pointer dereference vulnerability that allows a local attacker to escalate privileges.",
+    "dateAdded": "2024-12-16",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-35250 ; https://nvd.nist.gov/vuln/detail/CVE-2024-35250",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-49138",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Heap-Based Buffer Overflow Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) driver contains a heap-based buffer overflow vulnerability that allows a local attacker to escalate privileges.",
+    "dateAdded": "2024-12-10",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2024-49138 ; https://nvd.nist.gov/vuln/detail/CVE-2024-49138",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38813",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Privilege Escalation Vulnerability",
+    "description": "VMware vCenter contains an improper check for dropped privileges vulnerability. This vulnerability could allow an attacker with network access to the vCenter Server to escalate privileges to root by sending a specially crafted packet.",
+    "dateAdded": "2024-11-20",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24968 ; https://nvd.nist.gov/vuln/detail/CVE-2024-38813",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38812",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Heap-Based Buffer Overflow Vulnerability",
+    "description": "VMware vCenter Server contains a heap-based buffer overflow vulnerability in the implementation of the DCERPC protocol. This vulnerability could allow an attacker with network access to the vCenter Server to execute remote code by sending a",
+    "dateAdded": "2024-11-20",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24968 ; https://nvd.nist.gov/vuln/detail/CVE-2024-38812",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-43451",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows NTLMv2 Hash Disclosure Spoofing Vulnerability",
+    "description": "Microsoft Windows contains an NTLMv2 hash spoofing vulnerability that could result in disclosing a user's NTLMv2 hash to an attacker via a file open operation. The attacker could then leverage this hash to impersonate that user.",
+    "dateAdded": "2024-11-12",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-43451 ; https://nvd.nist.gov/vuln/detail/CVE-2024-43451",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-49039",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Task Scheduler Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Task Scheduler contains a privilege escalation vulnerability that can allow an attacker-provided, local application to escalate privileges outside of its AppContainer, and access privileged RPC functions.",
+    "dateAdded": "2024-11-12",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2024-49039 ; https://nvd.nist.gov/vuln/detail/CVE-2024-49039",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-9680",
+    "vendor": "Mozilla",
+    "product": "Firefox",
+    "name": "Mozilla Firefox Use-After-Free Vulnerability",
+    "description": "Mozilla Firefox and Firefox ESR contain a use-after-free vulnerability in Animation timelines that allows for code execution in the content process.",
+    "dateAdded": "2024-10-15",
+    "note": "https://www.mozilla.org/en-US/security/advisories/mfsa2024-51/ ; https://nvd.nist.gov/vuln/detail/CVE-2024-9680",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-30088",
+    "vendor": "Microsoft",
+    "product": "Windows ",
+    "name": "Microsoft Windows Kernel TOCTOU Race Condition Vulnerability",
+    "description": "Microsoft Windows Kernel contains a time-of-check to time-of-use (TOCTOU) race condition vulnerability that could allow for privilege escalation. ",
+    "dateAdded": "2024-10-15",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2024-30088 ; https://nvd.nist.gov/vuln/detail/CVE-2024-30088",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-43573",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows MSHTML Platform Spoofing Vulnerability",
+    "description": "Microsoft Windows MSHTML Platform contains an unspecified spoofing vulnerability which can lead to a loss of confidentiality.",
+    "dateAdded": "2024-10-08",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-43573 ; https://nvd.nist.gov/vuln/detail/CVE-2024-43573",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-43572",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Management Console Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Management Console contains unspecified vulnerability that allows for remote code execution.",
+    "dateAdded": "2024-10-08",
+    "note": "https://msrc.microsoft.com/update-guide/advisory/CVE-2024-43572 ; https://nvd.nist.gov/vuln/detail/CVE-2024-43572",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-43461",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows MSHTML Platform Spoofing Vulnerability",
+    "description": "Microsoft Windows MSHTML Platform contains a user interface (UI) misrepresentation of critical information vulnerability that allows an attacker to spoof a web page. This vulnerability was exploited in conjunction with CVE-2024-38112.",
+    "dateAdded": "2024-09-16",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-43461 ; https://nvd.nist.gov/vuln/detail/CVE-2024-43461",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38217",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Mark of the Web (MOTW) Protection Mechanism Failure Vulnerability",
+    "description": "Microsoft Windows Mark of the Web (MOTW) contains a protection mechanism failure vulnerability that allows an attacker to bypass MOTW-based defenses. This can result in a limited loss of integrity and availability of security features such ",
+    "dateAdded": "2024-09-10",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38217; https://nvd.nist.gov/vuln/detail/CVE-2024-38217",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38014",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Installer Improper Privilege Management Vulnerability",
+    "description": "Microsoft Windows Installer contains an improper privilege management vulnerability that could allow an attacker to gain SYSTEM privileges.",
+    "dateAdded": "2024-09-10",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38014; https://nvd.nist.gov/vuln/detail/CVE-2024-38014",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38107",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Power Dependency Coordinator Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Power Dependency Coordinator contains an unspecified vulnerability that allows for privilege escalation, enabling a local attacker to obtain SYSTEM privileges.",
+    "dateAdded": "2024-08-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38107; https://nvd.nist.gov/vuln/detail/CVE-2024-38107",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38106",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Kernel contains an unspecified vulnerability that allows for privilege escalation, enabling a local attacker to gain SYSTEM privileges. Successful exploitation of this vulnerability requires an attacker to win a race condi",
+    "dateAdded": "2024-08-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38106; https://nvd.nist.gov/vuln/detail/CVE-2024-38106",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38193",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Ancillary Function Driver for WinSock Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Ancillary Function Driver for WinSock contains an unspecified vulnerability that allows for privilege escalation, enabling a local attacker to gain SYSTEM privileges.",
+    "dateAdded": "2024-08-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38193; https://nvd.nist.gov/vuln/detail/CVE-2024-38193",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38213",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SmartScreen Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows SmartScreen contains a security feature bypass vulnerability that allows an attacker to bypass the SmartScreen user experience via a malicious file.",
+    "dateAdded": "2024-08-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38213; https://nvd.nist.gov/vuln/detail/CVE-2024-38213",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38178",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Scripting Engine Memory Corruption Vulnerability",
+    "description": "Microsoft Windows Scripting Engine contains a memory corruption vulnerability that allows unauthenticated attacker to initiate remote code execution via a specially crafted URL.",
+    "dateAdded": "2024-08-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38178; https://nvd.nist.gov/vuln/detail/CVE-2024-38178",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-0824",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft COM for Windows Deserialization of Untrusted Data Vulnerability",
+    "description": "Microsoft COM for Windows contains a deserialization of untrusted data vulnerability that allows for privilege escalation and remote code execution via a specially crafted file or script.",
+    "dateAdded": "2024-08-05",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/advisory/CVE-2018-0824; https://nvd.nist.gov/vuln/detail/CVE-2018-0824",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-37085",
+    "vendor": "VMware",
+    "product": "ESXi",
+    "name": "VMware ESXi Authentication Bypass Vulnerability",
+    "description": "VMware ESXi contains an authentication bypass vulnerability. A malicious actor with sufficient Active Directory (AD) permissions can gain full access to an ESXi host that was previously configured to use AD for user management by re-creatin",
+    "dateAdded": "2024-07-30",
+    "note": "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24505;   https://nvd.nist.gov/vuln/detail/CVE-2024-37085",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22948",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Incorrect Default File Permissions Vulnerability ",
+    "description": "VMware vCenter Server contains an incorrect default file permissions vulnerability that allows a remote, privileged attacker to gain access to sensitive information.",
+    "dateAdded": "2024-07-17",
+    "note": "https://www.vmware.com/security/advisories/VMSA-2022-0009.html;  https://nvd.nist.gov/vuln/detail/CVE-2022-22948",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38080",
+    "vendor": "Microsoft",
+    "product": "Windows ",
+    "name": "Microsoft Windows Hyper-V Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Hyper-V contains a privilege escalation vulnerability that allows a local attacker with user permissions to gain SYSTEM privileges.",
+    "dateAdded": "2024-07-09",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2024-38080; https://nvd.nist.gov/vuln/detail/CVE-2024-38080",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-38112",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows MSHTML Platform Spoofing Vulnerability",
+    "description": "Microsoft Windows MSHTML Platform contains a spoofing vulnerability that has a high impact to confidentiality, integrity, and availability.",
+    "dateAdded": "2024-07-09",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-38112; https://nvd.nist.gov/vuln/detail/CVE-2024-38112",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-26169",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Error Reporting Service Improper Privilege Management Vulnerability",
+    "description": "Microsoft Windows Error Reporting Service contains an improper privilege management vulnerability that allows a local attacker with user permissions to gain SYSTEM privileges.",
+    "dateAdded": "2024-06-13",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-26169; https://nvd.nist.gov/vuln/detail/CVE-2024-26169",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-30040",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows MSHTML Platform Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows MSHTML Platform contains an unspecified vulnerability that allows for a security feature bypass.",
+    "dateAdded": "2024-05-14",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-30040; https://nvd.nist.gov/vuln/detail/CVE-2024-30040",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-38028",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Print Spooler Privilege Escalation Vulnerability ",
+    "description": "Microsoft Windows Print Spooler service contains a privilege escalation vulnerability. An attacker may modify a JavaScript constraints file and execute it with SYSTEM-level permissions.",
+    "dateAdded": "2024-04-23",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-38028;  https://nvd.nist.gov/vuln/detail/CVE-2022-38028",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-21338",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Exposed IOCTL with Insufficient Access Control Vulnerability",
+    "description": "Microsoft Windows Kernel contains an exposed IOCTL with insufficient access control vulnerability within the IOCTL (input and output control) dispatcher in appid.sys that allows a local attacker to achieve privilege escalation.",
+    "dateAdded": "2024-03-04",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2024-21338; https://nvd.nist.gov/vuln/detail/CVE-2024-21338",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-21412",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Internet Shortcut Files Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows Internet Shortcut Files contains an unspecified vulnerability that allows for a security feature bypass.",
+    "dateAdded": "2024-02-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2024-21412; https://nvd.nist.gov/vuln/detail/CVE-2024-21412",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2024-21351",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SmartScreen Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows SmartScreen contains a security feature bypass vulnerability that allows an attacker to bypass the SmartScreen user experience and inject code to potentially gain code execution, which could lead to some data exposure, lac",
+    "dateAdded": "2024-02-13",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2024-21351; https://nvd.nist.gov/vuln/detail/CVE-2024-21351",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-34048",
+    "vendor": "VMware",
+    "product": "vCenter Server",
+    "name": "VMware vCenter Server Out-of-Bounds Write Vulnerability",
+    "description": "VMware vCenter Server contains an out-of-bounds write vulnerability in the implementation of the DCERPC protocol that allows an attacker to conduct remote code execution.",
+    "dateAdded": "2024-01-22",
+    "note": "https://www.vmware.com/security/advisories/VMSA-2023-0023.html;  https://nvd.nist.gov/vuln/detail/CVE-2023-34048",
+    "platforms": [
+     "vsphere67"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36584",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Mark of the Web (MOTW) Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows Mark of the Web (MOTW) contains a security feature bypass vulnerability resulting in a limited loss of integrity and availability of security features.",
+    "dateAdded": "2023-11-16",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-36584 ;  https://nvd.nist.gov/vuln/detail/CVE-2023-36584",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36033",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Desktop Window Manager (DWM) Core Library Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Desktop Window Manager (DWM) Core Library contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-11-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-36033 ;  https://nvd.nist.gov/vuln/detail/CVE-2023-36033",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36025",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SmartScreen Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows SmartScreen contains a security feature bypass vulnerability that could allow an attacker to bypass Windows Defender SmartScreen checks and their associated prompts.",
+    "dateAdded": "2023-11-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-36025;  https://nvd.nist.gov/vuln/detail/CVE-2023-36025",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36036",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Cloud Files Mini Filter Driver Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Cloud Files Mini Filter Driver contains a privilege escalation vulnerability that could allow an attacker to gain SYSTEM privileges.",
+    "dateAdded": "2023-11-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-36036 ;  https://nvd.nist.gov/vuln/detail/CVE-2023-36036",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-20273",
+    "vendor": "Cisco",
+    "product": "Cisco IOS XE Web UI",
+    "name": "Cisco IOS XE Web UI Command Injection Vulnerability",
+    "description": "Cisco IOS XE contains a command injection vulnerability in the web user interface. When chained with CVE-2023-20198, the attacker can leverage the new local user to elevate privilege to root and write the implant to the file system. Cisco i",
+    "dateAdded": "2023-10-23",
+    "note": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-iosxe-webui-privesc-j22SaA4z;  https://nvd.nist.gov/vuln/detail/CVE-2023-20273",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-20198",
+    "vendor": "Cisco",
+    "product": "IOS XE Web UI",
+    "name": "Cisco IOS XE Web UI Privilege Escalation Vulnerability",
+    "description": "Cisco IOS XE Web UI contains a privilege escalation vulnerability in the web user interface that could allow a remote, unauthenticated attacker to create an account with privilege level 15 access. The attacker can then use that account to g",
+    "dateAdded": "2023-10-16",
+    "note": "https://www.cisco.com/c/en/us/support/docs/ios-nx-os-software/ios-xe-dublin-17121/221128-software-fix-availability-for-cisco-ios.html;  https://nvd.nist.gov/vuln/detail/CVE-2023-20198",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-20109",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE",
+    "name": "Cisco IOS and IOS XE Group Encrypted Transport VPN Out-of-Bounds Write Vulnerability",
+    "description": "Cisco IOS and IOS XE contain an out-of-bounds write vulnerability in the Group Encrypted Transport VPN (GET VPN) feature that could allow an authenticated, remote attacker who has administrative control of either a group member or a key ser",
+    "dateAdded": "2023-10-10",
+    "note": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-getvpn-rce-g8qR68sx;  https://nvd.nist.gov/vuln/detail/CVE-2023-20109",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-28229",
+    "vendor": "Microsoft",
+    "product": "Windows CNG Key Isolation Service",
+    "name": "Microsoft Windows CNG Key Isolation Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Cryptographic Next Generation (CNG) Key Isolation Service contains an unspecified vulnerability that allows an attacker to gain specific limited SYSTEM privileges.",
+    "dateAdded": "2023-10-04",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-28229; https://nvd.nist.gov/vuln/detail/CVE-2023-28229",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-41064",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS ImageIO Buffer Overflow Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS contain a buffer overflow vulnerability in ImageIO when processing a maliciously crafted image, which may lead to code execution. This vulnerability was chained with CVE-2023-41061.",
+    "dateAdded": "2023-09-11",
+    "note": "https://support.apple.com/en-us/HT213905, https://support.apple.com/en-us/HT213906; https://nvd.nist.gov/vuln/detail/CVE-2023-41064",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36884",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Search Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Search contains an unspecified vulnerability that could allow an attacker to evade Mark of the Web (MOTW) defenses via a specially crafted malicious file, leading to remote code execution.",
+    "dateAdded": "2023-07-17",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2023-36884;  https://nvd.nist.gov/vuln/detail/CVE-2023-36884",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-32046",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows MSHTML Platform Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows MSHTML Platform contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-07-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-32046;  https://nvd.nist.gov/vuln/detail/CVE-2023-32046",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-32049",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Defender SmartScreen Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows Defender SmartScreen contains a security feature bypass vulnerability that allows an attacker to bypass the Open File - Security Warning prompt.",
+    "dateAdded": "2023-07-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-32049; https://nvd.nist.gov/vuln/detail/CVE-2023-32049",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-36874",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Error Reporting Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Error Reporting Service contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-07-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-36874;  https://nvd.nist.gov/vuln/detail/CVE-2023-36874",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-9079",
+    "vendor": "Mozilla",
+    "product": "Firefox, Firefox ESR, and Thunderbird",
+    "name": "Mozilla Firefox, Firefox ESR, and Thunderbird Use-After-Free Vulnerability",
+    "description": "Mozilla Firefox, Firefox ESR, and Thunderbird contain a use-after-free vulnerability in SVG Animation, targeting Firefox and Tor browser users on Windows.",
+    "dateAdded": "2023-06-22",
+    "note": "https://www.mozilla.org/en-US/security/advisories/mfsa2016-92/#CVE-2016-9079; https://nvd.nist.gov/vuln/detail/CVE-2016-9079",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-6415",
+    "vendor": "Cisco",
+    "product": "IOS, IOS XR, and IOS XE",
+    "name": "Cisco IOS, IOS XR, and IOS XE IKEv1 Information Disclosure Vulnerability",
+    "description": "Cisco IOS, IOS XR, and IOS XE contain insufficient condition checks in the part of the code that handles Internet Key Exchange version 1 (IKEv1) security negotiation requests. contains an information disclosure vulnerability in the Internet",
+    "dateAdded": "2023-05-19",
+    "note": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20160916-ikev1; https://nvd.nist.gov/vuln/detail/CVE-2016-6415",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-3560",
+    "vendor": "Red Hat",
+    "product": "Polkit",
+    "name": "Red Hat Polkit Incorrect Authorization Vulnerability",
+    "description": "Red Hat Polkit contains an incorrect authorization vulnerability through the bypassing of credential checks for D-Bus requests, allowing for privilege escalation.",
+    "dateAdded": "2023-05-12",
+    "note": "https://bugzilla.redhat.com/show_bug.cgi?id=1961710; https://nvd.nist.gov/vuln/detail/CVE-2021-3560",
+    "platforms": [
+     "rhel7",
+     "rhel8",
+     "rhel9"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-6742",
+    "vendor": "Cisco",
+    "product": "IOS and IOS XE Software",
+    "name": "Cisco IOS and IOS XE Software SNMP Remote Code Execution Vulnerability",
+    "description": "The Simple Network Management Protocol (SNMP) subsystem of Cisco IOS and IOS XE contains a vulnerability that could allow an authenticated, remote attacker to remotely execute code on an affected system or cause an affected system to reload",
+    "dateAdded": "2023-04-19",
+    "note": "https://sec.cloudapps.cisco.com/security/center/content/CiscoSecurityAdvisory/cisco-sa-20170629-snmp; https://nvd.nist.gov/vuln/detail/CVE-2017-6742",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-8526",
+    "vendor": "Apple",
+    "product": "macOS",
+    "name": "Apple macOS Use-After-Free Vulnerability",
+    "description": "Apple macOS contains a use-after-free vulnerability that could allow for privilege escalation.",
+    "dateAdded": "2023-04-17",
+    "note": "https://support.apple.com/en-us/HT209600; https://nvd.nist.gov/vuln/detail/CVE-2019-8526",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-28252",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) driver contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-04-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-28252;  https://nvd.nist.gov/vuln/detail/CVE-2023-28252",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-28206",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS IOSurfaceAccelerator Out-of-Bounds Write Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS IOSurfaceAccelerator contain an out-of-bounds write vulnerability that allows an app to execute code with kernel privileges.",
+    "dateAdded": "2023-04-10",
+    "note": "https://support.apple.com/en-us/HT213720, https://support.apple.com/en-us/HT213721; https://nvd.nist.gov/vuln/detail/CVE-2023-28206",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1388",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Certificate Dialog Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Certificate Dialog contains a privilege escalation vulnerability, allowing attackers to run processes in an elevated context.",
+    "dateAdded": "2023-04-07",
+    "note": "https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2019-1388; https://nvd.nist.gov/vuln/detail/CVE-2019-1388",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-30900",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS Out-of-Bounds Write Vulnerability",
+    "description": "Apple GPU drivers, included in iOS, iPadOS, and macOS, contain an out-of-bounds write vulnerability that may allow a malicious application to execute code with kernel privileges.",
+    "dateAdded": "2023-03-30",
+    "note": "https://support.apple.com/en-us/HT21286, https://support.apple.com/en-us/HT212868, https://support.apple.com/kb/HT212872; https://nvd.nist.gov/vuln/detail/CVE-2021-30900",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-24880",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SmartScreen Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows SmartScreen contains a security feature bypass vulnerability that could allow an attacker to evade Mark of the Web (MOTW) defenses via a specially crafted malicious file.",
+    "dateAdded": "2023-03-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-24880;  https://nvd.nist.gov/vuln/detail/CVE-2023-24880",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-23376",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) driver contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-02-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-23376;  https://nvd.nist.gov/vuln/detail/CVE-2023-23376",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-21823",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Graphic Component Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Graphic Component contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-02-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-21823;  https://nvd.nist.gov/vuln/detail/CVE-2023-21823",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-2291",
+    "vendor": "Intel",
+    "product": "Ethernet Diagnostics Driver for Windows",
+    "name": "Intel Ethernet Diagnostics Driver for Windows Denial-of-Service Vulnerability",
+    "description": "Intel ethernet diagnostics driver for Windows IQVW32.sys and IQVW64.sys contain an unspecified vulnerability that allows for a denial-of-service (DoS).",
+    "dateAdded": "2023-02-10",
+    "note": "https://www.intel.com/content/www/us/en/security-center/advisory/intel-sa-00051.html; https://nvd.nist.gov/vuln/detail/CVE-2015-2291",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2023-21674",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Advanced Local Procedure Call (ALPC) Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Advanced Local Procedure Call (ALPC) contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2023-01-10",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2023-21674;  https://nvd.nist.gov/vuln/detail/CVE-2023-21674",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41049",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Mark of the Web (MOTW) Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows Mark of the Web (MOTW) contains a security feature bypass vulnerability resulting in a limited loss of integrity and availability of security features.",
+    "dateAdded": "2022-11-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2022-41049;  https://nvd.nist.gov/vuln/detail/CVE-2022-41049",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41091",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Mark of the Web (MOTW) Security Feature Bypass Vulnerability",
+    "description": "Microsoft Windows Mark of the Web (MOTW) contains a security feature bypass vulnerability resulting in a limited loss of integrity and availability of security features.",
+    "dateAdded": "2022-11-08",
+    "note": "https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2022-41091;  https://nvd.nist.gov/vuln/detail/CVE-2022-41091",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41073",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Print Spooler Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Print Spooler contains an unspecified vulnerability that allows an attacker to gain SYSTEM-level privileges.",
+    "dateAdded": "2022-11-08",
+    "note": "https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2022-41073;  https://nvd.nist.gov/vuln/detail/CVE-2022-41073",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41125",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows CNG Key Isolation Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Cryptographic Next Generation (CNG) Key Isolation Service contains an unspecified vulnerability that allows an attacker to gain SYSTEM-level privileges.",
+    "dateAdded": "2022-11-08",
+    "note": "https://portal.msrc.microsoft.com/en-US/security-guidance/advisory/CVE-2022-41125;  https://nvd.nist.gov/vuln/detail/CVE-2022-41125",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41128",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Scripting Languages Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows contains an unspecified vulnerability in the JScript9 scripting language which allows for remote code execution.",
+    "dateAdded": "2022-11-08",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-41128;  https://nvd.nist.gov/vuln/detail/CVE-2022-41128",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-41033",
+    "vendor": "Microsoft",
+    "product": "Windows COM+ Event System Service",
+    "name": "Microsoft Windows COM+ Event System Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows COM+ Event System Service contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-10-11",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2022-41033;  https://nvd.nist.gov/vuln/detail/CVE-2022-41033",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2010-2568",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows incorrectly parses shortcuts in such a way that malicious code may be executed when the operating system displays the icon of a malicious shortcut file. An attacker who successfully exploited this vulnerability could execu",
+    "dateAdded": "2022-09-15",
+    "note": "https://docs.microsoft.com/en-us/security-updates/securitybulletins/2010/ms10-046; https://nvd.nist.gov/vuln/detail/CVE-2010-2568",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-37969",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Common Log File System (CLFS) Driver Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) driver contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-09-14",
+    "note": "https://msrc.microsoft.com/update-guide/en-US/vulnerability/CVE-2022-37969;  https://nvd.nist.gov/vuln/detail/CVE-2022-37969",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-32917",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS Remote Code Execution Vulnerability",
+    "description": "Apple kernel, which is included in iOS, iPadOS, and macOS, contains an unspecified vulnerability where an application may be able to execute code with kernel privileges.",
+    "dateAdded": "2022-09-14",
+    "note": "https://support.apple.com/en-us/HT213445, https://support.apple.com/en-us/HT213444;  https://nvd.nist.gov/vuln/detail/CVE-2022-32917",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-9934",
+    "vendor": "Apple",
+    "product": "iOS, iPadOS, and macOS",
+    "name": "Apple iOS, iPadOS, and macOS Input Validation Vulnerability",
+    "description": "Apple iOS, iPadOS, and macOS contain an unspecified vulnerability involving input validation which can allow a local attacker to view sensitive user information.",
+    "dateAdded": "2022-09-08",
+    "note": "https://support.apple.com/en-us/HT211288, https://support.apple.com/en-us/HT211289; https://nvd.nist.gov/vuln/detail/CVE-2020-9934",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-31010",
+    "vendor": "Apple",
+    "product": "iOS, macOS, watchOS",
+    "name": "Apple iOS, macOS, watchOS Sandbox Bypass Vulnerability",
+    "description": "In affected versions of Apple iOS, macOS, and watchOS, a sandboxed process may be able to circumvent sandbox restrictions.",
+    "dateAdded": "2022-08-25",
+    "note": "https://support.apple.com/en-us/HT212804, https://support.apple.com/en-us/HT212805, https://support.apple.com/en-us/HT212806, https://support.apple.com/en-us/HT212807, https://support.apple.com/en-us/HT212824; https://nvd.nist.gov/vuln/detail/CVE-2021-31010",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-32894",
+    "vendor": "Apple",
+    "product": "iOS and macOS",
+    "name": "Apple iOS and macOS Out-of-Bounds Write Vulnerability",
+    "description": "Apple iOS and macOS contain an out-of-bounds write vulnerability that could allow an application to execute code with kernel privileges.",
+    "dateAdded": "2022-08-18",
+    "note": "https://support.apple.com/en-gb/HT213412, https://support.apple.com/en-gb/HT213413;  https://nvd.nist.gov/vuln/detail/CVE-2022-32894",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-32893",
+    "vendor": "Apple",
+    "product": "iOS and macOS",
+    "name": "Apple iOS and macOS Out-of-Bounds Write Vulnerability",
+    "description": "Apple iOS and macOS contain an out-of-bounds write vulnerability that could allow for remote code execution when processing malicious crafted web content.",
+    "dateAdded": "2022-08-18",
+    "note": "https://support.apple.com/en-gb/HT213412, https://support.apple.com/en-gb/HT213413;  https://nvd.nist.gov/vuln/detail/CVE-2022-32893",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-21971",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Runtime Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows Runtime contains an unspecified vulnerability that allows for remote code execution.",
+    "dateAdded": "2022-08-18",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-21971;  https://nvd.nist.gov/vuln/detail/CVE-2022-21971",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-34713",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Support Diagnostic Tool (MSDT) Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists when Microsoft Windows MSDT is called using the URL protocol from a calling application.",
+    "dateAdded": "2022-08-09",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-34713;  https://nvd.nist.gov/vuln/detail/CVE-2022-34713",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22047",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Client Server Runtime Subsystem (CSRSS) Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows CSRSS contains an unspecified vulnerability that allows for privilege escalation to SYSTEM privileges.",
+    "dateAdded": "2022-07-12",
+    "note": "https://msrc.microsoft.com/update-guide/vulnerability/CVE-2022-22047;  https://nvd.nist.gov/vuln/detail/CVE-2022-22047",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-26925",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows LSA Spoofing Vulnerability",
+    "description": "Microsoft Windows Local Security Authority (LSA) contains a spoofing vulnerability where an attacker can coerce the domain controller to authenticate to the attacker using NTLM.",
+    "dateAdded": "2022-07-01",
+    "note": "WARNING: This update is required on all Microsoft Windows endpoints but if deployed to domain controllers without additional configuration changes the update breaks PIV/CAC authentication. Read CISA implementation guidance carefully before deploying to domain controllers.;  https://nvd.nist.gov/vuln/detail/CVE-2022-26925",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-4034",
+    "vendor": "Red Hat",
+    "product": "Polkit",
+    "name": "Red Hat Polkit Out-of-Bounds Read and Write Vulnerability",
+    "description": "The Red Hat polkit pkexec utility contains an out-of-bounds read and write vulnerability that allows for privilege escalation with administrative rights.",
+    "dateAdded": "2022-06-27",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-4034",
+    "platforms": [
+     "rhel7",
+     "rhel8",
+     "rhel9"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-30190",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Support Diagnostic Tool (MSDT) Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists when MSDT is called using the URL protocol from a calling application such as Word. An attacker who successfully exploits this vulnerability can run code with the privileges of the calling applic",
+    "dateAdded": "2022-06-14",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-30190",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2012-0151",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Authenticode Signature Verification Remote Code Execution Vulnerability",
+    "description": "The Authenticode Signature Verification function in Microsoft Windows (WinVerifyTrust) does not properly validate the digest of a signed portable executable (PE) file, which allows user-assisted remote attackers to execute code.",
+    "dateAdded": "2022-06-08",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2012-0151",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-3393",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Graphics Device Interface (GDI) Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists due to the way the Windows GDI component handles objects in the memory. An attacker who successfully exploits this vulnerability could take control of the affected system.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2016-3393",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2016-7256",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Open Type Font Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists when the Windows font library improperly handles specially crafted embedded fonts. An attacker who successfully exploits this vulnerability could take control of the affected system.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2016-7256",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-0016",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows TS WebProxy Directory Traversal Vulnerability",
+    "description": "Directory traversal vulnerability in the TS WebProxy (TSWbPrxy) component in Microsoft Windows allows remote attackers to escalate privileges.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-0016",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-1769",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Mount Manager Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows Mount Manager component improperly processes symbolic links.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-1769",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-4495",
+    "vendor": "Mozilla",
+    "product": "Firefox",
+    "name": "Mozilla Firefox Security Feature Bypass Vulnerability",
+    "description": "Moxilla Firefox allows remote attackers to bypass the Same Origin Policy to read arbitrary files or gain privileges.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-4495",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-6175",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "The kernel in Microsoft Windows contains a vulnerability that allows local users to gain privileges via a crafted application.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-6175",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2015-1671",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists when components of Windows, .NET Framework, Office, Lync, and Silverlight fail to properly handle TrueType fonts.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2015-1671",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2014-4148",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Remote Code Execution Vulnerability",
+    "description": "A remote code execution vulnerability exists when the Windows kernel-mode driver improperly handles TrueType fonts.",
+    "dateAdded": "2022-05-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2014-4148",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2018-8611",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows kernel fails to properly handle objects in memory.",
+    "dateAdded": "2022-05-24",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2018-8611",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-0005",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Graphics Device Interface (GDI) Privilege Escalation Vulnerability",
+    "description": "The Graphics Device Interface (GDI) in Microsoft Windows allows local users to gain privileges via a crafted application.",
+    "dateAdded": "2022-05-24",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-0005",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2017-8543",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Search Remote Code Execution Vulnerability",
+    "description": "Microsoft Windows allows an attacker to take control of the affected system when Windows Search fails to handle objects in memory.",
+    "dateAdded": "2022-05-24",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2017-8543",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-20821",
+    "vendor": "Cisco",
+    "product": "IOS XR",
+    "name": "Cisco IOS XR Open Port Vulnerability",
+    "description": "Cisco IOS XR software health check opens TCP port 6379 by default on activation. An attacker can connect to the Redis instance on the open port and allow access to the Redis instance that is running within the NOSi container.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-20821",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2020-1027",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Kernel Privilege Escalation Vulnerability",
+    "description": "An elevation of privilege vulnerability exists in the way that the Windows Kernel handles objects in memory. An attacker who successfully exploited the vulnerability could execute code with elevated permissions.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2020-1027",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-0703",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows SMB Information Disclosure Vulnerability",
+    "description": "An information disclosure vulnerability exists in the way that the Windows SMB Server handles certain requests, which could lead to information disclosure from the server.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-0703",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-0880",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Privilege Escalation Vulnerability",
+    "description": "A local elevation of privilege vulnerability exists in how splwow64.exe handles certain calls. An attacker who successfully exploited the vulnerability could elevate privileges on an affected system from low-integrity to medium-integrity.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-0880",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-11707",
+    "vendor": "Mozilla",
+    "product": "Firefox and Thunderbird",
+    "name": "Mozilla Firefox and Thunderbird Type Confusion Vulnerability",
+    "description": "Mozilla Firefox and Thunderbird contain a type confusion vulnerability that can occur when manipulating JavaScript objects due to issues in Array.pop, allowing for an exploitable crash.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-11707",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-11708",
+    "vendor": "Mozilla",
+    "product": "Firefox and Thunderbird",
+    "name": "Mozilla Firefox and Thunderbird Sandbox Escape Vulnerability",
+    "description": "Mozilla Firefox and Thunderbird contain a sandbox escape vulnerability that could result in remote code execution.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-11708",
+    "platforms": [
+     "firefox"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1385",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Deployment Extensions Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when the Windows AppX Deployment Extensions improperly performs privilege management, resulting in access to system files.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1385",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2019-1130",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows AppX Deployment Service Privilege Escalation Vulnerability",
+    "description": "A privilege escalation vulnerability exists when Windows AppX Deployment Service (AppXSVC) improperly handles hard links.",
+    "dateAdded": "2022-05-23",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2019-1130",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-26904",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows User Profile Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows User Profile Service contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-04-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-26904",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-21919",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows User Profile Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows User Profile Service contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-04-25",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-21919",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22718",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows Print Spooler Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Print Spooler contains an unspecified vulnerability which allow for privilege escalation.",
+    "dateAdded": "2022-04-19",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-22718",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-24521",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows CLFS Driver Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows Common Log File System (CLFS) Driver contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-04-13",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-24521",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22675",
+    "vendor": "Apple",
+    "product": "macOS",
+    "name": "Apple macOS Out-of-Bounds Write Vulnerability",
+    "description": "macOS Monterey contains an out-of-bounds write vulnerability that could allow an application to execute arbitrary code with kernel privileges.",
+    "dateAdded": "2022-04-04",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-22675",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2022-22674",
+    "vendor": "Apple",
+    "product": "macOS",
+    "name": "Apple macOS Out-of-Bounds Read Vulnerability",
+    "description": "macOS Monterey contains an out-of-bounds read vulnerability that could allow an application to read kernel memory.",
+    "dateAdded": "2022-04-04",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2022-22674",
+    "platforms": [
+     "macos"
+    ],
+    "coveredByMaintenance": true
+   },
+   {
+    "cve": "CVE-2021-34484",
+    "vendor": "Microsoft",
+    "product": "Windows",
+    "name": "Microsoft Windows User Profile Service Privilege Escalation Vulnerability",
+    "description": "Microsoft Windows User Profile Service contains an unspecified vulnerability that allows for privilege escalation.",
+    "dateAdded": "2022-03-31",
+    "note": "https://nvd.nist.gov/vuln/detail/CVE-2021-34484",
+    "platforms": [
+     "windows"
+    ],
+    "coveredByMaintenance": true
+   }
+  ]
+ }
+}

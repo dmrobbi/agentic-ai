@@ -175,7 +175,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
 
 ## P2 — Exploit-test depth (27 builder tasks + 1 integration; remaining track A)
 
-- [ ] **KA-002 · KEV-driven matching eval** — [BUILDER][M][none] (OPT-2)
+- [x] **KA-002 · KEV-driven matching eval** — [BUILDER][M][none] (OPT-2)
   - **Owns:** `tests/fixtures/scans/kevstig_coverage_snapshot.json` (new), `tests/test_kev_matching_eval.py` (new)
   - **Goal:** the kevstig API's coverage.json shape (committed snapshot; field set:
     catalog_count/routed_count/uncovered_count/platforms/entries) in → every routed CVE
