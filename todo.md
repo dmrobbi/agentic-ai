@@ -14,14 +14,14 @@ shared wiring (agent class lines, role-ops.md, registry/docs sync) happens ONLY 
 - Ops are planners: they never execute. No `subprocess` / `os.system` / `eval` in mixin or
   catalog modules (test-pinned). Scrub all inputs (`wp_scrub_target`) and consult the host
   agent's `validate_target` via `getattr` (silent fallback when absent).
-- Every task ships tests; the FULL suite must stay green (baseline: 2007 passed / 5 skipped).
+- Every task ships tests; the FULL suite must stay green (baseline pin: `BASELINE_SUITE_TOTAL` in `tests/test_ka_conventions.py` - 2019 collected after P0; update it in the task that moves the count. Conditional skips are env-gated - allowlist in `docs/KA-BUILDING-CONVENTIONS.md`).
 - Commits authored as **Dawn Robbins <dmrobbipens@gmail.com>**; push BOTH remotes (origin =
   internal GitLab SSH, dmrobbi = GitHub) in lockstep; verify `git ls-remote` hashes match.
 - No network calls in unit tests; fixtures are committed files. Lab/live items are
   owner-gated and follow kali_agent_v4's evidence discipline.
 - Nothing copies external prose/code verbatim; credit sources as in-house re-authoring.
 
-**Current state of the tree:** main at `d387c89` (options doc); suite 2007/5; mixins:
+**Current state of the tree:** main at `27959ef` + the P0 wave (KA-F01 + KA-F02 landed); suite pin = BASELINE_SUITE_TOTAL; mixins:
 web_pentest, redteam_pentest, xss_exploit; catalogs: redteam_tools.json (725/13),
 xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
 
@@ -29,7 +29,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
 
 ## P0 — Foundation (2 tasks; land before anything else)
 
-- [ ] **KA-F01 · Builder conventions + baseline pin** — [BUILDER][S][none] (supports all)
+- [x] **KA-F01 · Builder conventions + baseline pin** — [BUILDER][S][none] (supports all)
   - **Owns:** `docs/KA-BUILDING-CONVENTIONS.md` (new), `tests/test_ka_conventions.py` (new)
   - **Goal:** one page every builder reads: the guardrails above expanded into
     checklists (module shape, op shape, test shape, scrub/guard usage, commit/push
@@ -40,7 +40,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** doc reviewed once; its test green in the full suite.
   - **Depends:** none. **Feeds:** everything (builders read it first).
 
-- [ ] **KA-F02 · Shared fixture layout** — [BUILDER][S][none] (supports all)
+- [x] **KA-F02 · Shared fixture layout** — [BUILDER][S][none] (supports all)
   - **Owns:** `tests/fixtures/README.md` (new), `tests/fixtures/` skeleton dirs
     (`parsers/`, `scans/`, `cve/`, `guard_corpus/`, `findings/`) with a committed
     `.gitkeep` each
