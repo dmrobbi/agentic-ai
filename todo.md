@@ -146,7 +146,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F02, KA-001. **Feeds:** KA-INT-1.
 
-- [ ] **KA-082 · Evidence bundler** — [BUILDER][M][none] (OPT-82)
+- [x] **KA-082 · Evidence bundler** — [BUILDER][M][none] (OPT-82)
   - **Owns:** `agentic_ai/agents/cyber/evidence_bundle.py` (new), `tests/test_evidence_bundle.py`
   - **Goal:** per-engagement bundle: tar + manifest + sha256 per file; manifest
     self-entry excluded (the bedim backup precedent); verify() rejects tampering.
