@@ -531,7 +531,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-059 · Sandbox profile** — [BUILDER][M][none] (OPT-59)
   - **Owns:** `docker/sandbox/` (new: profile + README), `tests/test_sandbox_docs.py`
   - **Acceptance:** profile reviewed (integration task mounts it); doctor-check spec'd.
-- [ ] **KA-060 · Consent gate** — [BUILDER][M][none] (OPT-60)
+- [x] **KA-060 · Consent gate** — [BUILDER][M][none] (OPT-60)
   - **Owns:** `agentic_ai/agents/cyber/consent_gate.py` (new), `tests/test_consent_gate.py`
   - **Acceptance:** non-dry-run executions demand an owner-signed consent record
     (generalizes v4's evidence discipline); the gate's refusal audited.
