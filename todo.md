@@ -289,7 +289,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-020 · Hostile-arg property sweep** — [BUILDER][M][none] (OPT-20)
+- [x] **KA-020 · Hostile-arg property sweep** — [BUILDER][M][none] (OPT-20)
   - **Owns:** `tests/test_hostile_args_all_ops.py`
   - **Goal:** generated hostile arguments across ALL planner ops of the three mixins +
     the registry kali agents: only ValueErrors, never crashes.
