@@ -1,0 +1,8 @@
+# KA-003 parser fixture: sqlmap text shaped for the v2
+# parse_sqlmap_output expectations (the header wording differs from the
+# real sqlmap phrasing; the parser's documented extraction semantics are
+# what this pins). hosts/params: synthetic; no real scan data.
+[sqlmap] GET parameter 'q' is vulnerable
+sqlmap identified the following injection point: boolean-based blind
+back-end DBMS: MySQL
+current database: webshop

@@ -1,0 +1,7 @@
+{"template-id":"cves/2017/CVE-2017-0144","info":{"name":"MS17-010 SMBv1 RCE","severity":"high","description":"SMBv1 remote code execution","tags":["cve","smb","rce"]},"host":"192.0.2.10","matched-at":"192.0.2.10:445"}
+{"template-id":"cves/2021/CVE-2021-44228","info":{"name":"Log4Shell JNDI RCE","severity":"critical","description":"log4j JNDI lookup RCE","tags":["cve","java"]},"host":"http://192.0.2.30:8080","matched-at":"http://192.0.2.30:8080/login"}
+{"template-id":"tech/nginx-version","info":{"name":"Nginx detected","severity":"info","description":"web server banner","tags":["tech"]},"host":"http://198.51.100.20","matched-at":"http://198.51.100.20/"}
+{"template-id":"cves/2022/CVE-2022-0001","info":{"name":"Generic medium finding","severity":"medium","description":"medium demo row","tags":["demo"]},"host":"http://192.0.2.40","matched-at":"http://192.0.2.40/app"}
+{"template-id":"cves/2023/CVE-2023-0001","info":{"name":"Generic low finding","severity":"low","description":"low demo row","tags":["demo"]},"host":"http://192.0.2.41","matched-at":"http://192.0.2.41/app"}
+{"template-id":"misconfig/open-console","info":{"name":"Unknown severity demo","severity":"unknown","description":"unknown-severity row (uncounted bucket, still listed)","tags":["demo"]},"host":"http://192.0.2.42","matched-at":"http://192.0.2.42/console"}
+{broken json

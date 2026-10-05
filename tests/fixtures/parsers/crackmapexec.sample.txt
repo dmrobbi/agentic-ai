@@ -1,0 +1,6 @@
+# KA-003 parser fixture: CrackMapExec text shaped for the v2
+# parse_crackmapexec_output expectations; hosts RFC 5737; the password
+# value is a made-up lab string pinned only as opaque text.
+SMB        192.0.2.10     445    LABDC   [+] LAB\jroberts:Winter2026! Authenticated
+SMB        192.0.2.10     445    LABDC   [+] LAB\svc_backup:labpass (Pwn3d!)
+SMB        198.51.100.20  445    LABFS   [+] LAB\archive_tape:labpass (Pwn3d!)

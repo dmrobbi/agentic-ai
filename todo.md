@@ -187,7 +187,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
     test summary; schema pinned to the known API shape.
   - **Depends:** KA-F02, KA-001. **Feeds:** KA-INT-2, KA-029.
 
-- [ ] **KA-003 · Parser regression fixtures** — [BUILDER][S][none] (OPT-3)
+- [x] **KA-003 · Parser regression fixtures** — [BUILDER][S][none] (OPT-3)
   - **Owns:** `tests/fixtures/parsers/{nmap_xml,sqlmap,nuclei,crackmapexec}.sample.*`,
     `tests/test_parser_fixtures.py`
   - **Goal:** real recorded outputs parsed: every extracted field pinned per fixture.

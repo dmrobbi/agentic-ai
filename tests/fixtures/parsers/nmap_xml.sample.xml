@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- KA-003 parser fixture: synthetic-but-realistic nmap XML; hosts are
+     RFC 5737 (192.0.2.0/24, 198.51.100.0/24); no real scan data.
+     Consuming tests: tests/test_parser_fixtures.py (v1 string parser +
+     v2 file parser both pinned per extracted field). -->
+<nmaprun scanner="nmap" version="7.94">
+<host>
+  <status state="up" reason="reset"/>
+  <address addr="192.0.2.10" addrtype="ipv4"/>
+  <hostnames><hostname name="lab-host1.lab.example"/></hostnames>
+  <ports>
+    <port protocol="tcp" portid="80"><state state="open"/><service name="http" product="nginx" version="1.18.0"/></port>
+    <port protocol="tcp" portid="445"><state state="open"/><service name="microsoft-ds" product="Samba" version="4.9"/></port>
+    <port protocol="tcp" portid="3389"><state state="open"/><service name="ms-wbt-server"/></port>
+  </ports>
+  <script id="smb-vuln-ms17-010" output="VULNERABLE: smb-v1 enabled"/>
+</host>
+<host>
+  <status state="up"/>
+  <address addr="198.51.100.20" addrtype="ipv4"/>
+  <address addr="52:54:00:aa:00:42" addrtype="mac"/>
+  <hostnames><hostname name="lab-host2.lab.example"/></hostnames>
+  <ports>
+    <port protocol="tcp" portid="22"><state state="open"/><service name="ssh" product="OpenSSH" version="8.9"/></port>
+    <port protocol="tcp" portid="443"><state state="closed"/><service name="https"/></port>
+  </ports>
+  <os><osmatch name="Linux 5.4" accuracy="98"/></os>
+</host>
+</nmaprun>
