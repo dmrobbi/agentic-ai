@@ -350,7 +350,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; doc lists all claims with test ids.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-029 · CVE DB expansion pipeline** — [BUILDER][L][none] (OPT-29)
+- [x] **KA-029 · CVE DB expansion pipeline** — [BUILDER][L][none] (OPT-29)
   - **Owns:** `scripts/ka/cve_db_propose.py` (new), `tests/test_cve_db_proposals.py`
   - **Goal:** KEV's newest-30d + CISA references → PROPOSAL file rows (human-reviewed
     before any CVE_EXPLOIT_DB change); shape tests pin proposals; review queue =
