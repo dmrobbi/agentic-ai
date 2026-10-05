@@ -1,5 +1,8 @@
 # Kali agent — 100 improvement options
 
+_The BUILDABLE decomposition of these options — phased, independent-builder tasklist with
+file ownership, acceptance gates, and dependencies — lives in `todo.md` (repo root)._
+
 _2026-10-05, owner request ("research and give me 100 more options to improve the
 kali agent and make more exploit tests"). Grounded in the current state: registry
 agents KaliAgent (2,758 lines; ~40-tool DB, MetasploitRPC, execute_tool flow,
