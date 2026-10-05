@@ -233,7 +233,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
     cleanly in CI (marker).
   - **Depends:** KA-F01, KA-008. **Feeds:** KA-INT-2.
 
-- [ ] **KA-010 · Matching-precision eval** — [BUILDER][M][none] (OPT-10)
+- [x] **KA-010 · Matching-precision eval** — [BUILDER][M][none] (OPT-10)
   - **Owns:** `tests/test_matching_precision.py`, `tests/fixtures/cve/precision_cases.json`
   - **Goal:** seed scan results with near-miss versions (patched-but-adjacent, EOL
     banners); measure precision/recall of the pipelines; emit a measured report.

@@ -1,0 +1,156 @@
+{
+ "meta": {
+  "name": "matching-precision eval corpus (KA-010)",
+  "generated": "2026-10-05",
+  "provenance": "Synthetic service rows seeded with near-miss and patched versions. The pipeline is VERSION-BLIND by design (it matches service names and ports): patched rows are expected to still match, which is the measured precision hit. Hosts RFC 5737.",
+  "baseline": {
+   "cases": 14,
+   "vulnerable": 6,
+   "patched": 4,
+   "irrelevant": 4,
+   "matched_cases": 10,
+   "true_positive_cases": 6,
+   "precision": 0.6,
+   "recall": 1.0,
+   "note": "version-blind matching: patched rows still match; fixing the precision means shipping version-aware matching, not editing this baseline"
+  }
+ },
+ "cases": [
+  {
+   "id": "P-01",
+   "label": "vulnerable",
+   "note": "EternalBlue window",
+   "service": {
+    "service": "smb",
+    "port": 445,
+    "version": "4.4"
+   }
+  },
+  {
+   "id": "P-02",
+   "label": "vulnerable",
+   "note": "BlueKeep window",
+   "service": {
+    "service": "rdp",
+    "port": 3389,
+    "version": "7.2"
+   }
+  },
+  {
+   "id": "P-03",
+   "label": "vulnerable",
+   "note": "Log4Shell + ProxyShell",
+   "service": {
+    "service": "http",
+    "port": 80,
+    "version": "2.4.41"
+   }
+  },
+  {
+   "id": "P-04",
+   "label": "vulnerable",
+   "note": "https pair",
+   "service": {
+    "service": "https",
+    "port": 443,
+    "version": "1.1.1"
+   }
+  },
+  {
+   "id": "P-05",
+   "label": "vulnerable",
+   "note": "name-match on alt port",
+   "service": {
+    "service": "http",
+    "port": 8080,
+    "version": "2.4.41"
+   }
+  },
+  {
+   "id": "P-06",
+   "label": "vulnerable",
+   "note": "name-match on alt port 2",
+   "service": {
+    "service": "https",
+    "port": 8443,
+    "version": "2.2"
+   }
+  },
+  {
+   "id": "P-07",
+   "label": "patched",
+   "note": "patched smb - still matches (version-blind)",
+   "service": {
+    "service": "smb",
+    "port": 445,
+    "version": "3.11.9-patched"
+   }
+  },
+  {
+   "id": "P-08",
+   "label": "patched",
+   "note": "patched rdp - still matches",
+   "service": {
+    "service": "rdp",
+    "port": 3389,
+    "version": "10.0-patched"
+   }
+  },
+  {
+   "id": "P-09",
+   "label": "patched",
+   "note": "patched http - still matches",
+   "service": {
+    "service": "http",
+    "port": 80,
+    "version": "2.4.62-patched"
+   }
+  },
+  {
+   "id": "P-10",
+   "label": "patched",
+   "note": "patched https - still matches",
+   "service": {
+    "service": "https",
+    "port": 443,
+    "version": "2.2.3-patched"
+   }
+  },
+  {
+   "id": "P-11",
+   "label": "irrelevant",
+   "note": "no pattern",
+   "service": {
+    "service": "nfs",
+    "port": 2049
+   }
+  },
+  {
+   "id": "P-12",
+   "label": "irrelevant",
+   "note": "no pattern",
+   "service": {
+    "service": "smtp",
+    "port": 25
+   }
+  },
+  {
+   "id": "P-13",
+   "label": "irrelevant",
+   "note": "no pattern",
+   "service": {
+    "service": "dns",
+    "port": 53
+   }
+  },
+  {
+   "id": "P-14",
+   "label": "irrelevant",
+   "note": "no pattern by name only",
+   "service": {
+    "service": "mysql",
+    "port": 3306
+   }
+  }
+ ]
+}
