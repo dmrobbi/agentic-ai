@@ -485,7 +485,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** WP/Drupal/Joomla/typo3 flows; URLs verified live; no payloads.
   - **Depends:** KA-F02. **Feeds:** KA-INT-3.
 
-- [ ] **KA-050 · plan_full_engagement** — [BUILDER][M][none] (OPT-50)
+- [x] **KA-050 · plan_full_engagement** — [BUILDER][M][none] (OPT-50)
   - **Owns:** `agentic_ai/agents/cyber/full_engagement.py` (new), `tests/test_full_engagement.py`
   - **Acceptance:** composes existing mixin plans (only what exists at build time;
     composition contract documented).
