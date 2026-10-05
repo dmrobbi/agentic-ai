@@ -261,7 +261,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green (or documented deltas with the reason).
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-015 · Authorization-expiry enforcement** — [BUILDER][S][none] (OPT-15)
+- [x] **KA-015 · Authorization-expiry enforcement** — [BUILDER][S][none] (OPT-15)
   - **Owns:** `tests/test_auth_expiry_enforcement.py`
   - **Goal:** authorizations with expires_at revoke at + after expiry inside the
     execution path; boundary tests.
