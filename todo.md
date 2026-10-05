@@ -118,7 +118,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
     say so loudly in the task summary).
   - **Depends:** KA-F01. **Feeds:** KA-INT-1.
 
-- [ ] **KA-065 · Dry-run parity test** — [BUILDER][S][none] (OPT-65)
+- [x] **KA-065 · Dry-run parity test** — [BUILDER][S][none] (OPT-65)
   - **Owns:** `tests/test_dry_run_parity.py`
   - **Goal:** dry-run output mirrors the would-be command string exactly; no side
     files/logs written in dry-run.
