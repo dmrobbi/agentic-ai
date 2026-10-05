@@ -208,7 +208,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-007 · Playbook smoke battery** — [BUILDER][M][none] (OPT-7)
+- [x] **KA-007 · Playbook smoke battery** — [BUILDER][M][none] (OPT-7)
   - **Owns:** `tests/test_playbook_smoke.py`
   - **Goal:** the five audit playbooks dry-run against a stubbed registry: plan shapes,
     deterministic step order, no orphan steps (see KA-025 cross-check).
