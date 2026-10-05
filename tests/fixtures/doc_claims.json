@@ -1,0 +1,106 @@
+{
+ "claims": [
+  {
+   "claim": "The web pentest plan is 8-phase",
+   "source_file": "skills/agentic-roles/references/role-ops.md",
+   "source_text": "Return the 8-phase engagement plan for a target.",
+   "test_file": "tests/test_kali_web_pentest.py",
+   "test_name": "test_plan_web_pentest_eight_phases",
+   "tested": true
+  },
+  {
+   "claim": "The red-team catalog is 13 phases / ~725 tools",
+   "source_file": "skills/agentic-roles/references/role-ops.md",
+   "source_text": "Load the generated red-team tool catalog (13 phases, ~725 tools).",
+   "test_file": "tests/test_redteam_ops.py",
+   "test_name": "test_catalog_structure",
+   "tested": true
+  },
+  {
+   "claim": "The XSS methodology plan is 7-phase",
+   "source_file": "skills/agentic-roles/references/role-ops.md",
+   "source_text": "The 7-phase XSS methodology plan for a target.",
+   "test_file": "tests/test_xss_ops_extended.py",
+   "test_name": "test_plan_structure_and_contexts",
+   "tested": true
+  },
+  {
+   "claim": "Every execute_tool branch is pinned (the 29-branch matrix)",
+   "source_file": "tests/test_execute_tool_matrix.py",
+   "source_text": "branch matrix: every branch of the tool-execution",
+   "test_file": "tests/test_execute_tool_matrix.py",
+   "test_name": "test_matrix_branch_checklist_documented",
+   "tested": true
+  },
+  {
+   "claim": "safe_mode blocks mutation-class tool categories",
+   "source_file": "agentic_ai/agents/cyber/kali.py",
+   "source_text": "Refused: safe mode blocks mutation-class tool",
+   "test_file": "tests/test_safe_mode_semantics.py",
+   "test_name": "test_proposed_safe_mode_blocks_mutation_class",
+   "tested": true
+  },
+  {
+   "claim": "Engagement authorizations expire inside the execution path",
+   "source_file": "agentic_ai/agents/cyber/auth_expiry.py",
+   "source_text": "now >= expires_at",
+   "test_file": "tests/test_auth_expiry_enforcement.py",
+   "test_name": "test_at_expiry_boundary_revoked_in_execution_path",
+   "tested": true
+  },
+  {
+   "claim": "Dry-run output mirrors the would-be command exactly",
+   "source_file": "tests/test_dry_run_parity.py",
+   "source_text": "mirrors the would-be",
+   "test_file": "tests/test_dry_run_parity.py",
+   "test_name": "test_dry_output_mirrors_built_command_exactly",
+   "tested": true
+  },
+  {
+   "claim": "Matching is version-blind (patched rows still match)",
+   "source_file": "tests/fixtures/cve/precision_cases.json",
+   "source_text": "version-blind matching: patched rows still match",
+   "test_file": "tests/test_matching_precision.py",
+   "test_name": "test_patched_rows_still_match_the_version_blindness",
+   "tested": true
+  },
+  {
+   "claim": "Evidence chains detect per-entry tampers without cascade",
+   "source_file": "agentic_ai/agents/cyber/evidence_chain.py",
+   "source_text": "tampering one middle entry does NOT cascade",
+   "test_file": "tests/test_evidence_chain.py",
+   "test_name": "test_tamper_detection_no_cascade",
+   "tested": true
+  },
+  {
+   "claim": "SOC findings never crash on schema violations",
+   "source_file": "agentic_ai/agents/cyber/soc_bridge.py",
+   "source_text": "schema-violating findings NEVER crash",
+   "test_file": "tests/test_soc_bridge.py",
+   "test_name": "test_unplannable_routes_never_crash",
+   "tested": true
+  },
+  {
+   "claim": "Replay parity derives everything from argument order",
+   "source_file": "agentic_ai/agents/cyber/replay_mode.py",
+   "source_text": "the replay parity depends on argument order",
+   "test_file": "tests/test_replay_mode.py",
+   "test_name": "test_replay_matches_current_behavior",
+   "tested": true
+  },
+  {
+   "claim": "600+ penetration testing tools (the v1 docstring claim)",
+   "source_file": "agentic_ai/agents/cyber/kali.py",
+   "source_text": "600+ penetration testing tools",
+   "test_file": "docs/KA-DOC-CLAIMS.md",
+   "test_name": null,
+   "tested": false,
+   "tested_note": "aspirational docstring: 52 v1 DB rows + 24 v2 rows + 740 cataloged links do not sum to 600; marked untested in this matrix, not hidden"
+  }
+ ],
+ "meta": {
+  "generated": "2026-10-05",
+  "name": "doc-claim matrix rows (KA-028)",
+  "provenance": "the claim rows behind docs/KA-DOC-CLAIMS.md; the test pins sources + tests; untested claims marked"
+ }
+}

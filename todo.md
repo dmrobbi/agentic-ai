@@ -344,7 +344,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-003. **Feeds:** KA-INT-2.
 
-- [ ] **KA-028 · Doc-claim matrix** — [BUILDER][M][none] (OPT-28)
+- [x] **KA-028 · Doc-claim matrix** — [BUILDER][M][none] (OPT-28)
   - **Owns:** `tests/test_kali_doc_claims.py`, `docs/KA-DOC-CLAIMS.md`
   - **Goal:** each documented kali improvement claim mapped to its proving test.
   - **Acceptance:** green; doc lists all claims with test ids.
