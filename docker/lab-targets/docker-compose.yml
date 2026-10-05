@@ -1,0 +1,66 @@
+# KA-009 - the dockerized lab targets for the planner-parity battery.
+# These are INTENTIONALLY VULNERABLE applications, lab-only:
+# - juice-shop: OWASP Juice Shop (port 8181)
+# - dvwa: Damn Vulnerable Web Application (port 8182), needs mysql
+# - wordpress + mariadb (port 8183) for CMS-flow checks
+# Bring up:  docker compose -f docker/lab-targets/docker-compose.yml up -d
+# Tear down: docker compose -f docker/lab-targets/docker-compose.yml down -v
+# The reset between runs = down -v && up -d (the README covers this).
+# Everything here is owner-consent gated (KA_LAB_BATTERY=1 for the tests;
+# see docs/KA-LAB-TARGET.md for the pve-lab variant).
+
+services:
+  juice-shop:
+    image: bkimminich/juice-shop:latest
+    ports:
+      - "8181:3000"
+    restart: unless-stopped
+
+  dvwa-mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: dvwa-lab-only
+      MYSQL_DATABASE: dvwa
+      MYSQL_USER: dvwa
+      MYSQL_PASSWORD: dvwa-lab-only
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pdvwa-lab-only"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  dvwa:
+    image: vulnerables/web-dvwa:latest
+    ports:
+      - "8182:80"
+    depends_on:
+      dvwa-mysql:
+        condition: service_healthy
+    restart: unless-stopped
+
+  wordpress-db:
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: wp-lab-only
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wp-lab-only
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  wordpress:
+    image: wordpress:6.4-php8.2-apache
+    ports:
+      - "8183:80"
+    environment:
+      WORDPRESS_DB_HOST: wordpress-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wp-lab-only
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      wordpress-db:
+        condition: service_healthy
+    restart: unless-stopped

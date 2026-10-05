@@ -223,7 +223,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; corpus committed.
   - **Depends:** KA-F02. **Feeds:** KA-INT-2.
 
-- [ ] **KA-009 · Lab-target parity battery** — [BUILDER][M][lab] (OPT-9)
+- [x] **KA-009 · Lab-target parity battery** — [BUILDER][M][lab] (OPT-9)
   - **Owns:** `tests/lab/test_planner_parity.py`, `docker/lab-targets/docker-compose.yml`,
     `docker/lab-targets/README.md`
   - **Goal:** dockerized Juice Shop/DVWA/WordPress targets; planners run against live
