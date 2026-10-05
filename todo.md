@@ -81,7 +81,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; the pins documented as the guard contract.
   - **Depends:** KA-F01, KA-006 (for the flow fixtures). **Feeds:** KA-INT-1.
 
-- [ ] **KA-018 · Remediation-eval corpus** — [BUILDER][S][none] (OPT-18)
+- [x] **KA-018 · Remediation-eval corpus** — [BUILDER][S][none] (OPT-18)
   - **Owns:** `tests/fixtures/findings/remediations.yaml`, `tests/test_remediation_eval.py`
   - **Goal:** 30 realistic findings → `generate_remediation_plan`: pin critical/high
     segmentation + the specific known remediations (Log4Shell JndiLookup removal,

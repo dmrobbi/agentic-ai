@@ -1,0 +1,165 @@
+meta:
+  name: remediation-eval corpus (KA-018)
+  generated: "2026-10-05"
+  source: agentic_ai.agents.cyber.kali_v2.RemediationEngine.remediations
+  size_at_curation: 5
+  provenance: >-
+    Synthetic-but-realistic findings; hosts/ids are RFC 5737/6598-style or
+    descriptive; no credentials, no payloads. The 10 mapped rows pin the EXACT
+    remediation records (summary + steps + effort); 20 rows exercise the
+    generic fallback (including two REAL CVEs that are known to the matching
+    engine but absent from the remediation map - their context is dropped
+    from generic items, pinned as-is and reported). Severity distribution
+    9/9/8/4; effort ledger: mapped 14 + generic 40 = 54 -> "high (1-2
+    weeks)". No network anywhere.
+findings:
+  - id: F-01
+    title: "EternalBlue: SMBv1 exposed on the perimeter host"
+    severity: critical
+    cve_id: CVE-2017-0144
+    category: null
+  - id: F-02
+    title: "EternalBlue: SMBv1 still enabled on the staging replica"
+    severity: high
+    cve_id: CVE-2017-0144
+    category: null
+  - id: F-03
+    title: "BlueKeep: RDP exposed without NLA on the jump host"
+    severity: critical
+    cve_id: CVE-2019-0708
+    category: null
+  - id: F-04
+    title: "Log4Shell: vulnerable log4j-core shipped in the billing service"
+    severity: critical
+    cve_id: CVE-2021-44228
+    category: null
+  - id: F-05
+    title: "Log4Shell: vulnerable log4j-core in the reporting pipeline"
+    severity: high
+    cve_id: CVE-2021-44228
+    category: null
+  - id: F-06
+    title: "ProxyShell: Exchange autodiscover chain reproducible in lab"
+    severity: critical
+    cve_id: CVE-2021-34473
+    category: null
+  - id: F-07
+    title: "ScreenConnect: unauthenticated access attempt observed"
+    severity: critical
+    cve_id: CVE-2024-1709
+    category: null
+  - id: F-08
+    title: "SQL injection in the login form (string-concatenated query)"
+    severity: critical
+    cve_id: null
+    category: sql_injection
+  - id: F-09
+    title: "Union-based SQL injection in the reporting API"
+    severity: medium
+    cve_id: null
+    category: sql_injection
+  - id: F-10
+    title: "Weak SNMP community strings on the monitoring VLAN"
+    severity: high
+    cve_id: null
+    category: weak_passwords
+  - id: F-11
+    title: "Default admin password on the management console"
+    severity: low
+    cve_id: null
+    category: weak_passwords
+  - id: F-12
+    title: "TLS 1.0 still enabled on the legacy vhost"
+    severity: critical
+    cve_id: null
+    category: tls_legacy
+  - id: F-13
+    title: "SMBv1 protocol binding remains after the EMS retirement"
+    severity: high
+    cve_id: null
+    category: smb_protocol
+  - id: F-14
+    title: "Upload directory executes scripts with the app pool identity"
+    severity: high
+    cve_id: null
+    category: upload_abuse
+  - id: F-15
+    title: "RDP endpoint reachable from the flat production network"
+    severity: medium
+    cve_id: null
+    category: exposure
+  - id: F-16
+    title: "DNS zone transfer allowed for any resolver"
+    severity: medium
+    cve_id: null
+    category: dns_exposure
+  - id: F-17
+    title: "CMS core two major versions behind current release"
+    severity: medium
+    cve_id: null
+    category: unmaintained_software
+  - id: F-18
+    title: "Directory listing enabled on the archive share"
+    severity: low
+    cve_id: null
+    category: exposure
+  - id: F-19
+    title: "Self-signed certificate presented on the internal portal"
+    severity: low
+    cve_id: null
+    category: tls_legacy
+  - id: F-20
+    title: "NTP monlist query type enabled"
+    severity: medium
+    cve_id: null
+    category: amplification
+  - id: F-21
+    title: "Anonymous FTP reads allowed on the backup share"
+    severity: high
+    cve_id: null
+    category: exposure
+  - id: F-22
+    title: "SNMP service answers to the default community string"
+    severity: high
+    cve_id: null
+    category: weak_passwords
+  - id: F-23
+    title: "Management VLAN joined to production without firewall rules"
+    severity: medium
+    cve_id: null
+    category: segmentation
+  - id: F-24
+    title: "Expired certificate on the authentication gateway"
+    severity: critical
+    cve_id: null
+    category: tls_legacy
+  - id: F-25
+    title: "Kerberos pre-authentication disabled on a service account"
+    severity: high
+    cve_id: null
+    category: directory_hardening
+  - id: F-26
+    title: "Audit log directory world-readable"
+    severity: low
+    cve_id: null
+    category: log_exposure
+  - id: F-27
+    title: "Backup snapshots unencrypted at rest"
+    severity: critical
+    cve_id: null
+    category: backup_hardening
+  - id: F-28
+    title: "CMS plugin unmaintained and unmatched by any vendor advisory"
+    severity: medium
+    cve_id: null
+    category: unmaintained_software
+  - id: F-29
+    title: "Admin panel reachable without VPN tunnel"
+    severity: high
+    cve_id: null
+    category: exposure
+  - id: F-30
+    title: "Host header injection in the staging application"
+    severity: medium
+    cve_id: null
+    category: web_hardening
