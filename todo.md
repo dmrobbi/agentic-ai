@@ -510,7 +510,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/blast_radius.py` (new), `tests/test_blast_radius.py`
   - **Acceptance:** command → {read|scan|exploit-class} tagging + the authorization
     requirement mapping.
-- [ ] **KA-054 · Per-target rate limiting** — [BUILDER][S][none] (OPT-54)
+- [x] **KA-054 · Per-target rate limiting** — [BUILDER][S][none] (OPT-54)
   - **Owns:** `agentic_ai/agents/cyber/rate_limit.py` (new), `tests/test_rate_limit.py`
   - **Acceptance:** sliding-window cap per (tool, target) + audit-event shape.
 - [ ] **KA-055 · Egress guard** — [BUILDER][M][none] (OPT-55)
