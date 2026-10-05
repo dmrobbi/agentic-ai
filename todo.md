@@ -513,7 +513,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-054 · Per-target rate limiting** — [BUILDER][S][none] (OPT-54)
   - **Owns:** `agentic_ai/agents/cyber/rate_limit.py` (new), `tests/test_rate_limit.py`
   - **Acceptance:** sliding-window cap per (tool, target) + audit-event shape.
-- [ ] **KA-055 · Egress guard** — [BUILDER][M][none] (OPT-55)
+- [x] **KA-055 · Egress guard** — [BUILDER][M][none] (OPT-55)
   - **Owns:** `agentic_ai/agents/cyber/egress_guard.py` (new), `tests/test_egress_guard.py`
   - **Acceptance:** network-command classification; RFC1918 requires lab staging;
     external requires an auth tag; DNS-resolution strategy documented.
