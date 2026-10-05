@@ -282,7 +282,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-019 · Tool-DB completeness test** — [BUILDER][S][none] (OPT-19)
+- [x] **KA-019 · Tool-DB completeness test** — [BUILDER][S][none] (OPT-19)
   - **Owns:** `tests/test_kali_tools_db_schema.py`
   - **Goal:** every ToolDefinition complete, authorization matches the category's
     expectation, command/name consistent.
