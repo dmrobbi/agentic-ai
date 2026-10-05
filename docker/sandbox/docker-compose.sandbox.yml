@@ -1,0 +1,63 @@
+# KA-059 - the sandbox PROFILE compose FRAGMENT (planner artifact; nothing here
+# executes on its own). DENY-BY-DEFAULT: every service sits behind an opt-in
+# compose profile, so a bare `docker compose -f docker-compose.sandbox.yml up`
+# starts NOTHING. Posture manifest: sandbox-profile.yml (same dir). Integration
+# mounting + doctor-check spec: README.md (same dir). The fragment pins HOW
+# (hardening), never WHAT: the integration supplies entrypoint/command, mounts
+# only per the manifest mounts.allowlist, and env only via the KA-056
+# env-file contract (no credentials as compose literals).
+
+services:
+  sandbox-runtime:
+    # opt-in profile: a bare up of this fragment alone starts nothing
+    profiles:
+      - sandbox
+    image: agentic-ai:latest          # sandbox-profile.yml images.allowlist
+    user: "65534:65534"               # non-root (doctor check SBX-04: uid != 0)
+    read_only: true                   # rootfs RO; the only writable path is tmpfs /tmp
+    working_dir: /tmp
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,mode=1777
+    network_mode: none                # deny: zero network on the baseline tier
+    cap_drop:
+      - ALL                           # deny: every Linux capability
+    security_opt:
+      - no-new-privileges:true        # seccomp/apparmor stay docker-default, active
+    pids_limit: 256
+    mem_limit: 2g
+    restart: "no"                     # a dead sandbox stays dead
+    stdin_open: false
+    tty: false
+    # NO entrypoint/command: the integration supplies WHAT to run.
+    # NO ports, NO volumes, NO environment block: allowlist-gated (README).
+    # Lab/RFC1918 staging is a separate tier below, never a network upgrade here.
+
+  sandbox-runtime-lab:
+    # opt-in OWNER-GATED lab tier (KA_LAB_BATTERY discipline): joins ONLY the
+    # allowlisted lab network for the KA-055 RFC1918 staging tier.
+    profiles:
+      - sandbox-lab
+    image: agentic-ai:latest          # sandbox-profile.yml images.allowlist
+    user: "65534:65534"
+    read_only: true
+    working_dir: /tmp
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m,mode=1777
+    networks:
+      - lab-net                       # ONLY the allowlisted lab network
+    cap_drop:
+      - ALL
+    security_opt:
+      - no-new-privileges:true
+    pids_limit: 256
+    mem_limit: 2g
+    restart: "no"
+    stdin_open: false
+    tty: false
+    environment:
+      - SANDBOX_EGRESS=lab-staged     # the run's egress guard keys off this tier
+
+networks:
+  lab-net:
+    external: true
+    name: lab-targets_default         # sandbox-profile.yml network.allowlist

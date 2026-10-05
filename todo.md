@@ -528,7 +528,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-058 · Rollback requirements** — [BUILDER][M][none] (OPT-58)
   - **Owns:** `agentic_ai/agents/cyber/rollback_plan.py` (new), `tests/test_rollback_plan.py`
   - **Acceptance:** mutating executions require a declared undo step (contract tests).
-- [ ] **KA-059 · Sandbox profile** — [BUILDER][M][none] (OPT-59)
+- [x] **KA-059 · Sandbox profile** — [BUILDER][M][none] (OPT-59)
   - **Owns:** `docker/sandbox/` (new: profile + README), `tests/test_sandbox_docs.py`
   - **Acceptance:** profile reviewed (integration task mounts it); doctor-check spec'd.
 - [ ] **KA-060 · Consent gate** — [BUILDER][M][none] (OPT-60)

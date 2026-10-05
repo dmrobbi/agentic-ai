@@ -1,0 +1,174 @@
+# KA-059 - the fleet sandbox PROFILE manifest (planner artifact; nothing here
+# executes). The compose fragment implements the runtime half:
+# docker-compose.sandbox.yml (same dir). Format decision, integration
+# mounting, and the doctor-check spec all live in this dir's README.md.
+# Posture is DENY-BY-DEFAULT on every axis below: the only allow paths are
+# the explicit allowlists here, honored when the [INTEGRATION] task mounts
+# this profile into its compose project (KA-INT-4).
+
+profile:
+  name: fleet-sandbox
+  version: 1
+  format: 1
+  status: reviewed
+  purpose: >-
+    Hardened runtime policy for ONE containerized agent-tool execution:
+    the profile pins HOW the fleet runs an isolated command, never WHAT runs.
+  owns_wave: P4
+  mounted_by: KA-INT-4
+
+# Every axis is denied unless an explicit allowlist below opens it.
+default_deny:
+  mounts: true
+  network: true
+  capabilities: true
+  egress: true
+  syscalls: true
+  execution: true
+
+mounts:
+  policy: >-
+    DENY-BY-DEFAULT: the fragment ships ZERO bind mounts; the integration may
+    add mounts only where they match exactly ONE allowlist entry - anything
+    else stays denied.
+  allowlist:
+    - source: evidence/
+      target: /workspace
+      mode: ro
+      integration_mount: true
+      note: >-
+        the engagement evidence bundle (bundle contract in
+        agentic_ai/agents/cyber/evidence_bundle.py); mounted READ-ONLY so a
+        sandboxed execution can consult a prepared bundle but never write
+        back. Allowlist sources are REPO-RELATIVE; the integration
+        absolutizes them at mount time against its compose project root.
+
+# Images the fragment may reference: every entry carries where it comes
+# from. Images not listed here are denied at profile review time.
+images:
+  policy: >-
+    allow-by-documentation: a fragment image value must match exactly ONE
+    entry below; the entry states whether the image exists in the repo
+    already or arrives when the integration mounts the profile.
+  allowlist:
+    - image: agentic-ai:latest
+      exists_via: >-
+        built by the repo root Dockerfile via the agentic-ai service in
+        docker-compose.yml - the same image tag the fleet already runs.
+      integration_mount: true
+
+network:
+  baseline: none
+  attachable: false
+  policy: >-
+    DENY-BY-DEFAULT: the baseline service runs with no network at all; a
+    networked service variant exists ONLY behind the allowlist below and the
+    same hardening set applies to it.
+  allowlist:
+    - name: lab-targets_default
+      integration_mount: true
+      exists_via: >-
+        default network of docker/lab-targets/docker-compose.yml, created
+        when the lab target stack is brought up; owner-gated (see
+        docs/KA-LAB-TARGET.md and KA_LAB_BATTERY=1), lab-staging only.
+
+# Consistent with the P4 egress guard (KA-055): network-command classification
+# where RFC1918 targets require lab staging and external targets require an
+# auth tag. The sandbox never opens egress by itself - the guard decides.
+egress:
+  baseline: deny
+  rfc1918: lab-staging-required
+  external: auth-tag-required
+  dns:
+    strategy: staging-only
+    note: >-
+      the baseline service resolves nothing (network_mode none); with lab
+      staging active, resolution happens only through the staged lab network.
+      The agent-layer DNS-resolution strategy is documented by KA-055
+      (egress_guard); this profile enforces the container-layer half.
+
+capabilities:
+  drop: [ALL]
+  add: []
+
+security:
+  no_new_privileges: true
+  readonly_rootfs: true
+  user: "65534:65534"        # non-root in every variant; doctor checks uid != 0
+  seccomp: docker-default    # custom profiles only via integration review; never disabled
+  apparmor: docker-default   # same rule: filters stay active, doctor verifies
+
+environment:
+  policy: >-
+    the fragment ships NO environment block; integrations add values through
+    the env-file contract (KA-056: credentials never as compose literals or
+    CLI arguments). The single allowlisted literal below is the lab tier flag.
+  literals_allowlist:
+    - SANDBOX_EGRESS=lab-staged
+
+runtime:
+  restart: "no"        # a dead sandbox stays dead - no silent crash-loop restarts
+  writable_scratch: tmpfs /tmp only
+  limits:
+    pids_limit: 256
+    mem_limit: 2g
+
+services:
+  - id: sandbox-runtime
+    profile: sandbox
+    egress: none
+    purpose: baseline hardened execution runtime (the default mounted tier)
+  - id: sandbox-runtime-lab
+    profile: sandbox-lab
+    egress: lab-network-only
+    purpose: owner-gated lab staging variant (KA-055 RFC1918 tier)
+
+# What a doctor tool verifies at RUN time (spec'd here and in the README;
+# documentation only - the doctor implementation is not part of KA-059).
+doctor_checks:
+  - id: SBX-01
+    check: seccomp filter active on every sandbox container
+    expected: filters in effect (docker-default or integration-reviewed), never disabled
+  - id: SBX-02
+    check: apparmor profile active on every sandbox container
+    expected: profile in effect (docker-default or integration-reviewed), never disabled
+  - id: SBX-03
+    check: no-new-privileges effective
+    expected: security_opt carries no-new-privileges:true and the runtime confirms it
+  - id: SBX-04
+    check: running uid is non-root
+    expected: uid != 0 (baseline pins 65534)
+  - id: SBX-05
+    check: rootfs mounted read-only
+    expected: read_only effective; the ONLY writable path is the declared tmpfs /tmp
+  - id: SBX-06
+    check: capability posture
+    expected: cap dropped to NONE at drop time and nothing added back
+  - id: SBX-07
+    check: baseline network posture
+    expected: zero network interfaces beyond loopback on the baseline tier
+  - id: SBX-08
+    check: lab tier network scope
+    expected: connected ONLY to the allowlisted lab network, never the default bridge
+  - id: SBX-09
+    check: no published ports
+    expected: no ports entry on any sandbox service
+  - id: SBX-10
+    check: host bind mounts within allowlist
+    expected: every host-path mount is read-only and matches exactly one allowlist entry
+  - id: SBX-11
+    check: egress probe from the baseline tier
+    expected: DNS lookups and connections fail (nothing resolves, nothing connects)
+  - id: SBX-12
+    check: environment hygiene
+    expected: no credential literals in compose envs; values arrive via the env-file contract
+
+integrations:
+  mounted_by: KA-INT-4
+  mount_shape: >-
+    the fragment is a compose-services fragment (opt-in compose profiles) the
+    integration merges with -f or compose include; the integration supplies
+    the entrypoint/command and the allowlist-gated mounts/environment.
+  composes_with:
+    - docker-compose.yml (repo root; provides the agentic-ai:latest image)
+    - docker/lab-targets/docker-compose.yml (lab network; owner-gated staging)
