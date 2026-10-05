@@ -535,7 +535,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/consent_gate.py` (new), `tests/test_consent_gate.py`
   - **Acceptance:** non-dry-run executions demand an owner-signed consent record
     (generalizes v4's evidence discipline); the gate's refusal audited.
-- [ ] **KA-062 · Budget/quota** — [BUILDER][S][none] (OPT-62)
+- [x] **KA-062 · Budget/quota** — [BUILDER][S][none] (OPT-62)
   - **Owns:** `agentic_ai/agents/cyber/budgets.py` (new), `tests/test_budgets.py`
 - [ ] **KA-063 · Staging verification** — [BUILDER][S][none] (OPT-63)
   - **Owns:** `agentic_ai/agents/cyber/staging_check.py` (new), `tests/test_staging_check.py`
