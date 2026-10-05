@@ -466,7 +466,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** static-analyzer catalog + testnet-only policy.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-047 · web_pentest phases 9-12** — [BUILDER][M][none] (OPT-47)
+- [x] **KA-047 · web_pentest phases 9-12** — [BUILDER][M][none] (OPT-47)
   - **Owns:** `tests/test_web_pentest_extended.py` (the module edit lands via
     KA-INT-3: builder files `docs/web_pentest_phases_9_12.md` with the proposed tuples)
   - **Acceptance:** 4 new phases spec'd (business-logic, supply-chain/SBOM,
