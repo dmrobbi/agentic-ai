@@ -446,7 +446,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     consent record); lab-only policy.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-043 · ICS/IoT mixin** — [BUILDER][M][lab] (OPT-43)
+- [x] **KA-043 · ICS/IoT mixin** — [BUILDER][M][lab] (OPT-43)
   - **Owns:** `agentic_ai/agents/cyber/ics_iot.py`, `tests/test_ics_iot_ops.py`
   - **Acceptance:** modbus/S7 planners + firmware flow; air-gapped-lab requirement.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
