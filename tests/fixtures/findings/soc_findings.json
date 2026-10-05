@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "name": "SOC findings corpus (KA-066)",
+    "generated": "2026-10-05",
+    "provenance": "Synthetic SOC alert findings; hosts are RFC 6761/5737-style labels, no internal identifiers, no credentials. Rows F-01..F-08 plan; F-901..F-904 are deliberate schema violations exercising the unplannable route. CVE ids reference the same real-CVE universe as the KA-001 cve_eval_corpus (3 known to the engine, 2 deliberately absent)."
+  },
+  "findings": [
+    {"id": "F-01", "severity": "critical", "host": "wks-a01.lab.example", "cve_id": "CVE-2017-0144", "summary": "SMB service exposed"},
+    {"id": "F-02", "severity": "high", "host": "wks-a02.lab.example", "cve_id": "CVE-2019-0708", "summary": "RDP without NLA"},
+    {"id": "F-03", "severity": "critical", "host": "app-a03.lab.example", "cve_id": "CVE-2021-44228", "summary": "log4j banner observed"},
+    {"id": "F-04", "severity": "medium", "host": "wks-a04.lab.example", "cve_id": null, "summary": "legacy service running"},
+    {"id": "F-05", "severity": "low", "host": "wks-a05.lab.example", "cve_id": null, "summary": null},
+    {"id": "F-06", "severity": "high", "host": "wks-a06.lab.example", "cve_id": "CVE-2020-0796", "summary": "SMB ghost candidate"},
+    {"id": "F-07", "severity": "critical", "host": "app-a07.lab.example", "cve_id": "CVE-2021-26855", "summary": "exchange probe hit"},
+    {"id": "F-08", "severity": "medium", "host": "srv-08.sub.lab.example", "cve_id": null, "summary": "unusual egress observed"},
+    {"id": "F-901", "severity": "p1", "host": "nope-01.lab.example", "cve_id": null, "summary": "bad severity shape"},
+    {"id": "F-902", "severity": "high", "host": null, "cve_id": null, "summary": "host missing"},
+    {"id": "F-903", "severity": "low", "host": "h; rm -rf", "cve_id": null, "summary": "host hostile"},
+    {"id": "F-904", "severity": "medium", "host": "ok-04.lab.example", "cve_id": "14-2017", "summary": "cve malformed"}
+  ]
+}

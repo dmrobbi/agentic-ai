@@ -126,7 +126,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01, KA-006. **Feeds:** KA-INT-1.
 
-- [ ] **KA-066 · Wazuh findings bridge (planner)** — [BUILDER][M][none] (OPT-66)
+- [x] **KA-066 · Wazuh findings bridge (planner)** — [BUILDER][M][none] (OPT-66)
   - **Owns:** `agentic_ai/agents/cyber/soc_bridge.py` (new), `tests/test_soc_bridge.py`
   - **Goal:** SOC alert findings → per-finding verification plans (feed in a findings
     list; out come planner-level verification command sets referencing matching-engine
