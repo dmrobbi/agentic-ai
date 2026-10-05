@@ -1,0 +1,53 @@
+{
+ "meta": {
+  "generated": "2026-10-05",
+  "name": "nuclei template-tags + severity snapshot (KA-027)",
+  "provenance": "Curated from the real nuclei template ecosystem conventions (severity scale; the tag families) + this repo's own recorded nuclei rows (the KA-003/K A-011 fixtures). This is the committed anti-drift reference: the parser's severity mapping is pinned against it; upstream schema evolution (key drift) is pinned in KA-011."
+ },
+ "severity_scale": {
+  "critical": {
+   "bucket_key": "critical",
+   "convention": "pre-auth RCE, data exfiltration, crash of the whole service",
+   "counted": true
+  },
+  "high": {
+   "bucket_key": "high",
+   "convention": "authed RCE, significant information disclosure, auth bypass",
+   "counted": true
+  },
+  "info": {
+   "bucket_key": "info",
+   "convention": "purely informational (tech fingerprints, panels)",
+   "counted": true
+  },
+  "low": {
+   "bucket_key": "low",
+   "convention": "banner/version exposure, informational weaknesses",
+   "counted": true
+  },
+  "medium": {
+   "bucket_key": "medium",
+   "convention": "token leaks, low-blast-radius misconfig, DoS-class",
+   "counted": true
+  },
+  "unknown": {
+   "bucket_key": null,
+   "convention": "the parser's documented no-bucket case: listed, never counted",
+   "counted": false
+  }
+ },
+ "template_tags": {
+  "cve": "tags carrying actual CVE ids (cves/<year>/<id> template paths)",
+  "demo": "the repo's own fixture families",
+  "exposure": "exposed panels, consoles, endpoints",
+  "fuzz": "fuzzer output families",
+  "java": "java/middleware surface",
+  "jndi": "the log4j family",
+  "misconfig": "service misconfigurations",
+  "panel": "admin/console panels",
+  "rce": "code-execution finding family",
+  "smb": "SMB-family surface probes",
+  "tech": "pure technology fingerprints",
+  "token": "token/secret exposure"
+ }
+}

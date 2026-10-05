@@ -337,7 +337,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-006. **Feeds:** KA-INT-2.
 
-- [ ] **KA-027 · Nuclei-tag pinning** — [BUILDER][M][none] (OPT-27)
+- [x] **KA-027 · Nuclei-tag pinning** — [BUILDER][M][none] (OPT-27)
   - **Owns:** `tests/test_nuclei_tags.py`, `tests/fixtures/parsers/nuclei_tags.json`
   - **Goal:** automated-class template tags + severity mapping pinned against a
     committed snapshot (no upstream drift).
