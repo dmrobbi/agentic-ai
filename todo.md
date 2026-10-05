@@ -98,7 +98,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; module imports clean; the helper's semantics documented.
   - **Depends:** KA-F01. **Feeds:** KA-INT-1.
 
-- [ ] **KA-052 · Expiry sweeper** — [BUILDER][S][none] (OPT-52)
+- [x] **KA-052 · Expiry sweeper** — [BUILDER][S][none] (OPT-52)
   - **Owns:** `agentic_ai/agents/cyber/auth_expiry.py` (new), `tests/test_auth_expiry.py`
   - **Goal:** engagement authorizations with expiry auto-revoke: a `sweep(authorizations,
     now)` pure function + the audit-event contract.
