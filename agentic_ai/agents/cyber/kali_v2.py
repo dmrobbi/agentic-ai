@@ -43,6 +43,8 @@ from agentic_ai.agents.cyber.engagement_rbac import (
     authorize_call as rbac_authorize_call,
     role_can_dry_run as rbac_role_can_dry_run,
 )
+from agentic_ai.agents.cyber.gate_chain import run_gate_chain
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.evidence_bundle import (
     create_evidence_bundle as _create_evidence_bundle,
     verify_evidence_bundle as _verify_evidence_bundle,
@@ -54,7 +56,7 @@ from agentic_ai.agents.cyber.kev_bridge import (
 import threading
 import time
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple, Callable
@@ -1119,6 +1121,19 @@ class RemediationEngine:
 # Main KaliAgent v2 Class
 # ============================================
 
+def _resolve_tool_level(tool_db, tool_name):
+    """Loud tool-floor lookup for the chassis consult (KA-INT-4)."""
+    tool = tool_db.get(tool_name)
+    if tool is None:
+        raise KeyError("tool_db has no entry for %r" % (tool_name,))
+    level = getattr(tool, "authorization", None)
+    if level is None and isinstance(tool, dict):
+        level = tool.get("authorization")
+    if level is None:
+        raise KeyError("tool entry %r carries no authorization" % (tool_name,))
+    return getattr(level, "value", level)
+
+
 class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin, PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin, XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin, ForensicsMixin):
     """
     Enhanced KaliAgent with modern tools and intelligent features.
@@ -1142,6 +1157,14 @@ class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Soc
         self.dry_run = False
         self.executions: List[ToolExecution] = []  # type: ignore[name-defined]
         self.engagement_id: Optional[str] = None
+        # KA-INT-4: P4 safety-gate chain state (consent store, rate
+        # store, lab/egress posture) - caller-owned, chassis-served
+        self.engagement_consents: Dict[str, ConsentRecord] = {}
+        self.rate_store: Dict[Any, List[datetime]] = {}
+        self.rate_cap = 10
+        self.rate_window_seconds = 60.0
+        self.lab_staged = False
+        self.auth_tags: Tuple[str, ...] = ()
 
         logger.info(f"KaliAgent v2 initialized at {self.workspace}")
 
@@ -1181,6 +1204,47 @@ class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Soc
         return rbac_authorize_call(tool_name, role,
                                    required_level=required_level,
                                    tool_db=self.tools)
+
+    def attach_consent(self, consent, action=None):
+        """Attach an owner-signed consent record (KA-060; KA-INT-4).
+        v2's consults are planner-level; the record keys by tool name
+        (the exact action string the gate matches)."""
+        self.engagement_consents[(action or consent.action)] = consent
+        return True
+
+    def safety_gate_chain(self, command, tool_name, consent=None,
+                          arguments=None, target=None):
+        """Run the composed P4 gate chain (KA-INT-4) for one planned
+        execution: consent -> auth -> blast-radius -> egress ->
+        rate-limit. Planner surface only: v2 has no execution path, so
+        this authorizes/refuses the plan; nothing executes here."""
+        if arguments is None:
+            arguments = {}
+        if target is None:
+            for field in ("target", "host", "url", "domain", "bssid"):
+                if field in arguments and isinstance(arguments[field], str):
+                    target = arguments[field]
+                    break
+        if target is None:
+            for value in arguments.values():
+                if isinstance(value, str) and value.strip():
+                    target = value
+                    break
+        return run_gate_chain(
+            command,
+            tool_name=tool_name,
+            tool_level=_resolve_tool_level(self.tools, tool_name),
+            now=datetime.now(timezone.utc),
+            dry_run=self.dry_run,
+            consent=consent or self.engagement_consents.get(tool_name),
+            auth_check=lambda t, r, l: self.check_authorization(t),
+            auth_tags=self.auth_tags,
+            rate_store=self.rate_store,
+            target=target,
+            cap=self.rate_cap,
+            window_seconds=self.rate_window_seconds,
+            lab_staged=self.lab_staged,
+        )
 
     def role_allows_dry_run(self, role):
         """Planning/inspection is unrestricted for every role (KA-051)."""

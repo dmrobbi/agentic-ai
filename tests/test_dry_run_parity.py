@@ -4,6 +4,7 @@ side files or logs, repeats are byte-stable, and the dry-recorded string
 parses to the exact argv the real path would present to the process layer
 (captured-exec comparison, stubbed). No network."""
 from __future__ import annotations
+import datetime as dt
 
 import shlex
 from pathlib import Path
@@ -11,6 +12,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.kali import (
     AuthorizationLevel,
     KALI_TOOLS_DB,
@@ -80,6 +82,13 @@ def _dry_agent(tmp_path, level=None):
         log_dir=str(tmp_path / "logs"),
     )
     agent.set_authorization(level)
+    agent.lab_staged = True
+    agent.auth_tags = ("EGRESS-AUTH",)
+    # KA-INT-4: standing consent for the real (captured-exec) legs
+    agent.attach_consent(ConsentRecord(engagement_id="e", action="nmap",
+                                       signed_by="owner",
+                                       signed_at=dt.datetime(2026, 10, 5, 12, 0,
+                                       tzinfo=dt.timezone.utc)))
     agent.enable_dry_run()
     return agent
 

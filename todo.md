@@ -21,8 +21,8 @@ shared wiring (agent class lines, role-ops.md, registry/docs sync) happens ONLY 
   owner-gated and follow kali_agent_v4's evidence discipline.
 - Nothing copies external prose/code verbatim; credit sources as in-house re-authoring.
 
-**Current state of the tree:** main at the P3 tip (all 20 P3 builders + INT-3 wiring
-landed; P0-P2 done); suite pin = BASELINE_SUITE_TOTAL in tests/test_ka_conventions.py;
+**Current state of the tree:** main at the P4 tip (all 11 P4 builders + INT-4 wiring
+landed; P0-P3 done); suite pin = BASELINE_SUITE_TOTAL in tests/test_ka_conventions.py;
 chassis (kali.py + kali_v2.py carry all 20 mixins): web_pentest, redteam_pentest,
 xss_exploit (originals) + privesc, ad_pentest, cloud_pentest, container_pentest,
 mobile_pentest, wireless_pentest, osint_pentest, forensics_ops (KA-031..038) +
@@ -541,7 +541,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/staging_check.py` (new), `tests/test_staging_check.py`
 - [x] **KA-064 · Doctor tool-version matrix** — [BUILDER][S][none] (OPT-64)
   - **Owns:** `docs/ka_tool_versions.json` (new), `tests/test_tool_versions.py`
-- [ ] **KA-INT-4 · Phase-4 wiring** — [INTEGRATION][M][none]
+- [x] **KA-INT-4 · Phase-4 wiring** — [INTEGRATION][M][none]
   - **Acceptance:** the gates compose (order pinned: consent → auth → blast-radius →
     egress → rate-limit → execute); suite green; lockstep push.
 

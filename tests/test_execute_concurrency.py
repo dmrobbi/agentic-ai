@@ -7,6 +7,7 @@ counter never exceeds the cap, nothing deadlocks). pytest-timeout is not
 installed here - the bounds are the test's own explicit join deadlines,
 documented. No network; the real path stubs the subprocess layer."""
 from __future__ import annotations
+import datetime as dt
 
 import threading
 import time
@@ -15,6 +16,7 @@ from types import SimpleNamespace
 import pytest
 
 from agentic_ai.agents.cyber.kali import AuthorizationLevel, KaliAgent
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 
 BENIGN_TARGET = "192.0.2.1"
 THREADS = 8
@@ -109,6 +111,14 @@ def test_slow_execution_respects_cap(tmp_path, monkeypatch):
                       log_dir=str(tmp_path / "logs2"))
     agent.set_authorization(AuthorizationLevel.BASIC)
     agent.disable_dry_run()
+    # KA-INT-4: standing consent + egress posture for the real threads
+    agent.attach_consent(ConsentRecord(engagement_id="e", action="nmap",
+                      signed_by="owner",
+                      signed_at=dt.datetime(2026, 10, 5, 12, 0,
+                      tzinfo=dt.timezone.utc)))
+    agent.auth_tags = ("EGRESS-AUTH",)
+    agent.rate_cap = 1000  # KA-INT-4: the rate gate steps aside here; the
+    # job cap (max_concurrent_jobs=5) is the state under proof
 
     recorded_jobs = []
     method_lock = threading.Lock()

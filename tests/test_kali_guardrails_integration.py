@@ -30,6 +30,7 @@ methods, a module-global wrapper for the exec gate, a dict-item wrapper for
 the parser - all appending into ONE shared ordered log; per-spy call
 counts alongside. No network anywhere."""
 from __future__ import annotations
+import datetime as dt
 
 import importlib
 from pathlib import Path
@@ -37,6 +38,7 @@ from types import SimpleNamespace
 
 import pytest
 
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.kali import (
     AuthorizationLevel,
     KaliAgent,
@@ -141,6 +143,14 @@ def _real_agent(tmp_path, level):
         log_dir=str(tmp_path / "logs"),
     )
     agent.set_authorization(level)
+    # KA-INT-4: standing consent + staged egress posture for the flows
+    # that reach the exec gate (pre-chain denials never consult it)
+    agent.lab_staged = True
+    agent.auth_tags = ("EGRESS-AUTH",)
+    agent.attach_consent(ConsentRecord(engagement_id="e", action="nmap",
+                                       signed_by="owner",
+                                       signed_at=dt.datetime(2026, 10, 5, 12, 0,
+                                       tzinfo=dt.timezone.utc)))
     return agent
 
 
@@ -178,7 +188,8 @@ def test_full_flow_guard_order(tmp_path, monkeypatch):
 
     result = agent.execute_tool("nmap", {"target": BENIGN_TARGET})
     assert result.status == "completed"
-    assert order == ["auth", "target", "args", "exec-gate", "output-post"]
+    # KA-INT-4: the authority seat moved behind the field gates
+    assert order == ["target", "args", "auth", "exec-gate", "output-post"]
     assert auth.n == 1 and target.n == 1 and args.n == 1 and gate.n == 1
     assert parse_calls == [result.stdout]
 
@@ -196,8 +207,10 @@ def test_blocked_auth_short_circuits_everything(tmp_path, monkeypatch):
 
     result = agent.execute_tool("mimikatz", {"command": "dump"})
     assert result.status == "failed"
-    assert "Authorization level 3 required, have 0" in result.stderr
-    assert order == ["auth"]          # the wall: nothing past stage 1
+    # KA-INT-4: the safe-mode pre-gate blocks the mutation-class tool
+    # before any guard stage runs
+    assert "Refused: safe mode blocks mutation-class tool 'mimikatz'" in result.stderr
+    assert order == []                # zero guard stages: blocked at safe-mode
     assert target.n == 0 and args.n == 0
     assert calls == []                # INVARIANT: zero process construction
 
@@ -218,7 +231,8 @@ def test_blocked_target_guard_prevents_arguments_and_exec(
     result = agent.execute_tool("nmap", {"target": "192.0.2.66"})
     assert result.status == "failed"
     assert "Target 192.0.2.66 not in whitelist" in result.stderr
-    assert order == ["auth", "target"]   # args stage never reached
+    # KA-INT-4: the authority consult moved behind the field gates
+    assert order == ["target"]           # args stage never reached
     assert target.n == 1 and args.n == 0
     assert calls == []                   # INVARIANT: zero process construction
 
@@ -240,7 +254,8 @@ def test_blocked_arguments_guard_prevents_exec(tmp_path, monkeypatch):
     result = agent.execute_tool("mimikatz", {})
     assert result.status == "failed"
     assert "Missing required argument: command" in result.stderr
-    assert order == ["auth", "args"]  # no target fields -> skip; args blocks
+    # KA-INT-4: the authority consult moved behind the field gates
+    assert order == ["args"]          # no target fields -> skip; args blocks
     assert target.n == 0 and args.n == 1
     assert calls == []                   # INVARIANT: zero process construction
 
@@ -262,9 +277,11 @@ def test_exec_gate_blocks_before_process_construction(tmp_path, monkeypatch):
     result = agent.execute_tool(
         "nmap", {"target": BENIGN_TARGET, "extra": "value; with semicolon"})
     assert result.status == "failed"
-    assert "Rejected dangerous metacharacter" in result.stderr
-    assert order == ["auth", "target", "args", "exec-gate"]
-    assert gate.n == 1
+    # KA-INT-4: the chain's blast classification refuses the hostile
+    # command above the metachar wall (the wall stays uninvolved)
+    assert "gate_chain: blast classification refused" in result.stderr
+    assert order == ["target", "args", "auth"]
+    assert gate.n == 0
     assert calls == []                   # INVARIANT: zero process construction
 
 

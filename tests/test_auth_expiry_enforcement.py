@@ -22,6 +22,7 @@ from types import SimpleNamespace
 import pytest
 
 from agentic_ai.agents.cyber.kali import AuthorizationLevel, KaliAgent
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.auth_expiry import EVENT_KIND
 from agentic_ai.infrastructure.utils import utcnow
 
@@ -35,6 +36,11 @@ def agent(tmp_path):
     a = KaliAgent(agent_id="ka015", workspace=str(tmp_path / "ws"),
                   log_dir=str(tmp_path / "logs"))
     a.disable_safe_mode()  # this pins the EXPIRY enforcement, not KA-061
+    # KA-INT-4: standing consent + staged posture for these real executions
+    a.attach_consent(ConsentRecord(engagement_id="E1", action="mimikatz",
+                                   signed_by="owner", signed_at=utcnow()))
+    a.lab_staged = True
+    a.auth_tags = ("EGRESS-AUTH",)
     return a
 
 

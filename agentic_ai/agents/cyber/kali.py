@@ -37,6 +37,8 @@ from agentic_ai.agents.cyber.engagement_rbac import (
     authorize_call as rbac_authorize_call,
     role_can_dry_run as rbac_role_can_dry_run,
 )
+from agentic_ai.agents.cyber.gate_chain import run_gate_chain
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.evidence_bundle import (
     create_evidence_bundle as _create_evidence_bundle,
     verify_evidence_bundle as _verify_evidence_bundle,
@@ -1399,6 +1401,14 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
         # Safety controls
         self.safe_mode = True
         self.dry_run = False
+        # KA-INT-4: P4 safety-gate chain state (consent store, rate
+        # store, lab/egress posture) - caller-owned, chassis-served
+        self.engagement_consents: Dict[str, ConsentRecord] = {}
+        self.rate_store: Dict[Any, List[datetime]] = {}
+        self.rate_cap = 10
+        self.rate_window_seconds = 60.0
+        self.lab_staged = False
+        self.auth_tags: Tuple[str, ...] = ()
         self.max_concurrent_jobs = 5
         self.current_jobs = 0
         self.job_lock = threading.Lock()
@@ -1606,6 +1616,48 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
                                    required_level=required_level,
                                    tool_db=self.tools)
 
+    def attach_consent(self, consent, engagement_id=None):
+        """Attach an owner-signed consent record (KA-060; KA-INT-4)."""
+        self.engagement_consents[engagement_id or "default"] = consent
+        return True
+
+    def safety_gate_chain(self, command, tool_name, engagement_id=None,
+                          consent=None, arguments=None, target=None):
+        """Run the composed P4 gate chain (KA-INT-4) for one planned
+        execution: consent -> auth -> blast-radius -> egress ->
+        rate-limit. The returned decision authorizes (or refuses) the
+        caller's execution; the chain itself executes nothing."""
+        if arguments is None:
+            arguments = {}
+        if target is None:
+            for field in ("target", "host", "url", "domain", "bssid"):
+                if field in arguments and isinstance(arguments[field], str):
+                    target = arguments[field]
+                    break
+        if target is None:
+            # KA-INT-4: targetless tools (e.g. mimikatz dumps) bind the
+            # rate throttle to their first string argument instead
+            for value in arguments.values():
+                if isinstance(value, str) and value.strip():
+                    target = value
+                    break
+        return run_gate_chain(
+            command,
+            tool_name=tool_name,
+            tool_level=self.tools[tool_name].authorization.value,
+            now=utcnow(),
+            dry_run=self.dry_run,
+            consent=consent or self.engagement_consents.get(
+                engagement_id or "default"),
+            auth_check=lambda t, r, l: self.check_authorization(t),
+            auth_tags=self.auth_tags,
+            rate_store=self.rate_store,
+            target=target,
+            cap=self.rate_cap,
+            window_seconds=self.rate_window_seconds,
+            lab_staged=self.lab_staged,
+        )
+
     def role_allows_dry_run(self, role):
         """Planning/inspection is unrestricted for every role (KA-051)."""
         return rbac_role_can_dry_run(role)
@@ -1641,12 +1693,6 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
         timeout_override: Optional[int] = None,
     ) -> ToolExecution:
         """Execute a Kali Linux tool."""
-        # Check authorization
-        authorized, message = self.check_authorization(tool_name)
-        if not authorized:
-            logger.error(f"Execution denied: {message}")
-            return self._create_failed_execution(tool_name, arguments, message)
-
         # Check tool exists
         if tool_name not in self.tools:
             return self._create_failed_execution(tool_name, arguments, f"Unknown tool: {tool_name}")
@@ -1679,6 +1725,17 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
 
         # Build command
         command = self._build_command(tool, arguments)
+
+        # KA-INT-4: the composed P4 safety gate chain authorizes the
+        # execution (consent -> auth -> blast-radius -> egress ->
+        # rate-limit); refusals fail the execution deterministically.
+        gate = self.safety_gate_chain(command, tool_name,
+                                      engagement_id=engagement_id,
+                                      arguments=arguments)
+        if not gate.allowed:
+            logger.error(f"Execution denied: {gate.reason}")
+            return self._create_failed_execution(tool_name, arguments,
+                                                 gate.reason)
 
         # Create execution record
         execution = ToolExecution(

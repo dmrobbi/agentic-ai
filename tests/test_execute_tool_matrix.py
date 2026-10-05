@@ -46,6 +46,7 @@ Branch checklist (completeness measured by test_matrix_branch_checklist):
 """
 
 from __future__ import annotations
+import datetime as dt
 
 import json
 import re
@@ -55,10 +56,12 @@ from types import SimpleNamespace
 
 import pytest
 
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.kali import (
     AuthorizationLevel,
     KALI_TOOLS_DB,
     KaliAgent,
+    SAFE_MODE_BLOCKED_CATEGORIES,
 )
 
 TARGET_FIELDS = ("target", "host", "url", "domain", "bssid")
@@ -81,6 +84,13 @@ def _agent(tmp_path, level=None, dry=True):
     )
     if level is not None:
         agent.set_authorization(level)
+    agent.lab_staged = True
+    agent.auth_tags = ("EGRESS-AUTH",)
+    # KA-INT-4: standing per-action consent (b02 overrides per param)
+    agent.attach_consent(ConsentRecord(engagement_id="e", action="nmap",
+                                       signed_by="owner",
+                                       signed_at=dt.datetime(2026, 10, 5, 12, 0,
+                                       tzinfo=dt.timezone.utc)))
     if dry:
         agent.enable_dry_run()
     return agent
@@ -113,6 +123,10 @@ def test_b01_unknown_tool_rejected(tmp_path):
 @pytest.mark.parametrize("tool_name", ["nmap", "mimikatz"])
 def test_b02_insufficient_level_rejected(tmp_path, tool_name):
     agent = _agent(tmp_path)  # global NONE
+    agent.attach_consent(ConsentRecord(engagement_id="e", action=tool_name,
+                                       signed_by="owner",
+                                       signed_at=dt.datetime(2026, 10, 5, 12, 0,
+                                       tzinfo=dt.timezone.utc)))
     tool = KALI_TOOLS_DB[tool_name]
     args = {k: "x" for k, v in tool.args_schema.items()
             if isinstance(v, dict) and v.get("required")}
@@ -122,8 +136,13 @@ def test_b02_insufficient_level_rejected(tmp_path, tool_name):
         tool.authorization.value) in msg
     result = agent.execute_tool(tool_name, args)
     assert result.status == "failed"
-    assert "Authorization level {} required, have 0".format(
-        tool.authorization.value) in result.stderr
+    # KA-INT-4: the deciding seat moved - the safe-mode pre-gate now
+    # blocks mutation-class tools before the chain's authority seat
+    if tool.category.name in SAFE_MODE_BLOCKED_CATEGORIES:
+        assert "Refused: safe mode blocks mutation-class" in result.stderr
+    else:
+        assert "Authorization level {} required, have 0".format(
+            tool.authorization.value) in result.stderr
 
 
 def test_b03_sufficient_level_completes_dry_run(tmp_path):
@@ -417,13 +436,16 @@ def test_b27_metachar_gate_blocks_real_exec(tmp_path, monkeypatch):
     result = agent.execute_tool(
         "nmap", {"target": BENIGN_TARGET, "extra": "safe; calc"})
     assert result.status == "failed"
-    assert "Rejected dangerous metacharacter" in result.stderr
+    # KA-INT-4: the chain's blast classification refuses hostile input
+    # above the metachar wall (the rejection seat moved up)
+    assert "gate_chain: blast classification refused" in result.stderr
     assert result.exit_code == -1
     assert calls == []  # Popen was never reached
     result2 = agent.execute_tool(
         "nmap", {"target": BENIGN_TARGET, "extra": "safe$(calc)"})
     assert result2.status == "failed"
-    assert "Rejected dangerous metacharacter" in result2.stderr
+    # KA-INT-4: the chain's blast refusal is the deciding seat here too
+    assert "gate_chain: blast classification refused" in result2.stderr
     assert calls == []
 
 

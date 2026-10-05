@@ -26,12 +26,14 @@ PROPOSAL (a KA-INT-1 decision, not a builder fix):
 
 No network; all process layer stubbed like KA-006."""
 from __future__ import annotations
+import datetime as dt
 
 from pathlib import Path
 from types import SimpleNamespace
 
 import pytest
 
+from agentic_ai.agents.cyber.consent_gate import ConsentRecord
 from agentic_ai.agents.cyber.kali import (
     AuthorizationLevel,
     KALI_TOOLS_DB,
@@ -91,6 +93,14 @@ def _real_agent(tmp_path, level):
         log_dir=str(tmp_path / "logs"),
     )
     agent.set_authorization(level)
+    # KA-INT-4: standing consent + egress posture (harmless behind the
+    # pre-chain safe-mode wall; lets read/scan flows reach the exec gate)
+    agent.lab_staged = True
+    agent.auth_tags = ("EGRESS-AUTH",)
+    agent.attach_consent(ConsentRecord(engagement_id="e", action="nmap",
+                                       signed_by="owner",
+                                       signed_at=dt.datetime(2026, 10, 5, 12, 0,
+                                       tzinfo=dt.timezone.utc)))
     return agent  # safe_mode defaults True - the state under proof
 
 
