@@ -215,7 +215,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-008 · Guard-fuzz corpus** — [BUILDER][S][none] (OPT-8)
+- [x] **KA-008 · Guard-fuzz corpus** — [BUILDER][S][none] (OPT-8)
   - **Owns:** `tests/fixtures/guard_corpus/hostile_inputs.json`, `tests/test_guard_fuzz.py`
   - **Goal:** hostile-input corpus (control chars, unicode, shell tricks, nulls,
     oversize, nested quotes) swept through all scrubbers/guards; invariant:
