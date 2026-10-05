@@ -479,7 +479,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** 10 new classes with commands; scrub-tested; no payload drift.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-049 · Per-CMS catalogs** — [BUILDER][M][none] (OPT-49)
+- [x] **KA-049 · Per-CMS catalogs** — [BUILDER][M][none] (OPT-49)
   - **Owns:** `tools/build_cms_catalog.py` (new), `data/cms_flows.json` (new),
     `tests/test_cms_flows.py`
   - **Acceptance:** WP/Drupal/Joomla/typo3 flows; URLs verified live; no payloads.

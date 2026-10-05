@@ -1,0 +1,197 @@
+{
+ "cms": {
+  "drupal": {
+   "arcs": [
+    "enumeration",
+    "extension-audit",
+    "version-trail",
+    "hardening-assessment"
+   ],
+   "flows": [
+    {
+     "stage": "enumeration",
+     "name": "Drupal user guide",
+     "url": "https://www.drupal.org/docs/user_guide/en",
+     "purpose": "site-builder walkthrough used to plan enumeration of accounts, content types, roles, and administrative entry points on a found site"
+    },
+    {
+     "stage": "enumeration",
+     "name": "Administering a Drupal site",
+     "url": "https://www.drupal.org/docs/administering-a-drupal-site",
+     "purpose": "administrative surface map (modules, configuration, reports, update status) for sequencing a structured site review"
+    },
+    {
+     "stage": "extension-audit",
+     "name": "Extending Drupal (modules and themes)",
+     "url": "https://www.drupal.org/docs/extending-drupal",
+     "purpose": "module and theme integration docs for auditing installed extensions, their update channels, and their advisory exposure"
+    },
+    {
+     "stage": "version-trail",
+     "name": "Drupal core project and releases",
+     "url": "https://www.drupal.org/project/drupal",
+     "purpose": "core release listing for mapping the audited version to its maintenance and advisory timeline"
+    },
+    {
+     "stage": "version-trail",
+     "name": "Drush commands",
+     "url": "https://www.drush.org/latest/",
+     "purpose": "Drush CLI reference for reading module lists, update state, and configuration from the shell when CLI access is in scope"
+    },
+    {
+     "stage": "hardening-assessment",
+     "name": "Drupal security advisories",
+     "url": "https://www.drupal.org/security",
+     "purpose": "official advisory hub used to pair version-trail findings with current advisories and to source hardening recommendations"
+    }
+   ]
+  },
+  "joomla": {
+   "arcs": [
+    "enumeration",
+    "extension-audit",
+    "version-trail",
+    "hardening-assessment"
+   ],
+   "flows": [
+    {
+     "stage": "enumeration",
+     "name": "Joomla user manual",
+     "url": "https://manual.joomla.org/",
+     "purpose": "current official manual (menus, users, extensions, global configuration) for planning interface-level enumeration"
+    },
+    {
+     "stage": "extension-audit",
+     "name": "Joomla Extensions Directory",
+     "url": "https://extensions.joomla.org/",
+     "purpose": "extension registry for matching installed components and modules against active, archived, and abandoned projects"
+    },
+    {
+     "stage": "version-trail",
+     "name": "Joomla downloads archive",
+     "url": "https://downloads.joomla.org/",
+     "purpose": "release archive for placing the audited version inside its support and advisory window"
+    },
+    {
+     "stage": "version-trail",
+     "name": "Joomla release announcements",
+     "url": "https://www.joomla.org/announcements.html",
+     "purpose": "official release announcements corroborating the version trail before pairing findings"
+    },
+    {
+     "stage": "hardening-assessment",
+     "name": "Joomla Security Centre",
+     "url": "https://developer.joomla.org/security-centre.html",
+     "purpose": "advisory centre mapping known component and core version issues into the audit's hardening recommendations"
+    }
+   ]
+  },
+  "typo3": {
+   "arcs": [
+    "enumeration",
+    "extension-audit",
+    "version-trail",
+    "hardening-assessment"
+   ],
+   "flows": [
+    {
+     "stage": "enumeration",
+     "name": "TYPO3 documentation hub",
+     "url": "https://docs.typo3.org/",
+     "purpose": "official documentation entry point for backend users, installation state, and the system extension map of an audited instance"
+    },
+    {
+     "stage": "extension-audit",
+     "name": "TYPO3 Extension Repository (TER)",
+     "url": "https://extensions.typo3.org/",
+     "purpose": "registry for auditing installed extension keys against maintained, archived, and abandoned status in the public TER"
+    },
+    {
+     "stage": "extension-audit",
+     "name": "TYPO3 Core API: Extension Architecture",
+     "url": "https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/ExtensionArchitecture/Index.html",
+     "purpose": "extension lifecycle and composer-mode docs for judging where third-party code hooks into the audited installation"
+    },
+    {
+     "stage": "version-trail",
+     "name": "TYPO3 release roadmap",
+     "url": "https://get.typo3.org/",
+     "purpose": "support matrix for placing the audited core version in its LTS/ELTS window"
+    },
+    {
+     "stage": "version-trail",
+     "name": "TYPO3 version 13 matrix",
+     "url": "https://get.typo3.org/version/13",
+     "purpose": "per-series release status and supported-version detail for the current LTS line audit trail"
+    },
+    {
+     "stage": "hardening-assessment",
+     "name": "TYPO3 Core API: Security chapter",
+     "url": "https://docs.typo3.org/m/typo3/reference-coreapi/main/en-us/Security/Index.html",
+     "purpose": "official security guide: security policy, update discipline, and hardening defaults for the assessment pass"
+    }
+   ]
+  },
+  "wordpress": {
+   "arcs": [
+    "enumeration",
+    "extension-audit",
+    "version-trail",
+    "hardening-assessment"
+   ],
+   "flows": [
+    {
+     "stage": "enumeration",
+     "name": "WP-CLI command reference",
+     "url": "https://developer.wordpress.org/cli/commands/",
+     "purpose": "shell command reference (core/user/plugin/theme commands) drafted as the fastest read-only state inventory when CLI access is in scope"
+    },
+    {
+     "stage": "enumeration",
+     "name": "WordPress REST API reference",
+     "url": "https://developer.wordpress.org/rest-api/",
+     "purpose": "public route/parameter surface notes for mapping what an unauthenticated or low-privilege session can read before touching the admin UI"
+    },
+    {
+     "stage": "extension-audit",
+     "name": "WordPress Plugin Developer Handbook",
+     "url": "https://developer.wordpress.org/plugins/",
+     "purpose": "authoritative plugin architecture and hook docs for mapping what each installed plugin touches: capabilities, storage, and update channels"
+    },
+    {
+     "stage": "extension-audit",
+     "name": "WordPress Theme Developer Handbook",
+     "url": "https://developer.wordpress.org/themes/",
+     "purpose": "theme structure and template-loading docs for auditing child themes, orphaned templates, and who can modify theme files"
+    },
+    {
+     "stage": "version-trail",
+     "name": "WordPress release archive",
+     "url": "https://wordpress.org/download/releases/",
+     "purpose": "release listing for placing the installed core version inside its maintenance window before pairing findings with advisories"
+    },
+    {
+     "stage": "hardening-assessment",
+     "name": "Hardening WordPress",
+     "url": "https://wordpress.org/documentation/article/hardening-wordpress/",
+     "purpose": "official hardening doc for the assessment pass: file permissions, secret keys, write restrictions, and TLS posture recommendations"
+    },
+    {
+     "stage": "hardening-assessment",
+     "name": "Roles and capabilities overview",
+     "url": "https://wordpress.org/documentation/article/roles-and-capabilities/",
+     "purpose": "role/capability matrix for privilege-model review and for stating least-privilege findings against the real user population"
+    }
+   ]
+  }
+ },
+ "meta": {
+  "source": "re-authored in-house from each project's official documentation (wordpress.org, drupal.org, joomla.org, typo3.org); stage-arc structure follows the kali web-pentest cms phase conventions; goes beyond the chassis's wpscan/wpscan-audit op pair",
+  "policy": "methodology stage arcs + names + official doc links + re-authored purposes only; no payloads, exploit code, or evasion snippets; every link verified live at build time",
+  "totals": {
+   "cms": 4,
+   "flows": 24
+  },
+  "urls_verified": "2026-10-05"
+ }
+}
