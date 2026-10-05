@@ -2345,7 +2345,8 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
         wordlist: Optional[str] = None,
     ) -> ToolExecution:
         """WiFi password cracking."""
-        return self.execute_tool("aircrack-ng", {
+        # the aircrack orphan FIXED at KA-INT-2: the DB key, not the hyphen
+        return self.execute_tool("aircrack_ng", {
             "capture_file": capture_file,
             "wordlist": wordlist,
         })
@@ -2570,7 +2571,8 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
     ) -> Dict[str, ToolExecution]:
         """Run Active Directory audit playbook.
 
-        Executes: bloodhound → enum4linux → ldapsearch
+        Executes: bloodhound only (enum4linux -> ldapsearch declared
+        here but unimplemented; see the KA-025 pin)
         """
         results = {}
 

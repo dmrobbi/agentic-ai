@@ -55,6 +55,22 @@ test:
       coverage_report:
         coverage_format: cobertura
         path: coverage.xml
+
+# KA-INT-2: the offline battery (cve-db staleness + catalog links +
+# proposals) - never touches the network or the lab
+ka-battery:
+  stage: test
+  image: python:${PYTHON_VERSION}-slim
+  before_script:
+    - apt-get update && apt-get install -y gcc
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  script:
+    - python scripts/ka/cve_db_check.py
+    - python scripts/ka/catalog_check.py
+    - python scripts/ka/cve_db_propose.py --feed tests/fixtures/scans/kevstig_coverage_snapshot.json --queue /tmp/ka-review-$CI_PIPELINE_ID.md
     paths:
       - htmlcov/
     expire_in: 1 week

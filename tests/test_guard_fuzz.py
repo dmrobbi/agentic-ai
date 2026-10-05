@@ -97,16 +97,6 @@ def test_raise_guards_valueerror_or_clean_per_input(guard_name, fuzz_agent):
             outcome, result = call_raise_guard(guard_name, value)
         except ValueError:
             continue  # the allowed rejection
-        except OSError as exc:
-            if exc.errno == 36 and row["class"] == "oversize":
-                # DOCUMENTED LEAK (reported; KA-INT-2 candidate): the
-                # bundler's Path ops leak OSError(Errno 36 = filename
-                # too long) instead of converting to ValueError.
-                continue
-            pytest.fail("{}: unexpected OSError {}/{} on {} ({})"
-                        .format(guard_name, type(exc).__name__,
-                                getattr(exc, "errno", "-"), row["id"],
-                                repr(value[:40])))
         except Exception as exc:  # NO other exception may escape
             pytest.fail("{} crashed on {} ({}) with {}: {}"
                         .format(guard_name, row["id"], repr(value[:40]),
@@ -128,15 +118,6 @@ def test_never_raise_guards_shape_per_input(guard_name, fuzz_agent):
         value = row["value"]
         try:
             result = call_never_guard(guard_name, value, fuzz_agent)
-        except OSError as exc:
-            if exc.errno == 36 and row["class"] == "oversize" and guard_name == "verify_bundle":
-                # DOCUMENTED LEAK (reported; KA-INT-2 candidate): the
-                # verifier's Path.is_file stat leaks errno-36 on the
-                # oversize rows; conversion lands at KA-INT-2.
-                continue
-            pytest.fail("{} crashed on {} ({}) with {}: {}"
-                        .format(guard_name, row["id"], repr(value[:40]),
-                                type(exc).__name__, exc))
         except Exception as exc:
             pytest.fail("{} crashed on {} ({}) with {}: {}"
                         .format(guard_name, row["id"], repr(value[:40]),

@@ -25,13 +25,12 @@ PLAYBOOK_TOOLSETS = {
                            "nikto"},
     "run_web_audit_playbook": {"gobuster", "nikto", "wpscan", "sqlmap"},
     "run_password_audit_playbook": {"john", "hashcat"},
-    "run_wireless_audit_playbook": {"wifite", "aircrack-ng", "reaver"},
+    "run_wireless_audit_playbook": {"wifite", "aircrack_ng", "reaver"},
     "run_ad_audit_playbook": {"bloodhound"},
 }
-# PINNED ORPHAN (reported; KA-INT-2 candidate): the wrapper carries the
-# hyphenated name while the DB key is aircrack_ng - the wrapper can only
-# ever return "Unknown tool". Everything else resolves.
-DOCUMENTED_ORPHANS = {"aircrack-ng"}
+# FIXED + STAYING EMPTY: the aircrack wrapper carries the DB key since
+# KA-INT-2; a future orphan here = a regression alarm.
+DOCUMENTED_ORPHANS = set()
 
 
 @pytest.fixture(scope="module")

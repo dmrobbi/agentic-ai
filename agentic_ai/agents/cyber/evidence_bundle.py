@@ -44,7 +44,14 @@ def create_evidence_bundle(
 ) -> Dict[str, Any]:
     """Bundle source_dir's files + a sha256 manifest into one tar.gz."""
     source = Path(source_dir)
-    if not source.is_dir():
+    try:
+        source_is_dir = source.is_dir()
+    except OSError as exc:
+        # KA-INT-2: errno-36 (filename too long) and friends convert to
+        # the module's ValueError contract instead of leaking
+        raise ValueError(
+            "source_dir could not be inspected: %s" % exc) from exc
+    if not source_is_dir:
         raise ValueError("source_dir must be an existing directory: %r" % source_dir)
     if not engagement_id or not str(engagement_id).strip():
         raise ValueError("engagement_id must be a non-empty string")
@@ -87,7 +94,13 @@ def create_evidence_bundle(
 def verify_evidence_bundle(bundle_path: str) -> Dict[str, Any]:
     """Verify a bundle against its own manifest (see contract above)."""
     bundle_file = Path(bundle_path)
-    if not bundle_file.is_file():
+    try:
+        bundle_is_file = bundle_file.is_file()
+    except OSError as exc:
+        # KA-INT-2: the verifier never raises; uninspectable paths land
+        # in the problems list
+        return {"ok": False, "problems": ["bundle path invalid: %s" % exc]}
+    if not bundle_is_file:
         return {"ok": False, "problems": ["bundle file missing: %s" % bundle_path]}
     problems: List[str] = []
     try:

@@ -84,13 +84,13 @@ def test_wireless_playbook_conditionals(agent):
     assert list(bare) == ["wifite"]
     with_capture = agent.run_wireless_audit_playbook(
         interface="wlan0", capture_file="cap.cap")
-    # PINNED ORPHAN CONSEQUENCE (KA-025): the aircrack wrapper carries
-    # "aircrack-ng" but the DB key is aircrack_ng -> the step FAILS as
-    # unknown inside the playbook (the REAL behavior, flagged for INT-2)
+    # the aircrack orphan FIXED at KA-INT-2: the wrapper carries the DB
+    # key (aircrack_ng); the step plans + completes in dry-run now.
     assert list(with_capture) == ["wifite", "aircrack"]
     aircrack = with_capture["aircrack"]
-    assert aircrack.status == "failed"
-    assert "Unknown tool: aircrack-ng" in aircrack.stderr
+    assert aircrack.status == "completed"
+    assert aircrack.stderr == ""
+    assert aircrack.tool_name == "aircrack_ng"
     with_both = agent.run_wireless_audit_playbook(
         interface="wlan0", capture_file="cap.cap", target_bssid="01:23:45:67:89:AB")
     assert list(with_both) == ["wifite", "aircrack", "reaver"]

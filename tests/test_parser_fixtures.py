@@ -54,26 +54,26 @@ def test_v2_nmap_file_parse_all_fields(tmp_path):
     }
     assert result["total_hosts"] == 2
     h1, h2 = result["hosts"]
-    # PINNED QUIRK (reported; KA-INT-2 candidate): the v2 parser reads
-    # element TEXT for attribute-carrying elements - real nmap XML yields
-    # "" for ip/status/state/service/product/version and a present MAC;
-    # an ABSENT element still reads None. Attribute reads (portid,
-    # protocol, hostnames, osmatch, scripts) work correctly.
-    assert h1["ip"] == ""
-    assert h1["mac"] is None            # element absent -> not-found None
-    assert h2["ip"] == ""
-    assert h2["mac"] == ""              # element present, text-read -> ""
-    assert h1["status"] == ""           # the same text-read quirk
+    # FIXED at KA-INT-2: the attribute reads landed (ip/mac/status and
+    # the port state/service/product/version); an ABSENT element still
+    # reads None. All of these were "" under the old text-read parser.
+    assert h1["ip"] == "192.0.2.10"
+    assert h1["mac"] is None            # element absent -> None
+    assert h2["ip"] == "198.51.100.20"
+    assert h2["mac"] == "52:54:00:aa:00:42"
+    assert h1["status"] == "up"
     assert h1["hostnames"] == ["lab-host1.lab.example"]
-    p80 = h1["ports"][0]                # the attribute reads work:
+    p80 = h1["ports"][0]
     assert p80["port"] == "80" and p80["protocol"] == "tcp"
-    assert p80["state"] == "" and p80["service"] == ""
-    assert p80["product"] == "" and p80["version"] == ""
+    assert p80["state"] == "open" and p80["service"] == "http"
+    assert p80["product"] == "nginx" and p80["version"] == "1.18.0"
     assert [p["port"] for p in h2["ports"]] == ["22", "443"]  # CLOSED kept
-    # PINNED QUIRK (same defect downstream): "state" reads as "" so
-    # the open-port branch never fires - open_ports never populates
-    # from real-shaped xml (KA-INT-2 candidate).
-    assert result["open_ports"] == []
+    # open_ports populates for real-shaped xml since the fix:
+    assert result["open_ports"] == [
+        {"host": "192.0.2.10", "port": "80", "service": "http"},
+        {"host": "192.0.2.10", "port": "445", "service": "microsoft-ds"},
+        {"host": "192.0.2.10", "port": "3389", "service": "ms-wbt-server"},
+        {"host": "198.51.100.20", "port": "22", "service": "ssh"}]
     assert result["os_detected"] == {"name": "Linux 5.4", "accuracy": "98"}
     assert result["vulnerabilities"] == [
         {"id": "smb-vuln-ms17-010", "output": "VULNERABLE: smb-v1 enabled"}]
@@ -132,13 +132,11 @@ def test_v2_crackmapexec_parse_pinned_current_behavior():
     assert result["credentials"] == [
         {"domain": "LAB", "username": "jroberts",
          "password": "Winter2026!"}]  # only the Authenticated line
-    # PINNED QUIRK (reported; KA-INT-2 candidate): the Pwn3d regex
-    # (\S+) (\S+) matches the first ADJACENT single-space pair; CME's
-    # multi-space column layout makes it land on the "[+] LAB\\user"
-    # run - host comes out as the bracket token, never the IP.
+    # FIXED at KA-INT-2: the session host = the CME line's second
+    # token (the IP column), not the bracket junk the old regex gave.
     assert result["sessions"] == [
-        {"host": "[+]", "status": "pwned"},
-        {"host": "[+]", "status": "pwned"}]
+        {"host": "192.0.2.10", "status": "pwned"},
+        {"host": "198.51.100.20", "status": "pwned"}]
     assert result["hosts"] == [] and result["shares"] == []  # unimplemented
 
 

@@ -50,7 +50,8 @@ def test_lean_nmap_parses_without_drift_v2(tmp_path):
     assert result["total_hosts"] == 1
     h1 = result["hosts"][0]
     assert h1["hostnames"] == ["lean-host.lab.example"]
-    assert h1["ip"] == ""  # the same text-read quirk pinned in KA-0003
+    assert h1["ip"] == "192.0.2.77"  # the attr-read (KA-INT-2 fix)
+    assert h1["status"] == "up"
     assert [p["port"] for p in h1["ports"]] == ["22"]
     assert h1["os"] is None
     assert result["vulnerabilities"] == []

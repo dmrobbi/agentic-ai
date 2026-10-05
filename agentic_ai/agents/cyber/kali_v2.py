@@ -633,10 +633,15 @@ class OutputParsers:
             root = tree.getroot()
 
             for host in root.findall(".//host"):
+                # KA-INT-2: attribute reads - findtext returned the
+                # element's (empty) text for real nmap attributes
+                ip_addr = host.find("address[@addrtype='ipv4']")
+                mac_addr = host.find("address[@addrtype='mac']")
+                status_el = host.find("status[@state]")
                 host_info = {
-                    "ip": host.findtext("address[@addrtype='ipv4']"),
-                    "mac": host.findtext("address[@addrtype='mac']"),
-                    "status": host.findtext("status[@state]"),
+                    "ip": ip_addr.get("addr") if ip_addr is not None else None,
+                    "mac": mac_addr.get("addr") if mac_addr is not None else None,
+                    "status": status_el.get("state") if status_el is not None else None,
                     "hostnames": [h.get("name") for h in host.findall(".//hostname")],
                     "ports": [],
                     "os": None,
@@ -644,13 +649,15 @@ class OutputParsers:
 
                 # Parse ports
                 for port in host.findall(".//port"):
+                    state_el = port.find("state[@state]")
+                    service_el = port.find("service[@name]")
                     port_info = {
                         "port": port.get("portid"),
                         "protocol": port.get("protocol"),
-                        "state": port.findtext("state[@state]"),
-                        "service": port.findtext("service[@name]"),
-                        "product": port.findtext("service[@product]"),
-                        "version": port.findtext("service[@version]"),
+                        "state": state_el.get("state") if state_el is not None else None,
+                        "service": service_el.get("name") if service_el is not None else None,
+                        "product": service_el.get("product") if service_el is not None else None,
+                        "version": service_el.get("version") if service_el is not None else None,
                     }
                     host_info["ports"].append(port_info)  # type: ignore[arg-type,union-attr]
 
@@ -777,10 +784,12 @@ class OutputParsers:
                     })
 
             if "Pwn3d!" in line:
-                match = re.search(r"(\S+) (\S+)", line)
-                if match:
+                # KA-INT-2: the host = the CME line's second token (the IP
+                # column); the old leftmost-pair regex landed on "[+]".
+                tokens = line.split()
+                if len(tokens) > 1:
                     result["sessions"].append({
-                        "host": match.group(1),
+                        "host": tokens[1],
                         "status": "pwned",
                     })
 

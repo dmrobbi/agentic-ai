@@ -2,8 +2,8 @@
 across ALL planner ops of the three mixins + the wired planners on the
 registry kali chassis. The invariant: only ValueErrors (or clean dicts)
 - never other exceptions, EXCEPT the one measured quirk, pinned and
-flagged: web_pentest_report_outline crashes on hostile strings in its
-findings list-position (AttributeError; KA-INT-2 candidate).
+fixed at KA-INT-2: the report-outline's non-dict findings rows are
+skipped; the AttributeError regression pin remains.
 
 Secondary pins (measured 2026-10-05): the scrub-gaps (8 of 23 hostile
 rows pass wp_scrub_target unchanged: control chars, DEL, zero-width,
@@ -102,11 +102,11 @@ def test_hostile_args_valueerror_or_clean(op_name, sweep_agent, safe_fills):
                 result = fn(**hostile)
             except ValueError:
                 continue  # legal rejection
-            except AttributeError:
-                if op_name == "web_pentest_report_outline" and param == "findings":
-                    continue  # DOCUMENTED QUIRK (KA-INT-2 candidate)
-                pytest.fail("%s AttributeError outside the quirk on %s@%s"
-                            % (op_name, param, row["id"]))
+            except AttributeError as exc:
+                # the findings-quirk is FIXED at KA-INT-2; any
+                # AttributeError here is a regression
+                pytest.fail("%s AttributeError on %s@%s: %s"
+                            % (op_name, param, row["id"], exc))
             except Exception as exc:
                 pytest.fail("%s crashed on %s@%s with %s: %s"
                             % (op_name, param, row["id"],
@@ -122,21 +122,15 @@ def test_hostile_args_valueerror_or_clean(op_name, sweep_agent, safe_fills):
                         op_name, row["id"], type(result).__name__)
 
 
-def test_report_outline_findings_quirk_full_and_exact(sweep_agent):
-    """The quirk is EXACTLY the 23 findings-positions + nothing else."""
+def test_report_outline_findings_rows_dict_guarded(sweep_agent):
+    """FIXED at KA-INT-2 (the non-dict rows skip): a hostile string at
+    the findings position = a clean report dict; no AttributeError."""
     fn = sweep_agent.web_pentest_report_outline
-    attr_rows, clean_rows, rejected = [], [], 0
     for row in INPUTS:
-        try:
-            fn(BENIGN_TARGET, findings=row["value"])
-        except AttributeError:
-            attr_rows.append(row["id"])
-        except ValueError:
-            rejected += 1
-        else:
-            clean_rows.append(row["id"])
-    assert attr_rows == [row["id"] for row in INPUTS]  # all 23 attr-crash
-    assert rejected == 0 and clean_rows == []
+        result = fn(BENIGN_TARGET, findings=row["value"])
+        assert isinstance(result, dict)
+        assert result["target"] == BENIGN_TARGET
+        assert result["findings"] == []  # the string-rows skipped clean
 
 
 def test_scrub_gaps_documented(sweep_agent):

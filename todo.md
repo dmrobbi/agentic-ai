@@ -21,7 +21,7 @@ shared wiring (agent class lines, role-ops.md, registry/docs sync) happens ONLY 
   owner-gated and follow kali_agent_v4's evidence discipline.
 - Nothing copies external prose/code verbatim; credit sources as in-house re-authoring.
 
-**Current state of the tree:** main at `27959ef` + the P0 wave (KA-F01 + KA-F02 landed); suite pin = BASELINE_SUITE_TOTAL; mixins:
+**Current state of the tree:** main at the P2 tip (all P2 builders + INT-2 wiring/fixes landed); suite pin = BASELINE_SUITE_TOTAL in tests/test_ka_conventions.py; mixins:
 web_pentest, redteam_pentest, xss_exploit; catalogs: redteam_tools.json (725/13),
 xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
 
@@ -367,7 +367,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Depends:** KA-F01 (read this doc last — it ties P1+P2 together).
   - **Feeds:** KA-INT-2.
 
-- [ ] **KA-INT-2 · Phase-2 wiring + release** — [INTEGRATION][S][none]
+- [x] **KA-INT-2 · Phase-2 wiring + release** — [INTEGRATION][S][none]
   - **Owns (SHARED):** the shared-file set of P1's integration task + `Makefile`
     cross-check with KA-030 + the CI file (if any) for the offline-battery target.
   - **Goal:** wire new pure modules where a decision exists (none required for
