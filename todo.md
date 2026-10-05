@@ -415,7 +415,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** monitor-mode capture planners + rogue-AP playbook + detection.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-037 · OSINTMixin** — [BUILDER][S][none] (OPT-37)
+- [x] **KA-037 · OSINTMixin** — [BUILDER][S][none] (OPT-37)
   - **Owns:** `agentic_ai/agents/cyber/osint_pentest.py`, `tests/test_osint_ops.py`
   - **Acceptance:** domain/email/persona enum planners.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
