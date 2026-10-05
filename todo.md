@@ -324,7 +324,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-025 · Playbook-vs-DB consistency** — [BUILDER][S][none] (OPT-25)
+- [x] **KA-025 · Playbook-vs-DB consistency** — [BUILDER][S][none] (OPT-25)
   - **Owns:** `tests/test_playbook_tools_exist.py`
   - **Goal:** playbook tools exist in KALI_TOOLS_DB + mixin catalogs (no orphans).
   - **Acceptance:** green.
