@@ -389,7 +389,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     no payloads beyond command syntax; suite green with its tests.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-032 · ADMixin** — [BUILDER][M][lab] (OPT-32)
+- [x] **KA-032 · ADMixin** — [BUILDER][M][lab] (OPT-32)
   - **Owns:** `agentic_ai/agents/cyber/ad_pentest.py`, `tests/test_ad_ops.py`
   - **Acceptance:** plan_ad(scope) + ad_command_catalog + ad_detection_notes; lab-only
     policy tag; lab battery hook marker.
