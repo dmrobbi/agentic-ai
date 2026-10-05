@@ -330,7 +330,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green.
   - **Depends:** KA-F01. **Feeds:** KA-INT-2.
 
-- [ ] **KA-026 · Exploit-test replay mode** — [BUILDER][L][none] (OPT-26)
+- [x] **KA-026 · Exploit-test replay mode** — [BUILDER][L][none] (OPT-26)
   - **Owns:** `agentic_ai/agents/cyber/replay_mode.py` (new), `tests/test_replay_mode.py`
   - **Goal:** record a dry-run chain → fixture → replay for regression (pure recording
     of PLANNED commands, no execution).
