@@ -435,7 +435,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** router/switch/fw enum + config-audit catalogs.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-041 · API-SecurityMixin** — [BUILDER][M][none] (OPT-41)
+- [x] **KA-041 · API-SecurityMixin** — [BUILDER][M][none] (OPT-41)
   - **Owns:** `agentic_ai/agents/cyber/api_pentest.py`, `tests/test_api_ops.py`
   - **Acceptance:** REST/GraphQL planners + auth-surface catalogs.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
