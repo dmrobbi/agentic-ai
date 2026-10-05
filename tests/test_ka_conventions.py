@@ -22,7 +22,7 @@ from agentic_ai.agents.cyber.xss_exploit import XssMixin
 from agentic_ai.agents.registry import create_agent, resolve_agent_class
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-BASELINE_SUITE_TOTAL = 2655
+BASELINE_SUITE_TOTAL = 2713
 
 EXPECTED_MIXINS = (WebPentestMixin, RedTeamMixin, XssMixin)
 

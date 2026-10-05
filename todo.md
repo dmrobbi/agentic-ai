@@ -425,7 +425,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** volatility/fls/exiftool analyst workflows + evidence handling.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-039 · MalwareAnalysisMixin** — [BUILDER][M][none] (OPT-39)
+- [x] **KA-039 · MalwareAnalysisMixin** — [BUILDER][M][none] (OPT-39)
   - **Owns:** `agentic_ai/agents/cyber/malware_ops.py`, `tests/test_malware_ops.py`
   - **Acceptance:** static-first methodology + detonation sandbox-only gate.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
