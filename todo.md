@@ -473,7 +473,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     PII-exposure, STIG-baseline mapping) with activities + safe sample commands.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-048 · WEB_VULN_CLASSES +10** — [BUILDER][M][none] (OPT-48)
+- [x] **KA-048 · WEB_VULN_CLASSES +10** — [BUILDER][M][none] (OPT-48)
   - **Owns:** `tests/test_web_vuln_extended.py` (+ the proposed dict in
     `docs/web_vuln_additions.md`; module edit via KA-INT-3)
   - **Acceptance:** 10 new classes with commands; scrub-tested; no payload drift.
