@@ -89,7 +89,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; corpus schema-checked.
   - **Depends:** KA-F02. **Feeds:** KA-INT-1.
 
-- [ ] **KA-051 · Engagement RBAC roles** — [BUILDER][M][none] (OPT-51)
+- [x] **KA-051 · Engagement RBAC roles** — [BUILDER][M][none] (OPT-51)
   - **Owns:** `agentic_ai/agents/cyber/engagement_rbac.py` (new),
     `tests/test_engagement_rbac.py`
   - **Goal:** operator / observer-only / verify-only roles beyond the numeric levels:
