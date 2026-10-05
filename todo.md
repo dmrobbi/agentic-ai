@@ -537,7 +537,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     (generalizes v4's evidence discipline); the gate's refusal audited.
 - [x] **KA-062 · Budget/quota** — [BUILDER][S][none] (OPT-62)
   - **Owns:** `agentic_ai/agents/cyber/budgets.py` (new), `tests/test_budgets.py`
-- [ ] **KA-063 · Staging verification** — [BUILDER][S][none] (OPT-63)
+- [x] **KA-063 · Staging verification** — [BUILDER][S][none] (OPT-63)
   - **Owns:** `agentic_ai/agents/cyber/staging_check.py` (new), `tests/test_staging_check.py`
 - [ ] **KA-064 · Doctor tool-version matrix** — [BUILDER][S][none] (OPT-64)
   - **Owns:** `docs/ka_tool_versions.json` (new), `tests/test_tool_versions.py`
