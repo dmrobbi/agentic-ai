@@ -52,7 +52,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
 
 ## P1 — Quick-pick battery (12 builder tasks + 1 integration; the first wave)
 
-- [ ] **KA-001 · CVE-matching eval corpus** — [BUILDER][S][none] (OPT-1)
+- [x] **KA-001 · CVE-matching eval corpus** — [BUILDER][S][none] (OPT-1)
   - **Owns:** `tests/fixtures/cve/cve_eval_corpus.json`, `tests/test_cve_eval.py`
   - **Goal:** pin `CVEMatchingEngine.match_cve` against 80+ real CVEs (EternalBlue,
     BlueKeep, Log4Shell, ProxyShell, SMBGhost, ProxyLogon + 30 edge cases: unknown,
