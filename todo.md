@@ -521,7 +521,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/credvault.py` (new), `tests/test_credvault.py`
   - **Acceptance:** creds never in CLIs; exec-time reads via env-file contract
     (the mailbox/secrets pattern).
-- [ ] **KA-057 · Immutable audit chain** — [BUILDER][S][none] (OPT-57)
+- [x] **KA-057 · Immutable audit chain** — [BUILDER][S][none] (OPT-57)
   - **Owns:** `agentic_ai/agents/cyber/audit_chain.py` (new), `tests/test_audit_chain.py`
   - **Acceptance:** hash-chained audit jsonl + verify op; collision with KA-017
     avoided (017 = evidence dir; this = the agent's own audit log).
