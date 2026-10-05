@@ -456,7 +456,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** enumeration strategy + evidence-only policy gates.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-045 · WebAuthMixin** — [BUILDER][M][none] (OPT-45)
+- [x] **KA-045 · WebAuthMixin** — [BUILDER][M][none] (OPT-45)
   - **Owns:** `agentic_ai/agents/cyber/webauth_ops.py`, `tests/test_webauth_ops.py`
   - **Acceptance:** SSO/OAuth/JWT planner methods (no secrets handling).
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
