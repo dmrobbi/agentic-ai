@@ -517,7 +517,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/egress_guard.py` (new), `tests/test_egress_guard.py`
   - **Acceptance:** network-command classification; RFC1918 requires lab staging;
     external requires an auth tag; DNS-resolution strategy documented.
-- [ ] **KA-056 · Credential vaulting** — [BUILDER][M][none] (OPT-56)
+- [x] **KA-056 · Credential vaulting** — [BUILDER][M][none] (OPT-56)
   - **Owns:** `agentic_ai/agents/cyber/credvault.py` (new), `tests/test_credvault.py`
   - **Acceptance:** creds never in CLIs; exec-time reads via env-file contract
     (the mailbox/secrets pattern).
