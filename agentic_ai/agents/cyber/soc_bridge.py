@@ -40,15 +40,15 @@ FINDING CONTRACT (input): dict with
 Matcher injection: the CVE path consults an injected matcher with the
 duck-typed protocol match_cve(cve_id) -> object-with-exploit-fields | None,
 defaulting to CVEMatchingEngine (cross-engine reference is a bridge's
-purpose; exec/network facilities remain banned - source-scanned).
+purpose; exec/network facilities remain banned - source-scanned; the
+engine default imports LAZILY - a module-level import would cycle
+with the v2 chassis).
 """
 
 from __future__ import annotations
 
 import re
 from typing import Any, Dict, List, Optional
-
-from agentic_ai.agents.cyber.kali_v2 import CVEMatchingEngine
 
 CVE_RE = r"CVE-\d{4}-\d+"
 ID_RE = r"[A-Za-z0-9_.\-]{1,64}"
@@ -69,7 +69,13 @@ class SocFindingsVerifier:
     """Plan per-finding verification for SOC alert findings (planners only)."""
 
     def __init__(self, matcher=None):
-        self.matcher = matcher if matcher is not None else CVEMatchingEngine()
+        if matcher is not None:
+            self.matcher = matcher
+        else:
+            # lazy default: a module-level import would make a
+            # bridge<->chassis cycle (the v2 chassis imports this bridge)
+            from agentic_ai.agents.cyber.kali_v2 import CVEMatchingEngine
+            self.matcher = CVEMatchingEngine()
 
     def _cve_reference(self, cve_id: str) -> Dict[str, Any]:
         match = self.matcher.match_cve(cve_id)

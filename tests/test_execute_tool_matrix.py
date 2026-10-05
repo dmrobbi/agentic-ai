@@ -136,6 +136,9 @@ def test_b03_sufficient_level_completes_dry_run(tmp_path):
 
 def test_b04_engagement_auth_lifts_none_and_is_pooled(tmp_path):
     agent = _agent(tmp_path)  # global NONE
+    agent.disable_safe_mode()  # KA-INT-1: the KA-061 gate refuses
+    # mutation-class tools; this pin exercises the pooled-level
+    # machinery, so the gate steps aside here
     agent.set_authorization(AuthorizationLevel.CRITICAL, engagement_id="ENG1")
     ok, msg = agent.check_authorization("mimikatz")
     assert ok, msg  # lifted NONE globally, not just for ENG1
@@ -148,6 +151,9 @@ def test_b04_engagement_auth_lifts_none_and_is_pooled(tmp_path):
 
 def test_b05_engagement_never_lowers_effective_level(tmp_path):
     agent = _agent(tmp_path, level=AuthorizationLevel.CRITICAL)
+    agent.disable_safe_mode()  # KA-INT-1: the KA-061 gate refuses
+    # mutation-class tools; this pin exercises the max() machinery, so
+    # the gate steps aside here
     agent.set_authorization(AuthorizationLevel.BASIC, engagement_id="LOW")
     ok, _ = agent.check_authorization("mimikatz")
     assert ok
@@ -195,6 +201,9 @@ _MISSING_PARAMS = [
 def test_b09_b10_missing_required_rejected_by_field(tmp_path, tool_name,
                                                     missing):
     agent = _agent(tmp_path, level=KALI_TOOLS_DB[tool_name].authorization)
+    agent.disable_safe_mode()  # KA-INT-1: the KA-061 gate refuses
+    # mutation-class tools; this pin exercises the args guard per
+    # field, so the gate steps aside here
     required = _required(KALI_TOOLS_DB[tool_name])
     args = {k: "x" for k in required if k != missing}
     result = agent.execute_tool(tool_name, args)

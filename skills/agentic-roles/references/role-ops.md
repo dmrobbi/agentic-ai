@@ -649,6 +649,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `add_to_blacklist` |  | kali | Add IP to blacklist (always blocked). |
 | `aircrack_crack` |  | kali | WiFi password cracking. |
 | `amass_enum` |  | kali | Subdomain enumeration with Amass. |
+| `authorize_tool` |  | kali | Consult an engagement RBAC role against the tool DB (KA-051). |
 | `binwalk_analyze` |  | kali | Firmware analysis. |
 | `bloodhound_collect` |  | kali | Active Directory reconnaissance. |
 | `call_tool` | async | base | Call a tool by name with keyword arguments. |
@@ -660,6 +661,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `check_authorization` |  | kali | Check if tool execution is authorized. |
 | `clear_ip_whitelist` |  | kali | Clear IP whitelist. |
 | `connect_metasploit` |  | kali | Connect to Metasploit RPC. |
+| `create_evidence_bundle` |  | kali | Per-engagement evidence bundle: tar + manifest + sha256 (KA-082). |
 | `crunch_generate` |  | kali | Wordlist generator. |
 | `dirb_scan` |  | kali | Web content scanner. |
 | `disable_audit_logging` |  | kali | Disable audit logging. |
@@ -688,6 +690,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `input_guardrail` |  | base | Validate/sanitize input through guardrail pipeline. Returns (sanitized |
 | `john_crack` |  | kali | Crack passwords with John the Ripper. |
 | `joomscan_scan` |  | kali | Joomla vulnerability scanner. |
+| `kevstig_fan_out` |  | kali | kevstig coverage.json -> routed CVEs + matching recommendations (KA-067). |
 | `list_tools` |  | kali | List available tools. |
 | `log` |  | base | Log an action for transparency. |
 | `medusa_bruteforce` |  | kali | Parallel brute forcer. |
@@ -711,6 +714,7 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `register_tool` |  | base | Register a tool with the agent. |
 | `remove_from_blacklist` |  | kali | Remove IP from blacklist. |
 | `revoke_authorization` |  | kali | Revoke authorization. |
+| `role_allows_dry_run` |  | kali | Planning/inspection is unrestricted for every role (KA-051). |
 | `run_ad_audit_playbook` |  | kali | Run Active Directory audit playbook. |
 | `run_password_audit_playbook` |  | kali | Run password cracking playbook. |
 | `run_recon_playbook` |  | kali | Run comprehensive reconnaissance playbook. |
@@ -731,6 +735,8 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
 | `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |
 | `web_vuln_commands` |  | web_pentest | Per-vulnerability-class command sets; None returns the class list. |
+| `verify_evidence_bundle` |  | kali | Verify a bundle against its manifest (tamper detection; KA-082). |
+| `verify_soc_findings` |  | kali | SOC findings -> per-finding verification plans; planners only (KA-066). |
 | `wpscan_scan` |  | kali | WordPress security scan. |
 | `xss_callback_commands` |  | xss_exploit | OOB/callback infrastructure commands for a callback host name. |
 | `xss_countermeasures` |  | xss_exploit | Prevention + detection pairing for the blue team. |
@@ -743,11 +749,14 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 
 | Op | Async | Source | Details |
 |---|---|---|---|
+| `authorize_tool` |  | kali_v2 | Consult an engagement RBAC role against the tool DB (KA-051). |
 | `check_authorization` |  | kali_v2 | Check if tool can be executed. |
+| `create_evidence_bundle` |  | kali_v2 | Per-engagement evidence bundle: tar + manifest + sha256 (KA-082). |
 | `disable_dry_run` |  | kali_v2 | Disable dry-run mode. |
 | `enable_dry_run` |  | kali_v2 | Enable dry-run mode. |
 | `generate_remediation_plan` |  | kali_v2 | Generate remediation plan for findings. |
 | `get_state` |  | kali_v2 | Get agent state. |
+| `kevstig_fan_out` |  | kali_v2 | kevstig coverage.json -> routed CVEs + matching recommendations (KA-067). |
 | `list_tools` |  | kali_v2 | List available tools. |
 | `match_exploits_for_cve` |  | kali_v2 | Find exploits for a CVE. |
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
@@ -758,7 +767,10 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `redteam_countermeasures` |  | redteam_pentest | Detection/countermeasure notes for a phase (the blue-team pairing). |
 | `redteam_phase_tools` |  | redteam_pentest | Every tool cataloged under a phase (name, url, purpose, origin |
 | `redteam_tool_lookup` |  | redteam_pentest | Search the whole catalog by tool-name fragment (max 25 hits). |
+| `role_allows_dry_run` |  | kali_v2 | Planning/inspection is unrestricted for every role (KA-051). |
 | `set_authorization` |  | kali_v2 | Set authorization level. |
+| `verify_evidence_bundle` |  | kali_v2 | Verify a bundle against its manifest (tamper detection; KA-082). |
+| `verify_soc_findings` |  | kali_v2 | SOC findings -> per-finding verification plans; planners only (KA-066). |
 | `web_enum_commands` |  | web_pentest | Enumeration command catalog for a target, grouped by step. |
 | `web_pentest_report_outline` |  | web_pentest | Report scaffold; findings is an optional list of dicts |
 | `web_recon_commands` |  | web_pentest | Reconnaissance command catalog for a target, grouped by step. |

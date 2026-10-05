@@ -162,7 +162,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** script `--check` mode green; doc complete; owner-gate marked.
   - **Depends:** KA-F01. **Feeds:** KA-INT-1.
 
-- [ ] **KA-INT-1 · Phase-1 wiring + release** — [INTEGRATION][S][none]
+- [x] **KA-INT-1 · Phase-1 wiring + release** — [INTEGRATION][S][none]
   - **Owns (SHARED files this task only):** `agentic_ai/agents/cyber/kali.py`,
     `agentic_ai/agents/cyber/kali_v2.py` (class lines + safe-mode/authorization
     integrations KA-051/052/061 decided), `skills/agentic-roles/references/role-ops.md`

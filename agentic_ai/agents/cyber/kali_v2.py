@@ -22,6 +22,18 @@ import tempfile
 from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 from agentic_ai.agents.cyber.redteam_pentest import RedTeamMixin
 from agentic_ai.agents.cyber.xss_exploit import XssMixin
+from agentic_ai.agents.cyber.engagement_rbac import (
+    authorize_call as rbac_authorize_call,
+    role_can_dry_run as rbac_role_can_dry_run,
+)
+from agentic_ai.agents.cyber.evidence_bundle import (
+    create_evidence_bundle as _create_evidence_bundle,
+    verify_evidence_bundle as _verify_evidence_bundle,
+)
+from agentic_ai.agents.cyber.soc_bridge import SocFindingsVerifier
+from agentic_ai.agents.cyber.kev_bridge import (
+    route_coverage as kev_route_coverage,
+)
 import threading
 import time
 from dataclasses import dataclass, field
@@ -1133,6 +1145,39 @@ class KaliAgentV2(WebPentestMixin, RedTeamMixin, XssMixin):
             return False, f"Authorization level {self.authorization_level.name} insufficient (requires {tool.authorization.name})"
 
         return True, "Authorized"
+
+    # KA-INT-1: module ops wired per the builders' contracts. v2 is a
+    # planning-only chassis: no execution path means no safe-mode gate
+    # and no engagement-expiry integration (v2 has no engagement
+    # authorizations and carries no agent identity).
+    def authorize_tool(self, tool_name: str, role, required_level=None):
+        """Consult an engagement RBAC role against this agent's tool DB."""
+        return rbac_authorize_call(tool_name, role,
+                                   required_level=required_level,
+                                   tool_db=self.tools)
+
+    def role_allows_dry_run(self, role):
+        """Planning/inspection is unrestricted for every role (KA-051)."""
+        return rbac_role_can_dry_run(role)
+
+    def create_evidence_bundle(self, source_dir, out_path, engagement_id,
+                               metadata=None):
+        """Wrap KA-082's bundler (engagement_id explicit: v2 carries
+        no agent identity)."""
+        return _create_evidence_bundle(source_dir, out_path,
+                                       engagement_id, metadata=metadata)
+
+    def verify_evidence_bundle(self, bundle_path):
+        """Wrap KA-082's verifier."""
+        return _verify_evidence_bundle(bundle_path)
+
+    def verify_soc_findings(self, findings):
+        """KA-066 planner: SOC findings -> verification plans."""
+        return SocFindingsVerifier().verify_findings(findings)
+
+    def kevstig_fan_out(self, coverage):
+        """KA-067 planner: kevstig coverage.json -> recommendations."""
+        return kev_route_coverage(coverage)
 
     def recommend_tools_for_target(self, target_info: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Get tool recommendations for a target."""

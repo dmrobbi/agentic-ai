@@ -226,6 +226,9 @@ def test_blocked_target_guard_prevents_arguments_and_exec(
 def test_blocked_arguments_guard_prevents_exec(tmp_path, monkeypatch):
     calls = _stub_subprocess(monkeypatch, rc=0)
     agent = _real_agent(tmp_path, AuthorizationLevel.CRITICAL)
+    agent.disable_safe_mode()  # KA-INT-1: the KA-061 gate refuses
+    # mutation-class tools; this pin exercises the args guard, so the
+    # gate steps aside here
     order = []
     auth = GuardSpy(agent, "auth", "check_authorization", order).install(
         agent, monkeypatch)

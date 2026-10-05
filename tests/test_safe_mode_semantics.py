@@ -6,10 +6,11 @@ never reads self.safe_mode during execute_tool (the flag appears exactly
 three times in kali.py - its __init__ + the enable/disable toggles), and
 ExecutionMode / safe_by_default are equally unconsulted safety signals.
 
-LANDED AS: xfail(strict=True) + the proposal below - the suite stays green
-(standing guardrail) while the defect stays loud, and strict=True turns a
-post-fix silent xpass into a suite failure, forcing the integration task to
-remove this marker.
+RESOLUTION: KA-INT-1 implemented the gate in kali.py
+(SAFE_MODE_BLOCKED_CATEGORIES consulted between authorization and the
+target stage; refusal stderr names safe mode; zero process
+construction on refusal). The xfail marker is REMOVED - this file now
+pins the enforcement as live behavior.
 
 PROPOSAL (a KA-INT-1 decision, not a builder fix):
   Under safe_mode=True, execute_tool MUST refuse mutation-class tools
@@ -93,24 +94,18 @@ def _real_agent(tmp_path, level):
     return agent  # safe_mode defaults True - the state under proof
 
 
-def test_current_behavior_safe_mode_never_consulted(tmp_path, monkeypatch):
-    # DOCUMENTS THE GAP - RESOLVE AT KA-INT-1 (see module docstring): when
-    # enforcement lands, this expectation flips to the blocked shape
-    # (status failed + a safe-mode-naming stderr + no process).
-    calls, _procs = _stub_subprocess(monkeypatch, rc=0, out=b"dumped")
+def test_safe_mode_blocks_before_any_process(tmp_path, monkeypatch):
+    # RESOLVED AT KA-INT-1: the gate fires after authorization and
+    # before any validation or process construction.
+    calls, _procs = _stub_subprocess(monkeypatch)
     agent = _real_agent(tmp_path, AuthorizationLevel.CRITICAL)
     assert agent.safe_mode is True
     result = agent.execute_tool("mimikatz", {"command": "dump"})
-    assert result.status == "completed"      # executed DESPITE safe mode
-    assert len(calls) == 1 and calls[0][0] == "mimikatz"  # zero resistance
+    assert result.status == "failed"
+    assert "safe mode" in result.stderr.lower()
+    assert calls == []                       # zero process construction
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="KA-061 proposal: the v1 chassis never reads self.safe_mode "
-           "during execute_tool; enforcement is the KA-INT-1 decision "
-           "(module docstring carries the full proposal)",
-)
 def test_proposed_safe_mode_blocks_mutation_class(tmp_path, monkeypatch):
     calls, _procs = _stub_subprocess(monkeypatch)
     agent = _real_agent(tmp_path, AuthorizationLevel.CRITICAL)
@@ -126,6 +121,22 @@ def test_read_scan_class_let_through_under_safe_mode(tmp_path, monkeypatch):
     result = agent.execute_tool("nmap", {"target": BENIGN_TARGET})
     assert result.status == "completed"  # scans pass the gate (true today,
     assert len(calls) == 1 and calls[0][0] == "nmap"     # true per proposal)
+
+
+def test_safe_mode_gate_precedes_target_validation(tmp_path, monkeypatch):
+    # the gate is stage 1.5: the safe-mode refusal names itself even
+    # when the same call would ALSO fail target validation (bloodhound
+    # carries a domain field -> both gates in flight; safe mode wins,
+    # which also proves the gate runs BEFORE the target stage).
+    _stub_subprocess(monkeypatch)
+    agent = _real_agent(tmp_path, AuthorizationLevel.CRITICAL)
+    agent.set_ip_whitelist(["192.0.2.1"])
+    result = agent.execute_tool(
+        "bloodhound",
+        {"domain": "192.0.2.66", "username": "x", "password": "x"})
+    assert result.status == "failed"
+    assert "safe mode" in result.stderr.lower()
+    assert "not in whitelist" not in result.stderr
 
 
 def test_mutation_class_source_data_from_db():

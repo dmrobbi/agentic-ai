@@ -38,6 +38,8 @@ agenticai agent run  <id> --op <op> --args '{...}'
 | `risk` | Risk Agent | Governance | 4 | 8 |
 | `ethics` | Ethics Agent | Governance | 4 | 8 |
 | `security` | Security Agent | Security | 6 | 12 |
+| `kali` | Kali Agent | Security | 7 | 44 |
+| `kali_v2` | Kali Agent V2 | Security | 7 | 15 |
 | `soc` | SOC Agent | Security | 5 | 10 |
 | `vulnman` | VulnMan Agent | Security | 5 | 10 |
 | `redteam` | RedTeam Agent | Security | 5 | 10 |
@@ -532,6 +534,46 @@ agenticai agent run  <id> --op <op> --args '{...}'
 
 **File**: `agentic_ai/agents/cloud_security.py`  
 **Tests**: `tests/test_cloud_security.py` (10 tests)
+
+---
+
+### Kali Agent (`kali.py`)
+
+**Purpose**: Kali Linux tool orchestration (v1): authorization-gated tool exec, dry-run, playbooks, and the wired planner/bridge modules
+
+**Capabilities**:
+| Capability | Description | Input | Output |
+|------------|-------------|-------|--------|
+| `plan_web_pentest` | 8-phase web engagement plan | `target: str` | `plan: dict` |
+| `plan_redteam` | 13-phase red-team arc | `scope: str` | `plan: dict` |
+| `plan_xss_exploit` | 7-phase XSS methodology | `target: str` | `plan: dict` |
+| `authorize_tool` | RBAC role consult against the tool DB | `tool_name, role` | `(bool, reason)` |
+| `verify_soc_findings` | SOC findings -> verification plans | `findings: list` | `plan: dict` |
+| `kevstig_fan_out` | kevstig coverage -> recommendations | `coverage: dict` | `report: dict` |
+| `create_evidence_bundle` | Evidence bundle: tar + manifest + sha256 | `source_dir, out_path, engagement_id` | `bundle: dict` |
+
+**File**: `agentic_ai/agents/cyber/kali.py`  
+**Tests**: `tests/test_kali_agent.py` (44 tests; + the KA matrix/pin suites)
+
+---
+
+### Kali Agent V2 (`kali_v2.py`)
+
+**Purpose**: Kali tooling v2 (planner-only chassis): CVE/exploit matching, remediation, recommendations, and the wired bridge modules
+
+**Capabilities**:
+| Capability | Description | Input | Output |
+|------------|-------------|-------|--------|
+| `match_exploits_for_cve` | Find exploits for a CVE | `cve_id: str` | `match: dict` |
+| `generate_remediation_plan` | Remediation plan for findings | `findings: list` | `plan: dict` |
+| `authorize_tool` | RBAC role consult against the tool DB | `tool_name, role` | `(bool, reason)` |
+| `verify_soc_findings` | SOC findings -> verification plans | `findings: list` | `plan: dict` |
+| `kevstig_fan_out` | kevstig coverage -> recommendations | `coverage: dict` | `report: dict` |
+| `create_evidence_bundle` | Evidence bundle (engagement explicit) | `source_dir, out_path, engagement_id` | `bundle: dict` |
+| `check_authorization` | Level check for a tool | `tool_name: str` | `(bool, reason)` |
+
+**File**: `agentic_ai/agents/cyber/kali_v2.py`  
+**Tests**: `tests/test_agents_v2.py` (15 tests; + the KA eval/pin suites)
 
 ---
 

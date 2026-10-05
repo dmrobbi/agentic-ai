@@ -33,7 +33,9 @@ OUTPUT SCHEMA (route_coverage):
 
 Validation: missing top-level keys or non-CVE cve / non-list platforms on
 an entry raise ValueError with an actionable message. Matcher injected
-(duck-typed match_cve), CVEMatchingEngine by default; the matcher is
+(duck-typed match_cve), CVEMatchingEngine by default (the default
+import is LAZY - a module-level one would cycle with the v2 chassis);
+the matcher is
 called ONCE PER UNIQUE CVE even when a row spans platforms. Pure planner:
 no exec, no network, no local I/O (source-scanned)."""
 
@@ -41,8 +43,6 @@ from __future__ import annotations
 
 import re
 from typing import Any, Dict, List
-
-from agentic_ai.agents.cyber.kali_v2 import CVEMatchingEngine
 
 TOP_KEYS = (
     "generated_at", "catalog_date", "source",
@@ -73,7 +73,12 @@ def route_coverage(
 ) -> Dict[str, Any]:
     """The daily fan-out planning core over a kevstig coverage.json."""
     validate_coverage(coverage)
-    engine = matcher if matcher is not None else CVEMatchingEngine()
+    if matcher is not None:
+        engine = matcher
+    else:
+        # lazy default: no module-level bridge->chassis import cycle
+        from agentic_ai.agents.cyber.kali_v2 import CVEMatchingEngine
+        engine = CVEMatchingEngine()
 
     routed = [e for e in coverage["entries"] if e.get("coveredByMaintenance")]
     unrouted = [e for e in coverage["entries"] if not e.get("coveredByMaintenance")]

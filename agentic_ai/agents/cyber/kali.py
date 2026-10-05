@@ -12,6 +12,22 @@ from agentic_ai.agents.base import BaseAgent
 from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 from agentic_ai.agents.cyber.redteam_pentest import RedTeamMixin
 from agentic_ai.agents.cyber.xss_exploit import XssMixin
+from agentic_ai.agents.cyber.auth_expiry import (
+    AuthGrant,
+    sweep as sweep_auth_expiry,
+)
+from agentic_ai.agents.cyber.engagement_rbac import (
+    authorize_call as rbac_authorize_call,
+    role_can_dry_run as rbac_role_can_dry_run,
+)
+from agentic_ai.agents.cyber.evidence_bundle import (
+    create_evidence_bundle as _create_evidence_bundle,
+    verify_evidence_bundle as _verify_evidence_bundle,
+)
+from agentic_ai.agents.cyber.soc_bridge import SocFindingsVerifier
+from agentic_ai.agents.cyber.kev_bridge import (
+    route_coverage as kev_route_coverage,
+)
 import json
 import logging
 import os
@@ -1304,6 +1320,13 @@ class MetasploitRPC:
                 return None
 
 
+# KA-INT-1: safe-mode enforcement scope (the KA-061 resolution) -
+# tool categories the executor refuses while safe_mode is enabled.
+SAFE_MODE_BLOCKED_CATEGORIES = frozenset({
+    "POST_EXPLOITATION", "EXPLOITATION", "MALWARE", "SOCIAL_ENGINEERING",
+})
+
+
 # ============================================
 # Kali Agent
 # ============================================
@@ -1353,6 +1376,8 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
         # Authorization tracking
         self.authorization_level = AuthorizationLevel.NONE
         self.engagement_authorizations: Dict[str, AuthorizationLevel] = {}
+        # KA-INT-1: engagement auths may now carry expiry (KA-052)
+        self.engagement_auth_expiry: Dict[str, datetime] = {}
 
         # Safety controls
         self.safe_mode = True
@@ -1400,6 +1425,10 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
 
         if engagement_id:
             self.engagement_authorizations[engagement_id] = level
+            if expires_at:
+                self.engagement_auth_expiry[engagement_id] = expires_at
+            else:
+                self.engagement_auth_expiry.pop(engagement_id, None)
         else:
             self.authorization_level = level
 
@@ -1410,6 +1439,7 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
         """Revoke authorization."""
         if engagement_id:
             self.engagement_authorizations.pop(engagement_id, None)
+            self.engagement_auth_expiry.pop(engagement_id, None)
         else:
             self.authorization_level = AuthorizationLevel.NONE
 
@@ -1418,6 +1448,9 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
 
     def check_authorization(self, tool_name: str) -> Tuple[bool, str]:
         """Check if tool execution is authorized."""
+        # KA-INT-1: engagement authorizations expire (KA-052) - sweep
+        # before the level math; revocations audit themselves.
+        self._sweep_engagement_expiries()
         if tool_name not in self.tools:
             return False, f"Unknown tool: {tool_name}"
 
@@ -1434,6 +1467,25 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
             return False, f"Authorization level {required_level.value} required, have {effective_level.value}"
 
         return True, "Authorized"
+
+    def _sweep_engagement_expiries(self) -> None:
+        """Drop expired engagement authorizations and audit one event
+        per revocation (the KA-052 contract; empty input = no-op)."""
+        if not self.engagement_authorizations:
+            return
+        grants = [
+            AuthGrant(engagement_id=eng_id, level=level.value,
+                      expires_at=self.engagement_auth_expiry.get(eng_id))
+            for eng_id, level in self.engagement_authorizations.items()
+        ]
+        result = sweep_auth_expiry(grants, utcnow())
+        if not result.revoked:
+            return
+        for grant in result.revoked:
+            self.engagement_authorizations.pop(grant.engagement_id, None)
+            self.engagement_auth_expiry.pop(grant.engagement_id, None)
+        for event in result.events:
+            self._log_audit(event)
 
     def enable_safe_mode(self) -> bool:
         """Enable safe mode (read-only operations)."""
@@ -1527,6 +1579,40 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
             logger.error(f"Audit log write failed: {e}")
 
     # ============================================
+    # Integrated planner/bridge ops (KA-INT-1 wiring of
+    # KA-051/052/082/066/067: standalone modules surface here)
+    # ============================================
+
+    def authorize_tool(self, tool_name: str, role, required_level=None):
+        """Consult an engagement RBAC role against this agent's tool DB."""
+        return rbac_authorize_call(tool_name, role,
+                                   required_level=required_level,
+                                   tool_db=self.tools)
+
+    def role_allows_dry_run(self, role):
+        """Planning/inspection is unrestricted for every role (KA-051)."""
+        return rbac_role_can_dry_run(role)
+
+    def create_evidence_bundle(self, source_dir, out_path,
+                               engagement_id=None, metadata=None):
+        """Wrap KA-082's bundler; engagement defaults to this agent."""
+        return _create_evidence_bundle(source_dir, out_path,
+                                       engagement_id or self.agent_id,
+                                       metadata=metadata)
+
+    def verify_evidence_bundle(self, bundle_path):
+        """Wrap KA-082's verifier."""
+        return _verify_evidence_bundle(bundle_path)
+
+    def verify_soc_findings(self, findings):
+        """KA-066 planner: SOC findings -> verification plans."""
+        return SocFindingsVerifier().verify_findings(findings)
+
+    def kevstig_fan_out(self, coverage):
+        """KA-067 planner: kevstig coverage.json -> recommendations."""
+        return kev_route_coverage(coverage)
+
+    # ============================================
     # Tool Execution
     # ============================================
 
@@ -1549,6 +1635,16 @@ class KaliAgent(WebPentestMixin, RedTeamMixin, XssMixin, BaseAgent):
             return self._create_failed_execution(tool_name, arguments, f"Unknown tool: {tool_name}")
 
         tool = self.tools[tool_name]
+
+        # KA-INT-1: safe-mode enforcement (the KA-061 resolution) -
+        # refuse mutation-class categories before any validation or
+        # process work.
+        if self.safe_mode and tool.category.name in SAFE_MODE_BLOCKED_CATEGORIES:
+            return self._create_failed_execution(
+                tool_name, arguments,
+                "Refused: safe mode blocks mutation-class tool '%s' "
+                "(category %s)" % (tool_name, tool.category.name),
+            )
 
         # Validate target if present in arguments
         target_fields = ["target", "host", "url", "domain", "bssid"]
