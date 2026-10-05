@@ -525,7 +525,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/audit_chain.py` (new), `tests/test_audit_chain.py`
   - **Acceptance:** hash-chained audit jsonl + verify op; collision with KA-017
     avoided (017 = evidence dir; this = the agent's own audit log).
-- [ ] **KA-058 · Rollback requirements** — [BUILDER][M][none] (OPT-58)
+- [x] **KA-058 · Rollback requirements** — [BUILDER][M][none] (OPT-58)
   - **Owns:** `agentic_ai/agents/cyber/rollback_plan.py` (new), `tests/test_rollback_plan.py`
   - **Acceptance:** mutating executions require a declared undo step (contract tests).
 - [ ] **KA-059 · Sandbox profile** — [BUILDER][M][none] (OPT-59)
