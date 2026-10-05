@@ -136,7 +136,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; planner output schema documented.
   - **Depends:** KA-F01, KA-001 (corpus for the CVE path). **Feeds:** KA-INT-1.
 
-- [ ] **KA-067 · kevstig router bridge (planner)** — [BUILDER][M][none] (OPT-67)
+- [x] **KA-067 · kevstig router bridge (planner)** — [BUILDER][M][none] (OPT-67)
   - **Owns:** `agentic_ai/agents/cyber/kev_bridge.py` (new), `tests/test_kev_bridge.py`
   - **Goal:** a coverage.json (the kevstig API shape) in → routed CVEs out → matching
     recommendations ("daily fan-out" planner core; the periodic execution = P5 job).
