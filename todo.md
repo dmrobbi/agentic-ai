@@ -430,7 +430,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** static-first methodology + detonation sandbox-only gate.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-040 · NetworkDeviceMixin** — [BUILDER][M][lab] (OPT-40)
+- [x] **KA-040 · NetworkDeviceMixin** — [BUILDER][M][lab] (OPT-40)
   - **Owns:** `agentic_ai/agents/cyber/network_device.py`, `tests/test_network_device_ops.py`
   - **Acceptance:** router/switch/fw enum + config-audit catalogs.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
