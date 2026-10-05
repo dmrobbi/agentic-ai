@@ -461,7 +461,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** SSO/OAuth/JWT planner methods (no secrets handling).
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-046 · Contract-analysis mixin** — [BUILDER][L][lab] (OPT-46)
+- [x] **KA-046 · Contract-analysis mixin** — [BUILDER][L][lab] (OPT-46)
   - **Owns:** `agentic_ai/agents/cyber/chain_ops.py`, `tests/test_chain_ops.py`
   - **Acceptance:** static-analyzer catalog + testnet-only policy.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
