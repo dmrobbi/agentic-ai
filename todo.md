@@ -201,7 +201,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; zero network in CI.
   - **Depends:** KA-F02. **Feeds:** KA-INT-2.
 
-- [ ] **KA-005 · generate_payload argument battery** — [BUILDER][S][none] (OPT-5)
+- [x] **KA-005 · generate_payload argument battery** — [BUILDER][S][none] (OPT-5)
   - **Owns:** `tests/test_generate_payload_args.py`
   - **Goal:** msfvenom arg building + metachar rejections + file-vs-stdout branches
     (subprocess mocked).
