@@ -1,0 +1,116 @@
+{
+ "failure_responses": {
+  "auth.login": {
+   "error": "invalid credentials",
+   "result": "failure"
+  },
+  "job.create": {
+   "result": "failure"
+  }
+ },
+ "meta": {
+  "generated": "2026-10-05",
+  "name": "msfrpc mocked responses (KA-004)",
+  "provenance": "Canned Metasploit-RPC JSON bodies keyed by the EXACT wire method names MetasploitRPC sends (auth/module/job/session/db); failure bodies live in failure_responses and are served to a method only when the test opts in. Hosts RFC 5737; the credentials row is fabricated lab text pinned as opaque strings; no real RPC traffic in tests."
+ },
+ "responses": {
+  "auth.login": {
+   "result": "success",
+   "token": "fake-token-ka004"
+  },
+  "auth.logout": {
+   "result": "success"
+  },
+  "db.creds": {
+   "creds": [
+    {
+     "host": "192.0.2.10",
+     "pass": "Winter2026!",
+     "user": "jroberts"
+    }
+   ]
+  },
+  "db.hosts": {
+   "hosts": [
+    {
+     "host": "192.0.2.10",
+     "os_lang": "en-US",
+     "os_name": "Windows"
+    }
+   ]
+  },
+  "db.import_nmap": {
+   "result": "success"
+  },
+  "db.loots": {
+   "loots": [
+    {
+     "data": "C:\\users\\flag.txt",
+     "host": "192.0.2.10",
+     "type": "file"
+    }
+   ]
+  },
+  "db.services": {
+   "services": [
+    {
+     "host": "192.0.2.10",
+     "name": "smb",
+     "port": 445,
+     "proto": "tcp"
+    }
+   ]
+  },
+  "db.vulns": {
+   "vulns": [
+    {
+     "host": "192.0.2.10",
+     "name": "CVE-2017-0144",
+     "refs": [
+      "CVE-2017-0144"
+     ]
+    }
+   ]
+  },
+  "job.create": {
+   "job_id": "KA004-JOB-1",
+   "result": "success"
+  },
+  "module.exploits": {
+   "modules": [
+    [
+     "exploit/windows/smb/ms17_010_eternalblue",
+     "excellent"
+    ],
+    [
+     "exploit/multi/http/log4shell_header_injection",
+     "great"
+    ],
+    [
+     "exploit/unix/webapp/php_cgi_arg_injection",
+     "normal"
+    ]
+   ]
+  },
+  "session.list": {
+   "sessions": {
+    "1": {
+     "exploit": "exploit/windows/smb/ms17_010_eternalblue",
+     "payload": "windows/x64/meterpreter/reverse_tcp",
+     "target_host": "192.0.2.10",
+     "target_port": 445,
+     "type": "meterpreter",
+     "username": "NT AUTHORITY\\SYSTEM"
+    },
+    "2": {
+     "target_host": "198.51.100.20",
+     "target_port": 22,
+     "type": "shell"
+    }
+   }
+  },
+  "session.meterpreter_write": {
+   "data": "whoami: NT AUTHORITY\\SYSTEM"
+  }
+ }
+}

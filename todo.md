@@ -194,7 +194,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green; fixtures committed (synthetic-but-realistic: mark provenance).
   - **Depends:** KA-F02. **Feeds:** KA-INT-2.
 
-- [ ] **KA-004 · MetasploitRPC mocked battery** — [BUILDER][M][none] (OPT-4)
+- [x] **KA-004 · MetasploitRPC mocked battery** — [BUILDER][M][none] (OPT-4)
   - **Owns:** `tests/test_msfrpc_mock.py`, `tests/fixtures/parsers/msfrpc_responses.json`
   - **Goal:** requests-mock all RPC calls (login/logout/module*/job.create/session.list/
     db.*/run); pin shapes + failure branches (timeout, auth fail, malformed).
