@@ -268,7 +268,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green (or red-with-proposal if the enforcement is missing — loud).
   - **Depends:** KA-F01, KA-052. **Feeds:** KA-INT-2.
 
-- [ ] **KA-016 · Concurrency soak** — [BUILDER][S][none] (OPT-16)
+- [x] **KA-016 · Concurrency soak** — [BUILDER][S][none] (OPT-16)
   - **Owns:** `tests/test_execute_concurrency.py`
   - **Goal:** 8 parallel dry-runs: job_lock correctness, counter returns to zero, no
     deadlock.
