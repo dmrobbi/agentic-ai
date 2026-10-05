@@ -410,7 +410,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Acceptance:** APK/IPA static+dynamic planners + detection notes.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
 
-- [ ] **KA-036 · Wireless depth** — [BUILDER][M][lab] (OPT-36)
+- [x] **KA-036 · Wireless depth** — [BUILDER][M][lab] (OPT-36)
   - **Owns:** `agentic_ai/agents/cyber/wireless_pentest.py`, `tests/test_wireless_ops.py`
   - **Acceptance:** monitor-mode capture planners + rogue-AP playbook + detection.
   - **Depends:** KA-F01. **Feeds:** KA-INT-3.
