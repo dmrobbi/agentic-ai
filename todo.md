@@ -381,7 +381,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
 _Each mixmixin builder: a NEW module file + NEW test file + (when catalog-driven) a NEW
 builder + data file. NO edits to kali.py / kali_v2.py — the phase integration wires them._
 
-- [ ] **KA-031 · PrivescMixin** — [BUILDER][M][none] (OPT-31)
+- [x] **KA-031 · PrivescMixin** — [BUILDER][M][none] (OPT-31)
   - **Owns:** `agentic_ai/agents/cyber/privesc.py`, `tests/test_privesc_ops.py`,
     `tools/build_privesc_capability.py` (GTFOBins/LOLBAS-capability INDEX re-authored
     as our data), `data/privesc_index.json`
