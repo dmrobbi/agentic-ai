@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- KA-011 versioned fixture: a LEAN nmap emitter shape (no os/osmatch,
+     no script rows): every generation of the parsers must not drift on it.
+     Host RFC 5737; synthetic. -->
+<nmaprun>
+<host>
+  <status state="up"/>
+  <address addr="192.0.2.77" addrtype="ipv4"/>
+  <hostnames><hostname name="lean-host.lab.example"/></hostnames>
+  <ports>
+    <port protocol="tcp" portid="22"><state state="open"/><service name="ssh"/></port>
+  </ports>
+</host>
+</nmaprun>

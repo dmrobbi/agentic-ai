@@ -240,7 +240,7 @@ xss_tools.json (15/5); kali.py + kali_v2.py carry all three mixins.
   - **Acceptance:** green + a committed baseline eval report.
   - **Depends:** KA-001. **Feeds:** KA-INT-2.
 
-- [ ] **KA-011 · Parser schema-version compatibility** — [BUILDER][S][none] (OPT-11)
+- [x] **KA-011 · Parser schema-version compatibility** — [BUILDER][S][none] (OPT-11)
   - **Owns:** `tests/fixtures/parsers/versioned/`, `tests/test_parser_versions.py`
   - **Goal:** nmap XML from multiple versions + nuclei schema evolutions parse without
     drift.

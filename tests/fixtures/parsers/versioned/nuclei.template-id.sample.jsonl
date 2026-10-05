@@ -1,0 +1,2 @@
+{"template-id":"cves/2017/CVE-2017-0144","info":{"name":"MS17-010 SMBv1 RCE","severity":"high","tags":["cve"],"description":"lean row"},"host":"192.0.2.10","matched-at":"192.0.2.10:445"}
+{"template-id":"tech/apache","info":{"name":"Apache detected","severity":"info","tags":["tech"],"description":"banner"},"host":"http://192.0.2.30","matched-at":"http://192.0.2.30/"}

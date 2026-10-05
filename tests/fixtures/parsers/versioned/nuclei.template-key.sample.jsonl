@@ -1,0 +1,1 @@
+{"template":"cves/2021/CVE-2021-44228","info":{"name":"Log4Shell JNDI RCE (evolved key)","severity":"critical","tags":["cve","evolved"],"description":"newer nuclei emitter uses template, not template-id"},"host":"http://192.0.2.31","matched-at":"http://192.0.2.31/app"}
