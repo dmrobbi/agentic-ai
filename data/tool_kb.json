@@ -1,0 +1,776 @@
+{
+ "entries": [
+  {
+   "command_patterns": [
+    "aircrack-ng <capture-file>",
+    "aircrack-ng -b <bssid> <capture-file>",
+    "aircrack-ng -w <wordlist> -b <bssid> <capture-file>"
+   ],
+   "false_positive_notes": "capture quality dominates - partial or noisy captures produce empty answers that read as impossible targets when the real problem is the capture",
+   "package": "aircrack-ng",
+   "purpose": "wireless assessment suite over authorized captures: digest auditing of collected handshakes and network survey analysis",
+   "references": [
+    "https://www.kali.org/tools/aircrack-ng/",
+    "https://www.aircrack-ng.org/"
+   ],
+   "tool": "aircrack_ng"
+  },
+  {
+   "command_patterns": [
+    "amass enum -d <domain>",
+    "amass intel -d <domain>",
+    "amass enum -d <domain> -o <output-file>"
+   ],
+   "false_positive_notes": "passive and active enumeration return different sized answers - a short passive run says nothing about what active probing would find, so read the mode before judging coverage",
+   "package": "amass",
+   "purpose": "deep attack-surface mapping: DNS enumeration, archived certificate reading and graph building for a scoped domain set",
+   "references": [
+    "https://www.kali.org/tools/amass/",
+    "https://github.com/owasp-amass/amass"
+   ],
+   "tool": "amass"
+  },
+  {
+   "command_patterns": [
+    "binwalk <image-file>",
+    "binwalk -e <image-file>",
+    "binwalk <image-file> --dd=<extension-class>"
+   ],
+   "false_positive_notes": "auto-extraction can execute bundled compression tooling on untrusted content - do extraction only in disposable environments and keep signature scanning read-only while surveying",
+   "package": "binwalk",
+   "purpose": "firmware and image inspection: signature walking over one authorized image to find embedded filesystems and payload-free sections for analysis",
+   "references": [
+    "https://www.kali.org/tools/binwalk/",
+    "https://github.com/ReFirmLabs/binwalk"
+   ],
+   "tool": "binwalk"
+  },
+  {
+   "command_patterns": [
+    "bloodhound-python -d <domain> -u <username> -p <authorized-credential> -c <collection-classes>",
+    "bloodhound-python -d <domain> -u <username> -p <authorized-credential> -ns <name-server>",
+    "bloodhound-python -d <domain> -u <username> -p <authorized-credential> -c <collection-classes> --zip"
+   ],
+   "false_positive_notes": "collection classes vary hugely in volume - the full class set can take tens of minutes and stands out in monitoring - prefer the minimum classes that answer the planning question",
+   "package": "bloodhound.py",
+   "purpose": "maps directory-domain trust relationships over authorized scope: collects relationships for graph analysis of path surfaces in the assessed domain",
+   "references": [
+    "https://www.kali.org/tools/bloodhound/",
+    "https://github.com/fox-it/BloodHound.py"
+   ],
+   "tool": "bloodhound"
+  },
+  {
+   "command_patterns": [
+    "burpsuite",
+    "burpsuite --project-file=<project-file>",
+    "burpsuite --config-file=<config-file>"
+   ],
+   "false_positive_notes": "proxying is as invasive as any inline tool - a mis-scoped target list will funnel production traffic through the proxy. Verify scope in the project options before the browser points at it",
+   "package": "burpsuite",
+   "purpose": "interactive web proxy and assessment workbench: manual request interception, replay and surface mapping in one driven-by-a-human session",
+   "references": [
+    "https://www.kali.org/tools/burpsuite/",
+    "https://portswigger.net/burp"
+   ],
+   "tool": "burpsuite"
+  },
+  {
+   "command_patterns": [
+    "cewl <url>",
+    "cewl -d <depth> -m <min-length> <url>",
+    "cewl <url> -w <output-file>"
+   ],
+   "false_positive_notes": "marketing vocabulary and legal boilerplate dominate the output - the useful candidate material sits in product names and terms of art, not page text volume",
+   "package": "cewl",
+   "purpose": "builds candidate wordlists from the visible vocabulary of one scoped web property for later authorized digest or login auditing",
+   "references": [
+    "https://www.kali.org/tools/cewl/",
+    "https://github.com/digininja/CeWL"
+   ],
+   "tool": "cewl"
+  },
+  {
+   "command_patterns": [
+    "crunch <min-length> <max-length>",
+    "crunch <min-length> <max-length> <charset>",
+    "crunch <min-length> <max-length> <charset> -o <output-file>"
+   ],
+   "false_positive_notes": "output size grows combinatorially with length and charset width - compute the file size before running or the host runs out of disk as the 'failure'",
+   "package": "crunch",
+   "purpose": "deterministic candidate-sequence generator: expands character-set rules into exact candidate streams for later authorized auditing",
+   "references": [
+    "https://www.kali.org/tools/crunch/"
+   ],
+   "tool": "crunch"
+  },
+  {
+   "command_patterns": [
+    "dirb <url>",
+    "dirb <url> <wordlist>",
+    "dirb <url> <wordlist> -o <output-file>"
+   ],
+   "false_positive_notes": "servers answer wrong-path probes differently per stack - without tuning the recursion off or adjusting wordlists, common wrong-path handling can read as found content",
+   "package": "dirb",
+   "purpose": "dictionary-based endpoint discovery on a scoped web root: walks a wordlist against the server to surface unlinked paths",
+   "references": [
+    "https://www.kali.org/tools/dirb/"
+   ],
+   "tool": "dirb"
+  },
+  {
+   "command_patterns": [
+    "dnsrecon -d <domain>",
+    "dnsrecon -d <domain> -t <enum-type>",
+    "dnsrecon -d <domain> -n <name-server> -t std"
+   ],
+   "false_positive_notes": "zone-transfer style probes can be loud on monitored name servers - and a refused transfer is a hardening signal, not a failure of the tool",
+   "package": "dnsrecon",
+   "purpose": "structured DNS enumeration: zone walking, record collection and optional cache probing against a scoped domain and its name servers",
+   "references": [
+    "https://github.com/darkoperator/dnsrecon"
+   ],
+   "tool": "dnsrecon"
+  },
+  {
+   "command_patterns": [
+    "powershell-empire server --version",
+    "powershell-empire server --help"
+   ],
+   "false_positive_notes": "listener state lingers between console sessions - record listener teardown in the engagement notes or the assessed side keeps visible surfaces up after the test window closes",
+   "package": "powershell-empire",
+   "purpose": "post-position framework with listener and staging surface for authorized, paperwork-covered engagements only - planned here, executed only by the operator",
+   "references": [
+    "https://www.kali.org/tools/powershell-empire/"
+   ],
+   "tool": "empire"
+  },
+  {
+   "command_patterns": [
+    "exiftool <file>",
+    "exiftool -r <dir>",
+    "exiftool -s <file>"
+   ],
+   "false_positive_notes": "metadata rows are trivially editable - treat them as an assertion by whoever last touched the file, never as ground truth",
+   "package": "libimage-exiftool-perl",
+   "purpose": "metadata reading and writing over one or many authorized files: the standard reader for authored timestamps, device traces and document properties",
+   "references": [
+    "https://exiftool.org/"
+   ],
+   "tool": "exiftool"
+  },
+  {
+   "command_patterns": [
+    "ffuf -u <url> -w <wordlist>",
+    "ffuf -u <url> -w <wordlist> -X <method>",
+    "ffuf -u <url> -w <wordlist> -o <output-file>"
+   ],
+   "false_positive_notes": "filtering by response size alone mislabels results on apps with per-route padding - pair size filters with status or word-count filters before treating a row as real",
+   "package": "ffuf",
+   "purpose": "general-purpose web fuzzer: fast request fuzzing over scoped endpoints with flexible filtering and machine-readable output",
+   "references": [
+    "https://www.kali.org/tools/ffuf/",
+    "https://github.com/ffuf/ffuf"
+   ],
+   "tool": "ffuf"
+  },
+  {
+   "command_patterns": [
+    "foremost -i <input-file> -o <output-dir>",
+    "foremost -i <input-file> -o <output-dir> -t <type-list>"
+   ],
+   "false_positive_notes": "carving over-claims: media containers and archives fragment, so recovered rows include false positives that look intact - verify each recovered file actually parses",
+   "package": "foremost",
+   "purpose": "signature-based file carving over authorized images: recovers embedded files by structure where filesystem views stop resolving",
+   "references": [
+    "https://www.kali.org/tools/foremost/"
+   ],
+   "tool": "foremost"
+  },
+  {
+   "command_patterns": [
+    "gobuster dir -u <url> -w <wordlist>",
+    "gobuster vhost -u <url> -w <wordlist>",
+    "gobuster dir -u <url> -w <wordlist> -x <extensions>",
+    "gobuster dir -u <url> -w <wordlist> -o <output-file>"
+   ],
+   "false_positive_notes": "status-code and length heuristics misreport on catch-all responses - an app that answers all paths with soft redirects buries real rows in noise. Check the excluded-length settings before trusting a list",
+   "package": "gobuster",
+   "purpose": "fast brute-forcer for directory, virtual-host and DNS names over scoped targets: the threaded sibling of dirb with machine-readable output",
+   "references": [
+    "https://www.kali.org/tools/gobuster/",
+    "https://github.com/OJ/gobuster"
+   ],
+   "tool": "gobuster"
+  },
+  {
+   "command_patterns": [
+    "hash-identifier",
+    "hash-identifier <digest-string>"
+   ],
+   "false_positive_notes": "similar digest families have near-identical shapes - top guesses can be wrong in both family and length, so propose a ranked candidate list rather than a single answer. The upstream binary opens an interactive prompt - the digest-string shape mirrors the registry arg schema, fed through the prompt in practice",
+   "package": "hash-identifier",
+   "purpose": "digest-format classifier over recovered material: propose the encoding family so later auditing uses the right mode",
+   "references": [
+    "https://www.kali.org/tools/hash-identifier/"
+   ],
+   "tool": "hash_identifier"
+  },
+  {
+   "command_patterns": [
+    "hashcat -m <hash-type> -a <attack-mode> <hash-file>",
+    "hashcat -m <hash-type> -a <attack-mode> <hash-file> <wordlist>",
+    "hashcat -m <hash-type> -a <attack-mode> <hash-file> <wordlist> -o <output-file>"
+   ],
+   "false_positive_notes": "mis-set type numbers silently produce zero candidates matched while appearing to run normally - always verify the type against a known sample before trusting a blank result",
+   "package": "hashcat",
+   "purpose": "hardware-accelerated sibling of the digest auditor above: same authorized archives, GPU-scale candidate testing with explicit attack-mode selection",
+   "references": [
+    "https://www.kali.org/tools/hashcat/",
+    "https://hashcat.net/hashcat/"
+   ],
+   "tool": "hashcat"
+  },
+  {
+   "command_patterns": [
+    "hydra -L <userlist> -P <passlist> <target> <service>",
+    "hydra -l <username> -P <passlist> <target> <service>",
+    "hydra -L <userlist> -P <passlist> -t <threads> <target> <service>"
+   ],
+   "false_positive_notes": "account lockout is a real side effect - throttle thread counts and confirm the authorization scope covers the named accounts before any pass. Service modules misreport on custom banner handling as a bad credential match",
+   "package": "hydra",
+   "purpose": "parallel login-audit across supported network services on authorized scope: tests recovered or approved credential sets against live service endpoints",
+   "references": [
+    "https://www.kali.org/tools/hydra/",
+    "https://github.com/vanhauser-thc/thc-hydra"
+   ],
+   "tool": "hydra"
+  },
+  {
+   "command_patterns": [
+    "john <hash-file>",
+    "john --wordlist=<wordlist> <hash-file>",
+    "john --wordlist=<wordlist> --rules <hash-file>",
+    "john --show <hash-file>"
+   ],
+   "false_positive_notes": "an empty answer after a short dictionary pass means 'not cracked here', not 'strong' - duration, wordlist and rules all bound the claim. Report scope honestly",
+   "package": "john",
+   "purpose": "audits recovered credential digests on authorized material only: candidate-word testing to measure and report the real-world strength of the assessed set",
+   "references": [
+    "https://www.kali.org/tools/john/",
+    "https://www.openwall.com/john/"
+   ],
+   "tool": "john"
+  },
+  {
+   "command_patterns": [
+    "joomscan -u <url>",
+    "joomscan -u <url> -ec <component-name>",
+    "joomscan -u <url> -o <output-file>"
+   ],
+   "false_positive_notes": "version banners misreport on heavily themed installs - cross-check component rows against the site's own manifests before ranking them",
+   "package": "joomscan",
+   "purpose": "focused Joomla site auditing: version probing, component enumeration and configuration review over one scoped instance",
+   "references": [
+    "https://www.kali.org/tools/joomscan/",
+    "https://github.com/OWASP/joomscan"
+   ],
+   "tool": "joomscan"
+  },
+  {
+   "command_patterns": [
+    "kismet",
+    "kismet -c <capture-interface>",
+    "kismet -c <capture-interface> --log-title <label>"
+   ],
+   "false_positive_notes": "channel-hopping spreads detection thin - quick runs under-report quiet networks, so surveys need a stated residence time to mean anything",
+   "package": "kismet",
+   "purpose": "wireless survey tool: detects and inventories nearby networks and channels for authorized site reviews",
+   "references": [
+    "https://www.kali.org/tools/kismet/",
+    "https://www.kismetwireless.net/"
+   ],
+   "tool": "kismet"
+  },
+  {
+   "command_patterns": [
+    "lazagne <command-class>",
+    "lazagne <command-class> -o <output-file>"
+   ],
+   "false_positive_notes": "antivirus engines flag it by name, not behavior - a detection is expected and not a finding by itself. authorization paperwork should anticipate it",
+   "package": "github:AlessandroZ/LaZagne",
+   "purpose": "recover-stored-material review for authorized post-position work: inventories locally retained credential stores and reports what the host exposes",
+   "references": [
+    "https://github.com/AlessandroZ/LaZagne"
+   ],
+   "tool": "lazagne"
+  },
+  {
+   "command_patterns": [
+    "maltego",
+    "maltego --transform=<transform-name>"
+   ],
+   "false_positive_notes": "transforms chain public data of uneven freshness - a graph edge is a lead, and manual confirmation separates the graph from reality",
+   "package": "maltego",
+   "purpose": "graph-based link analysis: turns harvested people, domains, hosts and records into a visualized relationship graph for manual review",
+   "references": [
+    "https://www.kali.org/tools/maltego/"
+   ],
+   "tool": "maltego"
+  },
+  {
+   "command_patterns": [
+    "masscan <target-range> -p <port-range>",
+    "masscan <target-range> -p <port-range> --rate=<rate>",
+    "masscan <target-range> -p <port-range> -oX <output-file>"
+   ],
+   "false_positive_notes": "asynchronous sweeping over UDP or rate-limited links silently reports fewer answers than the truth - plan a slower nmap confirmation pass over anything masscan misses on lossy routes",
+   "package": "masscan",
+   "purpose": "asynchronous whole-range port sweep for the authorized address space: when nmap is too slow, masscan answers 'what is listening' first",
+   "references": [
+    "https://www.kali.org/tools/masscan/",
+    "https://github.com/robertdavidgraham/masscan"
+   ],
+   "tool": "masscan"
+  },
+  {
+   "command_patterns": [
+    "mdk4 <interface> <attack-mode>",
+    "mdk4 <interface> <attack-mode> -b <bssid>"
+   ],
+   "false_positive_notes": "affecting the shared spectrum is not scoped to one client - every mode here disturbs third parties on those channels. Lab-only unless paperwork says otherwise",
+   "package": "mdk4",
+   "purpose": "protocol-level wireless testing modes for authorized lab and controlled-scope work: beacon, denial and roaming test modes exercised deliberately",
+   "references": [
+    "https://github.com/aircrack-ng/mdk4"
+   ],
+   "tool": "mdk4"
+  },
+  {
+   "command_patterns": [
+    "medusa -H <host-list> -U <userlist> -P <passlist> -M <service>",
+    "medusa -h <target> -U <userlist> -P <passlist> -M <service>",
+    "medusa -H <host-list> -U <userlist> -P <passlist> -M <service> -t <threads>"
+   ],
+   "false_positive_notes": "some service modules treat connection failures as candidate rejections - verify module version and hand-check failures before trusting a clean-looking answer",
+   "package": "medusa",
+   "purpose": "another parallel login auditor: smaller module family than the tool above but with steadier threading for long authorized runs",
+   "references": [
+    "https://www.kali.org/tools/medusa/",
+    "https://github.com/jmk-foofus/medusa"
+   ],
+   "tool": "medusa"
+  },
+  {
+   "command_patterns": [
+    "msfconsole",
+    "msfconsole -q",
+    "msfconsole -q -r <resource-file>"
+   ],
+   "false_positive_notes": "module option defaults are engagement-specific - trusting a module's defaults without review is the fastest path to noisy, out-of-scope behavior. Keep the module inventory query as the planning step",
+   "package": "metasploit-framework",
+   "purpose": "console-driven assessment framework: query the module inventory, review module options and record engagement sessions in authorized workspaces",
+   "references": [
+    "https://www.kali.org/tools/metasploit-framework/",
+    "https://docs.metasploit.com/"
+   ],
+   "tool": "metasploit"
+  },
+  {
+   "command_patterns": [
+    "mimikatz",
+    "mimikatz -h"
+   ],
+   "false_positive_notes": "this is high-impact and heavily monitored tooling - run it only where engagement paperwork explicitly covers it and record every invocation",
+   "package": "mimikatz",
+   "purpose": "windows credential-material review for authorized post-position work only: documents what the assessed host exposes when an assessor reaches it",
+   "references": [
+    "https://www.kali.org/tools/mimikatz/",
+    "https://github.com/gentilkiwi/mimikatz"
+   ],
+   "tool": "mimikatz"
+  },
+  {
+   "command_patterns": [
+    "nikto -h <url>",
+    "nikto -h <host> -p <port-range>",
+    "nikto -h <url> -o <output-file>"
+   ],
+   "false_positive_notes": "loud by design and notoriously noisy - many reported rows are version guesses or headers misread as weaknesses. Rank only rows with confirmed matches",
+   "package": "nikto",
+   "purpose": "web server assessment scanner: server software fingerprinting, configuration review and known-issue surface checks over one scoped host",
+   "references": [
+    "https://www.kali.org/tools/nikto/",
+    "https://github.com/sullo/nikto"
+   ],
+   "tool": "nikto"
+  },
+  {
+   "command_patterns": [
+    "nmap -sV -sC <target>",
+    "nmap -p <port-range> <target>",
+    "nmap -sV -sC --script=<nse-scripts> <target>",
+    "nmap -sV -oX <output-file> <target>"
+   ],
+   "false_positive_notes": "a port showing closed is a definite answer, but filtered results often mean a firewall and not an absent service - re-read filtered rows against a slower pass before planning anything around them",
+   "package": "nmap",
+   "purpose": "maps live hosts and services across an authorized scope: port states, service versions and host details that anchor every later planning step",
+   "references": [
+    "https://www.kali.org/tools/nmap/",
+    "https://nmap.org/book/"
+   ],
+   "tool": "nmap"
+  },
+  {
+   "command_patterns": [
+    "nmap --script=<nse-exploit-classes> -p <port-range> <target>",
+    "nmap -sV --script=<nse-exploit-classes> <target>"
+   ],
+   "false_positive_notes": "these scripts reach deeper into services than the classification set and are easier to trip over - keep them to tightly scoped targets and read their documentation before choosing a script class",
+   "package": "nmap",
+   "purpose": "the heavier exploitation-classification scripts of nmap: high-signal service probes for known-issue checks during authorized engagements",
+   "references": [
+    "https://www.kali.org/tools/nmap/",
+    "https://nmap.org/book/nse.html"
+   ],
+   "tool": "nmap_exploit"
+  },
+  {
+   "command_patterns": [
+    "nmap --script=<nse-vuln-classes> -p <port-range> <target>",
+    "nmap -sV --script=<nse-vuln-classes> <target>"
+   ],
+   "false_positive_notes": "classification scripts match version banners, not proof - treat every reported issue as unverified until a version banner and a doc reference agree",
+   "package": "nmap",
+   "purpose": "the classification-script face of nmap: pairs detected service versions with known-issue signatures so planning can rank services worth a closer look",
+   "references": [
+    "https://www.kali.org/tools/nmap/",
+    "https://nmap.org/book/nse.html"
+   ],
+   "tool": "nmap_vuln"
+  },
+  {
+   "command_patterns": [
+    "gvm-cli socket --xml <command-string>",
+    "gvm-cli tls --xml <command-string>",
+    "gvm-cli tls --xml <command-string> -o <output-file>"
+   ],
+   "false_positive_notes": "scanner feeds need regular updating or every report skews stale - and generic scan configs inflate informational findings that read scarier than they are",
+   "package": "gvm-tools",
+   "purpose": "greenbone vulnerability-management client: drives authenticated and unauthenticated scan configs against authorized targets and reports ranked findings",
+   "references": [
+    "https://www.openvas.org/",
+    "https://github.com/greenbone/gvm-tools"
+   ],
+   "tool": "openvas"
+  },
+  {
+   "command_patterns": [
+    "reaver -i <interface> -b <bssid>",
+    "reaver -i <interface> -b <bssid> -t <timeout>"
+   ],
+   "false_positive_notes": "runs are slow and access points can rate-limit or lock during the protocol exchange - a stop without an answer may be the target hardening mid-test",
+   "package": "reaver",
+   "purpose": "provisioning-protocol weakness assessment for authorized wireless scope only: tests the enrollment protocol's exposure on a scoped access point",
+   "references": [
+    "https://www.kali.org/tools/reaver/",
+    "https://github.com/t6x/reaver-wps-fork-t6x"
+   ],
+   "tool": "reaver"
+  },
+  {
+   "command_patterns": [
+    "recon-ng -w <workspace-name>",
+    "recon-ng -w <workspace-name> -m <module-path>",
+    "recon-ng -w <workspace-name> -r <resource-file>"
+   ],
+   "false_positive_notes": "module result counts differ wildly between free and paid upstream data providers - a module returning few rows may be quota throttling, not silence",
+   "package": "recon-ng",
+   "purpose": "workspace-based OSINT framework: module-by-module harvesting of names, hosts, contacts and leaks into a single queryable workspace",
+   "references": [
+    "https://www.kali.org/tools/recon-ng/",
+    "https://github.com/lanmaster53/recon-ng"
+   ],
+   "tool": "recon_ng"
+  },
+  {
+   "command_patterns": [
+    "responder -I <interface>",
+    "responder -I <interface> -A",
+    "responder -I <interface> -w <output-file>"
+   ],
+   "false_positive_notes": "any capture here is a real finding by itself, and the analyze-mode flag changes what is captured - log the mode used or the evidence is not reproducible",
+   "package": "responder",
+   "purpose": "name-resolution exposure testing on authorized networks only: observes whether name-resolution trust on the local segment leaks credentials to the assessor",
+   "references": [
+    "https://www.kali.org/tools/responder/",
+    "https://github.com/lgandx/Responder"
+   ],
+   "tool": "responder"
+  },
+  {
+   "command_patterns": [
+    "rsmangler --file <input-file>",
+    "rsmangler --file <input-file> --output <output-file>",
+    "rsmangler -f <input-file> --min-length=<min-length>"
+   ],
+   "false_positive_notes": "permutation count explodes with seed size - cap the seed list or the mangled output is unusable by the time it finishes writing",
+   "package": "rsmangler",
+   "purpose": "mangles a seed vocabulary into permuted candidate variations for later authorized auditing - the dictionary layer between harvest and audit",
+   "references": [
+    "https://www.kali.org/tools/rsmangler/",
+    "https://github.com/digininja/RSMangler"
+   ],
+   "tool": "rsmangler"
+  },
+  {
+   "command_patterns": [
+    "searchsploit <query-string>",
+    "searchsploit --exact <query-string>",
+    "searchsploit --nmap <output-file>"
+   ],
+   "false_positive_notes": "archive rows frequently carry version-pinned titles that overstate applicability - verify the exact affected-version range before ranking a row as plausible",
+   "package": "exploitdb",
+   "purpose": "offline search over the public known-issue archive: pairs service and software versions with matching archive entries during authorized planning",
+   "references": [
+    "https://www.kali.org/tools/exploitdb/",
+    "https://www.exploit-db.com/searchsploit"
+   ],
+   "tool": "searchsploit"
+  },
+  {
+   "command_patterns": [
+    "setoolkit",
+    "setoolkit <menu-selection>"
+   ],
+   "false_positive_notes": "campaign surfaces touch real people - every step needs explicit authorization for the affected workforce, and template content must match the engagement's documented scope before launch. The toolkit is strictly menu-driven - the menu-selection shape notes the interactive path, not a command flag",
+   "package": "set",
+   "purpose": "guided social-engineering exercise framework for authorized, paperwork-covered engagements: structures awareness-testing campaigns the engagement owns",
+   "references": [
+    "https://www.kali.org/tools/set/",
+    "https://github.com/trustedsec/social-engineer-toolkit"
+   ],
+   "tool": "setoolkit"
+  },
+  {
+   "command_patterns": [
+    "shodan search <query-string>",
+    "shodan host <ip-address>",
+    "shodan domain <domain>"
+   ],
+   "false_positive_notes": "indexed banners lag reality - an indexed service may be gone and a live service may be unindexed. Never treat the registry as engagement-current",
+   "package": "python3-shodan",
+   "purpose": "command-line access to the public service registry: searches indexed banners and host records for authorized scope without touching the hosts directly",
+   "references": [
+    "https://github.com/achillean/shodan-python",
+    "https://developer.shodan.io/"
+   ],
+   "tool": "shodan"
+  },
+  {
+   "command_patterns": [
+    "fls <image-file>",
+    "fls -r <image-file>",
+    "fls -o <sector-offset> <image-file>"
+   ],
+   "false_positive_notes": "sector offsets differ between partition layouts - listing from the wrong offset shows an empty or garbled root instead of an error",
+   "package": "sleuthkit",
+   "purpose": "filesystem analysis over authorized disk images: directory listings, file metadata and timeline enumeration without mounting",
+   "references": [
+    "https://www.kali.org/tools/sleuthkit/",
+    "https://www.sleuthkit.org/sleuthkit/"
+   ],
+   "tool": "sleuthkit"
+  },
+  {
+   "command_patterns": [
+    "spiderfoot-cli",
+    "spiderfoot-cli -q <query-string>",
+    "spiderfoot-cli -l"
+   ],
+   "false_positive_notes": "automated harvesters occasionally flag unrelated third-party targets in aggregated results - confirm every row is in-scope before it shapes planning",
+   "package": "spiderfoot",
+   "purpose": "automated OSINT collection across many public sources, producing a consolidated report over one scoped target",
+   "references": [
+    "https://www.kali.org/tools/spiderfoot/",
+    "https://github.com/smicallef/spiderfoot"
+   ],
+   "tool": "spiderfoot"
+  },
+  {
+   "command_patterns": [
+    "sqlmap -u <url> --batch --level=<level> --risk=<risk>",
+    "sqlmap -u <url> --data=<post-body> --batch",
+    "sqlmap -u <url> --batch -v <verbosity-level>"
+   ],
+   "false_positive_notes": "at default settings it fires a high query volume - keep level and risk low on production-facing targets and expect duplicate row reports across parameter permutations",
+   "package": "sqlmap",
+   "purpose": "automated backend testing: safely maps parameter behavior on an authorized endpoint before committing to any deeper action",
+   "references": [
+    "https://www.kali.org/tools/sqlmap/",
+    "https://sqlmap.org/"
+   ],
+   "tool": "sqlmap"
+  },
+  {
+   "command_patterns": [
+    "sslscan <host>",
+    "sslscan <host>:<port>",
+    "sslscan --no-colour <host>"
+   ],
+   "false_positive_notes": "endpoint ciphers depend on the client hello it sees - results differ between scanner versions, and an end-of-line verdict on one port says little about another port on the same host",
+   "package": "sslscan",
+   "purpose": "cipher-suite and certificate checks on one scoped host: what protocol versions and cipher choices the endpoint actually offers",
+   "references": [
+    "https://www.kali.org/tools/sslscan/",
+    "https://github.com/rbsec/sslscan"
+   ],
+   "tool": "sslscan"
+  },
+  {
+   "command_patterns": [
+    "subfinder -d <domain>",
+    "subfinder -d <domain> -o <output-file>",
+    "subfinder -d <domain> -t <threads>"
+   ],
+   "false_positive_notes": "passive-only by design - it cannot see what public sources never recorded, so its answer is a floor, not the full subdomain set",
+   "package": "subfinder",
+   "purpose": "fast passive subdomain discovery from public sources: the cheap first pass before any active DNS work",
+   "references": [
+    "https://www.kali.org/tools/subfinder/",
+    "https://github.com/projectdiscovery/subfinder"
+   ],
+   "tool": "subfinder"
+  },
+  {
+   "command_patterns": [
+    "testssl.sh <url>",
+    "testssl.sh --severity <severity-level> <url>",
+    "testssl.sh --log <url>"
+   ],
+   "false_positive_notes": "its grading thresholds are opinionated by design - medium rows are improvements, not failures. Plan around the low rows and read the notes column, not just the grade",
+   "package": "testssl.sh",
+   "purpose": "deeper protocol assessment than the scanner above: certificate chains, protocol support and configuration review for one scoped endpoint",
+   "references": [
+    "https://www.kali.org/tools/testssl.sh/",
+    "https://testssl.sh/"
+   ],
+   "tool": "testssl"
+  },
+  {
+   "command_patterns": [
+    "theHarvester -d <domain> -b <source-name>",
+    "theHarvester -d <domain> -b <source-name> -l <limit>",
+    "theHarvester -d <domain> -b <source-name> -f <output-file>"
+   ],
+   "false_positive_notes": "aggregated public records are stale by nature - treat harvested contacts and subdomains as leads to confirm with live probing, never as current truth",
+   "package": "theharvester",
+   "purpose": "public-source harvesting of domain surface: subdomains, mail contacts and host names pulled from open collections and search providers",
+   "references": [
+    "https://www.kali.org/tools/theharvester/",
+    "https://github.com/laramies/theHarvester"
+   ],
+   "tool": "theHarvester"
+  },
+  {
+   "command_patterns": [
+    "volatility -f <memory-file> <plugin>",
+    "volatility -f <memory-file> --profile=<profile> <plugin>",
+    "volatility -f <memory-file> -o <output-file> <plugin>"
+   ],
+   "false_positive_notes": "profile mismatch yields zero rows rather than an error - a quiet answer usually means the wrong profile guess, not an empty image",
+   "package": "volatility",
+   "purpose": "memory-image analysis: profile identification and process, network and artifact enumeration over one authorized memory capture",
+   "references": [
+    "https://github.com/volatilityfoundation/volatility"
+   ],
+   "tool": "volatility"
+  },
+  {
+   "command_patterns": [
+    "whatweb <url>",
+    "whatweb -a <aggression-level> <url>",
+    "whatweb -v <url>"
+   ],
+   "false_positive_notes": "fingerprint signatures key on visible markup - heavily customized front-ends misreport, and one wrong identification row can mislead an entire planning branch",
+   "package": "whatweb",
+   "purpose": "web fingerprinting: identifies content systems, libraries and server traits from one scoped URL set in a single fast pass",
+   "references": [
+    "https://www.kali.org/tools/whatweb/",
+    "https://github.com/urbanadventurer/WhatWeb"
+   ],
+   "tool": "whatweb"
+  },
+  {
+   "command_patterns": [
+    "wifite",
+    "wifite --kill",
+    "wifite --target=<target-bssid>"
+   ],
+   "false_positive_notes": "automation chains several noisy steps in one go - confirm every stage it picks is inside the authorized scope before letting it continue",
+   "package": "wifite",
+   "purpose": "automated orchestrator over the wireless suite: chains survey, capture and digest work into one guided flow for authorized scope",
+   "references": [
+    "https://www.kali.org/tools/wifite/",
+    "https://github.com/derv82/wifite2"
+   ],
+   "tool": "wifite"
+  },
+  {
+   "command_patterns": [
+    "tshark -i <interface>",
+    "tshark -i <interface> -a <capture-cap>",
+    "tshark -r <capture-file>",
+    "tshark -r <capture-file> -Y <display-filter>"
+   ],
+   "false_positive_notes": "display filters and capture filters have different grammars - a filter that parses under the wrong grammar silently returns nothing instead of erroring for the common field-name mistakes",
+   "package": "tshark",
+   "purpose": "protocol analysis on scoped captures or live interfaces: the command-line face for reading traffic and captures during assessment",
+   "references": [
+    "https://www.kali.org/tools/wireshark/",
+    "https://www.wireshark.org/docs/"
+   ],
+   "tool": "wireshark"
+  },
+  {
+   "command_patterns": [
+    "wpscan --url <url>",
+    "wpscan --url <url> --api-token=<token>",
+    "wpscan --url <url> --enumerate=<enum-classes>"
+   ],
+   "false_positive_notes": "without an upstream reference token many issue rows stay hidden - and enumeration without passive mode can be loud enough to trip monitoring on the target",
+   "package": "wpscan",
+   "purpose": "focused WordPress site auditing: core version, plugin and theme enumeration with upstream issue references",
+   "references": [
+    "https://www.kali.org/tools/wpscan/",
+    "https://github.com/wpscanteam/wpscan"
+   ],
+   "tool": "wpscan"
+  },
+  {
+   "command_patterns": [
+    "zap-cli quick-scan <url>",
+    "zap-cli status",
+    "zap-cli open-url <url>"
+   ],
+   "false_positive_notes": "drives a separate engine process that must already be running - connection refusals at startup are a state problem, not a finding. Quick-scan profiles vary sharply in noise between scanner versions",
+   "package": "pip:zapcli",
+   "purpose": "command-line driver for the OWASP proxy above: scriptable scans, spidering and report generation against a running engine",
+   "references": [
+    "https://github.com/Grunny/zap-cli"
+   ],
+   "tool": "zap_cli"
+  }
+ ],
+ "meta": {
+  "policy": "safe generic planning shapes with placeholder fields only - no hostile strings, no credential material, no exploitation content, no shell metachars, no encoded blobs. Every reference verified live at build time. Output deterministic",
+  "source": "one-pagers curated in-house over the kali agent KALI_TOOLS_DB registry at agentic_ai/agents/cyber/kali.py as a read-only import. Purposes re-authored in-house from each tool's own official documentation and project manuals. Package tokens from the kali.org tool pages and the Kali package tracker, using the upstream pip:NAME or github:OWNER/REPO channel prefix when no distro package carries the binary",
+  "totals": {
+   "command_patterns": 149,
+   "references": 92,
+   "tools": 52
+  },
+  "url_count": 89,
+  "urls_verified": "2026-10-07"
+ }
+}

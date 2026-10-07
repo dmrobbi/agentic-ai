@@ -601,7 +601,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-084 · IOC extractor** — [BUILDER][M][none] (OPT-84)
 - [x] **KA-085 · Retest diff op** — [BUILDER][M][none] (OPT-85)
 - [x] **KA-086 · Screenshot capture** — [BUILDER][M][none] (OPT-86)
-- [ ] **KA-087 · Tool KB** — [BUILDER][M][none] (OPT-87)
+- [x] **KA-087 · Tool KB** — [BUILDER][M][none] (OPT-87)
 - [x] **KA-088 · No-orphan-numbers gate** — [BUILDER][S][none] (OPT-88)
 - [x] **KA-089 · Severity calibration** — [BUILDER][M][none] (OPT-89)
 - [x] **KA-090 · Publishable redaction path** — [BUILDER][M][none] (OPT-90)
