@@ -578,7 +578,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-078 · Lab detection loop** — [BUILDER][L][lab] (OPT-78)
   - **Owns:** `docs/KA-LAB-DETECTION.md` (new), `scripts/lab/enroll-wazuh.sh` (new)
   - **Acceptance:** the playbook (owner-run) documented end-to-end; NOT executed by CI.
-- [ ] **KA-079 · Registry/doc sync** — [BUILDER][S][none] (OPT-79)
+- [x] **KA-079 · Registry/doc sync** — [BUILDER][S][none] (OPT-79)
   - **Owns:** `scripts/ka/doc_sync.py` (new), `tests/test_doc_sync.py`
   - **Acceptance:** agent cards + AGENT_MATRIX.md + registry-description consistency
     checker (future integrations run it).
