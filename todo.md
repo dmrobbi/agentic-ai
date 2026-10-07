@@ -611,7 +611,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-094 · Secrets-store wiring** — [BUILDER][M][none] (OPT-94)
 - [x] **KA-096 · Reproducible kali profile** — [BUILDER][M][none] (OPT-96)
   - **Owns:** `docker/kali-ci/Dockerfile` (new) + README (tool set per phase)
-- [ ] **KA-097 · CI matrix** — [BUILDER][M][none] (OPT-97)
+- [x] **KA-097 · CI matrix** — [BUILDER][M][none] (OPT-97)
   - **Owns:** `.gitlab-ci.yml` additions proposal (the integration task applies; the
     shared CI file = integration-reviewed)
 - [ ] **KA-098 · Plan explorer** — [BUILDER][M][none] (OPT-98)
