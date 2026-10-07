@@ -607,7 +607,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-090 · Publishable redaction path** — [BUILDER][M][none] (OPT-90)
 - [x] **KA-091 · Kali-package doctor** — [BUILDER][S][none] (OPT-91)
 - [x] **KA-092 · CLI ergonomics** — [BUILDER][S][none] (OPT-92)
-- [ ] **KA-093 · Cards/matrix sync** — [BUILDER][S][none] (OPT-93)
+- [x] **KA-093 · Cards/matrix sync** — [BUILDER][S][none] (OPT-93)
 - [x] **KA-094 · Secrets-store wiring** — [BUILDER][M][none] (OPT-94)
 - [x] **KA-096 · Reproducible kali profile** — [BUILDER][M][none] (OPT-96)
   - **Owns:** `docker/kali-ci/Dockerfile` (new) + README (tool set per phase)
