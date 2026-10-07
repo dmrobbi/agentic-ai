@@ -1,0 +1,562 @@
+{
+ "families": {
+  "citrix": {
+   "proposals": [
+    {
+     "cve": "CVE-2019-19781",
+     "dateAdded": "2021-11-03",
+     "vendor": "Citrix",
+     "product": "Application Delivery Controller (ADC), Gateway, and SD-WAN WANOP Appliance",
+     "name": "Citrix ADC, Gateway, and SD-WAN WANOP Appliance Code Execution Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2019-19781"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2020-8193",
+     "dateAdded": "2021-11-03",
+     "vendor": "Citrix",
+     "product": "Application Delivery Controller (ADC), Gateway, and SD-WAN WANOP Appliance",
+     "name": "Citrix ADC, Gateway, and SD-WAN WANOP Appliance Authorization Bypass Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2020-8193"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2022-27518",
+     "dateAdded": "2022-12-13",
+     "vendor": "Citrix",
+     "product": "Application Delivery Controller (ADC) and Gateway",
+     "name": "Citrix Application Delivery Controller (ADC) and Gateway Authentication Bypass Vulnerability",
+     "references": [
+      "https://www.citrix.com/blogs/2022/12/13/critical-security-update-now-available-for-citrix-adc-citrix-gateway/",
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-27518"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2023-3519",
+     "dateAdded": "2023-07-19",
+     "vendor": "Citrix",
+     "product": "NetScaler ADC and NetScaler Gateway",
+     "name": "Citrix NetScaler ADC and NetScaler Gateway Code Injection Vulnerability",
+     "references": [
+      "https://support.citrix.com/article/CTX561482/citrix-adc-and-citrix-gateway-security-bulletin-for-cve20233519-cve20233466-cve20233467",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-3519"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2023-4966",
+     "dateAdded": "2023-10-18",
+     "vendor": "Citrix",
+     "product": "NetScaler ADC and NetScaler Gateway",
+     "name": "Citrix NetScaler ADC and NetScaler Gateway Buffer Overflow Vulnerability",
+     "references": [
+      "https://support.citrix.com/article/CTX579459/netscaler-adc-and-netscaler-gateway-security-bulletin-for-cve20234966-and-cve20234967",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-4966"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2023-6548",
+     "dateAdded": "2024-01-17",
+     "vendor": "Citrix",
+     "product": "NetScaler ADC and NetScaler Gateway",
+     "name": "Citrix NetScaler ADC and NetScaler Gateway Code Injection Vulnerability",
+     "references": [
+      "https://support.citrix.com/article/CTX584986/netscaler-adc-and-netscaler-gateway-security-bulletin-for-cve20236548-and-cve20236549",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-6548"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2025-5777",
+     "dateAdded": "2025-07-10",
+     "vendor": "Citrix",
+     "product": "NetScaler ADC and Gateway",
+     "name": "Citrix NetScaler ADC and Gateway Out-of-Bounds Read Vulnerability",
+     "references": [
+      "https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX693420",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-5777"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    },
+    {
+     "cve": "CVE-2025-7775",
+     "dateAdded": "2025-08-26",
+     "vendor": "Citrix",
+     "product": "NetScaler",
+     "name": "Citrix NetScaler Memory Overflow Vulnerability",
+     "references": [
+      "https://support.citrix.com/support-home/kbsearch/article?articleNumber=CTX694938",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-7775"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "citrix"
+    }
+   ]
+  },
+  "f5": {
+   "proposals": [
+    {
+     "cve": "CVE-2020-5902",
+     "dateAdded": "2021-11-03",
+     "vendor": "F5",
+     "product": "BIG-IP",
+     "name": "F5 BIG-IP Traffic Management User Interface (TMUI) Remote Code Execution Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2020-5902"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "f5"
+    },
+    {
+     "cve": "CVE-2021-22986",
+     "dateAdded": "2021-11-03",
+     "vendor": "F5",
+     "product": "BIG-IP and BIG-IQ Centralized Management",
+     "name": "F5 BIG-IP and BIG-IQ Centralized Management iControl REST Remote Code Execution Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-22986"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "f5"
+    },
+    {
+     "cve": "CVE-2021-22991",
+     "dateAdded": "2022-01-18",
+     "vendor": "F5",
+     "product": "BIG-IP Traffic Management Microkernel",
+     "name": "F5 BIG-IP Traffic Management Microkernel Buffer Overflow",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-22991"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "f5"
+    },
+    {
+     "cve": "CVE-2022-1388",
+     "dateAdded": "2022-05-10",
+     "vendor": "F5",
+     "product": "BIG-IP",
+     "name": "F5 BIG-IP Missing Authentication Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2022-1388"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "f5"
+    },
+    {
+     "cve": "CVE-2023-46747",
+     "dateAdded": "2023-10-31",
+     "vendor": "F5",
+     "product": "BIG-IP Configuration Utility",
+     "name": "F5 BIG-IP Configuration Utility Authentication Bypass Vulnerability",
+     "references": [
+      "https://my.f5.com/manage/s/article/K000137353",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-46747"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "f5"
+    },
+    {
+     "cve": "CVE-2025-53521",
+     "dateAdded": "2026-03-27",
+     "vendor": "F5",
+     "product": "BIG-IP",
+     "name": "F5 BIG-IP Stack-Based Buffer Overflow Vulnerability",
+     "references": [
+      "https://my.f5.com/manage/s/article/K000156741",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-53521"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "f5"
+    }
+   ]
+  },
+  "ivanti": {
+   "proposals": [
+    {
+     "cve": "CVE-2019-11510",
+     "dateAdded": "2021-11-03",
+     "vendor": "Ivanti",
+     "product": "Pulse Connect Secure",
+     "name": "Ivanti Pulse Connect Secure Arbitrary File Read Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2019-11510"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2020-8218",
+     "dateAdded": "2022-03-07",
+     "vendor": "Pulse Secure",
+     "product": "Pulse Connect Secure",
+     "name": "Pulse Connect Secure Code Injection Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2020-8218"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2021-22893",
+     "dateAdded": "2021-11-03",
+     "vendor": "Ivanti",
+     "product": "Pulse Connect Secure",
+     "name": "Ivanti Pulse Connect Secure Use-After-Free Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-22893"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2023-35078",
+     "dateAdded": "2023-07-25",
+     "vendor": "Ivanti",
+     "product": "Endpoint Manager Mobile (EPMM)",
+     "name": "Ivanti Endpoint Manager Mobile Authentication Bypass Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/CVE-2023-35078-Remote-unauthenticated-API-access-vulnerability?language=en_US",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-35078"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2023-38035",
+     "dateAdded": "2023-08-22",
+     "vendor": "Ivanti",
+     "product": "Sentry",
+     "name": "Ivanti Sentry Authentication Bypass Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/CVE-2023-38035-API-Authentication-Bypass-on-Sentry-Administrator-Interface?language=en_US",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-38035"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2023-46805",
+     "dateAdded": "2024-01-10",
+     "vendor": "Ivanti",
+     "product": "Connect Secure and Policy Secure",
+     "name": "Ivanti Connect Secure and Policy Secure Authentication Bypass Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/KB-CVE-2023-46805-Authentication-Bypass-CVE-2024-21887-Command-Injection-for-Ivanti-Connect-Secure-and-Ivanti-Policy-Secure-Gateways?language=en_US",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-46805"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2024-21887",
+     "dateAdded": "2024-01-10",
+     "vendor": "Ivanti",
+     "product": "Connect Secure and Policy Secure",
+     "name": "Ivanti Connect Secure and Policy Secure Command Injection Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/KB-CVE-2023-46805-Authentication-Bypass-CVE-2024-21887-Command-Injection-for-Ivanti-Connect-Secure-and-Ivanti-Policy-Secure-Gateways?language=en_US",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-21887"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2024-8963",
+     "dateAdded": "2024-09-19",
+     "vendor": "Ivanti",
+     "product": "Cloud Services Appliance (CSA)",
+     "name": "Ivanti Cloud Services Appliance (CSA) Path Traversal Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/Security-Advisory-Ivanti-CSA-4-6-Cloud-Services-Appliance-CVE-2024-8963",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-8963"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2025-0282",
+     "dateAdded": "2025-01-08",
+     "vendor": "Ivanti",
+     "product": "Connect Secure, Policy Secure, and ZTA Gateways",
+     "name": "Ivanti Connect Secure, Policy Secure, and ZTA Gateways Stack-Based Buffer Overflow Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/Security-Advisory-Ivanti-Connect-Secure-Policy-Secure-ZTA-Gateways-CVE-2025-0282-CVE-2025-0283",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-0282"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    },
+    {
+     "cve": "CVE-2025-22457",
+     "dateAdded": "2025-04-04",
+     "vendor": "Ivanti",
+     "product": "Connect Secure, Policy Secure, and ZTA Gateways",
+     "name": "Ivanti Connect Secure, Policy Secure, and ZTA Gateways Stack-Based Buffer Overflow Vulnerability",
+     "references": [
+      "https://forums.ivanti.com/s/article/April-Security-Advisory-Ivanti-Connect-Secure-Policy-Secure-ZTA-Gateways-CVE-2025-22457",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-22457"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "ivanti"
+    }
+   ]
+  },
+  "vmware-vsphere": {
+   "proposals": [
+    {
+     "cve": "CVE-2019-5544",
+     "dateAdded": "2021-11-03",
+     "vendor": "VMware",
+     "product": "VMware ESXi and Horizon DaaS",
+     "name": "VMware ESXi and Horizon DaaS OpenSLP Heap-Based Buffer Overflow Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2019-5544"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2020-3992",
+     "dateAdded": "2021-11-03",
+     "vendor": "VMware",
+     "product": "ESXi",
+     "name": "VMware ESXi OpenSLP Use-After-Free Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2020-3992"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2021-21972",
+     "dateAdded": "2021-11-03",
+     "vendor": "VMware",
+     "product": "vCenter Server",
+     "name": "VMware vCenter Server Remote Code Execution Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-21972"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2021-21985",
+     "dateAdded": "2021-11-03",
+     "vendor": "VMware",
+     "product": "vCenter Server",
+     "name": "VMware vCenter Server Improper Input Validation Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-21985"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2021-22005",
+     "dateAdded": "2021-11-03",
+     "vendor": "VMware",
+     "product": "vCenter Server",
+     "name": "VMware vCenter Server File Upload Vulnerability",
+     "references": [
+      "https://nvd.nist.gov/vuln/detail/CVE-2021-22005"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2023-34048",
+     "dateAdded": "2024-01-22",
+     "vendor": "VMware",
+     "product": "vCenter Server",
+     "name": "VMware vCenter Server Out-of-Bounds Write Vulnerability",
+     "references": [
+      "https://www.vmware.com/security/advisories/VMSA-2023-0023.html",
+      "https://nvd.nist.gov/vuln/detail/CVE-2023-34048"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2024-38812",
+     "dateAdded": "2024-11-20",
+     "vendor": "VMware",
+     "product": "vCenter Server",
+     "name": "VMware vCenter Server Heap-Based Buffer Overflow Vulnerability",
+     "references": [
+      "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/24968",
+      "https://nvd.nist.gov/vuln/detail/CVE-2024-38812"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    },
+    {
+     "cve": "CVE-2025-22225",
+     "dateAdded": "2025-03-04",
+     "vendor": "VMware",
+     "product": "ESXi",
+     "name": "VMware ESXi Arbitrary Write Vulnerability",
+     "references": [
+      "https://support.broadcom.com/web/ecx/support-content-notification/-/external/content/SecurityAdvisories/0/25390",
+      "https://nvd.nist.gov/vuln/detail/CVE-2025-22225"
+     ],
+     "proposed_at": "2026-10-06",
+     "status": "pending-review",
+     "review_decision": null,
+     "source": "cisa-kev-appliance",
+     "lab_only": true,
+     "family": "vmware-vsphere"
+    }
+   ]
+  }
+ },
+ "meta": {
+  "source": "entries derive from the U.S. CISA Catalog of Known Exploited Vulnerabilities (public JSON API, cited in the meta's kev_feed); factual fields re-listed with credit; proposal framing, family taxonomy, and matcher re-authored in-house (KA-080)",
+  "policy": "pending-review proposal data for KA-029's CVE-DB review queue: a human approve/reject/park decision is required before any CVE_EXPLOIT_DB row may exist; rows are flagged lab-only (OPT-80): appliance CVEs are lab-test material, never live-match ammunition; names + vendor/product labels + reference links only, no payloads or exploit content",
+  "totals": {
+   "families": 4,
+   "proposals": 32
+  },
+  "urls_verified": "2026-10-06",
+  "kev_feed": "https://www.cisa.gov/sites/default/files/feeds/known_exploited_vulnerabilities.json",
+  "families_doc": "vmware-vsphere (vCenter/ESX(i)/vSphere products only), citrix (vendor leg incl. NetScaler ADC/Gateway), f5 (vendor leg or BIG-IP/BIG-IQ products), ivanti (vendor leg + legacy Pulse Secure Connect Secure lineage)",
+  "lab_only": true
+ }
+}

@@ -582,7 +582,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `scripts/ka/doc_sync.py` (new), `tests/test_doc_sync.py`
   - **Acceptance:** agent cards + AGENT_MATRIX.md + registry-description consistency
     checker (future integrations run it).
-- [ ] **KA-080 · Appliance CVE corpus** — [BUILDER][M][lab] (OPT-80)
+- [x] **KA-080 · Appliance CVE corpus** — [BUILDER][M][lab] (OPT-80)
   - **Owns:** `tools/build_appliance_corpus.py` (new), `data/appliance_cves.json` (new),
     `tests/test_appliance_corpus.py`
   - **Acceptance:** KEV appliance set (vCenter/ESXi, Citrix, F5, Ivanti) as proposal
