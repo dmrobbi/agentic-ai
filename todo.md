@@ -556,7 +556,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-069 · Tickets bridge** — [BUILDER][M][none] (OPT-69)
   - **Owns:** `agentic_ai/agents/cyber/tickets_bridge.py` (new), `tests/test_tickets_bridge.py`
   - **Acceptance:** engagement → ticket payloads (the soc-tickets contract; mocked).
-- [ ] **KA-070 · Remediation-ticket integration** — [BUILDER][S][none] (OPT-70)
+- [x] **KA-070 · Remediation-ticket integration** — [BUILDER][S][none] (OPT-70)
   - **Owns:** `agentic_ai/agents/cyber/remediation_tickets.py` (new), `tests/test_remediation_tickets.py`
 - [ ] **KA-071 · laya double-check** — [BUILDER][L][none] (OPT-71)
   - **Owns:** `agentic_ai/agents/cyber/laya_verify.py` (new), `tests/test_laya_verify.py`
