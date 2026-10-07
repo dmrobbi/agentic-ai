@@ -599,7 +599,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/report_assembler.py` (new), `tests/test_report_assembler.py`
 - [x] **KA-083 · Timeline builder** — [BUILDER][S][none] (OPT-83)
 - [ ] **KA-084 · IOC extractor** — [BUILDER][M][none] (OPT-84)
-- [ ] **KA-085 · Retest diff op** — [BUILDER][M][none] (OPT-85)
+- [x] **KA-085 · Retest diff op** — [BUILDER][M][none] (OPT-85)
 - [ ] **KA-086 · Screenshot capture** — [BUILDER][M][none] (OPT-86)
 - [ ] **KA-087 · Tool KB** — [BUILDER][M][none] (OPT-87)
 - [x] **KA-088 · No-orphan-numbers gate** — [BUILDER][S][none] (OPT-88)
