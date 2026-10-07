@@ -136,10 +136,13 @@ def test_never_raise_guards_shape_per_input(guard_name, fuzz_agent):
 
 
 def test_no_guard_bounds_length(fuzz_agent):
-    """THE FINDING (flagged): no guard in the family bounds input length -
-    a 10k pure-alnum string passes every string guard unchanged."""
+    """PARTIAL RESOLUTION 2026-10-07 (owner order 2026-10-07 #2): the wp/token
+    scrub now bounds input length (>2048 rejects); the family's remaining
+    raise-guards still do not - a 10k pure-alnum string still passes
+    scrub_host unchanged (the narrowed open finding)."""
     pure = next(r for r in INPUTS if r["id"] == "oversize-clean")
-    assert wp_scrub_target(pure["value"]) == pure["value"]
+    with pytest.raises(ValueError):
+        wp_scrub_target(pure["value"])
     assert scrub_host(pure["value"]) == pure["value"]
     ok, _ = fuzz_agent.validate_target(pure["value"])
     assert ok is True

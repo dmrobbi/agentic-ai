@@ -14,7 +14,7 @@
     {
      "label": "CVE-DB coverage %",
      "value": "100.0%",
-     "detail": "matched 11/11 expected entries over 83 corpus entries (known 6, edge 17, out_of_db 60); over-reach 0"
+     "detail": "matched 18/18 expected entries over 83 corpus entries (known 6, edge 17, out_of_db 60); over-reach 0"
     },
     {
      "label": "last battery run",

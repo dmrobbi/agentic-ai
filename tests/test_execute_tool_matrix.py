@@ -36,10 +36,10 @@ Branch checklist (completeness measured by test_matrix_branch_checklist):
        hostile stdout -> parser returns None -> no parsed file
   B27  metachar gate (_validate_command_args): dangerous arg -> failed BEFORE
        Popen (stub records ctor calls), stderr carries the rejection
-  B28  documented finding - NOT a test: the unknown-tool re-check between
-       check_authorization and `tool = self.tools[tool_name]` in
-       execute_tool is UNREACHABLE (check_authorization already rejects
-       unknown tools). Left as-is; owner/integration cleanup candidate.
+  B28  RESOLVED 2026-10-07 (owner-ordered cleanup): the INT-4 gate-chain
+       rewrite removed the old top auth-block from execute_tool; the only
+       unknown-tool handling = the reachable top-of-flow check. No dead
+       re-check remains.
   B29  audit contract (v1): _log_audit is dead in practice - no audit file
        is written by execute_tool flows; a direct call with logging enabled
        DOES append JSONL with a timestamp; disabled logging = full no-op.

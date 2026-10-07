@@ -59,6 +59,7 @@ import re
 from dataclasses import dataclass
 from datetime import datetime, timedelta
 from typing import Any, Dict, List, Tuple
+import unicodedata
 
 EVENT_ALLOWED = "tool_target_rate_allowed"
 EVENT_BLOCKED = "tool_target_rate_blocked"
@@ -83,6 +84,20 @@ def scrub_token(value: Any, kind: str) -> str:
     t = value.strip()
     if _METACHARS.search(t) or ".." in t or re.search(r"\s", t):
         raise ValueError("rejected %s with shell metacharacters: %r" % (kind, value))
+    if len(t) > 2048:
+        raise ValueError("rejected over-length %s (>2048 chars)" % kind)
+    for ch in t:
+        o = ord(ch)
+        if o in (0, 0x7F):
+            raise ValueError("rejected %s with control char U+%04X" % (kind, o))
+        if 0x200B <= o <= 0x200D or o == 0xFEFF:
+            raise ValueError("rejected %s with zero-width char U+%04X" % (kind, o))
+        if 0x202A <= o <= 0x202E:
+            raise ValueError("rejected %s with bidi override U+%04X" % (kind, o))
+        if unicodedata.combining(ch):
+            raise ValueError("rejected %s with combining char" % kind)
+    if "%" in t or "~" in t:
+        raise ValueError("rejected %s with format-string/tilde content: %r" % (kind, value))
     return t
 
 

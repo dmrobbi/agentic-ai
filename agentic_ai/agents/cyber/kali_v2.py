@@ -866,17 +866,16 @@ class CVEMatchingEngine:
 
     def match_cve(self, cve_id: str) -> Optional[CVEExploitMatch]:
         """Find exploit for a CVE."""
-        return self.exploit_db.get(cve_id.upper())  # type: ignore[no-any-return]
+        return self.exploit_db.get(cve_id.strip().upper())  # type: ignore[no-any-return]
 
     def match_from_nmap(self, nmap_result: Dict[str, Any]) -> List[CVEExploitMatch]:
         """Match CVEs from Nmap scan results."""
         matches = []
 
         for vuln in nmap_result.get("vulnerabilities", []):
-            vuln_id = vuln.get("id", "")
-
-            # Try to extract CVE from script ID or output
-            cve_match = re.search(r"CVE-\d{4}-\d+", vuln.get("output", ""))
+            # CVE lives in the node id or in vuln-script output; search both
+            haystack = "%s %s" % (str(vuln.get("id", "")), str(vuln.get("output", "")))
+            cve_match = re.search(r"CVE-\d{4}-\d+", haystack)
             if cve_match:
                 cve_id = cve_match.group()
                 exploit = self.match_cve(cve_id)

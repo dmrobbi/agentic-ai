@@ -133,18 +133,14 @@ def test_report_outline_findings_rows_dict_guarded(sweep_agent):
         assert result["findings"] == []  # the string-rows skipped clean
 
 
-def test_scrub_gaps_documented(sweep_agent):
-    """THE HARDENING FINDING (flagged): the pass-set rows survive the
-    shared scrub verbatim - null bytes, DEL, zero-width/bidi/combining,
-    %-format strings and ~ never trip wp_scrub_target."""
+def test_scrub_gaps_hardened(sweep_agent):
+    """RESOLVED 2026-10-07 (hardening applied): the former pass-set rows -
+    null bytes, DEL, zero-width/bidi/combining, %-format strings, ~ and the
+    oversize-clean row - now REJECT via the hardened shared scrub; no
+    verbatim pass rows remain."""
     for row in INPUTS:
-        if row["id"] in SCRUB_GAP_IDS:
-            # verbatim pass (the gaps: no metachars, no dot-pairs, no ws)
-            assert wp_scrub_target(row["value"]) == row["value"], row["id"]
-        else:
-            # rejected by raise, not by return
-            with pytest.raises(ValueError):
-                wp_scrub_target(row["value"])
+        with pytest.raises(ValueError):
+            wp_scrub_target(row["value"])
 
 
 def test_authorize_tool_gates(sweep_agent):
