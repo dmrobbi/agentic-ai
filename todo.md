@@ -587,7 +587,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
     `tests/test_appliance_corpus.py`
   - **Acceptance:** KEV appliance set (vCenter/ESXi, Citrix, F5, Ivanti) as proposal
     data (KA-029's review queue), lab-only flagging.
-- [ ] **KA-INT-5 · Phase-5 wiring** — [INTEGRATION][M][none]
+- [x] **KA-INT-5 · Phase-5 wiring** — [INTEGRATION][M][none]
   - **Acceptance:** bridge wiring behind a feature flag default-off; healthcheck row
     (the shared script edit) lands here; suite green; lockstep push.
 

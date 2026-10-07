@@ -53,6 +53,45 @@ from agentic_ai.agents.cyber.soc_bridge import SocFindingsVerifier
 from agentic_ai.agents.cyber.kev_bridge import (
     route_coverage as kev_route_coverage,
 )
+from os import environ
+
+from agentic_ai.agents.cyber.aging_queue import (
+    aging_priority_queue as _aging_priority_queue,
+)
+from agentic_ai.agents.cyber.laya_verify import (
+    LayaVerifier as _LayaVerifier,
+)
+from agentic_ai.agents.cyber.remediation_tickets import (
+    plan_tickets as _plan_remediation_tickets,
+)
+from agentic_ai.agents.cyber.report_mail import (
+    compose_battery_mail as _compose_battery_mail,
+    compose_report_mail as _compose_report_mail,
+)
+from agentic_ai.agents.cyber.soc_memory_bridge import (
+    EngagementMemoryBridge as _EngagementMemoryBridge,
+)
+from agentic_ai.agents.cyber.threat_feed import (
+    ThreatBriefPlanner as _ThreatBriefPlanner,
+)
+from agentic_ai.agents.cyber.tickets_bridge import (
+    tickets_for_engagement as _tickets_for_engagement,
+)
+
+# KA-INT-5: the P5 fleet bridges wire in behind this flag, default-OFF.
+# Raising KA_FLEET_BRIDGES=1 opens the bridge ops' planner surface; the
+# modules stay pure planners either way and nothing here executes.
+FLEET_BRIDGE_FLAG = "KA_FLEET_BRIDGES"
+
+
+def _fleet_bridges_on():
+    """True only when the environment raised the P5 fleet-bridge flag."""
+    return environ.get(FLEET_BRIDGE_FLAG) == "1"
+
+
+def _flag_off(op):
+    """The deterministic default-off refusal for a fleet-bridge op."""
+    return {"status": "flag_off", "op": op, "flag": FLEET_BRIDGE_FLAG}
 import threading
 import time
 from dataclasses import dataclass, field
@@ -1268,6 +1307,63 @@ class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Soc
     def kevstig_fan_out(self, coverage):
         """KA-067 planner: kevstig coverage.json -> recommendations."""
         return kev_route_coverage(coverage)
+
+    # ============================================
+    # P5 fleet bridges (KA-INT-5) - default-OFF behind KA_FLEET_BRIDGES;
+    # thin flag-guarded delegations to the pure planner modules.
+    # ============================================
+
+    def aging_exploit_queue(self, report, limit=None):
+        """Unpatched finding ages x exploit availability -> the priority queue (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("aging_exploit_queue")
+        return _aging_priority_queue(report, limit=limit)
+
+    def plan_engagement_tickets(self, engagement, now):
+        """Unresolved engagement findings -> soc-tickets open payloads (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("plan_engagement_tickets")
+        return _tickets_for_engagement(engagement, now)
+
+    def plan_remediation_tickets(self, failures, now, store_lines=None):
+        """Failed lab verifications -> SOC remediation ticket plan (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("plan_remediation_tickets")
+        return _plan_remediation_tickets(
+            failures, now=now, store_lines=store_lines)
+
+    def verify_laya_decisions(self, rows=None):
+        """Independent double-check of laya's escalated decisions (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("verify_laya_decisions")
+        return _LayaVerifier().verify_decisions(rows)
+
+    def build_threat_brief(self, feed, day=None):
+        """Newsroom feed -> the daily security threat brief (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("build_threat_brief")
+        return _ThreatBriefPlanner().build_brief(feed, day=day)
+
+    def push_soc_memories(self, summaries, store=None, now=None):
+        """Engagement summaries -> tenant SOC memory records (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("push_soc_memories")
+        return _EngagementMemoryBridge().push_summaries(
+            summaries, store=store, now=now)
+
+    def compose_report_email(self, report, mailbox=None, recipient=None):
+        """Engagement report -> the composed dry-mode email dict (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("compose_report_email")
+        return _compose_report_mail(
+            report, mailbox=mailbox, recipient=recipient)
+
+    def compose_battery_notification(self, run, mailbox=None, recipient=None):
+        """Battery completion -> the composed dry-mode owner mail (fleet flag)."""
+        if not _fleet_bridges_on():
+            return _flag_off("compose_battery_notification")
+        return _compose_battery_mail(
+            run, mailbox=mailbox, recipient=recipient)
 
     def recommend_tools_for_target(self, target_info: Dict[str, Any]) -> List[Dict[str, Any]]:
         """Get tool recommendations for a target."""
