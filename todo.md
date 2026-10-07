@@ -571,7 +571,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/soc_memory_bridge.py` (new), `tests/test_soc_memory_bridge.py`
 - [x] **KA-076 · Fleet test harness** — [BUILDER][L][lab] (OPT-76)
   - **Owns:** `docker/fleet-harness/` (new), `tests/lab/` additions, harness README
-- [ ] **KA-077 · Report email bridge** — [BUILDER][S][none] (OPT-77)
+- [x] **KA-077 · Report email bridge** — [BUILDER][S][none] (OPT-77)
   - **Owns:** `agentic_ai/agents/cyber/report_mail.py` (new), `tests/test_report_mail.py`
   - **Acceptance:** uses the reports@ mailbox env pattern; dry-send default; owner
     notification contract.
