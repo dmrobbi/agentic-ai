@@ -58,9 +58,12 @@ def _collected_test_total():
     assert proc.returncode == 0, (
         "collection failed:" + proc.stdout[-4000:] + proc.stderr[-2000:]
     )
-    match = re.search(r"(\d+) tests collected", proc.stdout)
-    assert match, "unparsable collect-only summary:" + proc.stdout[-2000:]
-    return int(match.group(1))
+    # anchored to LINE START: only the summary line is "^<n> tests collected"
+    # (test-id lines start with "tests/", and parametrize values can embed
+    # multiline synthetic verdicts - KA-100 poisoned the first-match form)
+    matches = re.findall(r"^(\d+) tests collected", proc.stdout, flags=re.M)
+    assert matches, "unparsable collect-only summary:" + proc.stdout[-2000:]
+    return int(matches[-1])
 
 
 def test_baseline_suite_total_matches_pin():
