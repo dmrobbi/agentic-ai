@@ -1,0 +1,79 @@
+{
+ "schema": "ka-owner-widget/1",
+ "generated": "2026-10-07",
+ "blocks": [
+  {
+   "type": "metrics",
+   "title": "Kali fleet owner status (one glance)",
+   "items": [
+    {
+     "label": "suite state",
+     "value": "unknown",
+     "detail": "no suite state injected (the module never measures; the tool script's --probe or a harness supplies it); sample regenerates any time via tools/build_owner_widget.py; --probe measures the suite live"
+    },
+    {
+     "label": "CVE-DB coverage %",
+     "value": "100.0%",
+     "detail": "matched 11/11 expected entries over 83 corpus entries (known 6, edge 17, out_of_db 60); over-reach 0"
+    },
+    {
+     "label": "last battery run",
+     "value": "unknown",
+     "detail": "no battery log passed (skipped when absent; battery runs are owner-gated per docs/KA-LAB-TARGET.md)"
+    },
+    {
+     "label": "evidence count",
+     "value": "24",
+     "detail": "files counted under kali_agent_v4/evidence/ recursively (the KaliAgent v4 EVIDENCE_PACKAGE pattern); regenerate via tools/build_owner_widget.py when the evidence tree changes"
+    }
+   ]
+  },
+  {
+   "type": "table",
+   "title": "Widget inputs (what fed each metric)",
+   "columns": [
+    "metric",
+    "state",
+    "source"
+   ],
+   "rows": [
+    [
+     "suite state",
+     "unknown",
+     "absent"
+    ],
+    [
+     "CVE-DB coverage %",
+     "ok",
+     "injected"
+    ],
+    [
+     "last battery run",
+     "unknown",
+     "absent"
+    ],
+    [
+     "evidence count",
+     "ok",
+     "injected"
+    ]
+   ]
+  },
+  {
+   "type": "links",
+   "title": "Sources",
+   "items": [
+    {
+     "label": "kali fleet repo (public github mirror)",
+     "url": "https://github.com/dmrobbi/agentic-ai",
+     "detail": "repo the widget sample ships in; link verified live 2026-10-07"
+    },
+    {
+     "label": "CVE matching eval corpus (the coverage source)",
+     "url": "https://github.com/dmrobbi/agentic-ai/blob/main/tests/fixtures/cve/cve_eval_corpus.json",
+     "detail": "committed 83-entry corpus the coverage % is measured over; link verified live 2026-10-07"
+    }
+   ]
+  }
+ ]
+}
