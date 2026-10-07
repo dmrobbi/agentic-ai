@@ -603,7 +603,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-086 · Screenshot capture** — [BUILDER][M][none] (OPT-86)
 - [ ] **KA-087 · Tool KB** — [BUILDER][M][none] (OPT-87)
 - [x] **KA-088 · No-orphan-numbers gate** — [BUILDER][S][none] (OPT-88)
-- [ ] **KA-089 · Severity calibration** — [BUILDER][M][none] (OPT-89)
+- [x] **KA-089 · Severity calibration** — [BUILDER][M][none] (OPT-89)
 - [ ] **KA-090 · Publishable redaction path** — [BUILDER][M][none] (OPT-90)
 - [ ] **KA-091 · Kali-package doctor** — [BUILDER][S][none] (OPT-91)
 - [ ] **KA-092 · CLI ergonomics** — [BUILDER][S][none] (OPT-92)
