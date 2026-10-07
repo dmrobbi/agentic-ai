@@ -575,7 +575,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/report_mail.py` (new), `tests/test_report_mail.py`
   - **Acceptance:** uses the reports@ mailbox env pattern; dry-send default; owner
     notification contract.
-- [ ] **KA-078 · Lab detection loop** — [BUILDER][L][lab] (OPT-78)
+- [x] **KA-078 · Lab detection loop** — [BUILDER][L][lab] (OPT-78)
   - **Owns:** `docs/KA-LAB-DETECTION.md` (new), `scripts/lab/enroll-wazuh.sh` (new)
   - **Acceptance:** the playbook (owner-run) documented end-to-end; NOT executed by CI.
 - [ ] **KA-079 · Registry/doc sync** — [BUILDER][S][none] (OPT-79)
