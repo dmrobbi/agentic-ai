@@ -1,0 +1,139 @@
+{
+ "meta": {
+  "name": "patch report shape fixture (KA-068)",
+  "synthetic": true,
+  "provenance": "Fully SYNTHETIC shape fixture modeling the SOC patch monitor's report: a fleet of hosts, each finding carrying the monitor's own age_days plus exploit-availability markers (exploit_available, kev). CVE identifiers are real public ids used as labels; every age, flag, host name, and product string is illustrative. Consuming module: agentic_ai/agents/cyber/aging_queue.py (KA-068); its tests pin this schema field-by-field. No live monitor call, no secrets, no payload strings.",
+  "trimmed": {
+   "rows_total": 12,
+   "unpatched": 10,
+   "patched": 2
+  }
+ },
+ "report": {
+  "monitor": "patch-monitor",
+  "generated_at": "2026-10-05T09:00:00+00:00",
+  "source": "synthetic patch-monitor refresh (no live call)",
+  "rows": [
+   {
+    "cve": "CVE-2017-0144",
+    "host": "lab-win01",
+    "platform": "windows",
+    "product": "Microsoft SMBv1",
+    "patched": false,
+    "age_days": 3497,
+    "exploit_available": true,
+    "kev": true
+   },
+   {
+    "cve": "CVE-2021-44228",
+    "host": "lab-app02",
+    "platform": "linux",
+    "product": "Apache Log4j2",
+    "patched": false,
+    "age_days": 1408,
+    "exploit_available": true,
+    "kev": true
+   },
+   {
+    "cve": "CVE-2024-3400",
+    "host": "lab-fw01",
+    "platform": "pan-os",
+    "product": "PAN-OS GlobalProtect",
+    "patched": false,
+    "age_days": 540,
+    "exploit_available": false,
+    "kev": true
+   },
+   {
+    "cve": "CVE-2020-27350",
+    "host": "lab-pkg01",
+    "platform": "linux",
+    "product": "APT package manager",
+    "patched": false,
+    "age_days": 890,
+    "exploit_available": false,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2019-0708",
+    "host": "lab-rds01",
+    "platform": "windows",
+    "product": "Microsoft Remote Desktop Services",
+    "patched": false,
+    "age_days": 620,
+    "exploit_available": true,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2022-3602",
+    "host": "lab-vpn02",
+    "platform": "linux",
+    "product": "OpenSSL",
+    "patched": false,
+    "age_days": 380,
+    "exploit_available": false,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2023-48795",
+    "host": "lab-vpn01",
+    "platform": "linux",
+    "product": "OpenSSH",
+    "patched": false,
+    "age_days": 300,
+    "exploit_available": true,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2025-3248",
+    "host": "lab-ctl01",
+    "platform": "linux",
+    "product": "Go built-in web server",
+    "patched": false,
+    "age_days": 25,
+    "exploit_available": false,
+    "kev": true
+   },
+   {
+    "cve": "CVE-2018-1000620",
+    "host": "lab-app02",
+    "platform": "linux",
+    "product": "Java deserialization gadget",
+    "patched": false,
+    "age_days": 210,
+    "exploit_available": false,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2016-1000027",
+    "host": "lab-web04",
+    "platform": "linux",
+    "product": "Spring HttpInvoker",
+    "patched": false,
+    "age_days": 12,
+    "exploit_available": false,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2016-2183",
+    "host": "lab-win01",
+    "platform": "windows",
+    "product": "Microsoft SChannel",
+    "patched": true,
+    "age_days": 420,
+    "exploit_available": false,
+    "kev": false
+   },
+   {
+    "cve": "CVE-2020-1472",
+    "host": "lab-dr01",
+    "platform": "windows",
+    "product": "Windows Netlogon",
+    "patched": true,
+    "age_days": 2241,
+    "exploit_available": true,
+    "kev": true
+   }
+  ]
+ }
+}

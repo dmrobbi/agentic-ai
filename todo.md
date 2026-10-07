@@ -549,7 +549,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 
 ## P5 — Fleet tie-ins (13 builders + 1 integration; track D remainder)
 
-- [ ] **KA-068 · Aging-exploitable queue** — [BUILDER][M][none] (OPT-68)
+- [x] **KA-068 · Aging-exploitable queue** — [BUILDER][M][none] (OPT-68)
   - **Owns:** `agentic_ai/agents/cyber/aging_queue.py` (new), `tests/test_aging_queue.py`
   - **Acceptance:** patch-report ages × exploit availability → priority report (pure
     planner; the patch report.json shape fixture committed).
