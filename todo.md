@@ -564,7 +564,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `tools/build_stig_gap_report.py` (new), `tests/test_stig_gap.py`
 - [x] **KA-073 · Newsroom threat feed** — [BUILDER][S][none] (OPT-73)
   - **Owns:** `agentic_ai/agents/cyber/threat_feed.py` (new), `tests/test_threat_feed.py`
-- [ ] **KA-074 · Healthcheck row** — [BUILDER][S][none] (OPT-74)
+- [x] **KA-074 · Healthcheck row** — [BUILDER][S][none] (OPT-74)
   - **Owns:** `tests/test_healthcheck_kali_row.py`, `docs/ka_healthcheck_row.md` (the
     healthcheck.sh edit itself = the integration task's, since the script is shared).
 - [ ] **KA-075 · Engagement → SOC memory** — [BUILDER][S][none] (OPT-75)
