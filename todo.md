@@ -606,7 +606,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-089 · Severity calibration** — [BUILDER][M][none] (OPT-89)
 - [x] **KA-090 · Publishable redaction path** — [BUILDER][M][none] (OPT-90)
 - [x] **KA-091 · Kali-package doctor** — [BUILDER][S][none] (OPT-91)
-- [ ] **KA-092 · CLI ergonomics** — [BUILDER][S][none] (OPT-92)
+- [x] **KA-092 · CLI ergonomics** — [BUILDER][S][none] (OPT-92)
 - [ ] **KA-093 · Cards/matrix sync** — [BUILDER][S][none] (OPT-93)
 - [ ] **KA-094 · Secrets-store wiring** — [BUILDER][M][none] (OPT-94)
 - [ ] **KA-096 · Reproducible kali profile** — [BUILDER][M][none] (OPT-96)

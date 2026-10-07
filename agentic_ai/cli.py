@@ -10,7 +10,7 @@ import inspect
 import json
 import sys
 from datetime import datetime
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional, Tuple
 
 from agentic_ai.agents.registry import list_agents, resolve_agent_class
 from agentic_ai.infrastructure.utils import utcnow
@@ -21,6 +21,7 @@ try:
     from rich.table import Table
     from rich.panel import Panel
     from rich import box
+    from rich.markup import escape
 except ImportError:
     print("Installing required dependencies...")
     import subprocess
@@ -30,11 +31,13 @@ except ImportError:
     from rich.table import Table
     from rich.panel import Panel
     from rich import box
+    from rich.markup import escape
 
 from agentic_ai.agents.chaos_monkey import ChaosMonkeyAgent, ExperimentType, SeverityLevel, BlastRadius
 from agentic_ai.agents.vendor_risk import VendorRiskAgent, VendorTier, AssessmentType
 from agentic_ai.agents.audit import AuditAgent, AuditType
 from agentic_ai.agents.cloud_security import CloudSecurityAgent
+from agentic_ai.agents.cyber.kali import AuthorizationLevel, KALI_TOOLS_DB, KaliAgent
 from agentic_ai.agents.ml_ops import MLOpsAgent
 
 # Initialize
@@ -47,6 +50,7 @@ _vendor_agent = None
 _audit_agent = None
 _cloud_agent = None
 _mlops_agent = None
+_kali_agent = None
 _message_bus = None
 _task_queue = None
 _agent_instances: Dict[str, Any] = {}
@@ -59,6 +63,10 @@ _AGENT_ALIASES = {
     "ml": "ml_ops",
     "mlops": "ml_ops",
 }
+
+# KA-092: kali CLI ergonomics constants (planner info only - no new state).
+_KALI_RESULT_CAP = 25
+_KALI_TOOL_KEYS = {key.lower(): key for key in KALI_TOOLS_DB}
 
 
 def make_agent(agent_name: str, params: Optional[Dict[str, Any]] = None):
@@ -114,6 +122,14 @@ def get_mlops_agent() -> MLOpsAgent:
     if _mlops_agent is None:
         _mlops_agent = MLOpsAgent()
     return _mlops_agent
+
+
+def get_kali_agent() -> KaliAgent:
+    """Get or create the kali agent (read-only planner surfaces only)."""
+    global _kali_agent
+    if _kali_agent is None:
+        _kali_agent = KaliAgent()
+    return _kali_agent
 
 
 # ============================================================================
@@ -940,6 +956,199 @@ def config_list():
         table.add_row(key, str(value))
 
     console.print(table)
+
+
+# ============================================================================
+# Kali Commands (KA-092: planner info only - read-only surfaces, no execution)
+# ============================================================================
+
+kali_app = typer.Typer(help="Kali fleet planner info (read-only; no execution)")
+app.add_typer(kali_app, name="kali")
+
+
+@kali_app.callback(invoke_without_command=True)
+def kali_entry(ctx: typer.Context):
+    """Show the kali planner-info usage (read-only surfaces; nothing executes)."""
+    if ctx.invoked_subcommand is not None:
+        return
+    console.print(Panel.fit("[bold blue]kali planner info[/bold blue]", box=box.ROUNDED))
+    console.print(
+        "  agenticai kali tools [filter]  - tool DB entries, optional substring filter\n"
+        "  agenticai kali <tool>           - one-glance tool card + related kali ops\n"
+        "  agenticai kali search <query>   - cross-tool op/pattern search (capped list)",
+        markup=False,
+    )
+
+
+def _kali_auth_label(value: Any) -> str:
+    """Human label for a tool authorization value (int enum or passthrough)."""
+    try:
+        return AuthorizationLevel(int(value)).name.lower()
+    except (TypeError, ValueError):
+        return str(value)
+
+
+def _kali_filtered_tools(filter: Optional[str]) -> List[Dict[str, Any]]:
+    """Tool DB entries from the kali agent, substring-filtered over name/category/description."""
+    entries = get_kali_agent().list_tools()
+    if not filter or not filter.strip():
+        return entries
+    needle = filter.strip().lower()
+    return [
+        entry for entry in entries
+        if needle in str(entry.get("name", "")).lower()
+        or needle in str(entry.get("category", "")).lower()
+        or needle in str(entry.get("description", "")).lower()
+    ]
+
+
+def _kali_op_purposes(agent: KaliAgent) -> List[Tuple[str, bool, str]]:
+    """(op name, is_async, first doc line) for public kali-agent ops; inspected, never called."""
+    rows: List[Tuple[str, bool, str]] = []
+    for name in sorted(dir(type(agent))):
+        if name.startswith("_") or name in ("agent_id", "inference"):
+            continue
+        attr = getattr(agent, name, None)
+        if not callable(attr):
+            continue
+        doc = (inspect.getdoc(attr) or "").splitlines()
+        rows.append((name, bool(inspect.iscoroutinefunction(attr)), doc[0].strip()[:60] if doc else ""))
+    return rows
+
+
+@kali_app.command(
+    "tools",
+    help="List the kali tool DB entries (optional substring filter)",
+)
+def kali_tools(
+    filter: Optional[str] = typer.Argument(None, help="Substring filter (name/category/description)"),
+):
+    """List kali tool DB entries, optionally filtered by a substring (planner info only)."""
+    entries = _kali_filtered_tools(filter)
+    table = Table(title=f"Kali tool DB - {len(entries)} tools", box=box.ROUNDED)
+    table.add_column("Tool", style="cyan")
+    table.add_column("Category", style="magenta")
+    table.add_column("Auth", style="yellow")
+    table.add_column("Description", style="white")
+    for entry in entries:
+        table.add_row(
+            str(entry.get("name", "")),
+            str(entry.get("category", "")),
+            _kali_auth_label(entry.get("authorization")),
+            str(entry.get("description", "")),
+        )
+    console.print(table)
+    console.print("\nOne-glance one tool: agenticai kali <tool> - planner search: agenticai kali search <query>")
+
+
+@kali_app.command(
+    "search",
+    help="Cross-tool op/pattern search over tool DB + kali ops (capped)",
+)
+def kali_search(query: str = typer.Argument(..., help="Case-insensitive substring")):
+    """Search tool DB entries and kali-agent op names/purposes (planner info only)."""
+    needle = query.strip().lower()
+    if not needle:
+        console.print("[yellow]Empty query - nothing to search[/yellow]")
+        raise typer.Exit(1)
+    agent = get_kali_agent()
+    rows: List[Tuple[str, str, str]] = []
+    for entry in agent.list_tools():
+        haystack = " ".join(
+            str(entry.get(key, "")) for key in ("name", "category", "description")
+        ).lower()
+        if needle in haystack:
+            rows.append(("tool", str(entry.get("name", "")), str(entry.get("description", ""))))
+    for op_name, _is_async, purpose in _kali_op_purposes(agent):
+        if needle in op_name.lower() or needle in purpose.lower():
+            rows.append(("op", op_name, purpose))
+    total = len(rows)
+    if not total:
+        console.print(f"No kali matches for '{escape(query)}' - list the DB with: agenticai kali tools")
+        return
+    shown = rows[:_KALI_RESULT_CAP]
+    table = Table(
+        title=f"kali search '{escape(query)}' - {total} match(es), cap {_KALI_RESULT_CAP}",
+        box=box.ROUNDED,
+    )
+    table.add_column("Kind", style="magenta")
+    table.add_column("Key", style="cyan")
+    table.add_column("Purpose", style="white")
+    for kind, key, purpose in shown:
+        table.add_row(kind, key, purpose)
+    console.print(table)
+    if total > _KALI_RESULT_CAP:
+        console.print(f"[yellow]{total - _KALI_RESULT_CAP} more match(es) hidden - narrow the query[/yellow]")
+
+
+def _kali_tool_glance(ctx: typer.Context):
+    """One-glance tool card + related kali ops for the tool named on the CLI (planner info only)."""
+    tool_key = _KALI_TOOL_KEYS.get(str(ctx.info_name).strip().lower().replace("-", "_"))
+    if tool_key is None:
+        console.print(
+            f"[red]Tool '{escape(str(ctx.info_name))}' not in the kali tool DB - "
+            "list with: agenticai kali tools[/red]"
+        )
+        raise typer.Exit(1)
+    agent = get_kali_agent()
+    info = agent.get_tool_info(tool_key)
+    if info is None:
+        console.print(f"[red]Tool '{tool_key}' has no DB entry - list with: agenticai kali tools[/red]")
+        raise typer.Exit(1)
+    console.print(Panel.fit(f"[bold]{info.get('name')}[/bold] kali tool card", box=box.ROUNDED))
+    card = Table(box=box.SIMPLE)
+    card.add_column("Field", style="cyan")
+    card.add_column("Value", style="white")
+    card.add_row("category", str(info.get("category", "")))
+    card.add_row("description", str(info.get("description", "")))
+    card.add_row("command", str(info.get("command", "")))
+    card.add_row("authorization", _kali_auth_label(info.get("authorization")))
+    card.add_row("timeout_seconds", str(info.get("timeout_seconds", "")))
+    schema = info.get("args_schema") or {}
+    required = sorted(k for k, v in schema.items() if isinstance(v, dict) and v.get("required"))
+    card.add_row("required args", ", ".join(required) if required else "-")
+    card.add_row("optional args", str(len(schema) - len(required)))
+    console.print(card)
+    display_name = str(info.get("name", tool_key)).lower()
+    forms = {
+        tool_key.lower(),
+        tool_key.lower().replace("_", "-"),
+        display_name,
+        display_name.replace("-", "_"),
+    }
+    related = [
+        (op_name, is_async, purpose)
+        for op_name, is_async, purpose in _kali_op_purposes(agent)
+        if any(form in op_name.lower() or form in purpose.lower() for form in forms)
+    ]
+    truncated = len(related) > _KALI_RESULT_CAP
+    if related:
+        ops_table = Table(title=f"Related kali ops ({len(related)} found)", box=box.ROUNDED)
+        ops_table.add_column("Op", style="cyan")
+        ops_table.add_column("Async", style="magenta", justify="center")
+        ops_table.add_column("Purpose", style="white")
+        for op_name, is_async, purpose in related[:_KALI_RESULT_CAP]:
+            ops_table.add_row(op_name, "async" if is_async else "", purpose)
+        console.print(ops_table)
+    else:
+        console.print(
+            f"\nNo kali ops name or reference '{info.get('name')}' - op surface: agenticai agent ops kali"
+        )
+    if truncated:
+        console.print(
+            f"[yellow]{len(related) - _KALI_RESULT_CAP} more related op(s) hidden - "
+            f"narrow: agenticai kali search <query>[/yellow]"
+        )
+    console.print("\nPlanner info only - execution stays behind the kali agent's safety gates")
+
+
+# One registered glance command per tool DB key (hidden: keeps `kali <tool>`
+# chaining without changing the visible `kali --help` subcommand set).
+for _kali_tool_key in sorted(KALI_TOOLS_DB):
+    kali_app.command(_kali_tool_key, hidden=True)(_kali_tool_glance)
+    _kali_dash_alias = _kali_tool_key.replace("_", "-")
+    if _kali_dash_alias != _kali_tool_key:
+        kali_app.command(_kali_dash_alias, hidden=True)(_kali_tool_glance)
 
 
 # ============================================================================
