@@ -67,6 +67,7 @@
       "agentic_ai/agents/cyber/postexp.py",
       "agentic_ai/agents/cyber/privesc.py",
       "agentic_ai/agents/cyber/redteam_pentest.py",
+      "agentic_ai/agents/cyber/screenshot_capture.py",
       "agentic_ai/agents/cyber/socialeng_ops.py",
       "agentic_ai/agents/cyber/web_pentest.py",
       "agentic_ai/agents/cyber/webauth_ops.py",
