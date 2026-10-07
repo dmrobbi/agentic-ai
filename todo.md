@@ -595,7 +595,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 
 ## P6 — Evidence/reporting + ops (18 builders + 1 integration; tracks E/F remainder)
 
-- [ ] **KA-081 · Report assembler op** — [BUILDER][M][none] (OPT-81)
+- [x] **KA-081 · Report assembler op** — [BUILDER][M][none] (OPT-81)
   - **Owns:** `agentic_ai/agents/cyber/report_assembler.py` (new), `tests/test_report_assembler.py`
 - [x] **KA-083 · Timeline builder** — [BUILDER][S][none] (OPT-83)
 - [ ] **KA-084 · IOC extractor** — [BUILDER][M][none] (OPT-84)
