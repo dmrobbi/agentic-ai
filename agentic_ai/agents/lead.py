@@ -100,6 +100,7 @@ class CancellationToken:
 
 
 class LeadAgent(BaseAgent):
+    """Orchestration and coordination."""
     agent_type = "lead"
     permission = Permission.ELEVATED
 

@@ -45,11 +45,11 @@ Exit codes: 0 green; 1 target/host tier failure; 2 consent refused;
   TCG). Hostfwd ssh ports: 2222-2225 = the four PVE nodes, 2226 =
   rocky-scan. Guest MACs in the qemu lines are load-bearing (cloud-init
   matched them) - never edit them.
-- **The four PVE node disks are GONE** (verified 2026-10-02 and again
-  2026-10-05: `pve-disk.qcow2` + `pve2/3/4-disk.qcow2` are absent from
-  `~/verify-aai/pve-vm`; the Oct-2 `qemu-*.log` files carry the
-  missing-disk signature). The pve-lab cluster - corosync, HA ct:100, the
-  taps - is undeployable until the owner's rebuild-or-drop decision lands.
+- **The four PVE node disks are BACK** (the owner chose REBUILD; the
+  regeneration completed 2026-10-05 evening: the disks are live-written by
+  the running nodes again, re-verified 2026-10-06/07). The pve-lab
+  cluster is deployed: 4 nodes, quorate, HA CRM master active with
+  watchdogs armed, ct:100 running; gold-build snapshots exist per disk.
   The battery target deliberately does NOT depend on the cluster.
 - rocky-scan has been up since 2026-10-02 02:16 UTC (verified live: load
   ~0; the disk's fresh mtime is the VM's own writes, not a second

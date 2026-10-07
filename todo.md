@@ -617,7 +617,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-098 · Plan explorer** — [BUILDER][M][none] (OPT-98)
 - [x] **KA-099 · Skill sync** — [BUILDER][S][none] (OPT-99)
 - [x] **KA-100 · Owner dashboard widget** — [BUILDER][M][none] (OPT-100)
-- [ ] **KA-INT-6 · Phase-6 wiring + release** — [INTEGRATION][M][none]
+- [x] **KA-INT-6 · Phase-6 wiring + release** — [INTEGRATION][M][none]
   - **Acceptance:** the assembled toolkit released; docs sync (KA-079's checker
     green); suite green; lockstep push; the todo file closed out with a summary.
 
@@ -633,3 +633,25 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   edits (kali.py / kali_v2.py / role-ops.md / AGENT_MATRIX.md / Makefile / CI /
   healthcheck.sh).
 - Cross-phase deps are explicit per task (Depends/Feeds); everything else is free.
+## Close-out (2026-10-07)
+
+- All six phases (P0-P6) landed 2026-10-06/07, run as collector waves the
+  parallelism map describes: 13 builders in P5 (fleet tie-ins), 18 in P6
+  (evidence/reporting + ops), plus the safety layer before them. Shared
+  files touched only in the three [INTEGRATION] wirings (composed gate
+  chain, flag-gated fleet bridges, this close-out).
+- Suite discipline at close: `tests/test_ka_conventions.py::BASELINE_
+  SUITE_TOTAL` = 5320 = the measured collect-only total; the full suite
+  reads 5279 passed / 41 skipped / 0 failed.
+- Release state: the assembled toolkit is published lockstep to both
+  remotes (origin idm.wezzel.com GitLab + dmrobbi GitHub), verified by
+  ls-remote hash equality. Docs sync gate: tools/check_cards_matrix.py
+  clean (registry 37 / matrix rows 37 / summary 37, diffs 0). CI:
+  pytest-suite automatic on MRs+main; lab-battery manual-only with the
+  consent gate as a protected variable (KA-097 fragment applied).
+- The battery topology doc (docs/KA-LAB-TARGET.md) refreshed: the
+  rebuilt cluster is live again; gold-build snapshots per disk; the
+  battery target never depended on the cluster.
+- Remaining owner decisions: pyproject author attribution; the dead kali
+  generations (~21k LOC); the gitlab reconcile (owner-open). Live/lab
+  risk stays consent-gated per the global rules.

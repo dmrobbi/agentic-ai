@@ -4,6 +4,7 @@ from typing import Optional, Dict, Any, List
 from pathlib import Path
 
 class DeveloperAgent(BaseAgent):
+    """Code implementation and review."""
     agent_type = "developer"
     permission = Permission.STANDARD
 

@@ -8,6 +8,7 @@ stages:
   - build
   - security
   - deploy
+  - lab
 
 # ============================================
 # Variables
@@ -71,6 +72,7 @@ ka-battery:
     - python scripts/ka/cve_db_check.py
     - python scripts/ka/catalog_check.py
     - python scripts/ka/cve_db_propose.py --feed tests/fixtures/scans/kevstig_coverage_snapshot.json --queue /tmp/ka-review-$CI_PIPELINE_ID.md
+  artifacts:
     paths:
       - htmlcov/
     expire_in: 1 week
@@ -173,3 +175,91 @@ deploy-prod:
   needs:
     - build
     - security-scan
+
+# ============================================
+# KA-097 additions (PROPOSAL block)
+# Integrator note: merge `lab` into the root stages list; these two jobs
+# own the test + lab stages only.
+# ============================================
+
+# ============================================
+# KA-097: the pytest suite gate
+# ============================================
+pytest-suite:
+  stage: test
+  image: python:${PYTHON_VERSION}-slim
+  before_script:
+    - apt-get update && apt-get install -y gcc
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  script:
+    - cd "$CI_PROJECT_DIR"
+    - set -o pipefail
+    - python3 -m pytest tests/ -q 2>&1 | tee pytest-verdict.log
+    - grep -E "[0-9]+ (passed|failed|error)" pytest-verdict.log
+    - python3 -m pytest tests/ -q -k "purity" 2>&1 | tee purity-scan.log
+    - grep -E "[0-9]+ (passed|failed|error)" purity-scan.log
+  rules:
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+    - if: $CI_COMMIT_BRANCH == "main"
+  artifacts:
+    when: always
+    paths:
+      - pytest-verdict.log
+      - purity-scan.log
+    expire_in: 1 day
+  timeout: 30m
+  retry:
+    max: 2
+    when: always
+
+# ============================================
+# KA-097: the KA-009 lab battery - MANUAL ONLY
+# compose up -> consent-gated pytest -> down -v
+# ============================================
+lab-battery:
+  stage: lab
+  image: python:${PYTHON_VERSION}-slim
+  services:
+    - docker:29-dind
+  variables:
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_TLS_CERTDIR: ""
+  # The lab consent gate is a protected CI/CD variable (Settings > CI/CD >
+  # Variables, marked Protected; Masked where GitLab allows), referenced
+  # BY NAME below. NEVER inline its value in this file.
+  before_script:
+    - apt-get update && apt-get install -y gcc docker.io docker-compose-v2
+    - python -m venv venv
+    - source venv/bin/activate
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  script:
+    - cd "$CI_PROJECT_DIR"
+    # consent refusal FIRST: a manual run without the protected consent
+    # variables aborts before anything lab-touching starts
+    - test "${KA_LAB_BATTERY}" = "1"
+    - docker info
+    - docker compose version
+    - docker compose -f docker/lab-targets/docker-compose.yml up -d
+    - docker compose -f docker/lab-targets/docker-compose.yml ps
+    - python3 -m pytest tests/lab -q 2>&1 | tee lab-battery.log
+    - grep -E "[0-9]+ (passed|failed|error)" lab-battery.log
+  after_script:
+    # teardown ALWAYS: down -v is the documented reset between runs
+    - docker compose -f docker/lab-targets/docker-compose.yml down -v || true
+  rules:
+    # manual in every pipeline shape: never automatic, only owner-clicked
+    - if: $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: manual
+    - if: $CI_COMMIT_BRANCH == "main"
+      when: manual
+  allow_failure: false
+  artifacts:
+    when: always
+    paths:
+      - lab-battery.log
+    expire_in: 1 day
+  timeout: 45m

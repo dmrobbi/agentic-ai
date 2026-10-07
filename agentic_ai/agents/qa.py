@@ -4,6 +4,7 @@ from typing import Optional, Dict, Any, List
 from pathlib import Path
 
 class QAAgent(BaseAgent):
+    """Testing and quality assurance."""
     agent_type = "qa"
     permission = Permission.READ_ONLY
 
