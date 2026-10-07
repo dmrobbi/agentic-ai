@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "name": "Laya decision-row corpus (KA-071)",
+    "generated": "2026-10-06",
+    "provenance": "Synthetic laya_gated_decision rows; mirrors the audit-line shape pinned by test_laya_replay.py (ts/kind/alert_id/severity/model/outcome/duration_ms/detail). LAY-2604/LAY-2605 are the deliberate false-positive/false-negative double-check edges; LAY-2608/2610/2614/2615 are deliberate schema violations exercising the unverifiable route; LAY-2607/LAY-2612 carry the gate_engaged marker variants. CVE ids reference the same real-CVE universe as the KA-001 cve_eval_corpus (known to the engine: 2021-44228, 2017-0144, 2019-0708; deliberately absent: 2026-4499). No hosts appear in laya rows; no credentials, no live SOC data."
+  },
+  "rows": [
+    {"ts": "2026-10-05T09:00:01Z", "kind": "laya_gated_decision", "alert_id": "LAY-2601", "severity": 12, "model": "laya-typed-decisions", "outcome": "escalated", "duration_ms": 988, "detail": "rule 31151 web-400 flood; CVE-2021-44228 suspect"},
+    {"ts": "2026-10-05T09:00:31Z", "kind": "laya_gated_decision", "alert_id": "LAY-2602", "severity": 7, "model": "laya-typed-decisions", "outcome": "referred", "duration_ms": 1001, "detail": "smb anomaly; CVE-2017-0144 flagged by the scanner"},
+    {"ts": "2026-10-05T09:01:02Z", "kind": "laya_gated_decision", "alert_id": "LAY-2603", "severity": 12, "model": "laya-typed-decisions", "outcome": "escalated", "duration_ms": 1035, "detail": "rule 31314 ssh brute; no cve cargo in the audit line"},
+    {"ts": "2026-10-05T09:01:44Z", "kind": "laya_gated_decision", "alert_id": "LAY-2604", "severity": 3, "model": "laya-typed-decisions", "outcome": "escalated", "duration_ms": 1009, "detail": "rule 66000 low-band noise escalated"},
+    {"ts": "2026-10-05T09:02:10Z", "kind": "laya_gated_decision", "alert_id": "LAY-2605", "severity": 9, "model": "laya-typed-decisions", "outcome": "ok", "duration_ms": 962, "detail": "rdp surface without NLA; CVE-2019-0708 candidate"},
+    {"ts": "2026-10-05T09:02:38Z", "kind": "laya_gated_decision", "alert_id": "LAY-2606", "severity": 2, "model": "laya-typed-decisions", "outcome": "suppressed", "duration_ms": 947, "detail": "kernel noise; suppressed by the gate"},
+    {"ts": "2026-10-05T09:03:05Z", "kind": "laya_gated_decision", "alert_id": "LAY-2607", "severity": 12, "model": "laya-typed-decisions", "outcome": "escalated", "duration_ms": 993, "detail": "rule 31151 flood again", "gate_engaged": false},
+    {"ts": "2026-10-05T09:03:29Z", "kind": "laya_gated_decision", "alert_id": "LAY-2608", "severity": 12, "model": "laya-typed-decisions", "outcome": "escalate", "duration_ms": 1010, "detail": "rule 31151 flood; explicit flag says otherwise", "escalated": false},
+    {"ts": "2026-10-05T09:03:55Z", "kind": "laya_gated_decision", "alert_id": "LAY-2609", "severity": 3, "model": "laya-typed-decisions", "outcome": "deferred", "duration_ms": 970, "detail": "deferred by policy"},
+    {"ts": "2026-10-05T09:04:12Z", "kind": "laya_gated_decision", "alert_id": "LAY-2610", "severity": "twelve", "model": "laya-typed-decisions", "outcome": "ok", "duration_ms": 955, "detail": "severity shape miss"},
+    {"ts": "2026-10-05T09:04:40Z", "kind": "laya_gated_decision", "alert_id": "LAY-2611", "severity": 10, "model": "laya-typed-decisions", "outcome": "escalated", "duration_ms": 1021, "detail": "proxy probe; CVE-2026-4499-shaped unknown cargo"},
+    {"ts": "2026-10-05T09:05:02Z", "kind": "laya_gated_decision", "alert_id": "LAY-2612", "severity": 2, "model": "laya-typed-decisions", "outcome": "dismissed", "duration_ms": 933, "detail": "dismissed by policy", "gate_engaged": false},
+    {"ts": "2026-10-05T09:05:27Z", "alert_id": "LAY-2613", "severity": 5, "model": "laya-typed-decisions", "outcome": "ok", "duration_ms": 949, "detail": "kindless line"},
+    {"ts": "2026-10-05T09:05:51Z", "kind": "nmap_scan", "alert_id": "LAY-2614", "severity": 5, "model": "laya-typed-decisions", "outcome": "ok", "duration_ms": 900, "detail": "wrong kind"},
+    {"ts": "2026-10-05T09:06:13Z", "kind": "laya_gated_decision", "alert_id": "LAY; rm -rf /", "severity": 5, "model": "laya-typed-decisions", "outcome": "ok", "duration_ms": 905, "detail": "hostile id"},
+    {"ts": "2026-10-05T09:06:40Z", "kind": "laya_gated_decision", "alert_id": "LAY-2616", "severity": 10, "model": "laya-typed-decisions", "outcome": "escalated", "duration_ms": 1015, "detail": "CVE-2017-0144 hit and CVE-2017-0144 confirmed again"}
+  ]
+}
