@@ -1,0 +1,118 @@
+{
+  "meta": {
+    "schema": "soc_memory_engagements/v1",
+    "provenance": "synthetic corpus modeled for KA-075 (OPT-75): engagement summaries filed into tenant-scoped SOC memory records; no live store is ever touched. Schema pinned by tests/test_soc_memory_bridge.py.",
+    "valid_count": 8,
+    "invalid_ids": [
+      "E-901",
+      "E-902",
+      "E-903",
+      "E-904"
+    ]
+  },
+  "engagements": [
+    {
+      "engagement_id": "E-01",
+      "tenant_id": "soc-primary",
+      "summary": "Web exploit battery against the lab range completed cleanly",
+      "severity": "high",
+      "tags": [
+        "battery",
+        "web"
+      ],
+      "findings": [
+        "F-01",
+        "F-02"
+      ],
+      "target": "range-a.lab.example"
+    },
+    {
+      "engagement_id": "E-02",
+      "tenant_id": "soc-primary",
+      "summary": "Credential sweep finished with two exposed services",
+      "severity": "medium"
+    },
+    {
+      "engagement_id": "E-03",
+      "tenant_id": "soc-secondary",
+      "summary": "AD enumeration dry run only; no effects",
+      "severity": "info",
+      "tags": [
+        "dryrun"
+      ],
+      "target": "dc-01.lab.example"
+    },
+    {
+      "engagement_id": "E-04",
+      "tenant_id": "soc-secondary",
+      "summary": "Mobile MDM review parked pending owner consent",
+      "tags": [
+        "pending",
+        "consent"
+      ]
+    },
+    {
+      "engagement_id": "E-05",
+      "tenant_id": "soc-primary",
+      "summary": "kev-routed CVE check attached one reference",
+      "severity": "low",
+      "findings": [
+        "F-06"
+      ]
+    },
+    {
+      "engagement_id": "E-06",
+      "tenant_id": "lab-fleet",
+      "summary": "ICS segmentation review scheduled for next week",
+      "severity": "info",
+      "tags": [
+        "ics",
+        "schedule"
+      ],
+      "findings": [
+        "F-03",
+        "F-03",
+        "F-04"
+      ]
+    },
+    {
+      "engagement_id": "E-07",
+      "tenant_id": "lab-fleet",
+      "summary": "Cloud posture drift report filed",
+      "severity": "Medium",
+      "tags": [
+        "cloud"
+      ]
+    },
+    {
+      "engagement_id": "E-08",
+      "tenant_id": "soc-primary",
+      "summary": "Patch queue ages tracked against exploit availability",
+      "severity": "high",
+      "findings": [
+        "F-05",
+        "F-07",
+        "F-08"
+      ]
+    },
+    {
+      "engagement_id": "E-901",
+      "tenant_id": "SOC-PRIMARY",
+      "summary": "tenant casing must fail"
+    },
+    {
+      "engagement_id": "E-902",
+      "summary": "tenant missing entirely"
+    },
+    {
+      "engagement_id": "E-903",
+      "tenant_id": "soc-primary",
+      "summary": "Line one\nLine two"
+    },
+    {
+      "engagement_id": "E-904",
+      "tenant_id": "soc-primary",
+      "summary": ""
+    }
+  ]
+}

@@ -567,7 +567,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - [x] **KA-074 · Healthcheck row** — [BUILDER][S][none] (OPT-74)
   - **Owns:** `tests/test_healthcheck_kali_row.py`, `docs/ka_healthcheck_row.md` (the
     healthcheck.sh edit itself = the integration task's, since the script is shared).
-- [ ] **KA-075 · Engagement → SOC memory** — [BUILDER][S][none] (OPT-75)
+- [x] **KA-075 · Engagement → SOC memory** — [BUILDER][S][none] (OPT-75)
   - **Owns:** `agentic_ai/agents/cyber/soc_memory_bridge.py` (new), `tests/test_soc_memory_bridge.py`
 - [ ] **KA-076 · Fleet test harness** — [BUILDER][L][lab] (OPT-76)
   - **Owns:** `docker/fleet-harness/` (new), `tests/lab/` additions, harness README
