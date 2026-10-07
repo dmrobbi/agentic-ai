@@ -553,7 +553,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/aging_queue.py` (new), `tests/test_aging_queue.py`
   - **Acceptance:** patch-report ages × exploit availability → priority report (pure
     planner; the patch report.json shape fixture committed).
-- [ ] **KA-069 · Tickets bridge** — [BUILDER][M][none] (OPT-69)
+- [x] **KA-069 · Tickets bridge** — [BUILDER][M][none] (OPT-69)
   - **Owns:** `agentic_ai/agents/cyber/tickets_bridge.py` (new), `tests/test_tickets_bridge.py`
   - **Acceptance:** engagement → ticket payloads (the soc-tickets contract; mocked).
 - [ ] **KA-070 · Remediation-ticket integration** — [BUILDER][S][none] (OPT-70)
