@@ -33,7 +33,7 @@ SCAN_MODULES = frozenset({
     "ad_pentest.py", "api_pentest.py", "chain_ops.py", "cloud_pentest.py",
     "container_pentest.py", "forensics_ops.py", "full_engagement.py",
     "ics_iot.py", "malware_ops.py", "mobile_pentest.py", "network_device.py",
-    "osint_pentest.py", "postexp.py", "privesc.py", "redteam_pentest.py",
+    "osint_pentest.py", "postexp.py", "privesc.py", "redteam_pentest.py", "screenshot_capture.py",
     "socialeng_ops.py", "web_pentest.py", "webauth_ops.py",
     "wireless_pentest.py", "xss_exploit.py",
 })
