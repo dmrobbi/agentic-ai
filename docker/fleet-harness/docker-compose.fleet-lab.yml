@@ -1,0 +1,142 @@
+# KA-076 - the fleet test harness compose (OPT-76): a vulnerable-app farm
+# plus the SOC sidecar slice, for REPEATED, OWNER-GATED battery runs.
+#
+# LAB BOUNDARY: everything in this file is intentionally vulnerable and
+# lab-only. Never run it against an exposed or production network. The
+# test suite NEVER executes this compose (committed DATA - the tests only
+# parse it); the only supported runners are the owner commands:
+#   ./harness.sh up farm       (or: docker compose -f <this> --profile fleet-farm up -d)
+#
+# DENY-BY-DEFAULT: every service sits behind an opt-in compose profile
+# (fleet-farm / fleet-soc), so a bare `docker compose -f <this> up`
+# starts NOTHING.
+#
+# Ports: 8181-8183 belong to docker/lab-targets (KA-009); this harness
+# occupies 8191-8194 only. Host aliases follow the <name>.fleet.example
+# convention on the shared lab network (external lab-targets_default -
+# bring up docker/lab-targets first, or harness.sh creates the placeholder).
+# The SOC slice publishes NO host ports on any profile.
+#
+# Image tags verified live against Docker Hub on 2026-10-06.
+
+name: fleet-harness
+
+services:
+  farm-httpd:
+    # Apache path-traversal/RCE class (CVE-2021-41773 / 42013 shape)
+    profiles:
+      - fleet-farm
+    image: httpd:2.4.49
+    ports:
+      - "8191:80"
+    networks:
+      lab-net:
+        aliases:
+          - farm-httpd.fleet.example
+    restart: unless-stopped
+
+  farm-solr:
+    # Velocity-template RCE + Log4Shell class (44XXX CVE matching surfaces)
+    profiles:
+      - fleet-farm
+    image: solr:8.2.0
+    ports:
+      - "8192:8983"
+    networks:
+      lab-net:
+        aliases:
+          - farm-solr.fleet.example
+    restart: unless-stopped
+
+  farm-wp-old-db:
+    # legacy CMS backing store (lab-only constants; nothing here is secret)
+    profiles:
+      - fleet-farm
+    image: mariadb:10.6
+    environment:
+      MYSQL_ROOT_PASSWORD: wp-old-lab-only
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wp-old-lab-only
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+    networks:
+      lab-net:
+        aliases:
+          - farm-wp-old-db.fleet.example
+    restart: unless-stopped
+
+  farm-wp-old:
+    # legacy WordPress (5.x) for the CVE-exploit-DB matching surface
+    profiles:
+      - fleet-farm
+    image: wordpress:5.8.1-apache
+    ports:
+      - "8193:80"
+    environment:
+      WORDPRESS_DB_HOST: farm-wp-old-db
+      WORDPRESS_DB_USER: wordpress
+      WORDPRESS_DB_PASSWORD: wp-old-lab-only
+      WORDPRESS_DB_NAME: wordpress
+    depends_on:
+      farm-wp-old-db:
+        condition: service_healthy
+    networks:
+      lab-net:
+        aliases:
+          - farm-wp-old.fleet.example
+    restart: unless-stopped
+
+  farm-redis:
+    # unauthenticated cache service for postexp/chain planner surfaces
+    profiles:
+      - fleet-farm
+    image: redis:5.0.14
+    ports:
+      - "8194:6379"
+    networks:
+      lab-net:
+        aliases:
+          - farm-redis.fleet.example
+    restart: unless-stopped
+
+  farm-oob:
+    # OOB/callback catcher (HTTP only): callbacks aimed at
+    # http://oob.fleet.example:8195 from the lab network land here;
+    # read them with `docker logs <farm-oob container>` after a run
+    profiles:
+      - fleet-farm
+    image: python:3.11-alpine
+    command: ["python3", "-m", "http.server", "8195"]
+    networks:
+      lab-net:
+        aliases:
+          - oob.fleet.example
+    restart: unless-stopped
+
+  # soc-wazuh-indexer (wazuh/wazuh-indexer:4.7.0) is DOCUMENTED, NOT
+  # DEPLOYED: a clean indexer start needs certificate + config scaffolding
+  # that belongs to the detection-loop task (KA-078's owner playbook).
+  # The manager starts standalone; wire the indexer there so the harness
+  # stays start-clean and repeatable. (Held as comments on purpose - the
+  # harness tests pin this documented-absent state.)
+
+  soc-wazuh-manager:
+    # the alert/manager sidecar: agent-enrollment plane for lab targets
+    # (ports 1514/1515 + API 55000 internal to the lab network only)
+    profiles:
+      - fleet-soc
+    image: wazuh/wazuh-manager:4.7.0
+    networks:
+      lab-net:
+        aliases:
+          - wazuh-manager.fleet.example
+    restart: unless-stopped
+
+networks:
+  lab-net:
+    external: true
+    name: lab-targets_default
