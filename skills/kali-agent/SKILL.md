@@ -50,3 +50,45 @@ dirs). Dashboards: `kali_dashboard/` for the kali UI.
   they preserve the audit lineage (v3 was the prior production release).
 - Real-attack evidence is never edited post-run; if something in an evidence
   file is wrong, record the correction in a new file.
+
+## Lab battery + runbook references
+
+The fleet repo ships an owner-run lab battery so this agent's plans can be
+proven against deliberately vulnerable targets, and a detection runbook that
+turns a real lab attack into a real detection plus a verification plan:
+
+- Fleet harness (KA-076): docker/fleet-harness/README.md — two opt-in compose
+  profiles (vulnerable-app farm on host ports 8191-8194 plus a SOC sidecar
+  slice), driven by docker/fleet-harness/harness.sh
+  (`help|status|up|down|reset|run|evidence`); compose data sits in
+  docker-compose.fleet-lab.yml (a bare `up` starts NOTHING). Start the
+  battery with `docker/fleet-harness/harness.sh run lab` - gate check, farm
+  up (idempotent), `pytest tests/lab`, then bundled evidence. The original
+  lab-target trio (ports 8181-8183) lives in docker/lab-targets/.
+- Lab battery tests: tests/lab/ (tests/lab/test_planner_parity.py,
+  tests/lab/test_fleet_harness.py) - collected by the suite driver; every
+  live surface inside skips cleanly without the owner gate raised.
+- Detection runbook (KA-078): docs/KA-LAB-DETECTION.md - enroll the battery
+  target into the SOC's Wazuh, run the marker brute force, confirm the
+  expected rule fired, then map the alert row onto a per-finding
+  verification plan with the `verify_soc_findings` op
+  (agentic_ai/agents/cyber/soc_bridge.py). Entry points:
+  scripts/lab/pve-lab-battery.sh (--check/--reset, battery target tier) and
+  scripts/lab/enroll-wazuh.sh (--check/--verify/--enroll); sibling
+  playbooks docs/KA-LAB-TARGET.md (target + reset machinery) and
+  docs/KA-EXPLOIT-TESTS.md (the environment-gate discipline table).
+- Consent discipline: battery and runbook state-changers are gated by
+  environment gates the OWNER raises deliberately: KA_LAB_BATTERY (lab
+  battery tests), KA_FLEET_HARNESS (fleet harness consent), KA_LAB_CONSENT
+  and KA_BATTERY_CONSENT (the runbooks' mutating steps), BRUTEFORCE_E2E
+  (the SOC e2e pipeline). Reference gates by NAME only in plans, reports,
+  and chat; the agent's own surface stays planning-only and
+  lab_or_authorized_targets_only, so dry-run ops keep working with no
+  consent at all.
+- Evidence: battery runs land under the repo's evidence/ directory
+  (`evidence/<UTC stamp>/battery.log` + `manifest.sha256`, runtime output,
+  untracked by design); the CLI's own phase evidence stays in
+  kali_agent_v4/evidence/ - never edit evidence after the fact, and never
+  store evidence on the lab target (a `--reset` wipes it). After surface
+  changes the SOC fleet healthcheck re-proves kali op presence via its
+  op-presence row (docs/ka_healthcheck_row.md).

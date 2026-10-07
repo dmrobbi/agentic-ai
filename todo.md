@@ -615,7 +615,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `.gitlab-ci.yml` additions proposal (the integration task applies; the
     shared CI file = integration-reviewed)
 - [ ] **KA-098 · Plan explorer** — [BUILDER][M][none] (OPT-98)
-- [ ] **KA-099 · Skill sync** — [BUILDER][S][none] (OPT-99)
+- [x] **KA-099 · Skill sync** — [BUILDER][S][none] (OPT-99)
 - [ ] **KA-100 · Owner dashboard widget** — [BUILDER][M][none] (OPT-100)
 - [ ] **KA-INT-6 · Phase-6 wiring + release** — [INTEGRATION][M][none]
   - **Acceptance:** the assembled toolkit released; docs sync (KA-079's checker

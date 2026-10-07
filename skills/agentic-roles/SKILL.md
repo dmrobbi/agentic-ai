@@ -60,3 +60,40 @@ Verified usage examples (all executed before publishing) live in
 - Fix latent enum/attribute defects at the point of use — an agent that cannot
   instantiate is a critical finding, not a quirk (biblical_scholar shipped
   with four unusable enum references; fixed 2026-09-29).
+
+## Lab battery + runbook references
+
+The owner-run lab battery (docker/fleet-harness/, KA-076) and the detection
+runbook (docs/KA-LAB-DETECTION.md, KA-078) are where role agents meet real
+lab feedback. Roles keep their planner-only contract; the owner executes:
+
+- Run: the battery itself is an owner action —
+  `docker/fleet-harness/harness.sh run lab` with the consent gates raised
+  (name them in agent work, never a value); without a gate everything in
+  tests/lab/ skips cleanly. The role surface feeds it: `kali` and `kali_v2`
+  ops plan each battery surface (web pentest chains, the CVE-matching rows
+  against the farm images), `redteam` covers post-exploitation chain
+  planning - planner-only, lab_or_authorized_targets_only.
+- Verify: after a battery or runbook loop, `kali`'s `verify_soc_findings`
+  op (agentic_ai/agents/cyber/soc_bridge.py, KA-066) maps a Wazuh alert row
+  onto a per-finding verification plan (runbook step 5 is the worked
+  example); the `soc` agent consumes the SOC side - alerts, hunting,
+  incident timelines (create_alert/get_alerts/escalate_alert,
+  add_timeline_entry).
+- Reset: `harness.sh reset` rolls fleet-harness state between battery runs;
+  the pve-lab battery target's snapshot reset is
+  scripts/lab/pve-lab-battery.sh `--reset` (target playbook:
+  docs/KA-LAB-TARGET.md). After a target reset the enrolled Wazuh agent is
+  gone - scripts/lab/enroll-wazuh.sh (gate KA_LAB_CONSENT, referenced by
+  name) re-establishes it before the next loop.
+- Runbook entry points from the role side:
+  scripts/lab/pve-lab-battery.sh (--check/--reset),
+  scripts/lab/enroll-wazuh.sh (--check/--verify/--enroll), the gate
+  discipline table docs/KA-EXPLOIT-TESTS.md (consent gates compose:
+  KA_BATTERY_CONSENT gates the target's mutating steps), and the harness
+  surface table docker/fleet-harness/README.md.
+- Consent + evidence: role ops never flip gates - an op planning live-fire
+  work states the gate NAME it depends on and stays dry-run until the owner
+  raises it; battery evidence lands in the repo's evidence/ directory
+  (runtime, untracked) and role agents reference it from engagement
+  reports, storing nothing evidence-bearing on the lab target itself.
