@@ -562,7 +562,7 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   - **Owns:** `agentic_ai/agents/cyber/laya_verify.py` (new), `tests/test_laya_verify.py`
 - [x] **KA-072 · STIG-coverage gap report** — [BUILDER][M][none] (OPT-72)
   - **Owns:** `tools/build_stig_gap_report.py` (new), `tests/test_stig_gap.py`
-- [ ] **KA-073 · Newsroom threat feed** — [BUILDER][S][none] (OPT-73)
+- [x] **KA-073 · Newsroom threat feed** — [BUILDER][S][none] (OPT-73)
   - **Owns:** `agentic_ai/agents/cyber/threat_feed.py` (new), `tests/test_threat_feed.py`
 - [ ] **KA-074 · Healthcheck row** — [BUILDER][S][none] (OPT-74)
   - **Owns:** `tests/test_healthcheck_kali_row.py`, `docs/ka_healthcheck_row.md` (the

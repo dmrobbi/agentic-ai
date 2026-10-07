@@ -1,0 +1,125 @@
+{
+ "meta": {
+  "name": "newsroom feed snapshot for KA-073",
+  "generated": "2026-10-06",
+  "provenance": "Synthetic-but-realistic mirror of the bedimsecurity.com newsroom state shape ({articles, archive}; rows carry id/added_at/source/title/url/category/summary, added_at ISO-8601 Z, url https). The live shape was observed read-only 2026-10-06 and pinned verbatim as the KA-073 module contract; every id/title/summary here is inert and example.com-hosted on purpose. No credentials, no payloads, no real-world URLs.",
+  "trimmed": {
+   "articles_in_fixture": 10,
+   "archive_in_fixture": 2
+  }
+ },
+ "feed": {
+  "articles": [
+   {
+    "id": "synthetic-zero-day-router-exploit",
+    "added_at": "2026-10-06T21:10:00Z",
+    "source": "SyntheticWire",
+    "title": "Zero-day exploited on home routers before patch available",
+    "url": "https://example.com/news/zero-day-router-exploit",
+    "category": "Cyber Controls",
+    "summary": "Attackers chained a zero-day with a remote code execution bug against consumer routers; the first scans were caught by lab honeypots."
+   },
+   {
+    "id": "synthetic-mcp-protocol-pivot",
+    "added_at": "2026-10-06T18:41:31Z",
+    "source": "SyntheticBeacon",
+    "title": "Prompt injection pivots between MCP agents inside one tenant",
+    "url": "https://example.com/news/mcp-protocol-pivot",
+    "category": "Agentic AI",
+    "summary": "A researcher chained prompt injections across MCP handoffs in a two-agent lab demo; no customer data was involved."
+   },
+   {
+    "id": "synthetic-netscaler-cve",
+    "added_at": "2026-10-05T12:01:22Z",
+    "source": "SyntheticAffairs",
+    "title": "NetScaler bug CVE-2026-31337 patched after honeypot sightings",
+    "url": "https://example.com/news/netscaler-cve",
+    "category": "Cyber Controls",
+    "summary": "Vendors shipped fixes for CVE-2026-31337, a remote code execution case; the changelog also lists cve-2026-1001."
+   },
+   {
+    "id": "synthetic-gov-registry-dwell",
+    "added_at": "2026-10-05T16:00:00Z",
+    "source": "SyntheticTribune",
+    "title": "Long dwell time disclosed in state registry breach",
+    "url": "https://example.com/news/registry-dwell",
+    "category": "Compliance",
+    "summary": "Operators disclosed a months-long unauthorized access; stolen passwords were reset across the tenant."
+   },
+   {
+    "id": "synthetic-ot-coalition-guidance",
+    "added_at": "2026-10-06T12:30:37Z",
+    "source": "SyntheticGov",
+    "title": "Coalition publishes OT security guidance for water utilities",
+    "url": "https://example.com/news/ot-coalition-guidance",
+    "category": "Policy",
+    "summary": "The joint guidance covers network separation and patch cadence for operational technology sites."
+   },
+   {
+    "id": "synthetic-contractor-breach",
+    "added_at": "2026-10-06T08:25:41Z",
+    "source": "SyntheticDesk",
+    "title": "Contractor breach leaks airline passenger data via third-party portal",
+    "url": "https://example.com/news/contractor-breach",
+    "category": "Compliance",
+    "summary": "A third-party data processor exposed records, and leaked files surfaced through the week."
+   },
+   {
+    "id": "synthetic-backup-appliance-path-traversal",
+    "added_at": "2026-10-05T18:08:51Z",
+    "source": "SyntheticRecord",
+    "title": "Path traversal to root on backup appliance, no login needed",
+    "url": "https://example.com/news/backup-appliance-path-traversal",
+    "category": "Cyber Controls",
+    "summary": "An attacker chain from path traversal ended in root on the lab appliance; no authentication was required."
+   },
+   {
+    "id": "synthetic-0day-disclosure-slate",
+    "added_at": "2026-10-06T14:00:00Z",
+    "source": "SyntheticJournal",
+    "title": "Disclosure slate argues 0-day markets need daylight",
+    "url": "https://example.com/news/0day-disclosure-slate",
+    "category": "Policy",
+    "summary": "Policy scholars debate how 0-day markets should disclose to vendors."
+   },
+   {
+    "id": "synthetic-backup-restore",
+    "added_at": "2026-10-06T22:00:00Z",
+    "source": "SyntheticTimes",
+    "title": "Backup platform restores service after encryption outage",
+    "url": "https://example.com/news/backup-restore",
+    "category": "Cyber Controls",
+    "summary": "The storage platform restored service after the outage and reported no data loss."
+   },
+   {
+    "id": "synthetic-agentic-sandbox-escape",
+    "added_at": "2026-10-06T21:10:00Z",
+    "source": "SyntheticBeacon",
+    "title": "Sandbox escape in an open-source coding agent",
+    "url": "https://example.com/news/sandbox-escape-agent",
+    "category": "Agentic AI",
+    "summary": "A sandbox escape let the demo agent read its own config file."
+   }
+  ],
+  "archive": [
+   {
+    "id": "synthetic-ot-baseline-scans",
+    "added_at": "2026-10-04T09:00:00Z",
+    "source": "SyntheticGov",
+    "title": "OT baseline scans scheduled for the water sector",
+    "url": "https://example.com/news/ot-baseline-scans",
+    "category": "Policy",
+    "summary": "Baseline scans rotate through lab replicas first before any site visit."
+   },
+   {
+    "id": "synthetic-supplier-outage-aftermath",
+    "added_at": "2026-10-04T07:00:00Z",
+    "source": "SyntheticWire",
+    "title": "Outage aftermath disclosures trickle out",
+    "url": "https://example.com/news/outage-aftermath",
+    "category": "Compliance",
+    "summary": "Disclosures continued through the week."
+   }
+  ]
+ }
+}
