@@ -548,6 +548,7 @@ class DevOpsAgent(BaseAgent):
     def create_task(self, title: str = "", description: str = "", priority: str = "medium", assignee: str = "") -> Any:
         """Create a DevOps task."""
         from dataclasses import dataclass as _dc, field as _f
+
         @_dc
         class DevOpsTask:
             task_id: str
@@ -569,7 +570,6 @@ class DevOpsAgent(BaseAgent):
     # ============================================
     # Utilities
     # ============================================
-
 
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""

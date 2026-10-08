@@ -655,3 +655,35 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - Remaining owner decisions: pyproject author attribution; the dead kali
   generations (~21k LOC); the gitlab reconcile (owner-open). Live/lab
   risk stays consent-gated per the global rules.
+
+## CI lint gate drive (2026-10-08)
+
+- Owner decision (00:41 UTC): the dead kali generations stay put for
+  now — "fix lint now, delete later". The deletion (root dirs
+  kali_agent_v3/, kali_agent_v4/, kaliagent-v4/, kali_dashboard/, plus
+  possibly old-core modules) remains an open decision, NOT bundled
+  with this lint work.
+- Why nothing fixed here is wasted: the flake8 gate scans agentic_ai/
+  only (the root kali dirs are outside the lint path), and the in-tree
+  agents/cyber/kali.py + kali_v2.py are live code (cyber __init__
+  exports, cli.py import, soc/kev/laya bridges, 10+ test files) — they
+  get mechanical lint fixes, not deletion.
+- Baseline at e008e1e with CI's exact toolchain (flake8 7.4.1,
+  pycodestyle 2.15.0, pyflakes 4.0.3): 564 violations / 119 files.
+- Batches — mechanical classes only, module semantics untouched; after
+  each batch the full pytest suite must read 0 failed with the
+  BASELINE_SUITE_TOTAL pin (5320) unchanged, then one commit as
+  "Dawn Robbins <dmrobbipens@gmail.com>" (author + committer) pushed
+  lockstep to origin (GitLab) + dmrobbi (GitHub) and ls-remote-verified:
+  - B1 blank-line/whitespace (265): W293 131, W292 66, E303 26, W291 6,
+    E302 11, E305 6, E301 1, E306 1, E127 13, E131 4.
+  - B2 imports/f-string trivia (118): F401 82, F541 30, F402 3,
+    F601 2, F811 1.
+  - B3 line length (133): E501.
+  - B4 judgement classes (48): E402 33, F841 10, W605 3, F821 2 —
+    F821 (undefined names) inspected before touching; anything that
+    needs a semantic change stops and goes back to the owner.
+- Exit: flake8 reports 0 under 7.4.1 with the job's exact command and
+  the GitLab lint job goes green. Known-separate: the `build` job is
+  already red on main (pipelines 6783-6787) — out of scope here,
+  surfaced to the owner separately.

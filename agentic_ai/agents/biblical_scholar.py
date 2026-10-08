@@ -152,7 +152,7 @@ class BiblicalScholarAgent:
         """Initialize core religious texts database."""
         # This would normally load from a database or external source
         # For now, we'll have a representative sample
-        
+
         # Christian texts
         self.texts["john_3_16"] = ReligiousText(
             text_id="john_3_16",
@@ -171,7 +171,7 @@ class BiblicalScholarAgent:
             themes=["love", "salvation", "faith", "eternal life"],
             keywords=["god", "love", "world", "son", "believe", "eternal life"]
         )
-        
+
         self.texts["genesis_1_1"] = ReligiousText(
             text_id="genesis_1_1",
             title="Genesis 1:1",
@@ -189,7 +189,7 @@ class BiblicalScholarAgent:
             themes=["creation", "god", "beginnings", "sovereignty"],
             keywords=["beginning", "god", "created", "heavens", "earth"]
         )
-        
+
         # Islamic texts
         self.texts["quran_fatiha"] = ReligiousText(
             text_id="quran_fatiha",
@@ -208,7 +208,7 @@ class BiblicalScholarAgent:
             themes=["praise", "mercy", "guidance", "worship", "judgment"],
             keywords=["allah", "merciful", "praise", "worlds", "judgment", "worship", "guide"]
         )
-        
+
         # Hindu texts
         self.texts["bhagavad_gita_2_47"] = ReligiousText(
             text_id="bhagavad_gita_2_47",
@@ -227,7 +227,7 @@ class BiblicalScholarAgent:
             themes=["duty", "detachment", "action", "karma", "selfless service"],
             keywords=["work", "fruits", "action", "reward", "inaction", "duty"]
         )
-        
+
         # Buddhist texts
         self.texts["dhammapada_1"] = ReligiousText(
             text_id="dhammapada_1",
@@ -268,7 +268,7 @@ class BiblicalScholarAgent:
             "know thyself": "delphic_maxim",
             "an unexamined life is not worth living": "socrates_apology",
         }
-        
+
         # Add more texts for the quotes above
         self.texts["leviticus_19_18"] = ReligiousText(
             text_id="leviticus_19_18",
@@ -287,7 +287,7 @@ class BiblicalScholarAgent:
             themes=["love", "forgiveness", "neighbor", "holiness"],
             keywords=["love", "neighbor", "revenge", "grudge", "lord"]
         )
-        
+
         self.texts["psalm_23_1"] = ReligiousText(
             text_id="psalm_23_1",
             title="Psalm 23:1",
@@ -305,7 +305,7 @@ class BiblicalScholarAgent:
             themes=["trust", "provision", "protection", "guidance"],
             keywords=["lord", "shepherd", "lack", "nothing"]
         )
-        
+
         self.texts["john_14_6"] = ReligiousText(
             text_id="john_14_6",
             title="John 14:6",
@@ -323,7 +323,7 @@ class BiblicalScholarAgent:
             themes=["jesus", "way", "truth", "life", "father", "exclusivity"],
             keywords=["jesus", "way", "truth", "life", "father", "except", "through", "me"]
         )
-        
+
         self.texts["matthew_7_12"] = ReligiousText(
             text_id="matthew_7_12",
             title="Matthew 7:12",
@@ -341,7 +341,7 @@ class BiblicalScholarAgent:
             themes=["golden rule", "ethics", "reciprocity", "law", "prophets"],
             keywords=["do", "others", "would", "have", "them", "do", "you", "sums", "up", "law", "prophets"]
         )
-        
+
         self.texts["matthew_5_3"] = ReligiousText(
             text_id="matthew_5_3",
             title="Matthew 5:3",
@@ -359,7 +359,7 @@ class BiblicalScholarAgent:
             themes=["blessed", "poor", "spirit", "kingdom", "heaven"],
             keywords=["blessed", "poor", "in", "spirit", "theirs", "kingdom", "heaven"]
         )
-        
+
         self.texts["ecclesiastes_1_2"] = ReligiousText(
             text_id="ecclesiastes_1_2",
             title="Ecclesiastes 1:2",
@@ -377,7 +377,7 @@ class BiblicalScholarAgent:
             themes=["meaningless", "vanity", "teacher", "everything"],
             keywords=["meaningless", "utterly", "everything"]
         )
-        
+
         self.texts["tao_te_ching_64"] = ReligiousText(
             text_id="tao_te_ching_64",
             title="Tao Te Ching Chapter 64",
@@ -489,10 +489,10 @@ class BiblicalScholarAgent:
 
         # Sort by relevance (simple keyword match count)
         results.sort(key=lambda t: sum(
-            1 for word in query_lower.split() 
-            if word in t.title.lower() or 
-               word in t.content.lower() or 
-               any(word in k.lower() for k in t.keywords)
+            1 for word in query_lower.split()
+            if word in t.title.lower() or
+            word in t.content.lower() or
+            any(word in k.lower() for k in t.keywords)
         ), reverse=True)
 
         return results
@@ -500,14 +500,14 @@ class BiblicalScholarAgent:
     def get_random_text(self, religion: Optional[Religion] = None) -> Optional[ReligiousText]:
         """Get a random religious text."""
         import random
-        
+
         texts = list(self.texts.values())
         if religion:
             texts = [t for t in texts if t.religion == religion]
-        
+
         if not texts:
             return None
-            
+
         return random.choice(texts)
 
     # ============================================
@@ -517,22 +517,22 @@ class BiblicalScholarAgent:
     def analyze_quote(self, quote_text: str) -> QuoteAnalysis:
         """Analyze a religious quote for meaning, source, and significance."""
         quote_lower = quote_text.lower().strip()
-        
+
         # Check if we know this quote
         source_id = None
         for known_quote, text_id in self.quote_database.items():
             if known_quote in quote_lower or quote_lower in known_quote:
                 source_id = text_id
                 break
-        
+
         # If not found in database, try to search
         if not source_id:
             matching_texts = self.search_texts(quote_text)
             if matching_texts:
                 source_id = matching_texts[0].text_id
-        
+
         source_text = self.get_text(source_id) if source_id else None
-        
+
         # Create analysis
         analysis = QuoteAnalysis(
             quote_id=self._generate_id("quote"),
@@ -554,13 +554,13 @@ class BiblicalScholarAgent:
             scholarly_interpretations=self._get_scholarly_interpretations(quote_text, source_text) if source_text else [],
             application_examples=self._get_application_examples(quote_text, source_text) if source_text else [],
         )
-        
+
         # Add translation variants if applicable
         if source_text and source_text.translation_used:
             analysis.translation_variants = self._get_translation_variants(source_text)
-        
+
         self.quote_analyses[analysis.quote_id] = analysis
-        
+
         logger.info(f"Analyzed quote: {quote_text[:50]}...")
         return analysis
 
@@ -584,35 +584,35 @@ class BiblicalScholarAgent:
                 Religion.CHRISTIANITY, Religion.ISLAM, Religion.JUDAISM,
                 Religion.HINDUISM, Religion.BUDDHISM
             ]
-        
+
         study = ComparativeStudy(
             study_id=self._generate_id("study"),
             topic=concept,
             religions_compared=religions,
         )
-        
+
         # Get similarities and differences (simplified)
         study.similarities, study.differences = self._analyze_concept_similarities_differences(
             concept, religions
         )
-        
+
         # Get unique concepts per religion
         study.unique_concepts = self._get_unique_concepts(concept, religions)
-        
+
         # Get shared values
         study.shared_values = self._get_shared_values(religions)
-        
+
         # Get divergent practices
         study.divergent_practices = self._get_divergent_practices(religions)
-        
+
         # Generate theological insights
         study.theological_insights = self._generate_theological_insights(concept, religions)
-        
+
         # Generate practical implications
         study.practical_implications = self._generate_practical_implications(concept, religions)
-        
+
         self.comparative_studies[study.study_id] = study
-        
+
         logger.info(f"Created comparative study on: {concept}")
         return study
 
@@ -639,15 +639,15 @@ class BiblicalScholarAgent:
             scripture_focus=scripture_focus,
             keywords=keywords or [],
         )
-        
+
         # Simulate research process
         query.sources_consulted = self._conduct_literature_search(question, religion_focus, scripture_focus)
         query.findings = self._analyze_findings(question, query.sources_consulted)
         query.confidence_level = self._assess_confidence(query.findings)
         query.sources = self._format_sources(query.sources_consulted)
-        
+
         self.research_queries[query.query_id] = query
-        
+
         logger.info(f"Researched question: {question}")
         return query
 
@@ -679,21 +679,21 @@ class BiblicalScholarAgent:
             "fasting": ["fasting", "abstinence", "self-denial", "sacrifice"],
             "pilgrimage": ["pilgrimage", "journey", "sacred travel", "holy site"],
         }
-        
+
         themes = []
         text_lower = text.lower()
-        
+
         for theme, keywords in theme_indicators.items():
             if any(keyword in text_lower for keyword in keywords):
                 themes.append(theme)
-        
+
         return themes
 
     def _extract_keywords(self, text: str) -> List[str]:
         """Extract keywords from text (simplified)."""
         # Remove common words and extract meaningful terms
         stop_words = {
-            "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for", 
+            "the", "a", "an", "and", "or", "but", "in", "on", "at", "to", "for",
             "of", "with", "by", "is", "are", "was", "were", "be", "been", "being",
             "have", "has", "had", "do", "does", "did", "will", "would", "should",
             "could", "may", "might", "must", "shall", "can", "this", "that", "these",
@@ -701,11 +701,11 @@ class BiblicalScholarAgent:
             "us", "them", "my", "your", "his", "her", "its", "our", "their", "mine",
             "yours", "his", "hers", "ours", "theirs"
         }
-        
+
         # Simple word extraction
         words = re.findall(r'\b[a-zA-Z]+\b', text.lower())
         keywords = [word for word in words if word not in stop_words and len(word) > 2]
-        
+
         # Return top keywords by frequency
         from collections import Counter
         word_counts = Counter(keywords)
@@ -725,7 +725,7 @@ class BiblicalScholarAgent:
             if theme not in self.themes_index:
                 self.themes_index[theme] = []
             self.themes_index[theme].append(text.text_id)
-        
+
         # Index by concepts (simplified)
         for concept in self.religious_concepts:
             # Check if concept appears in text
@@ -780,14 +780,14 @@ class BiblicalScholarAgent:
             Religion.HINDUISM: "Important for Hindu concepts of dharma and spiritual liberation",
             Religion.BUDDHISM: "Essential to Buddhist teachings on mind and karma",
         }
-        
+
         return significance_map.get(source.religion, "Contributes to religious understanding")
 
     def _get_historical_context(self, source: ReligiousText) -> str:
         """Get historical context of source text."""
         if not source.date_written:
             return "Historical period uncertain"
-            
+
         return f"Written circa {source.date_written} in the context of {source.context}"
 
     def _get_common_misinterpretations(self, quote: str, source: ReligiousText) -> List[str]:
@@ -809,7 +809,7 @@ class BiblicalScholarAgent:
                 "It means we should do whatever others want"
             ]
         }
-        
+
         return misinterpretations.get(source.text_id, [
             "Taking the quote out of its literary and historical context",
             "Applying modern cultural assumptions to ancient text",
@@ -819,10 +819,10 @@ class BiblicalScholarAgent:
     def _find_related_quotes(self, quote: str, source: ReligiousText) -> List[str]:
         """Find related quotes from same text or tradition."""
         related = []
-        
+
         # Get other texts from same religion
         same_religion_texts = self.get_texts_by_religion(source.religion)
-        
+
         # Look for thematic similarities
         for text in same_religion_texts[:5]:  # Limit to avoid too many
             if text.text_id != source.text_id:
@@ -830,14 +830,14 @@ class BiblicalScholarAgent:
                 common_themes = set(source.themes) & set(text.themes)
                 if len(common_themes) >= 2:
                     related.append(f"{text.title}: {text.content[:100]}...")
-        
+
         return related[:3]  # Return top 3
 
     def _find_cross_references(self, quote: str, source: ReligiousText) -> List[str]:
         """Find cross-references to other religious texts."""
         # Simplified - would normally use concordance databases
         cross_refs = []
-        
+
         if source.religion == Religion.CHRISTIANITY:
             # Look for OT quotes in NT or vice versa
             if "love your neighbor" in quote.lower():
@@ -846,14 +846,14 @@ class BiblicalScholarAgent:
             elif "lord is my shepherd" in quote.lower():
                 cross_refs.append("John 10:11 - Jesus as Good Shepherd")
                 cross_refs.append("Ezekiel 34:11-16 - God as Shepherd")
-        
+
         return cross_refs
 
     def _get_scholarly_interpretations(self, quote: str, source: ReligiousText) -> List[Dict[str, str]]:
         """Get scholarly interpretations of quote."""
         # Simplified - would normally query theological databases
         interpretations = []
-        
+
         if source.religion == Religion.CHRISTIANITY:
             interpretations.append({
                 "scholar": "N.T. Wright",
@@ -871,7 +871,7 @@ class BiblicalScholarAgent:
                 "perspective": "Traditionalist",
                 "interpretation": "Emphasizes metaphysical and spiritual dimensions"
             })
-        
+
         return interpretations
 
     def _get_application_examples(self, quote: str, source: ReligiousText) -> List[str]:
@@ -893,12 +893,12 @@ class BiblicalScholarAgent:
                 "Forgiving someone who has hurt you"
             ]
         }
-        
+
         # Find matching key
         for key, value in examples.items():
             if key in quote.lower():
                 return value
-        
+
         # Default examples based on themes
         if "love" in source.themes:
             return ["Showing compassion to those in need", "Practicing forgiveness in relationships"]
@@ -925,7 +925,7 @@ class BiblicalScholarAgent:
                 "In everything, therefore, treat people the same way you want them to treat you, for this is the Law and the Prophets. (NRSV)"
             ]
         }
-        
+
         return variants.get(source.text_id, [])
 
     def _analyze_concept_similarities_differences(
@@ -936,7 +936,7 @@ class BiblicalScholarAgent:
         """Analyze similarities and differences in concept understanding."""
         similarities = []
         differences = []
-        
+
         # Simplified analysis
         if concept.lower() == "god":
             similarities = [
@@ -967,16 +967,16 @@ class BiblicalScholarAgent:
         else:
             similarities = [f"All traditions have teachings about {concept}"]
             differences = [f"Each tradition understands {concept} differently based on their worldview"]
-        
+
         return similarities, differences
 
     def _get_unique_concepts(self, concept: str, religions: List[Religion]) -> Dict[str, List[str]]:
         """Get unique concepts for each religion."""
         unique_concepts: Dict[str, List[str]] = {}
-        
+
         for religion in religions:
             unique_concepts[religion.value] = []
-        
+
         # Simplified examples
         if concept.lower() == "salvation":
             unique_concepts[Religion.CHRISTIANITY.value] = [
@@ -1008,7 +1008,7 @@ class BiblicalScholarAgent:
         else:
             for religion in religions:
                 unique_concepts[religion.value] = [f"Unique {religion.value} perspective on {concept}"]
-        
+
         return unique_concepts
 
     def _get_shared_values(self, religions: List[Religion]) -> List[str]:
@@ -1025,7 +1025,7 @@ class BiblicalScholarAgent:
             "Observance of holy days",
             "Ethical treatment of animals and environment"
         ]
-        
+
         return shared_values
 
     def _get_divergent_practices(self, religions: List[Religion]) -> List[str]:
@@ -1042,7 +1042,7 @@ class BiblicalScholarAgent:
             "Attitudes toward religious art and imagery",
             "Approaches to religious authority and leadership"
         ]
-        
+
         return divergent
 
     def _generate_theological_insights(
@@ -1058,7 +1058,7 @@ class BiblicalScholarAgent:
             f"The diversity in understanding {concept} reflects cultural and historical contexts",
             f"Studying {concept} across traditions enriches one's own theological perspective"
         ]
-        
+
         return insights
 
     def _generate_practical_implications(
@@ -1074,7 +1074,7 @@ class BiblicalScholarAgent:
             f"Common ground on {concept} can serve as basis for cooperation",
             f"Differences in {concept} remind us of the complexity of human spirituality"
         ]
-        
+
         return implications
 
     def _conduct_literature_search(
@@ -1092,11 +1092,11 @@ class BiblicalScholarAgent:
             f"Harvard Theological Review",
             f"Religious Studies Review",
         ]
-        
+
         # Filter by focus if specified
         if religion_focus:
             sources = [s for s in sources if religion_focus.value in s.lower() or 'comparative' in s.lower()]
-        
+
         return sources[:5]  # Return top 5
 
     def _analyze_findings(self, question: str, sources: List[str]) -> List[str]:
@@ -1108,7 +1108,7 @@ class BiblicalScholarAgent:
             f"Contemporary applications of {question} continue to evolve",
             f"The question of {question} remains relevant to modern religious practice"
         ]
-        
+
         return findings
 
     def _assess_confidence(self, findings: List[str]) -> str:
@@ -1131,7 +1131,7 @@ class BiblicalScholarAgent:
                 "type": "academic source",
                 "accessed": datetime.utcnow().strftime('%Y-%m-%d')
             })
-        
+
         return formatted
 
     def get_state(self) -> Dict[str, Any]:

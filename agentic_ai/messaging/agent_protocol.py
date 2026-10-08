@@ -32,6 +32,7 @@ def _safe_loads(data):
         except (ValueError, SyntaxError):
             return {}
 
+
 A = TypeVar('A', bound='AgentProtocol')
 
 
@@ -411,6 +412,7 @@ class AgentProtocol:
     def shutdown(self) -> None:
         """Shutdown agent gracefully."""
         pass
+
     def run(self) -> None:
         """Run agent main loop."""
         self._running = True

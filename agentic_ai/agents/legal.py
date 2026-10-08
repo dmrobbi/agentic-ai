@@ -492,7 +492,6 @@ These Terms are governed by applicable law.
     # Utilities
     # ============================================
 
-
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
         return {

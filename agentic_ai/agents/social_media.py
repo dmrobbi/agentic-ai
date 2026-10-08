@@ -977,7 +977,7 @@ class SocialMediaAgent(BaseAgent):
                     "needs owner_approved",
                     "hint": "mark_status(post_id, 'owner_approved') first",
                     "state_machine": "drafted -> owner_approved -> "
-                                    "handed_off -> published"}
+                    "handed_off -> published"}
         payload = {
             "channel": post.channel,
             "body": post.body,
@@ -1127,7 +1127,7 @@ class SocialMediaAgent(BaseAgent):
             pieces.append({
                 "channel": post.channel,
                 "body": self._first_sentences(post.body, limit - 60) + " "
-                        + (post.published_url or post.link or ""),
+                + (post.published_url or post.link or ""),
                 "hashtags": list(post.hashtags),
             })
         md = ["Advocacy pack - " + month, "",
@@ -1329,9 +1329,9 @@ class SocialMediaAgent(BaseAgent):
             deltas = {"from": before.get("label", ""),
                       "to": after.get("label", ""),
                       "home_visits_delta": int(after.get("home_visits", 0))
-                                           - int(before.get("home_visits", 0)),
+                      - int(before.get("home_visits", 0)),
                       "total_clicks_delta": int(after.get("total_clicks", 0))
-                                            - int(before.get("total_clicks", 0)),
+                      - int(before.get("total_clicks", 0)),
                       "source": "first-party site counters"}
         by_status: Dict[str, int] = {}
         for post in self.posts:
@@ -1614,7 +1614,7 @@ class SocialMediaAgent(BaseAgent):
             else:
                 return {"error": "authorization needs an owner_approved draft",
                         "state_machine": "drafted -> owner_approved -> "
-                                        "authorized-activity",
+                        "authorized-activity",
                         "hint": "mark_status(post_id, 'owner_approved') first",
                         "policy": policy}
             payload = {"channel": post.channel, "body": post.body,
@@ -1658,7 +1658,7 @@ class SocialMediaAgent(BaseAgent):
                                         "scheduled_for": scheduled_at.isoformat()})
         return {"status": "authorized", "activity": self._dump_activity(activity),
                 "execution": "autonomous at the scheduled optimal time; "
-                            "social kinds block until platform tokens exist"}
+                "social kinds block until platform tokens exist"}
 
     @staticmethod
     def get_transport(channel: str):

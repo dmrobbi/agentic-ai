@@ -62,6 +62,7 @@ def get_tracer():
 
 class NoOpTracer:
     """Fallback tracer when OTel is not available."""
+
     def start_as_current_span(self, name, **kwargs):
         return NoOpSpan()
 
@@ -71,6 +72,7 @@ class NoOpTracer:
 
 class NoOpSpan:
     """Fallback span when OTel is not available."""
+
     def __enter__(self):
         return self
 

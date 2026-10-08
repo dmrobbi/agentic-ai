@@ -338,7 +338,7 @@ class NetworkDeviceMixin:
                            "sample_commands": [
                                c.replace("{device_label}", t)
                                 .replace("{kind}", canonical)
-                                for c in cmds],
+                               for c in cmds],
                            "policy": dict(DEVICE_POLICY)})
         return {"device": t, "kind": canonical,
                 "policy": dict(DEVICE_POLICY), "phases": phases}

@@ -22,6 +22,7 @@ from agentic_ai.infrastructure.utils import utcnow
 
 logger = logging.getLogger(__name__)
 
+
 def _safe_loads(data):
     try:
         return json.loads(data)
@@ -30,6 +31,7 @@ def _safe_loads(data):
             return ast.literal_eval(data)
         except (ValueError, SyntaxError):
             return {}
+
 
 T = TypeVar('T')
 

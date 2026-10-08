@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 @dataclass
 class TokenBucket:
     """Token bucket rate limiter.
-    
+
     Allows bursts up to capacity, then enforces a steady rate.
     """
     rate: float  # tokens per second
@@ -19,10 +19,10 @@ class TokenBucket:
     _tokens: float = 0.0
     _last_refill: float = field(default_factory=time.monotonic)
     _lock: threading.Lock = field(default_factory=threading.Lock)
-    
+
     def __post_init__(self):
         self._tokens = float(self.capacity)
-    
+
     def _refill(self) -> None:
         """Refill tokens based on elapsed time."""
         now = time.monotonic()
@@ -32,7 +32,7 @@ class TokenBucket:
             self._tokens + elapsed * self.rate
         )
         self._last_refill = now
-    
+
     def consume(self, tokens: int = 1) -> bool:
         """Try to consume tokens. Returns True if allowed, False if rate limited."""
         with self._lock:
@@ -41,10 +41,10 @@ class TokenBucket:
                 self._tokens -= tokens
                 return True
             return False
-    
+
     def wait(self, tokens: int = 1) -> float:
         """Calculate how long to wait before tokens are available.
-        
+
         Returns wait time in seconds (0 if tokens available now).
         Does NOT actually wait — just returns the time.
         """
@@ -58,13 +58,13 @@ class TokenBucket:
 
 class RateLimiter:
     """Per-agent, per-action rate limiting.
-    
+
     Uses token buckets for each (agent_id, action) pair.
     """
-    
+
     def __init__(self, default_rate: float = 10.0, default_capacity: int = 20):
         """Initialize rate limiter.
-        
+
         Args:
             default_rate: Default tokens per second (10/s = 600/min)
             default_capacity: Default burst capacity
@@ -74,7 +74,7 @@ class RateLimiter:
         self._buckets: Dict[str, TokenBucket] = {}
         self._custom_rates: Dict[str, Tuple[float, int]] = {}  # key -> (rate, capacity)
         self._lock = threading.Lock()
-    
+
     def _get_bucket(self, agent_id: str, action: str) -> TokenBucket:
         """Get or create a token bucket for the given agent+action."""
         key = f"{agent_id}:{action}"
@@ -83,7 +83,7 @@ class RateLimiter:
                 rate, capacity = self._custom_rates.get(key, (self.default_rate, self.default_capacity))
                 self._buckets[key] = TokenBucket(rate=rate, capacity=capacity)
             return self._buckets[key]
-    
+
     def set_rate(self, agent_id: str, action: str, rate: float, capacity: Optional[int] = None) -> None:
         """Set a custom rate for a specific agent+action pair."""
         key = f"{agent_id}:{action}"
@@ -92,10 +92,10 @@ class RateLimiter:
         # Recreate bucket with new rate
         with self._lock:
             self._buckets[key] = TokenBucket(rate=rate, capacity=capacity)
-    
+
     def check(self, agent_id: str, action: str) -> bool:
         """Check if an action is allowed (non-consuming).
-        
+
         Returns True if the action would be allowed, False if rate-limited.
         Does NOT consume a token.
         """
@@ -104,10 +104,10 @@ class RateLimiter:
         with bucket._lock:
             bucket._refill()
             return bucket._tokens >= 1
-    
+
     def acquire(self, agent_id: str, action: str) -> bool:
         """Try to acquire a token for an action.
-        
+
         Returns True if allowed (token consumed), False if rate-limited.
         """
         bucket = self._get_bucket(agent_id, action)
@@ -115,10 +115,10 @@ class RateLimiter:
         if not allowed:
             logger.warning(f"Rate limit exceeded: {agent_id}:{action}")
         return allowed
-    
+
     def reset(self, agent_id: Optional[str] = None, action: Optional[str] = None) -> None:
         """Reset rate limits.
-        
+
         If agent_id is None, reset all.
         If action is None, reset all actions for the agent.
         """

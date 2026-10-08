@@ -579,7 +579,6 @@ class VulnerabilityManagementAgent(BaseAgent):
         else:
             return Severity.CRITICAL
 
-
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
         vulns = list(self.vulnerabilities.values())

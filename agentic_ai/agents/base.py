@@ -83,7 +83,7 @@ class Tool:
 
 class AgentMemory:
     """Backward-compatible memory wrapper around TieredMemory.
-    
+
     Preserves the original AgentMemory interface while delegating
     storage to the new TieredMemory system.
     """
@@ -531,7 +531,7 @@ Improved: <better version of the response, or "N/A" if good enough>"""
                     output_schema=getattr(tool, 'output_schema', {}),
                 )
                 capabilities.append(cap)
-        
+
         return AgentCard(
             name=f"{self.agent_type}_agent",
             description=f"{self.agent_type} agent with {len(self._tools)} tools",

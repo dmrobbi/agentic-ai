@@ -858,7 +858,6 @@ class PrivacyAgent(BaseAgent):
     # Utilities
     # ============================================
 
-
     def register_processing_activity(self, name: str, purpose=None, data_categories=None, legal_basis: str = "legitimate_interest", **kwargs) -> Any:
         """Alias for add_processing_activity with more flexible interface."""
         purposes = [purpose] if purpose else kwargs.get('purposes', [])

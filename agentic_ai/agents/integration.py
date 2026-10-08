@@ -519,7 +519,6 @@ class IntegrationAgent(BaseAgent):
     # Utilities
     # ============================================
 
-
     def _generate_secret(self) -> str:
         """Generate a webhook secret."""
         return secrets.token_urlsafe(32)

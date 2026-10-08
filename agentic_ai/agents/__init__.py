@@ -43,7 +43,7 @@ from .vendor_risk import VendorRiskAgent
 
 __all__ = [
     "AuditAgent",
-    "BaseAgent", 
+    "BaseAgent",
     "AgentMessage",
     "Tool",
     "AgentMemory",

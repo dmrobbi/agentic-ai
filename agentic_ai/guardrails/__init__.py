@@ -9,6 +9,7 @@ logger = logging.getLogger(__name__)
 
 class GuardrailResult:
     """Result of a guardrail check."""
+
     def __init__(self, is_safe: bool, sanitized: str = "", reason: str = ""):
         self.is_safe = is_safe
         self.sanitized = sanitized
@@ -17,7 +18,7 @@ class GuardrailResult:
 
 class PIIFilter:
     """Redact personally identifiable information from text."""
-    
+
     # Regex patterns for common PII
     PATTERNS = {
         "ssn": re.compile(r'\b\d{3}-\d{2}-\d{4}\b'),
@@ -26,7 +27,7 @@ class PIIFilter:
         "credit_card": re.compile(r'\b\d{4}[-\s]?\d{4}[-\s]?\d{4}[-\s]?\d{4}\b'),
         "ip_address": re.compile(r'\b\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\b'),
     }
-    
+
     REDACTION = {
         "ssn": "[REDACTED_SSN]",
         "email": "[REDACTED_EMAIL]",
@@ -34,10 +35,10 @@ class PIIFilter:
         "credit_card": "[REDACTED_CC]",
         "ip_address": "[REDACTED_IP]",
     }
-    
+
     def __init__(self, enabled_patterns: Optional[List[str]] = None):
         self.enabled = enabled_patterns or list(self.PATTERNS.keys())
-    
+
     def check(self, text: str) -> GuardrailResult:
         """Check and redact PII from text."""
         sanitized = text
@@ -56,14 +57,14 @@ class PIIFilter:
 
 class ContentPolicyFilter:
     """Block harmful content patterns."""
-    
+
     BLOCKED_PATTERNS = [
         re.compile(r'\b(?:bomb|explosive|terrorism|terrorist)\b', re.IGNORECASE),
         re.compile(r'\b(?:child\s*abuse|csam)\b', re.IGNORECASE),
         re.compile(r'\b(?:how\s+to\s+kill|how\s+to\s+murder)\b', re.IGNORECASE),
         re.compile(r'\b(?:synthesize\s+?(?:fentanyl|anthrax|sarin))\b', re.IGNORECASE),
     ]
-    
+
     def check(self, text: str) -> GuardrailResult:
         """Check text against content policy."""
         for pattern in self.BLOCKED_PATTERNS:
@@ -78,10 +79,10 @@ class ContentPolicyFilter:
 
 class ToolAllowlist:
     """Only permit tools on the agent's registered list."""
-    
+
     def __init__(self, allowed_tools: Optional[List[str]] = None):
         self.allowed = set(allowed_tools) if allowed_tools else set()
-    
+
     def check(self, tool_name: str, kwargs: Optional[Dict[str, Any]] = None) -> GuardrailResult:
         """Check if tool call is permitted."""
         if not self.allowed:
@@ -96,10 +97,10 @@ class ToolAllowlist:
 
 class MaxLengthGuardrail:
     """Truncate overlong inputs/outputs."""
-    
+
     def __init__(self, max_length: int = 10000):
         self.max_length = max_length
-    
+
     def check(self, text: str) -> GuardrailResult:
         """Check and truncate if needed."""
         if len(text) <= self.max_length:

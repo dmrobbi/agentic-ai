@@ -405,8 +405,8 @@ class LeadAgent(BaseAgent):
         return agents[0] if agents else ""
 
     async def broadcast_and_collect(self, agents: List[str], prompt: str,
-                                     timeout: float = 30.0,
-                                     cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
+                                    timeout: float = 30.0,
+                                    cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
         """Send prompt to all agents, collect responses.
 
         Returns dict of agent_id -> response.
@@ -434,8 +434,8 @@ class LeadAgent(BaseAgent):
         }
 
     async def decompose_and_parallel(self, task: str, agents: List[str],
-                                      merge_fn: Optional[Callable] = None,
-                                      cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
+                                     merge_fn: Optional[Callable] = None,
+                                     cancellation_token: Optional[CancellationToken] = None) -> Dict[str, Any]:
         """Decompose a task into subtasks, run agents in parallel, merge results.
 
         merge_fn: function(responses) -> merged_result
@@ -494,7 +494,7 @@ class LeadAgent(BaseAgent):
         return "\n".join(parts)
 
     async def request_approval(self, agent_id: str, action: str,
-                                context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
+                               context: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
         """Request human approval for an action.
 
         Pauses execution until approved or denied.

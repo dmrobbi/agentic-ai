@@ -746,7 +746,6 @@ class RiskAgent(BaseAgent):
         else:
             return RiskLevel.VERY_HIGH
 
-
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
         risks = list(self.risks.values())

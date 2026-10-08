@@ -694,7 +694,6 @@ class SupplyChainAgent(BaseAgent):
     # Utilities
     # ============================================
 
-
     def get_state(self) -> Dict[str, Any]:
         """Get agent state summary."""
         return {

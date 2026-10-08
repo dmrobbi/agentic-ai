@@ -518,7 +518,7 @@ class SalesAgent(BaseAgent):
         _ = kwargs
         self._ensure_loaded()
         lead = self._find_lead(lead_id=lead_id, email="") if lead_id else \
-               next((l for l in self.leads if l.name == name), None)
+            next((l for l in self.leads if l.name == name), None)
         if lead is None:
             return {"error": f"Lead {lead_id or name} not found"}
         bant = {
@@ -852,7 +852,7 @@ class SalesAgent(BaseAgent):
             "leads": {"total": len(self.leads),
                       "qualified": len(qualified),
                       "qualified_pct": round(100.0 * len(qualified) / len(self.leads), 1)
-                                       if self.leads else 0.0},
+                      if self.leads else 0.0},
             "quotes": {"count": len(self.quotes),
                        "total_mrr": round(quotes_mrr, 2),
                        "total_year1": round(quotes_y1, 2)},

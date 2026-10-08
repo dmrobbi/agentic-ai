@@ -4,16 +4,19 @@ from datetime import datetime
 from typing import Dict, Any, List, Optional
 from enum import Enum
 
+
 class ServiceStatus(Enum):
     RUNNING = "running"
     STOPPED = "stopped"
     DEGRADED = "degraded"
     UNKNOWN = "unknown"
 
+
 class Environment(Enum):
     DEVELOPMENT = "development"
     STAGING = "staging"
     PRODUCTION = "production"
+
 
 @dataclass
 class Service:
@@ -26,6 +29,7 @@ class Service:
     endpoint: str = ""
     last_check: datetime = field(default_factory=datetime.now)
 
+
 @dataclass
 class Deployment:
     deployment_id: str
@@ -34,6 +38,7 @@ class Deployment:
     environment: Environment = Environment.STAGING
     status: str = "pending"
     created_at: datetime = field(default_factory=datetime.now)
+
 
 class InfrastructureManager:
     """Manage infrastructure, services, and deployments."""

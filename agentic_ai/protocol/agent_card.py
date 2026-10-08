@@ -22,7 +22,7 @@ class AgentCapability:
 @dataclass
 class AgentCard:
     """A2A-compatible agent card describing an agent's identity and capabilities.
-    
+
     Follows the Agent-to-Agent (A2A) protocol specification for agent discovery.
     """
     name: str
@@ -31,17 +31,17 @@ class AgentCard:
     provider: str = "agentic-ai"
     agent_type: str = ""
     agent_id: str = ""
-    
+
     capabilities: List[AgentCapability] = field(default_factory=list)
     input_schema: Dict[str, Any] = field(default_factory=dict)
     output_schema: Dict[str, Any] = field(default_factory=dict)
-    
+
     authentication: Dict[str, Any] = field(default_factory=dict)
     endpoints: List[Dict[str, str]] = field(default_factory=list)
-    
+
     permissions: List[str] = field(default_factory=list)
     metadata: Dict[str, Any] = field(default_factory=dict)
-    
+
     def to_dict(self) -> Dict[str, Any]:
         """Serialize to dictionary."""
         return {
@@ -67,11 +67,11 @@ class AgentCard:
             "permissions": self.permissions,
             "metadata": self.metadata,
         }
-    
+
     def to_json(self) -> str:
         """Serialize to JSON string."""
         return json.dumps(self.to_dict(), indent=2)
-    
+
     def to_json_ld(self) -> str:
         """Serialize to JSON-LD format for A2A spec compliance."""
         data = self.to_dict()
@@ -79,7 +79,7 @@ class AgentCard:
         data["@type"] = "Agent"
         data["@id"] = self.agent_id or self.name
         return json.dumps(data, indent=2)
-    
+
     @classmethod
     def from_dict(cls, data: Dict[str, Any]) -> "AgentCard":
         """Deserialize from dictionary."""
@@ -88,7 +88,7 @@ class AgentCard:
             for c in data.pop("capabilities", [])
         ]
         return cls(capabilities=capabilities, **data)
-    
+
     @classmethod
     def from_json(cls, json_str: str) -> "AgentCard":
         """Deserialize from JSON string."""

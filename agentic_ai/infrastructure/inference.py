@@ -172,7 +172,7 @@ class InferenceServer:
             return {"status": "error", "model": model, "response": str(e), "tokens_used": 0}
 
     async def generate_stream(self, prompt: str = "", model: str = "", max_tokens: int = 0,
-                               temperature: float = 0.0):
+                              temperature: float = 0.0):
         """Streaming completion — yields tokens."""
         model = model or self._default_model
         max_tokens = max_tokens or self.config.max_tokens

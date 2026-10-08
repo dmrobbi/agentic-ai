@@ -86,6 +86,8 @@ def _fleet_bridges_on():
 def _flag_off(op):
     """The deterministic default-off refusal for a fleet-bridge op."""
     return {"status": "flag_off", "op": op, "flag": FLEET_BRIDGE_FLAG}
+
+
 import json
 import logging
 import os
@@ -2887,7 +2889,6 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
     # ============================================
     # Utilities
     # ============================================
-
 
     def list_tools(self, category: Optional[ToolCategory] = None) -> List[Dict[str, Any]]:
         """List available tools."""

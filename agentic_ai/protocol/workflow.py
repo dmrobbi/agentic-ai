@@ -18,6 +18,7 @@ from agentic_ai.infrastructure.utils import utcnow
 
 logger = logging.getLogger(__name__)
 
+
 class TaskStatus(str, Enum):
     """Enhanced task status."""
     PENDING = "pending"
