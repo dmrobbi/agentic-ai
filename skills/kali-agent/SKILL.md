@@ -10,10 +10,10 @@ Edition"; the CLI entry is the `kali_agent_v4/kaliagent` script). It is a
 standalone click/rich CLI — separate from the in-repo `agenticai agent kali`
 role agent (see the agentic-roles skill for that one).
 
-Older generations live in the same repo and are NOT the current agent:
-`kali_agent_v3/` (v3.0.0, superseded) and `kaliagent-v4/` (misleadingly
-named; only evidence artifacts - a phase-14 LSTM module and CVE evidence
-dirs). Dashboards: `kali_dashboard/` for the kali UI.
+Removed from HEAD 2026-10-08 by owner decision: the dead v3
+generation, the misnamed `kaliagent-v4/` evidence leftover, and the
+unwired `kali_dashboard/` (the CLI's dashboard command is a URL stub,
+not a launcher). Their lineage lives in git history.
 
 ## Steps
 
@@ -35,9 +35,10 @@ dirs). Dashboards: `kali_dashboard/` for the kali UI.
    authorized to test, with the target set deliberately (the `evidence/`
    directory records runs; never edit evidence artifacts after the fact).
    The doctor/status commands never attack anything.
-4. Dashboard + services: `kali_dashboard/` + `kali_agent_v4/docker-compose.yml`
-   (dashboard on :5007, C2 ports 8888/1337/8889, Redis, Ollama);
-   `python kali_agent_v4/kaliagent dashboard` launches the web UI.
+4. Dashboard + services: `kali_agent_v4/docker-compose.yml` covers the
+   :5007 dashboard, C2 ports 8888/1337/8889, Redis, Ollama;
+   `python kali_agent_v4/kaliagent dashboard` prints the dashboard URL
+   (the served dashboard was the removed kali_dashboard/).
 5. Verify after any change: `doctor` green on the intended host, then a
    phase run only if the operator has authorized a target. Evidence lands in
    `kali_agent_v4/evidence/`.
@@ -46,8 +47,6 @@ dirs). Dashboards: `kali_dashboard/` for the kali UI.
 
 - Version badges in kali_agent_v4/README.md point at the historical
   pre-migration v4 GitHub releases; attribution history, kept as-is.
-- Do not delete the older generations without an explicit owner decision -
-  they preserve the audit lineage (v3 was the prior production release).
 - Real-attack evidence is never edited post-run; if something in an evidence
   file is wrong, record the correction in a new file.
 

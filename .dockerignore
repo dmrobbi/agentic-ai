@@ -21,10 +21,7 @@ docs/papers_stsgym
 examples
 benchmarks
 tests
-kali_agent_v3
 kali_agent_v4
-kali_dashboard
-kaliagent-v4
 *.md
 !README.md
 .claude

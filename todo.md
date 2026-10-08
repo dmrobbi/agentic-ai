@@ -652,9 +652,10 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - The battery topology doc (docs/KA-LAB-TARGET.md) refreshed: the
   rebuilt cluster is live again; gold-build snapshots per disk; the
   battery target never depended on the cluster.
-- Remaining owner decisions: pyproject author attribution; the dead kali
-  generations (~21k LOC); the gitlab reconcile (owner-open). Live/lab
-  risk stays consent-gated per the global rules.
+- Remaining owner decisions: pyproject author attribution; the gitlab
+  reconcile (owner-open). Live/lab risk stays consent-gated per the
+  global rules. (The dead kali generations were removed 2026-10-08 —
+  see the removal close-out below.)
 
 ## CI lint gate drive (2026-10-08)
 
@@ -701,6 +702,33 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
 - Process note: e19edb6 landed with one failing pinned test because the
   chain piped pytest through tail and masked its rc; remediated by
   7b84c88 (docstring tokens restored per tests/test_plan_explorer.py).
-- Still open: the dead kali generations deletion (owner decision,
-  deferred per 2026-10-08 ruling), the `build` job red on main since
-  before this wave, the gitlab reconcile, pyproject author attribution.
+- Still open: the `build` job red on main since before this wave, the
+  gitlab reconcile, pyproject author attribution. (The dead kali
+  generations deletion resolved later on 2026-10-08 — see below.)
+
+## Dead kali generations removal (2026-10-08)
+
+- Owner: "do the open" closes the deferred "fix lint now, delete later"
+  ruling — the deletion executes as its own decision.
+- Deleted from HEAD (git rm; untracked pycache remnants trashed):
+  kali_agent_v3/ (28 tracked py files, 17,082 py lines — superseded prior
+  generation; docs-only references), kaliagent-v4/ (4 py files, 1,976
+  lines — misnamed leftover: phase-14 LSTM module + CVE evidence dirs),
+  kali_dashboard/ (3 py files, 1,216 lines — standalone Flask app with no
+  CLI/CI/test/compose wiring; the v4 CLI's dashboard command is a URL
+  stub). ~20.3k py LOC total = the estimated "~21k".
+- Kept: kali_agent_v4/ (80 tracked py files, 45,349 py lines) — the live
+  standalone CLI generation per skills/kali-agent; consent_gate/
+  screenshot_capture/owner_widget carry its path references and
+  test_generation_parity/test_owner_widget read it. Its size never fit
+  the "~21k" figure; removing it would be semantic surgery on live code
+  and stays a separate owner decision.
+- Gates: collect 5320 before and after (BASELINE_SUITE_TOTAL pin
+  untouched); full suite 5279 passed / 41 skipped / 0 failed. The
+  agentic_ai/ flake8 scan path is untouched by the deletion (gates were
+  already green at c965747).
+- Housekeeping: skills/kali-agent/SKILL.md trimmed of the removed
+  generations (the "keep for audit lineage" house rule is executed —
+  lineage lives in git history); .dockerignore pruned to kali_agent_v4
+  only; docs/KALIAGENT_V3_ROADMAP.md and the docs/papers_stsgym
+  kali_dashboard path mentions kept as historical documents.
