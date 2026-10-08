@@ -687,3 +687,20 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   the GitLab lint job goes green. Known-separate: the `build` job is
   already red on main (pipelines 6783-6787) — out of scope here,
   surfaced to the owner separately.
+
+## CI lint gate drive close-out (2026-10-08)
+
+- Landed: B1 whitespace (ac4b827), B2 imports/f-strings/order/dead-locals
+  (e2625fd), B3 line length (e19edb6) + the docstring-pin follow-up
+  (7b84c88).
+- Result: flake8 7.4.1 with the job's exact command reads 564 -> 0 across
+  agentic_ai/ (119 files); GitLab pipeline 6791 lint job SUCCESS
+  (pytest-suite, ka-battery and test also green there).
+- Suites green at every gated commit: 5279 passed / 41 skipped /
+  0 failed; BASELINE_SUITE_TOTAL pin (5320) untouched throughout.
+- Process note: e19edb6 landed with one failing pinned test because the
+  chain piped pytest through tail and masked its rc; remediated by
+  7b84c88 (docstring tokens restored per tests/test_plan_explorer.py).
+- Still open: the dead kali generations deletion (owner decision,
+  deferred per 2026-10-08 ruling), the `build` job red on main since
+  before this wave, the gitlab reconcile, pyproject author attribution.
