@@ -308,7 +308,7 @@ def _reduce_target_token(token: str, network_verb: bool) -> Optional[Tuple[str, 
         try:
             ipaddress.ip_network(token, strict=False)
         except (ValueError, TypeError):
-            net = None
+            pass
         else:
             return token, "cidr", False
     # 7. host:digits (hostport) and host:path (hostpath) reductions;

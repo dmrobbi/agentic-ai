@@ -63,7 +63,7 @@ pattern). Pure planner: no exec, no network, no local I/O."""
 from __future__ import annotations
 
 import re
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 
 ARTICLE_ROW_KEYS = (
     "id", "added_at", "source", "title", "url", "category", "summary",

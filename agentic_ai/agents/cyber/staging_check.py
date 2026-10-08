@@ -265,7 +265,7 @@ def _reduce_target(spec: str) -> Optional[Tuple[str, str]]:
         try:
             ipaddress.ip_network(spec, strict=False)
         except (ValueError, TypeError):
-            net = None
+            pass
         else:
             return spec, SHAPE_CIDR
     # 7. host:digits (hostport) and host:path (hostpath) reductions,

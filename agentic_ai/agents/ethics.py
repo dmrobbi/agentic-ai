@@ -9,7 +9,7 @@ explainability tracking, and ethical impact assessments.
 from agentic_ai.agents.base import BaseAgent
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
@@ -927,7 +927,7 @@ if __name__ == "__main__":
 
     # Get ethics report
     report = agent.get_ethics_report()  # type: ignore[assignment]
-    print(f"\nEthics Report:")
+    print("\nEthics Report:")
     print(f"  Total Models: {report['models']['total']}")  # type: ignore[index]
     print(f"  High Risk: {report['models']['high_risk_count']}")  # type: ignore[index]
     print(f"  Bias Detected: {report['bias']['total_detected']}")  # type: ignore[index]

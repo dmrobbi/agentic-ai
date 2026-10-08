@@ -11,9 +11,8 @@ import logging
 import ast
 import uuid
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Any, Callable, Dict, List, Optional, TypeVar
-from abc import ABC, abstractmethod
 
 from .message_bus import MessageBus, Message, MessageType
 from .event_bus import EventBus, Event, EventPriority
@@ -407,11 +406,9 @@ class AgentProtocol:
 
     def initialize(self) -> None:
         """Initialize agent-specific resources."""
-        pass
 
     def shutdown(self) -> None:
         """Shutdown agent gracefully."""
-        pass
 
     def run(self) -> None:
         """Run agent main loop."""
@@ -457,7 +454,7 @@ class AgentRegistry:
 
     def __init__(self, redis_url: str = "redis://localhost:6379"):
         self.redis_url = redis_url
-        self._redis: Optional[redis.Redis] = None  # type: ignore[name-defined]
+        self._redis: Optional[redis.Redis] = None  # type: ignore[name-defined]  # noqa: F821
         self._registry_key = "agent_registry"
 
     def connect(self) -> None:
@@ -571,7 +568,3 @@ class AgentRegistry:
             logger.info(f"Cleaned up {removed} stale agents")
 
         return removed
-
-
-# Import timedelta
-from datetime import timedelta

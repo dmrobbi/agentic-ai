@@ -411,7 +411,7 @@ class ChaosMonkeyAgent(BaseAgent):
 
     def _create_experiment_run(self, experiment_id: str, target_id: str) -> ExperimentRun:
         """Create individual experiment run."""
-        experiment = self.experiments[experiment_id]
+        self.experiments[experiment_id]  # existence check; binding unused
 
         run = ExperimentRun(
             run_id=self._generate_id("run"),
@@ -618,7 +618,6 @@ class ChaosMonkeyAgent(BaseAgent):
                 continue
 
             if constraint.constraint_type == "max_percentage":
-                max_pct = constraint.parameters.get('max_percentage', 10)
                 # Would check actual percentage here
                 pass
 
@@ -1005,7 +1004,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_chaos_dashboard()
-    print(f"\nChaos Dashboard:")
+    print("\nChaos Dashboard:")
     print(f"  Experiments: {dashboard['experiments']['total']}")
     print(f"  Success Rate: {dashboard['runs']['success_rate']:.1f}%")
     print(f"  In Blackout: {dashboard['safety']['in_blackout']}")

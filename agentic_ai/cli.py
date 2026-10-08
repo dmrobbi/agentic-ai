@@ -9,7 +9,6 @@ import asyncio
 import inspect
 import json
 import sys
-from datetime import datetime
 from typing import Any, Dict, List, Optional, Tuple
 
 from agentic_ai.agents.registry import list_agents, resolve_agent_class

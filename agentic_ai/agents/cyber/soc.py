@@ -18,7 +18,6 @@ from agentic_ai.infrastructure.wazuh_client import (
     WazuhPoller,
     WazuhPollerConfig,
     WazuhIndexerClient,
-    SeenStore,
     alert_to_soc_kwargs,
 )
 from agentic_ai.agents.schemas import IncidentReport

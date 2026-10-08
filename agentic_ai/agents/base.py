@@ -5,7 +5,7 @@ Base agent classes and shared types for the agentic-ai framework.
 from enum import Enum
 from dataclasses import dataclass, field
 from datetime import datetime
-from typing import Dict, Any, Optional, List, Callable, Tuple, Union
+from typing import Dict, Any, Optional, List, Callable, Tuple
 from collections import OrderedDict
 import logging
 import asyncio
@@ -325,7 +325,7 @@ class BaseAgent:
         # Input guardrail
         sanitized, is_safe = self.input_guardrail(prompt)
         if not is_safe:
-            return f"Error: Input blocked by guardrail"
+            return "Error: Input blocked by guardrail"
 
         result: str = "Generated response"
         if self.inference_engine:
@@ -342,7 +342,7 @@ class BaseAgent:
         # Output guardrail
         result, is_safe = self.output_guardrail(result)
         if not is_safe:
-            return f"Error: Output blocked by guardrail"
+            return "Error: Output blocked by guardrail"
         # If response_model requested, try to parse and serialize
         if response_model and result:
             try:
@@ -396,7 +396,7 @@ class BaseAgent:
         # Output guardrail — log warning but still send
         sanitized, is_safe = self.output_guardrail(content)
         if not is_safe:
-            logger.warning(f"Output guardrail warning on send_message: content flagged but still sent")
+            logger.warning("Output guardrail warning on send_message: content flagged but still sent")
 
         if self.bus:
             # Publish on the wire format the bus and agent protocol share:

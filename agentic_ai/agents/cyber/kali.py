@@ -8,6 +8,19 @@ including Metasploit, Nmap, Burp Suite, SQLMap, Hashcat, and 600+ other tools.
 Includes safety gates, authorization controls, and automated reporting.
 """
 
+import json
+import logging
+import shlex
+import subprocess
+import threading
+from dataclasses import dataclass, field
+from datetime import datetime
+from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+from xml.etree import ElementTree as ET
+from agentic_ai.infrastructure.utils import utcnow
+
 from agentic_ai.agents.base import BaseAgent
 from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 from agentic_ai.agents.cyber.redteam_pentest import RedTeamMixin
@@ -86,24 +99,6 @@ def _fleet_bridges_on():
 def _flag_off(op):
     """The deterministic default-off refusal for a fleet-bridge op."""
     return {"status": "flag_off", "op": op, "flag": FLEET_BRIDGE_FLAG}
-
-
-import json
-import logging
-import os
-import re
-import shlex
-import subprocess
-import tempfile
-import threading
-import time
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta
-from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Callable
-from xml.etree import ElementTree as ET
-from agentic_ai.infrastructure.utils import utcnow
 
 
 logger = logging.getLogger(__name__)
@@ -517,18 +512,6 @@ KALI_TOOLS_DB = {
         timeout_seconds=60,
     ),
 
-    # Post Exploitation
-    "mimikatz": ToolDefinition(
-        name="mimikatz",
-        category=ToolCategory.POST_EXPLOITATION,
-        description="Credential extraction",
-        command="mimikatz",
-        args_schema={
-            "command": {"type": "string", "required": True},
-        },
-        authorization=AuthorizationLevel.CRITICAL,
-        timeout_seconds=300,
-    ),
 
     # Wireless
     "aircrack_ng": ToolDefinition(
@@ -1053,7 +1036,7 @@ class MetasploitRPC:
             return False
 
         try:
-            response = requests.post(
+            requests.post(
                 f"{self.url}/auth/logout",
                 json={"method": "auth.logout", "params": [self.token]},
                 timeout=10
@@ -1671,9 +1654,9 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
         if arguments is None:
             arguments = {}
         if target is None:
-            for field in ("target", "host", "url", "domain", "bssid"):
-                if field in arguments and isinstance(arguments[field], str):
-                    target = arguments[field]
+            for field_name in ("target", "host", "url", "domain", "bssid"):
+                if field_name in arguments and isinstance(arguments[field_name], str):
+                    target = arguments[field_name]
                     break
         if target is None:
             # KA-INT-4: targetless tools (e.g. mimikatz dumps) bind the
@@ -1809,9 +1792,9 @@ class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Socia
 
         # Validate target if present in arguments
         target_fields = ["target", "host", "url", "domain", "bssid"]
-        for field in target_fields:
-            if field in arguments:
-                valid, msg = self.validate_target(arguments[field])
+        for field_name in target_fields:
+            if field_name in arguments:
+                valid, msg = self.validate_target(arguments[field_name])
                 if not valid:
                     logger.error(f"Target validation failed: {msg}")
                     return self._create_failed_execution(tool_name, arguments, msg)

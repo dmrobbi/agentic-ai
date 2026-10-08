@@ -14,10 +14,13 @@ Improvements over v1:
 
 import json
 import logging
-import os
 import re
-import subprocess
-import tempfile
+from dataclasses import dataclass, field
+from datetime import datetime, timezone
+from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Optional, Tuple
+from xml.etree import ElementTree as ET
 
 from agentic_ai.agents.cyber.web_pentest import WebPentestMixin
 from agentic_ai.agents.cyber.redteam_pentest import RedTeamMixin
@@ -92,16 +95,6 @@ def _fleet_bridges_on():
 def _flag_off(op):
     """The deterministic default-off refusal for a fleet-bridge op."""
     return {"status": "flag_off", "op": op, "flag": FLEET_BRIDGE_FLAG}
-
-
-import threading
-import time
-from dataclasses import dataclass, field
-from datetime import datetime, timedelta, timezone
-from enum import Enum
-from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple, Callable
-from xml.etree import ElementTree as ET
 
 
 logger = logging.getLogger(__name__)
@@ -973,7 +966,6 @@ class ToolRecommendationEngine:
 
         target_type = target_info.get("type", "").lower()
         services = target_info.get("services", [])
-        os_type = target_info.get("os", "").lower()
 
         # Get base recommendations for target type
         base_tools = []
@@ -1195,7 +1187,7 @@ class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Soc
         # State
         self.authorization_level = AuthorizationLevel.NONE
         self.dry_run = False
-        self.executions: List[ToolExecution] = []  # type: ignore[name-defined]
+        self.executions: List[ToolExecution] = []  # type: ignore[name-defined]  # noqa: F821
         self.engagement_id: Optional[str] = None
         # KA-INT-4: P4 safety-gate chain state (consent store, rate
         # store, lab/egress posture) - caller-owned, chassis-served
@@ -1261,9 +1253,9 @@ class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Soc
         if arguments is None:
             arguments = {}
         if target is None:
-            for field in ("target", "host", "url", "domain", "bssid"):
-                if field in arguments and isinstance(arguments[field], str):
-                    target = arguments[field]
+            for field_name in ("target", "host", "url", "domain", "bssid"):
+                if field_name in arguments and isinstance(arguments[field_name], str):
+                    target = arguments[field_name]
                     break
         if target is None:
             for value in arguments.values():

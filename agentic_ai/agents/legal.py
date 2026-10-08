@@ -573,7 +573,7 @@ if __name__ == "__main__":
     contract_text = "This agreement has unlimited liability and auto-renewal clauses."
     review = agent.review_contract(nda.document_id, contract_text)
 
-    print(f"\nReview Results:")
+    print("\nReview Results:")
     print(f"  Risks Found: {review['risks_found']}")
     print(f"  Overall Risk: {review['overall_risk'].value}")
 

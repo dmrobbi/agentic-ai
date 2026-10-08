@@ -67,7 +67,7 @@ from agentic_ai.agents.cyber.consent_gate import (
     consent_refusal_event,
 )
 from agentic_ai.agents.cyber.engagement_rbac import authorize_call
-from agentic_ai.agents.cyber.egress_guard import AUTH_TAG, egress_gate
+from agentic_ai.agents.cyber.egress_guard import egress_gate
 from agentic_ai.agents.cyber.rate_limit import check as rate_check
 
 GATE_NAMES = ("consent", "budget", "auth", "blast_radius", "egress",

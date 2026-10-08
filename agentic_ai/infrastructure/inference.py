@@ -3,7 +3,6 @@ from agentic_ai.infrastructure.utils import utcnow
 
 import os
 from dataclasses import dataclass, field
-from datetime import datetime
 from typing import Dict, Any, List, Optional
 from enum import Enum
 import logging
@@ -205,7 +204,7 @@ class InferenceServer:
         if self.stub:
             return [ModelInfo(name="stub-model")]
         try:
-            import litellm
+            import litellm  # noqa: F401 - vestigial llm probe, keep the ImportError edge
             import requests
             resp = requests.get(f"{self._api_base}/api/tags", timeout=5)
             if resp.status_code == 200:

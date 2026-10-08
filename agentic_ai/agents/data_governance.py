@@ -344,7 +344,6 @@ class DataGovernanceAgent(BaseAgent):
     def get_assets_due_for_action(self, action: RetentionAction) -> List[Dict[str, Any]]:
         """Get assets due for retention action."""
         due = []
-        now = utcnow()
 
         for asset in self.assets.values():
             retention = self.get_retention_period(asset.asset_id)
@@ -865,7 +864,7 @@ if __name__ == "__main__":
 
     # Get governance report
     report = agent.get_governance_report()
-    print(f"\nGovernance Report:")
+    print("\nGovernance Report:")
     print(f"  Total Assets: {report['assets']['total']}")
     print(f"  Open Issues: {report['quality']['open_issues']}")
     print(f"  Pending Access: {report['access']['pending']}")

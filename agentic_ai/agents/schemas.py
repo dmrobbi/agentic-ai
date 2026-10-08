@@ -1,6 +1,6 @@
 """Structured output schemas for agent responses."""
 from pydantic import BaseModel, Field, ConfigDict, field_validator
-from typing import Optional, Dict, Any, List, Union
+from typing import Optional, Dict, Any, List
 from datetime import datetime
 
 

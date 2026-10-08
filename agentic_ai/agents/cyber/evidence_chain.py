@@ -25,7 +25,7 @@ CONTRACT:
 from __future__ import annotations
 
 import hashlib
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from typing import Any, Dict, Iterable, List, Optional, Tuple
 
 GENESIS = "ka-evidence-chain-genesis"

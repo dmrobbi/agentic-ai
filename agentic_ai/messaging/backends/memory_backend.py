@@ -4,7 +4,6 @@ import logging
 from collections import defaultdict
 from typing import AsyncIterator
 
-from agentic_ai.messaging.backends import MessageBackend
 
 logger = logging.getLogger(__name__)
 

@@ -1,8 +1,7 @@
 """Guardrails for agent input/output safety."""
 import re
 import logging
-from typing import Dict, Any, List, Optional, Tuple
-from dataclasses import dataclass, field
+from typing import Dict, Any, List, Optional
 
 logger = logging.getLogger(__name__)
 
@@ -72,7 +71,7 @@ class ContentPolicyFilter:
                 return GuardrailResult(
                     is_safe=False,
                     sanitized=text,
-                    reason=f"Content policy violation detected"
+                    reason="Content policy violation detected"
                 )
         return GuardrailResult(is_safe=True, sanitized=text, reason="")
 

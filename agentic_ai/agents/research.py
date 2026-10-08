@@ -8,9 +8,8 @@ trend analysis, and knowledge discovery.
 
 from agentic_ai.agents.base import BaseAgent
 import logging
-import hashlib
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set
 from agentic_ai.infrastructure.utils import utcnow
@@ -591,7 +590,7 @@ if __name__ == "__main__":
 
     # Generate literature review
     review = agent.generate_literature_review("nlp", min_year=2020)
-    print(f"\nLiterature Review:")
+    print("\nLiterature Review:")
     print(f"  Papers: {review['papers_analyzed']}")
     print(f"  Trends: {review['trends']}")
 

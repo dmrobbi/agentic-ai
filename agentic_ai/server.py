@@ -9,13 +9,11 @@ Simple demo server for testing deployment.
 from typing import Optional
 import os
 import logging
-from datetime import datetime
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from agentic_ai.infrastructure.utils import utcnow
-from agentic_ai.protocol.agent_card import AgentCard, AgentCapability
 
 # Configuration
 LOG_LEVEL = os.getenv("AGENTIC_AI_LOG_LEVEL", "INFO")

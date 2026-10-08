@@ -1,5 +1,3 @@
-import logging
-logger = logging.getLogger(__name__)
 """
 Consensus Engine
 =================
@@ -7,13 +5,16 @@ Consensus Engine
 Manages consensus-based decision making across multiple agents.
 """
 
+import logging
 from typing import Optional, Dict, Any, List, Callable
-from datetime import datetime
 from .proposal import (
     Proposal, Vote, VoteOption, ConsensusType,
     ProposalStatus, ConsensusResult
 )
 from agentic_ai.infrastructure.utils import utcnow
+
+
+logger = logging.getLogger(__name__)
 
 
 class ConsensusEngine:

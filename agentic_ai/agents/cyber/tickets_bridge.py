@@ -1,4 +1,4 @@
-"""Engagement tickets bridge (KA-069): an engagement's unresolved
+r"""Engagement tickets bridge (KA-069): an engagement's unresolved
 findings -> append-ready soc-tickets payloads (open lines, close lines,
 and the per-id store-state fold). Pure planner; the soc-tickets contract
 is MOCKED: dict shapes only - nothing here touches the store, the MCP,

@@ -542,21 +542,6 @@ class ComplianceAgent(BaseAgent):
     # Certificate Management
     # ============================================
 
-    def create_assessment(self, name: str = "", assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:
-        """Create a compliance assessment."""
-        assessment_id = self._generate_id("assess")
-        assessment = ComplianceAssessment(
-            assessment_id=assessment_id,
-            name=name,
-            assessment_type=assessment_type,
-            scope=scope,
-            assessor=assessor,
-            status="planned",
-            created_at=utcnow().isoformat(),
-        )
-        self.audits[assessment_id] = assessment
-        return assessment
-
     def add_certificate(
         self,
         certificate_type: str,

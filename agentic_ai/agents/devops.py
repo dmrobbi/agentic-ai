@@ -8,13 +8,10 @@ deployment orchestration, monitoring, and cost optimization.
 
 from agentic_ai.agents.base import BaseAgent
 import logging
-import os
-import re
-import string
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
 
 
@@ -547,7 +544,7 @@ class DevOpsAgent(BaseAgent):
 
     def create_task(self, title: str = "", description: str = "", priority: str = "medium", assignee: str = "") -> Any:
         """Create a DevOps task."""
-        from dataclasses import dataclass as _dc, field as _f
+        from dataclasses import dataclass as _dc
 
         @_dc
         class DevOpsTask:

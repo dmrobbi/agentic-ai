@@ -8,7 +8,7 @@ module is loaded until requested, so `agenticai agent list` stays cheap.
 """
 
 from importlib import import_module
-from typing import Any, Dict, Optional, Tuple
+from typing import Any, Dict, Tuple
 
 # agent_id -> (module path, class name, category, description)
 AGENT_REGISTRY: Dict[str, Tuple[str, str, str, str]] = {

@@ -9,7 +9,7 @@ vendor risk assessment, and supply chain security monitoring.
 from agentic_ai.agents.base import BaseAgent
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
@@ -829,7 +829,7 @@ if __name__ == "__main__":
 
     # Get report
     report = agent.get_supply_chain_report()
-    print(f"\nSupply Chain Report:")
+    print("\nSupply Chain Report:")
     print(f"  Packages: {report['packages']['total']}")
     print(f"  Vulnerabilities: {report['vulnerabilities']['total']}")
     print(f"  Vendors: {report['vendors']['total']}")

@@ -1,6 +1,6 @@
 """Developer agent for code review, implementation, and testing."""
 from agentic_ai.agents.base import BaseAgent, Permission
-from typing import Optional, Dict, Any, List
+from typing import Optional, Dict, Any
 from pathlib import Path
 
 

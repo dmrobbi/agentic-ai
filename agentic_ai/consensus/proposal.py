@@ -7,7 +7,6 @@ Data structures for consensus-based decision making.
 
 from typing import Optional, Dict, Any, List
 from dataclasses import dataclass, field
-from datetime import datetime
 from enum import Enum
 import uuid
 from agentic_ai.infrastructure.utils import utcnow

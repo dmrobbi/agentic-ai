@@ -1070,7 +1070,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_vendor_risk_dashboard()
-    print(f"\nVendor Risk Dashboard:")
+    print("\nVendor Risk Dashboard:")
     print(f"  Total Vendors: {dashboard['vendors']['total']}")
     print(f"  Tier 1: {dashboard['vendors']['by_tier']['tier_1']}")
     print(f"  Assessments Due: {dashboard['assessments']['due_soon']}")

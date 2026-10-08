@@ -484,7 +484,6 @@ class SocialMediaAgent(BaseAgent):
         flagged = []
         for match in re.finditer(r"\d+(?:\.\d+)?%|\d+(?:\.\d+)?x\b", text):
             token = match.group(0)
-            window = text[max(0, match.start() - 60):match.end() + 60].lower()
             if token.lower() not in stats_blob and _core(token) not in stats_blob \
                     and not any(part in stats_blob for part in _tokens(token)):
                 flagged.append(token)

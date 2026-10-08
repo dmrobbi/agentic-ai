@@ -9,7 +9,7 @@ event handlers, and event filtering.
 import json
 import logging
 from dataclasses import dataclass, field, asdict
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 from typing import Any, Callable, Dict, List, Optional, TypeVar
 from functools import wraps
@@ -405,7 +405,3 @@ def on_event(event_type: str):
         wrapper._event_type = event_type  # type: ignore
         return wrapper
     return decorator
-
-
-# Import timedelta for replay_events
-from datetime import timedelta

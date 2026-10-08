@@ -8,7 +8,7 @@ for collaborative editing.
 
 from typing import Dict, Any, List, Optional, Set, Callable
 from dataclasses import dataclass, field
-from datetime import datetime
+from datetime import datetime, timedelta
 from enum import Enum
 import uuid
 import threading
@@ -484,7 +484,3 @@ class RealTimeCollaboration:
                 "total_channels": len(self._channels),
                 "pending_operations": sum(len(ops) for ops in self._pending_ops.values()),
             }
-
-
-# Import timedelta
-from datetime import timedelta

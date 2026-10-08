@@ -8,9 +8,8 @@ theological research, and scriptural interpretation across multiple faith tradit
 
 import logging
 import re
-import json
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional, Set, Tuple
 
@@ -1088,9 +1087,9 @@ class BiblicalScholarAgent:
             f"Anchor Yale Bible Dictionary (entry on '{question}')",
             f"Encyclopedia of Religion (volume on {religion_focus.value if religion_focus else 'comparative'})",
             f"Journal of Biblical Literature (recent articles on '{question}')",
-            f"Numen: International Review for the History of Religions",
-            f"Harvard Theological Review",
-            f"Religious Studies Review",
+            "Numen: International Review for the History of Religions",
+            "Harvard Theological Review",
+            "Religious Studies Review",
         ]
 
         # Filter by focus if specified

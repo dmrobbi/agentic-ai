@@ -1,6 +1,6 @@
 """Agent Card — A2A-compatible agent metadata and capability discovery."""
 from dataclasses import dataclass, field
-from typing import Dict, Any, List, Optional
+from typing import Dict, Any, List
 from enum import Enum
 import json
 

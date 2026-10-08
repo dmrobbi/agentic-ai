@@ -9,7 +9,7 @@ experiment tracking, deployment automation, and model monitoring.
 from agentic_ai.agents.base import BaseAgent
 import logging
 from dataclasses import dataclass, field
-from datetime import datetime, timedelta
+from datetime import datetime
 from enum import Enum
 from typing import Any, Dict, List, Optional
 from agentic_ai.infrastructure.utils import utcnow
@@ -778,7 +778,7 @@ if __name__ == "__main__":
 
     # Get dashboard
     dashboard = agent.get_mlops_dashboard()
-    print(f"\nMLOps Dashboard:")
+    print("\nMLOps Dashboard:")
     print(f"  Models: {dashboard['models']['total']}")
     print(f"  Production: {dashboard['models']['production']}")
     print(f"  Open Alerts: {dashboard['monitoring']['alerts']['open']}")

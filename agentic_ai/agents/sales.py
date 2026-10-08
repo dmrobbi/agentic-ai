@@ -929,7 +929,7 @@ class SalesAgent(BaseAgent):
                   "Happy to scope a fixed-fee pilot.\n\n— Bedim Security (draft prepared by the sales agent)"
             )
         else:
-            subject = f"Next step: 30-minute briefing?"
+            subject = "Next step: 30-minute briefing?"
             body = (
                 f"Hi {lead.name or 'there'},\n\nClosing the loop on our earlier notes. The fastest "
                 "path: a 30-minute briefing — we whiteboard your topology, you see the live SOC, "

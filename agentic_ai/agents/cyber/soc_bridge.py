@@ -1,4 +1,4 @@
-"""SOC findings bridge (KA-066): SOC alert findings -> per-finding
+r"""SOC findings bridge (KA-066): SOC alert findings -> per-finding
 verification plans. PURE PLANNER: never executes anything; the live SOC
 pull is a later P5 wiring decision, not this module.
 
