@@ -1,5 +1,5 @@
-"""Plan Explorer (KA-098): browse plans/ops in a rich REPL view,
-without execution without execution - all read-only over injected structures.
+"""Plan Explorer (KA-098): browse plans/ops in a rich REPL view without execution -
+all read-only over injected structures.
 
 A pure module (docs/KA-BUILDING-CONVENTIONS.md): PlanExplorer wraps any
 duck-typed source that exposes `plans` and `ops` (a {"plans": ..., "ops":
