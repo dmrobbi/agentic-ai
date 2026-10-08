@@ -151,11 +151,16 @@ class SupportAgent(BaseAgent):
     def _init_auto_responses(self):
         """Initialize auto-response templates."""
         self.auto_responses = {
-            'password_reset': "To reset your password, please visit {base_url}/reset-password and follow the instructions.",
-            'billing_question': "For billing inquiries, please check your invoice at {base_url}/billing or contact our billing team at billing@example.com.",
-            'feature_request': "Thank you for your feature request! We've logged it for our product team to review. You can track feature requests at {base_url}/features.",
-            'bug_report': "Thank you for reporting this issue. Our engineering team will investigate and update you within 24 hours.",
-            'account_locked': "Your account has been temporarily locked for security. Please contact support@example.com to unlock it.",
+            'password_reset': "To reset your password, please visit {base_url}/reset-password and follow the"
+            " instructions.",
+            'billing_question': "For billing inquiries, please check your invoice at {base_url}/billing or contact our"
+            " billing team at billing@example.com.",
+            'feature_request': "Thank you for your feature request! We've logged it for our product team to review. You"
+            " can track feature requests at {base_url}/features.",
+            'bug_report': "Thank you for reporting this issue. Our engineering team will investigate and update you"
+            " within 24 hours.",
+            'account_locked': "Your account has been temporarily locked for security. Please contact"
+            " support@example.com to unlock it.",
         }
 
     def _init_knowledge_base(self):
@@ -164,14 +169,16 @@ class SupportAgent(BaseAgent):
             'kb-001': KnowledgeArticle(
                 article_id='kb-001',
                 title='How to Reset Your Password',
-                content='To reset your password: 1. Go to login page 2. Click "Forgot Password" 3. Enter your email 4. Check email for reset link',
+                content='To reset your password: 1. Go to login page 2. Click "Forgot Password" 3. Enter your email 4.'
+                ' Check email for reset link',
                 category='account',
                 tags=['password', 'login', 'account'],
             ),
             'kb-002': KnowledgeArticle(
                 article_id='kb-002',
                 title='Understanding Your Invoice',
-                content='Your invoice includes: subscription fees, usage charges, taxes. Payment is due within 30 days.',
+                content='Your invoice includes: subscription fees, usage charges, taxes. Payment is due within 30 days.'
+                '',
                 category='billing',
                 tags=['billing', 'invoice', 'payment'],
             ),
@@ -526,11 +533,14 @@ class SupportAgent(BaseAgent):
 
         # Resolution metrics
         resolved = [t for t in recent_tickets if t.status == TicketStatus.RESOLVED]
-        avg_resolution_time = sum(t.resolution_time for t in resolved if t.resolution_time) / len(resolved) if resolved else 0
+        avg_resolution_time = (sum(t.resolution_time for t in resolved if t.resolution_time) / len(resolved)
+                if resolved else 0)
 
         # Satisfaction
         scored = [t for t in resolved if t.satisfaction_score]
-        avg_satisfaction = sum(t.satisfaction_score for t in scored) / len(scored) if scored else 0  # type: ignore[misc]
+        avg_satisfaction = (
+            sum(t.satisfaction_score for t in scored)
+            / len(scored) if scored else 0)  # type: ignore[misc]
 
         # SLA breaches
         breaches = self.check_sla_breaches()
@@ -545,7 +555,8 @@ class SupportAgent(BaseAgent):
             'avg_satisfaction_score': round(avg_satisfaction, 2),
             'sla_breaches': len(breaches),
             'resolved_count': len(resolved),
-            'open_count': len([t for t in recent_tickets if t.status not in [TicketStatus.RESOLVED, TicketStatus.CLOSED]]),
+            'open_count': len([t for t in recent_tickets if t.status not in [TicketStatus.RESOLVED,
+                TicketStatus.CLOSED]]),
         }
 
     # ============================================
@@ -557,7 +568,8 @@ class SupportAgent(BaseAgent):
         return {
             'agent_id': self.agent_id,
             'tickets_count': len(self.tickets),
-            'open_tickets': len([t for t in self.tickets.values() if t.status not in [TicketStatus.RESOLVED, TicketStatus.CLOSED]]),
+            'open_tickets': len([t for t in self.tickets.values() if t.status not in [TicketStatus.RESOLVED,
+                TicketStatus.CLOSED]]),
             'knowledge_articles': len(self.knowledge_base),
             'sla_breaches': len(self.check_sla_breaches()),
         }

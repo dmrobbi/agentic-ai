@@ -532,7 +532,8 @@ class RedTeamAgent(BaseAgent):
         )
 
         # Determine severity based on end point
-        if 'domain_admin' in end_point.lower() or 'domain admin' in end_point.lower() or 'critical' in end_point.lower():
+        if ('domain_admin' in end_point.lower() or 'domain admin' in end_point.lower()
+        or 'critical' in end_point.lower()):
             path.severity = FindingSeverity.CRITICAL
         elif 'admin' in end_point.lower() or 'sensitive' in end_point.lower():
             path.severity = FindingSeverity.CRITICAL
@@ -578,7 +579,11 @@ class RedTeamAgent(BaseAgent):
                 'name': engagement.name,
                 'type': engagement.engagement_type.value,
                 'status': engagement.status.value,
-                'duration_days': (engagement.end_date or utcnow() - engagement.start_date).days if engagement.end_date else (utcnow() - engagement.start_date).days,  # type: ignore[union-attr]
+                'duration_days': (
+                        (engagement.end_date or utcnow() - engagement.start_date).days
+                        if engagement.end_date
+                        else (utcnow() - engagement.start_date).days
+                ),  # type: ignore[union-attr]
             },
             'summary': {
                 'total_targets': len(targets),
@@ -857,7 +862,8 @@ class RedTeamAgent(BaseAgent):
                 target=target,
                 domain=domain,
             )
-            results["phase_results"].append({"phase": "recon", "target": target, **recon_result})  # type: ignore[attr-defined]
+            results["phase_results"].append({"phase": "recon", "target": target,
+                **recon_result})  # type: ignore[attr-defined]
             if recon_result.get("success"):
                 results["total_services"] += recon_result.get("services_discovered", 0)
 

@@ -307,7 +307,8 @@ class SecurityAgent(BaseAgent):
     # Security Assessment
     # ============================================
 
-    def create_assessment(self, title: str, assessment_type: str = "", scope: str = "", assessor: str = "", target_vendor: str = "", **kwargs) -> Any:
+    def create_assessment(self, title: str, assessment_type: str = "", scope: str = "", assessor: str = "",
+            target_vendor: str = "", **kwargs) -> Any:
         """Create a security assessment."""
         assessment_id = self._generate_id("assess")
         assessment = {
@@ -326,7 +327,8 @@ class SecurityAgent(BaseAgent):
         self.state_store.set(f"agent:{self.agent_id}:assessments", assessments)  # type: ignore[union-attr]
         return SecurityAssessment(**assessment)  # type: ignore[arg-type]
 
-    def add_control(self, assessment_id: str = "", name: str = "", description: str = "", control_type: str = "", category: str = "", status: str = "effective", **kwargs) -> Any:
+    def add_control(self, assessment_id: str = "", name: str = "", description: str = "",
+            control_type: str = "", category: str = "", status: str = "effective", **kwargs) -> Any:
         """Add a control to a security assessment."""
         control_id = self._generate_id("ctrl")
         control = {

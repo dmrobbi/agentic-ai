@@ -305,7 +305,8 @@ class EventBus:
         end = '+' if not end_time else int(end_time.timestamp() * 1000)
 
         # Read historical events
-        raw_events: Any = self._redis.xrange(stream_key, min=str(start), max=str(end), count=count)  # type: ignore[union-attr,arg-type]
+        raw_events: Any = self._redis.xrange(stream_key, min=str(start), max=str(end),
+            count=count)  # type: ignore[union-attr,arg-type]
         events: List[Any] = list(raw_events)
 
         replayed = 0

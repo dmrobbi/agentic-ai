@@ -226,7 +226,8 @@ KALI_TOOLS_DB = {
         args_schema={
             "target": {"type": "string", "required": True, "description": "Target host/network"},
             "ports": {"type": "string", "required": False, "description": "Port range (e.g., 1-1000)"},
-            "scan_type": {"type": "string", "required": False, "default": "sS", "description": "Scan type (sS, sT, sU, sA)"},
+            "scan_type": {"type": "string", "required": False, "default": "sS",
+                "description": "Scan type (sS, sT, sU, sA)"},
             "version_detect": {"type": "boolean", "required": False, "default": True},
             "os_detect": {"type": "boolean", "required": False, "default": False},
             "aggressive": {"type": "boolean", "required": False, "default": False},
@@ -1383,7 +1384,10 @@ def _validate_command_args(args: list) -> None:
                 raise ValueError(f"Rejected dangerous metacharacter in argument: {arg}")
 
 
-class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin, PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin, XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin, ForensicsMixin, BaseAgent):
+class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin,
+        PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin,
+        XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin,
+        ForensicsMixin, BaseAgent):
     """
     Kali Linux Tool Orchestration Agent
 

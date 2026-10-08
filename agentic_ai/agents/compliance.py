@@ -650,7 +650,8 @@ class ComplianceAgent(BaseAgent):
     # Utilities
     # ============================================
 
-    def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "", **kwargs) -> Any:  # type: ignore[no-redef]
+    def create_assessment(self, name: str, assessment_type: str = "", scope: str = "", assessor: str = "",
+            **kwargs) -> Any:  # type: ignore[no-redef]
         """Create a compliance assessment."""
         assessment_id = self._generate_id("assess")
         assessment = ComplianceAssessment(

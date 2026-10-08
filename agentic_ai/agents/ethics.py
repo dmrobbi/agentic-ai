@@ -530,7 +530,8 @@ class EthicsAgent(BaseAgent):
         if disparities:
             recommendations = []
             for disp in disparities:
-                recommendations.append(f"Address {disp['metric']} disparity ({disp['disparity']:.2f} > {disp['threshold']})")
+                recommendations.append(f"Address {disp['metric']} disparity ({disp['disparity']:.2f} >"
+                f" {disp['threshold']})")
             recommendations.extend([
                 "Consider reweighting training data",
                 "Evaluate model performance across subgroups",
@@ -792,7 +793,8 @@ class EthicsAgent(BaseAgent):
         return {
             'agent_id': self.agent_id,
             'models_count': len(self.models),
-            'high_risk_models': len([m for m in self.models.values() if m.risk_level in [RiskLevel.HIGH, RiskLevel.UNACCEPTABLE]]),
+            'high_risk_models': len([m for m in self.models.values() if m.risk_level in [RiskLevel.HIGH,
+                RiskLevel.UNACCEPTABLE]]),
             'assessments_count': len(self.assessments),
             'bias_detected': len(self.bias_assessments),
             'fairness_reports_count': len(self.fairness_reports),

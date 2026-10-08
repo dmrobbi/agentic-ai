@@ -450,8 +450,10 @@ class CommunicationsAgent(BaseAgent):
             'opened': campaign.opened_count,
             'clicked': campaign.clicked_count,
             'failed': campaign.failed_count,
-            'open_rate': round(campaign.opened_count / campaign.delivered_count * 100, 1) if campaign.delivered_count > 0 else 0,
-            'click_rate': round(campaign.clicked_count / campaign.delivered_count * 100, 1) if campaign.delivered_count > 0 else 0,
+            'open_rate': round(campaign.opened_count / campaign.delivered_count * 100,
+                1) if campaign.delivered_count > 0 else 0,
+            'click_rate': round(campaign.clicked_count / campaign.delivered_count * 100,
+                1) if campaign.delivered_count > 0 else 0,
         }
 
     def get_channel_health(self) -> Dict[str, Any]:

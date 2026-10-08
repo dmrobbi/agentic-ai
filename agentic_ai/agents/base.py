@@ -320,7 +320,8 @@ class BaseAgent:
         return True
 
     @trace_agent_method("think")
-    async def think(self, prompt: str, context: Optional[Dict[str, Any]] = None, response_model: Optional[Any] = None) -> str:
+    async def think(self, prompt: str, context: Optional[Dict[str, Any]] = None,
+            response_model: Optional[Any] = None) -> str:
         """Use LLM inference to reason about something. Optionally validate against a Pydantic model."""
         # Input guardrail
         sanitized, is_safe = self.input_guardrail(prompt)
@@ -459,7 +460,8 @@ class BaseAgent:
 
             # Check if finished
             if loop.is_finished(step):
-                trace.final_answer = step.action_input.get("final_answer", step.thought) if step.action_input else step.thought
+                trace.final_answer = step.action_input.get("final_answer",
+                    step.thought) if step.action_input else step.thought
                 trace.status = ReasoningStatus.FINISHED
                 break
 

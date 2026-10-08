@@ -498,7 +498,8 @@ def chaos_status():
     console.print(run_table)
 
     # Resiliency
-    console.print(f"\n[bold]Average Resiliency Score:[/bold] [green]{dashboard['resiliency']['average_score']:.1f}/100[/green]")
+    console.print(f"\n[bold]Average Resiliency Score:[/bold]"
+    f" [green]{dashboard['resiliency']['average_score']:.1f}/100[/green]")
 
 
 # ============================================================================
@@ -540,7 +541,9 @@ def vendor_list(
             'tier_4': 'T4',
         }
 
-        risk_color = "red" if vendor.risk_score > 0.7 else "yellow" if vendor.risk_score > 0.4 else "green"  # type: ignore[attr-defined]
+        risk_color = (
+                "red" if vendor.risk_score > 0.7
+                else "yellow" if vendor.risk_score > 0.4 else "green")  # type: ignore[attr-defined]
 
         table.add_row(
             vendor.vendor_id[:20] + "...",

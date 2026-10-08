@@ -605,7 +605,8 @@ ENHANCED_KALI_TOOLS_DB = {
         args_schema={
             "target": {"type": "string", "required": True, "description": "Target host/network"},
             "ports": {"type": "string", "required": False, "description": "Port range (e.g., 1-1000)"},
-            "scan_type": {"type": "string", "required": False, "default": "sS", "description": "Scan type (sS, sT, sU, sA)"},
+            "scan_type": {"type": "string", "required": False, "default": "sS",
+                "description": "Scan type (sS, sT, sU, sA)"},
             "version_detect": {"type": "boolean", "required": False, "default": True},
             "os_detect": {"type": "boolean", "required": False, "default": False},
             "aggressive": {"type": "boolean", "required": False, "default": False},
@@ -1166,7 +1167,10 @@ def _resolve_tool_level(tool_db, tool_name):
     return getattr(level, "value", level)
 
 
-class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin, PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin, XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin, ForensicsMixin):
+class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin,
+        PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin,
+        XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin,
+        ForensicsMixin):
     """
     Enhanced KaliAgent with modern tools and intelligent features.
     """
@@ -1223,7 +1227,10 @@ class KaliAgentV2(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, Soc
         tool = self.tools[tool_name]
 
         if self.authorization_level.value < tool.authorization.value:
-            return False, f"Authorization level {self.authorization_level.name} insufficient (requires {tool.authorization.name})"
+            return (
+                False,
+                f"Authorization level {self.authorization_level.name} insufficient (requires {tool.authorization.name})"
+            )
 
         return True, "Authorized"
 

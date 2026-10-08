@@ -503,7 +503,8 @@ These Terms are governed by applicable law.
             'regulations_tracked': len(self.regulations),
         }
 
-    def create_legal_matter(self, title: str, matter_type: str = "", description: str = "", priority: str = "medium", **kwargs) -> Any:
+    def create_legal_matter(self, title: str, matter_type: str = "", description: str = "",
+            priority: str = "medium", **kwargs) -> Any:
         """Create a legal matter (tracked as a legal document)."""
         matter_id = self._generate_id("legal")
         matter_type_map = {

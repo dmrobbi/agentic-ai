@@ -701,7 +701,9 @@ class SupplyChainAgent(BaseAgent):
             'packages_count': len(self.packages),
             'sboms_count': len(self.sboms),
             'vulnerabilities_count': len(self.vulnerabilities),
-            'critical_vulns': len([v for v in self.vulnerabilities.values() if v.severity == VulnerabilitySeverity.CRITICAL]),
+            'critical_vulns': len(
+                [v for v in self.vulnerabilities.values()
+                if v.severity == VulnerabilitySeverity.CRITICAL]),
             'vendors_count': len(self.vendors),
             'assessments_count': len(self.assessments),
             'incidents_count': len(self.incidents),

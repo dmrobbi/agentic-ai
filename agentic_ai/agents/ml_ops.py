@@ -478,7 +478,8 @@ class MLOpsAgent(BaseAgent):
 
                 # Check for drift/degradation
                 if threshold and abs(current - baseline) > threshold:
-                    alert_type = AlertType.DATA_DRIFT if 'accuracy' in metric.lower() else AlertType.PERFORMANCE_DEGRADATION
+                    alert_type = (AlertType.DATA_DRIFT if 'accuracy' in metric.lower()
+                            else AlertType.PERFORMANCE_DEGRADATION)
 
                     alert = self.create_alert(
                         model_id=model_id,

@@ -542,7 +542,8 @@ class RedTeamAgentV2:
 
         coverage["techniques_mapped"] = list(set(coverage["techniques_mapped"]))  # type: ignore[call-overload]
         coverage["coverage_percentage"] = round(
-            len(coverage["techniques_mapped"]) / coverage["total_techniques"] * 100, 2  # type: ignore[arg-type,operator]
+            len(coverage["techniques_mapped"]) / coverage["total_techniques"] * 100,
+            2  # type: ignore[arg-type,operator]
         )
 
         return coverage
@@ -1017,7 +1018,8 @@ class RedTeamAgentV2:
             recommendations.append("Attackers have multiple paths to achieve objectives - implement defense in depth")
 
         if risk.risk_factors["detection_evasion"] >= 7:
-            recommendations.append("Improve detection capabilities - current monitoring missed significant attack activity")
+            recommendations.append("Improve detection capabilities - current monitoring missed significant attack"
+            " activity")
 
         if risk.findings_by_severity.get("critical", 0) > 0:
             recommendations.append("Critical vulnerabilities require immediate attention within 24-48 hours")

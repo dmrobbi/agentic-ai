@@ -819,7 +819,10 @@ class VendorRiskAgent(BaseAgent):
             'assessments': {
                 'total': len(assessments),
                 'latest': {
-                    'date': latest_assessment.completed_at.isoformat() if latest_assessment and latest_assessment.completed_at else None,
+                    'date': (
+                        latest_assessment.completed_at.isoformat()
+                        if latest_assessment and latest_assessment.completed_at
+                        else None),
                     'type': latest_assessment.assessment_type.value if latest_assessment else None,
                     'risk_level': latest_assessment.residual_risk_level.value if latest_assessment else None,
                 } if latest_assessment else None,

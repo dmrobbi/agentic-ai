@@ -94,7 +94,8 @@ class FinanceAgent(BaseAgent):
         txn = Transaction(txn_id=txn_id, type=txn_type, amount=amount,
                           category=category, description=description)
         self.transactions.append(txn)
-        return {"status": "recorded", "transaction_id": transaction_id, "txn_id": txn_id, "type": type, "amount": amount, "category": category}
+        return {"status": "recorded", "transaction_id": transaction_id, "txn_id": txn_id, "type": type,
+            "amount": amount, "category": category}
 
     def create_budget(self, budget_name: str = "", name: str = "", total: float = 0.0,
                       categories: Optional[Dict[str, float]] = None,
@@ -106,7 +107,9 @@ class FinanceAgent(BaseAgent):
         budget = Budget(budget_id=budget_id, name=budget_label, total=computed_total,
                         categories=categories or {})
         self.budgets.append(budget)
-        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": computed_total, "categories": categories or {}, "budget": {"budget_id": budget_id, "name": budget_label, "total": computed_total, "categories": categories or {}}}
+        return {"status": "created", "budget_id": budget_id, "name": budget_label, "total": computed_total,
+            "categories": categories or {}, "budget": {"budget_id": budget_id, "name": budget_label,
+            "total": computed_total, "categories": categories or {}}}
 
     def analyze_spending(self, period: str = "month", category: str = "") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
@@ -115,24 +118,29 @@ class FinanceAgent(BaseAgent):
         expense_transactions = [t for t in self.transactions if t.type == TransactionType.EXPENSE]
         for t in expense_transactions:
             by_category[t.category] = by_category.get(t.category, 0) + t.amount
-        return {"period": period, "total_income": income, "total_expense": expenses, "total_spent": expenses, "net": income - expenses, "transaction_count": len(expense_transactions), "by_category": by_category}
+        return {"period": period, "total_income": income, "total_expense": expenses, "total_spent": expenses,
+            "net": income - expenses, "transaction_count": len(expense_transactions), "by_category": by_category}
 
     def create_invoice(self, customer: str = "", client: str = "", amount: float = 0.0,
                        items: Optional[List[Dict[str, Any]]] = None) -> Dict[str, Any]:
         customer = customer or client
-        item_subtotal = sum(item.get("amount", item.get("quantity", 1) * item.get("price", 0)) for item in (items or []))
+        item_subtotal = sum(item.get("amount", item.get("quantity", 1) * item.get("price",
+            0)) for item in (items or []))
         subtotal = amount or item_subtotal
         invoice_id = f"INV-{len(self.invoices)+1:04d}"
         invoice = Invoice(invoice_id=invoice_id, customer=customer, amount=subtotal, items=items or [])
         self.invoices.append(invoice)
-        return {"status": "created", "invoice_id": invoice_id, "customer": customer, "amount": subtotal, "invoice": {"invoice_id": invoice_id, "customer": customer, "amount": subtotal, "subtotal": subtotal}}
+        return {"status": "created", "invoice_id": invoice_id, "customer": customer, "amount": subtotal,
+            "invoice": {"invoice_id": invoice_id, "customer": customer, "amount": subtotal, "subtotal": subtotal}}
 
     def generate_report(self, report_type: str = "summary", period: str = "month") -> Dict[str, Any]:
         income = sum(t.amount for t in self.transactions if t.type == TransactionType.INCOME)
         expenses = sum(t.amount for t in self.transactions if t.type == TransactionType.EXPENSE)
-        return {"report_type": report_type, "period": period, "income": income, "expenses": expenses, "net": income - expenses, "budget_count": len(self.budgets), "invoice_count": len(self.invoices)}
+        return {"report_type": report_type, "period": period, "income": income, "expenses": expenses,
+            "net": income - expenses, "budget_count": len(self.budgets), "invoice_count": len(self.invoices)}
 
-    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None,
+            **kwargs) -> Dict[str, Any]:
         if task_type == "record_transaction":
             return self.record_transaction(**kwargs)
         elif task_type == "create_budget":

@@ -355,7 +355,8 @@ class DataAnalystAgent(BaseAgent):
                 corr = self.detect_correlations(dataset_id, col1, col2)
                 if 'error' not in corr and corr['strength'] in ['strong', 'moderate']:
                     correlations.append(corr)
-                    insights.append(f"{corr['strength'].capitalize()} {corr['direction']} correlation between {col1} and {col2}")
+                    insights.append(f"{corr['strength'].capitalize()} {corr['direction']} correlation between {col1}"
+                    f" and {col2}")
 
         results['correlations'] = correlations  # type: ignore[assignment]
 

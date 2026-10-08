@@ -205,10 +205,14 @@ async def get_demo_chaos():
             {"time": "14:44", "errorRate": 0.3, "latency": 118, "availability": 99.95},
         ],
         "resiliencyScores": [
-            {"service": "web-api", "score": 87, "availability": 92, "recovery": 85, "degradation": 80, "monitoring": 90},
-            {"service": "ml-inference", "score": 92, "availability": 95, "recovery": 90, "degradation": 88, "monitoring": 95},
-            {"service": "payment-service", "score": 78, "availability": 80, "recovery": 75, "degradation": 70, "monitoring": 85},
-            {"service": "user-auth", "score": 95, "availability": 98, "recovery": 93, "degradation": 92, "monitoring": 97},
+            {"service": "web-api", "score": 87, "availability": 92, "recovery": 85, "degradation": 80,
+                "monitoring": 90},
+            {"service": "ml-inference", "score": 92, "availability": 95, "recovery": 90, "degradation": 88,
+                "monitoring": 95},
+            {"service": "payment-service", "score": 78, "availability": 80, "recovery": 75, "degradation": 70,
+                "monitoring": 85},
+            {"service": "user-auth", "score": 95, "availability": 98, "recovery": 93, "degradation": 92,
+                "monitoring": 97},
         ],
         "resiliency_score": 87.5,
     }

@@ -138,7 +138,8 @@ PRICING: Dict[str, Any] = {
 
 # Measured fleet proof points (published: capabilities page + Laya reports).
 PROOF_POINTS: List[str] = [
-    "Median alert decision 21s -> 1.2s after the deterministic gate + single local inference (measured over the live decision log)",
+    "Median alert decision 21s -> 1.2s after the deterministic gate + single local inference (measured over the live"
+    " decision log)",
     "65% of decisions hitting a 90-second model ceiling -> 0",
     "74% less GPU energy per decision, 16x decision latency, 94.6% decision agreement over a 452-decision soak",
     "$0 per-alert model spend: the alert path runs on local hardware, bound to loopback",

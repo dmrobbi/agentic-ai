@@ -185,7 +185,8 @@ class StateStore:
             with self._db_lock:
                 try:
                     self._conn.execute(
-                        "INSERT OR REPLACE INTO tasks (task_id, task_type, agent_id, status, priority, payload, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                        "INSERT OR REPLACE INTO tasks (task_id, task_type, agent_id, status, priority, payload,"
+                        " created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                         (tid, task_type or title, agent_id, status, priority,
                          json.dumps(payload) if payload else None,
                          utcnow().isoformat(), utcnow().isoformat())
@@ -261,7 +262,8 @@ class StateStore:
             with self._db_lock:
                 try:
                     cursor = self._conn.execute(
-                        "SELECT task_id, task_type, agent_id, status, priority, payload FROM tasks WHERE status='pending' AND (agent_id=? OR ?='')",
+                        "SELECT task_id, task_type, agent_id, status, priority, payload FROM tasks WHERE"
+                        " status='pending' AND (agent_id=? OR ?='')",
                         (agent_id, agent_id)
                     )
                     for row in cursor.fetchall():
@@ -285,7 +287,8 @@ class StateStore:
             with self._db_lock:
                 try:
                     self._conn.execute(
-                        "INSERT OR REPLACE INTO agent_state (agent_id, agent_type, state, updated_at) VALUES (?, ?, ?, ?)",
+                        "INSERT OR REPLACE INTO agent_state (agent_id, agent_type, state, updated_at) VALUES (?, ?, ?,"
+                        " ?)",
                         (agent_id, agent_type, json.dumps(state), utcnow().isoformat())
                     )
                     self._conn.commit()

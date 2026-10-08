@@ -111,7 +111,8 @@ class MarketingAgent(BaseAgent):
         # Content templates
         self.templates = {
             'email_subject': ["🚀 {product}: {benefit}", "Don't miss out on {offer}!", "New: {feature} is here"],
-            'social_post': ["Exciting news! {announcement} #innovation", "We're thrilled to share {update} 🎉", "Just launched: {product}"],
+            'social_post': ["Exciting news! {announcement} #innovation", "We're thrilled to share {update} 🎉",
+                "Just launched: {product}"],
             'blog_title': ["How to {action} in {year}", "The Ultimate Guide to {topic}", "{number} Ways to {improve}"],
         }
 
@@ -340,7 +341,8 @@ class MarketingAgent(BaseAgent):
             posts.append(post)
         return posts
 
-    def generate_blog_titles(self, action: str, topic: str, improve: str = "", year: int = 2026, number: int = 10) -> List[str]:
+    def generate_blog_titles(self, action: str, topic: str, improve: str = "", year: int = 2026,
+            number: int = 10) -> List[str]:
         """Generate blog title variations."""
         titles = []
         for template in self.templates['blog_title']:

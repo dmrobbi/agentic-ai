@@ -107,20 +107,23 @@ class SysAdminAgent(BaseAgent):
                 try:
                     import psutil
                     mem = psutil.virtual_memory()
-                    results["memory"] = {"total_gb": round(mem.total/1e9, 2), "used_pct": mem.percent, "status": "healthy" if mem.percent < 90 else "warning"}
+                    results["memory"] = {"total_gb": round(mem.total/1e9, 2), "used_pct": mem.percent,
+                        "status": "healthy" if mem.percent < 90 else "warning"}
                 except ImportError:
                     results["memory"] = {"status": "simulated", "used_pct": 45.2, "total_gb": 16.0}
             elif check == "disk":
                 try:
                     import psutil
                     disk = psutil.disk_usage("/")
-                    results["disk"] = {"total_gb": round(disk.total/1e9, 2), "used_pct": disk.percent, "status": "healthy" if disk.percent < 85 else "warning"}
+                    results["disk"] = {"total_gb": round(disk.total/1e9, 2), "used_pct": disk.percent,
+                        "status": "healthy" if disk.percent < 85 else "warning"}
                 except ImportError:
                     results["disk"] = {"status": "simulated", "used_pct": 62.1, "total_gb": 500.0}
             elif check == "cpu":
                 try:
                     import psutil
-                    results["cpu"] = {"count": psutil.cpu_count(), "load_pct": psutil.cpu_percent(interval=0.1), "status": "healthy"}
+                    results["cpu"] = {"count": psutil.cpu_count(),
+                        "load_pct": psutil.cpu_percent(interval=0.1), "status": "healthy"}
                 except ImportError:
                     results["cpu"] = {"status": "simulated", "load_pct": 32.5, "count": 8}
             else:
@@ -146,7 +149,8 @@ class SysAdminAgent(BaseAgent):
             return {"error": "Command blocked for safety (only allowlisted read-only commands run)", "command": command}
         try:
             result = subprocess.run(argv, shell=False, capture_output=True, text=True, timeout=timeout)
-            return {"success": True, "stdout": result.stdout.strip(), "stderr": result.stderr.strip(), "exit_code": result.returncode, "command": command, "timed_out": False}
+            return {"success": True, "stdout": result.stdout.strip(), "stderr": result.stderr.strip(),
+                "exit_code": result.returncode, "command": command, "timed_out": False}
         except subprocess.TimeoutExpired:
             return {"success": False, "error": "Command timed out", "command": command, "timed_out": True}
         except Exception as e:
@@ -155,8 +159,10 @@ class SysAdminAgent(BaseAgent):
     def list_incidents(self, status: Optional[str] = None) -> List[Dict[str, Any]]:
         if status:
             status_enum = IncidentStatus(status.lower())
-            return [{"incident_id": i.incident_id, "title": i.title, "severity": i.severity.value, "status": i.status.value} for i in self.incidents if i.status == status_enum]
-        return [{"incident_id": i.incident_id, "title": i.title, "severity": i.severity.value, "status": i.status.value} for i in self.incidents]
+            return [{"incident_id": i.incident_id, "title": i.title, "severity": i.severity.value,
+                "status": i.status.value} for i in self.incidents if i.status == status_enum]
+        return [{"incident_id": i.incident_id, "title": i.title, "severity": i.severity.value,
+            "status": i.status.value} for i in self.incidents]
 
     def resolve_incident(self, incident_id: str = "", resolution: str = "") -> Dict[str, Any]:
         for incident in self.incidents:
@@ -193,11 +199,13 @@ class SysAdminAgent(BaseAgent):
             return {"error": "No service name provided"}
         try:
             result = subprocess.run(["systemctl", action, service_name], capture_output=True, text=True, timeout=10)
-            return {"service": service_name, "action": action, "active": result.returncode == 0, "output": result.stdout.strip()[:200]}
+            return {"service": service_name, "action": action, "active": result.returncode == 0,
+                "output": result.stdout.strip()[:200]}
         except (OSError, subprocess.TimeoutExpired, subprocess.SubprocessError):
             return {"service": service_name, "action": action, "active": "unknown", "simulated": True}
 
-    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None, **kwargs) -> Dict[str, Any]:
+    async def perform_task(self, task_type: str = "", payload: Optional[Dict[str, Any]] = None,
+            **kwargs) -> Dict[str, Any]:
         if task_type == "check_system":
             return self.check_system(**kwargs)
         elif task_type == "analyze_logs":

@@ -858,7 +858,8 @@ class PrivacyAgent(BaseAgent):
     # Utilities
     # ============================================
 
-    def register_processing_activity(self, name: str, purpose=None, data_categories=None, legal_basis: str = "legitimate_interest", **kwargs) -> Any:
+    def register_processing_activity(self, name: str, purpose=None, data_categories=None,
+            legal_basis: str = "legitimate_interest", **kwargs) -> Any:
         """Alias for add_processing_activity with more flexible interface."""
         purposes = [purpose] if purpose else kwargs.get('purposes', [])
         if not purposes:
@@ -877,7 +878,8 @@ class PrivacyAgent(BaseAgent):
             risk_level=kwargs.get('risk_level', 'low'),
         )
 
-    def create_data_request(self, subject_id: str, right_type=None, submitted_at=None, deadline=None, status: str = "submitted", **kwargs) -> Any:
+    def create_data_request(self, subject_id: str, right_type=None, submitted_at=None, deadline=None,
+            status: str = "submitted", **kwargs) -> Any:
         """Create a data subject request with flexible interface."""
         # Ensure subject exists
         if subject_id not in self.data_subjects:

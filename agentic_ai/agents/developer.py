@@ -58,7 +58,8 @@ class DeveloperAgent(BaseAgent):
             directory = self.project_path / path
             files = []
             for f in sorted(directory.rglob(pattern)):
-                files.append({"name": f.name, "path": str(f.relative_to(self.project_path)), "is_dir": f.is_dir(), "size": f.stat().st_size if f.is_file() else 0})
+                files.append({"name": f.name, "path": str(f.relative_to(self.project_path)),
+                    "is_dir": f.is_dir(), "size": f.stat().st_size if f.is_file() else 0})
             return {"directory": str(directory), "files": files, "pattern": pattern, "count": len(files)}
         except Exception as e:
             return {"error": str(e), "directory": path}
@@ -78,11 +79,15 @@ class DeveloperAgent(BaseAgent):
             result["summary"] = f"Could not analyze {path}"
         return result
 
-    def review_code(self, code: str = "", language: str = "python", path: str = "", pr: str = "", **kwargs) -> Dict[str, Any]:
-        return {"status": "reviewed", "issues": [], "suggestions": ["Code looks good"], "language": language, "path": path, "pr": pr, "code": code, "feedback": "Code review completed successfully"}
+    def review_code(self, code: str = "", language: str = "python", path: str = "", pr: str = "",
+            **kwargs) -> Dict[str, Any]:
+        return {"status": "reviewed", "issues": [], "suggestions": ["Code looks good"], "language": language,
+            "path": path, "pr": pr, "code": code, "feedback": "Code review completed successfully"}
 
-    def implement_feature(self, feature: str = "", language: str = "python", description: str = "", files: Optional[list] = None, specs: str = "", module: str = "") -> Dict[str, Any]:
-        return {"status": "implemented", "feature": feature or description or specs, "language": language, "implementation": "Feature implementation generated", "files": files or [], "module": module}
+    def implement_feature(self, feature: str = "", language: str = "python", description: str = "",
+            files: Optional[list] = None, specs: str = "", module: str = "") -> Dict[str, Any]:
+        return {"status": "implemented", "feature": feature or description or specs, "language": language,
+            "implementation": "Feature implementation generated", "files": files or [], "module": module}
 
     def run_tests(self, path: str = ".", test_type: str = "unit") -> Dict[str, Any]:
         return {"status": "passed", "tests_run": 0, "failures": 0, "path": path}

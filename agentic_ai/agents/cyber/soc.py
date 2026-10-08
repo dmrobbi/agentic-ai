@@ -381,7 +381,9 @@ class SecurityOperationsAgent(BaseAgent):
     # Incident Management
     # ============================================
 
-    def report_security_incident(self, title: str, description: str = "", severity: str = "high", incident_type: str = "", affected_systems: Optional[List[str]] = None, source_ip: str = "", target_user: str = "", **kwargs) -> Any:
+    def report_security_incident(self, title: str, description: str = "", severity: str = "high",
+            incident_type: str = "", affected_systems: Optional[List[str]] = None, source_ip: str = "",
+            target_user: str = "", **kwargs) -> Any:
         """Report a security incident. Convenience method that maps to create_incident.
         Returns the incident with string severity preserved."""
         severity_map = {
@@ -761,7 +763,8 @@ class SecurityOperationsAgent(BaseAgent):
         return {
             'agent_id': self.agent_id,
             'alerts_count': len(self.alerts),
-            'active_alerts': len([a for a in self.alerts.values() if a.status not in [AlertStatus.RESOLVED, AlertStatus.FALSE_POSITIVE]]),
+            'active_alerts': len([a for a in self.alerts.values() if a.status not in [AlertStatus.RESOLVED,
+                AlertStatus.FALSE_POSITIVE]]),
             'incidents_count': len(self.incidents),
             'active_incidents': len([i for i in self.incidents.values() if i.status != IncidentStatus.CLOSED]),
             'threat_intel_count': len(self.threat_intel),
@@ -815,7 +818,9 @@ class SecurityOperationsAgent(BaseAgent):
                 incident = self.create_incident(
                     title=f"Wazuh {kw['rule_name']} on {kw['affected_asset']}",
                     description=kw["description"],
-                    severity=IncidentSeverity.HIGH if severity_enum == AlertSeverity.HIGH else IncidentSeverity.CRITICAL,
+                    severity=(IncidentSeverity.HIGH
+                            if severity_enum == AlertSeverity.HIGH
+                            else IncidentSeverity.CRITICAL),
                     category="wazuh_alert",
                     threat_actor=ThreatActor.UNKNOWN,
                 )

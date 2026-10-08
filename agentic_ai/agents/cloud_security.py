@@ -717,7 +717,9 @@ class CloudSecurityAgent(BaseAgent):
             'resources_count': len(self.resources),
             'findings_count': len(findings),
             'open_findings': len([f for f in findings if f.status == FindingStatus.OPEN]),
-            'critical_open': len([f for f in findings if f.severity == Severity.CRITICAL and f.status == FindingStatus.OPEN]),
+            'critical_open': len(
+                [f for f in findings if f.severity == Severity.CRITICAL
+                and f.status == FindingStatus.OPEN]),
             'policies_count': len(self.policies),
             'remediations_count': len(self.remediations),
         }

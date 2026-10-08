@@ -161,7 +161,8 @@ class BiblicalScholarAgent:
             book_name="John",
             chapter=3,
             verse=16,
-            content="For God so loved the world that he gave his one and only Son, that whoever believes in him shall not perish but have eternal life.",
+            content="For God so loved the world that he gave his one and only Son, that whoever believes in him shall"
+            " not perish but have eternal life.",
             language_original="Greek",
             translation_used="NIV",
             author_attributed="John the Apostle",
@@ -198,7 +199,10 @@ class BiblicalScholarAgent:
             book_name="Al-Fatihah",
             chapter=1,
             verse_range="1-7",
-            content="In the name of Allah, the Most Gracious, the Most Merciful. Praise be to Allah, Lord of all worlds. The Most Gracious, the Most Merciful. Master of the Day of Judgment. You alone we worship, and You alone we ask for help. Guide us to the straight path, the path of those who have received Your grace; not the path of those who have evoked [Your] anger or of those who are astray.",
+            content="In the name of Allah, the Most Gracious, the Most Merciful. Praise be to Allah, Lord"
+            " of all worlds. The Most Gracious, the Most Merciful. Master of the Day of Judgment. You alone we"
+            " worship, and You alone we ask for help. Guide us to the straight path, the path of those who have"
+            " received Your grace; not the path of those who have evoked [Your] anger or of those who are astray.",
             language_original="Arabic",
             translation_used="Sahih International",
             author_attributed="Allah (revealed to Muhammad)",
@@ -217,7 +221,8 @@ class BiblicalScholarAgent:
             book_name="Bhagavad Gita",
             chapter=2,
             verse=47,
-            content="You have the right to work only but never to the fruits of work. You should never engage in action for the sake of reward, nor should you long for inaction.",
+            content="You have the right to work only but never to the fruits of work. You should never engage in action"
+            " for the sake of reward, nor should you long for inaction.",
             language_original="Sanskrit",
             translation_used="Swami Sivananda",
             author_attributed="Vyasa (traditional)",
@@ -236,7 +241,8 @@ class BiblicalScholarAgent:
             book_name="Dhammapada",
             chapter=1,
             verse=1,
-            content="Mind precedes all mental states. Mind is their chief; they are all mind-wrought. If with an impure mind a person speaks or acts suffering follows him like the wheel that follows the foot of the ox.",
+            content="Mind precedes all mental states. Mind is their chief; they are all mind-wrought. If with an impure"
+            " mind a person speaks or acts suffering follows him like the wheel that follows the foot of the ox.",
             language_original="Pali",
             translation_used="Thanissaro Bhikkhu",
             author_attributed="Buddha",
@@ -277,7 +283,8 @@ class BiblicalScholarAgent:
             book_name="Leviticus",
             chapter=19,
             verse=18,
-            content="Do not seek revenge or bear a grudge against anyone among your people, but love your neighbor as yourself. I am the LORD.",
+            content="Do not seek revenge or bear a grudge against anyone among your people, but love your neighbor as"
+            " yourself. I am the LORD.",
             language_original="Hebrew",
             translation_used="NIV",
             author_attributed="Moses",
@@ -313,7 +320,8 @@ class BiblicalScholarAgent:
             book_name="John",
             chapter=14,
             verse=6,
-            content="Jesus answered, 'I am the way and the truth and the life. No one comes to the Father except through me.'",
+            content="Jesus answered, 'I am the way and the truth and the life. No one comes to the Father except"
+            " through me.'",
             language_original="Greek",
             translation_used="NIV",
             author_attributed="John the Apostle",
@@ -331,7 +339,8 @@ class BiblicalScholarAgent:
             book_name="Matthew",
             chapter=7,
             verse=12,
-            content="So in everything, do to others what you would have them do to you, for this sums up the Law and the Prophets.",
+            content="So in everything, do to others what you would have them do to you, for this sums up the Law and"
+            " the Prophets.",
             language_original="Greek",
             translation_used="NIV",
             author_attributed="Matthew",
@@ -401,7 +410,8 @@ class BiblicalScholarAgent:
             "creation": {Religion.CHRISTIANITY, Religion.ISLAM, Religion.JUDAISM},
             "prophecy": {Religion.CHRISTIANITY, Religion.ISLAM, Religion.JUDAISM},
             "law": {Religion.CHRISTIANITY, Religion.ISLAM, Religion.JUDAISM},
-            "afterlife": {Religion.CHRISTIANITY, Religion.ISLAM, Religion.JUDAISM, Religion.HINDUISM, Religion.BUDDHISM},
+            "afterlife": {Religion.CHRISTIANITY, Religion.ISLAM, Religion.JUDAISM, Religion.HINDUISM,
+                Religion.BUDDHISM},
             "salvation": {Religion.CHRISTIANITY, Religion.ISLAM},
             "enlightenment": {Religion.BUDDHISM, Religion.HINDUISM},
             "karma": {Religion.HINDUISM, Religion.BUDDHISM, Religion.JAINISM},
@@ -547,10 +557,12 @@ class BiblicalScholarAgent:
             idiomatic_meaning=self._get_idiomatic_meaning(quote_text, source_text) if source_text else "",
             theological_significance=self._get_theological_significance(quote_text, source_text) if source_text else "",
             historical_context=self._get_historical_context(source_text) if source_text else "",
-            common_misinterpretations=self._get_common_misinterpretations(quote_text, source_text) if source_text else [],
+            common_misinterpretations=self._get_common_misinterpretations(quote_text,
+                source_text) if source_text else [],
             related_quotes=self._find_related_quotes(quote_text, source_text) if source_text else [],
             cross_references=self._find_cross_references(quote_text, source_text) if source_text else [],
-            scholarly_interpretations=self._get_scholarly_interpretations(quote_text, source_text) if source_text else [],
+            scholarly_interpretations=self._get_scholarly_interpretations(quote_text,
+                source_text) if source_text else [],
             application_examples=self._get_application_examples(quote_text, source_text) if source_text else [],
         )
 
@@ -912,16 +924,20 @@ class BiblicalScholarAgent:
         """Get common translation variants."""
         variants = {
             "john_3_16": [
-                "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should not perish, but have everlasting life. (KJV)",
-                "For God loved the world in this way: He gave his one and only Son, so that everyone who believes in him will not perish but have eternal life. (CSB)"
+                "For God so loved the world, that he gave his only begotten Son, that whosoever believeth in him should"
+                " not perish, but have everlasting life. (KJV)",
+                "For God loved the world in this way: He gave his one and only Son, so that everyone who believes in"
+                " him will not perish but have eternal life. (CSB)"
             ],
             "genesis_1_1": [
                 "In the beginning God created the heaven and the earth. (KJV)",
                 "In the beginning when God created the heavens and the earth. (NRSV)"
             ],
             "matthew_7_12": [
-                "Therefore all things whatsoever ye would that men should do to you, do ye even so to them: for this is the law and the prophets. (KJV)",
-                "In everything, therefore, treat people the same way you want them to treat you, for this is the Law and the Prophets. (NRSV)"
+                "Therefore all things whatsoever ye would that men should do to you, do ye even so to them: for this is"
+                " the law and the prophets. (KJV)",
+                "In everything, therefore, treat people the same way you want them to treat you, for this is the Law"
+                " and the Prophets. (NRSV)"
             ]
         }
 

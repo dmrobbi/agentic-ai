@@ -789,7 +789,9 @@ class ChaosMonkeyAgent(BaseAgent):
             },
             'resiliency': {
                 'services_scored': len(self.resiliency_scores),
-                'average_score': sum(s.overall_score for s in self.resiliency_scores.values()) / len(self.resiliency_scores) if self.resiliency_scores else 0,
+                'average_score': (
+                        sum(s.overall_score for s in self.resiliency_scores.values())
+                        / len(self.resiliency_scores) if self.resiliency_scores else 0),
             },
         }
 

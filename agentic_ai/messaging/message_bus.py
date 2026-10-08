@@ -411,7 +411,8 @@ class MessageBus:
 
             # Republish original message
             if self.publish(original_message):
-                self._redis.lrem(self.dead_letter_queue, message_index + 1, messages[0])  # type: ignore[union-attr,arg-type,index]
+                self._redis.lrem(self.dead_letter_queue, message_index + 1,
+                    messages[0])  # type: ignore[union-attr,arg-type,index]
                 return True
         except Exception as e:
             logger.error(f"Failed to retry DLQ message: {e}")

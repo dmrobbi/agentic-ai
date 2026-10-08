@@ -127,7 +127,8 @@ class AgentKnowledge:
             if results and results.get("documents"):
                 for i, doc in enumerate(results["documents"][0]):
                     doc_id = results["ids"][0][i] if results.get("ids") else f"result-{i}"
-                    metadata = results["metadatas"][0][i] if results.get("metadatas") and results["metadatas"][0] else {}
+                    metadata = (results["metadatas"][0][i] if results.get("metadatas")
+                            and results["metadatas"][0] else {})
                     distance = results["distances"][0][i] if results.get("distances") else 0.0
                     entries.append(KnowledgeEntry(
                         doc_id=doc_id,
