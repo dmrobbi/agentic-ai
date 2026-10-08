@@ -8,7 +8,10 @@ the purity source-scan (no spawning, no network, no clock.
 
 No network anywhere: every lookup runs through the injected resolver;
 the single real-host check pins only the "sh" binary, which is
-present on any POSIX host running this suite."""
+present on any POSIX host running this suite. The 2026-10-08 transplant
+merger adds the package_universe_rows contract: the committed
+kali_packages.json (602 transplanted rows) pinned for count and
+categories, file-failure tolerance, and the mirrored resolver seams."""
 from __future__ import annotations
 
 import json
@@ -26,7 +29,9 @@ from agentic_ai.agents.cyber.kali import (
 from agentic_ai.agents.cyber.package_doctor import (
     ROW_KEYS,
     SUMMARY_KEYS,
+    UNIVERSE_FILE,
     package_doctor_rows,
+    package_universe_rows,
 )
 
 CTRL = "\x01\x7f\n\t"
@@ -341,3 +346,185 @@ def test_module_purity_source_scan():
     assert len(lazy_lines) == 1
     assert lazy_lines[0].startswith("    ")
     assert "KALI_TOOLS_DB" in lazy_lines[0]
+
+
+# --- the transplanted universe catalog (KA merge, 2026-10-08) -------------
+
+
+def _universe_file(tmp_path, content):
+    path = tmp_path / "universe.json"
+    path.write_text(content, encoding="utf-8")
+    return path
+
+
+UNIVERSE_EXPECTED_TOTAL = 602
+
+UNIVERSE_EXPECTED_CATEGORIES = {
+    "anti-forensics", "cloud", "cryptography", "database", "exploitation",
+    "forensics", "information-gathering", "iot", "maintenance", "mobile",
+    "networking", "password", "post-exploitation", "reverse-engineering",
+    "rfid", "snooping", "social-engineering", "steganography",
+    "threat-intel", "vulnerability-analysis", "web-application", "wireless",
+}
+
+
+def test_real_universe_rows_shapes_count_and_coverage():
+    result = package_universe_rows(resolver=lambda binary: None)
+    assert set(result) == {"rows", "summary", "generated_at", "warnings"}
+    assert result["generated_at"] is None
+    assert result["warnings"] == []
+    assert result["summary"] == {
+        "present": 0,
+        "missing": UNIVERSE_EXPECTED_TOTAL,
+        "total": UNIVERSE_EXPECTED_TOTAL,
+    }
+    tools = {row["tool"] for row in result["rows"]}
+    assert len(tools) == UNIVERSE_EXPECTED_TOTAL
+    assert {"nmap", "masscan", "sleuthkit", "lsof"} <= tools
+    for row in result["rows"]:
+        assert set(row) == set(ROW_KEYS)
+        assert row["present"] is False  # the all-null seam
+        assert row["path"] is None
+
+
+def test_real_universe_catalog_file_pinned():
+    catalog = json.loads(UNIVERSE_FILE.read_text(encoding="utf-8"))
+    assert len(catalog) == UNIVERSE_EXPECTED_TOTAL
+    assert {row["category"]
+            for row in catalog.values()} == UNIVERSE_EXPECTED_CATEGORIES
+    for key, row in catalog.items():
+        assert set(row) == {
+            "package", "category", "desc", "mb", "priority", "tags"}
+        assert isinstance(row["package"], str) and row["package"].strip()
+        assert isinstance(row["desc"], str) and len(row["desc"]) <= 128
+        assert 1 <= row["priority"] <= 10
+        assert row["mb"] >= 0
+        assert isinstance(row["tags"], list)
+
+
+def test_universe_bad_rows_skipped_with_warning(tmp_path):
+    db = {
+        "good_tool": {"package": "good-cmd"},
+        "no_package": {"name": "x"},
+        "blank_package": {"package": "   "},
+        "int_package": {"package": 123},
+        "bare_string_row": "a bare string, not a row",
+    }
+    result = package_universe_rows(
+        universe_path=_universe_file(tmp_path, json.dumps(db)),
+        resolver=lambda b: None)
+    assert [row["tool"] for row in result["rows"]] == ["good_tool"]
+    assert result["summary"] == {"present": 0, "missing": 1, "total": 1}
+    assert len(result["warnings"]) == 4
+    assert all(warning.strip() for warning in result["warnings"])
+    joined = "\n".join(result["warnings"])
+    assert "not a mapping row" in joined
+    assert "not a clean non-blank string" in joined
+
+
+@pytest.mark.parametrize(
+    "name,content,fragment",
+    [
+        ("absent.json", None, "missing"),
+        ("unparsable.json", "{not json", "unreadable"),
+        ("notamapping.json", "[1, 2]", "not a mapping"),
+        ("emptydict.json", "{}", None),  # a clean empty checkup
+    ],
+    ids=["absent", "unparsable", "notamapping", "emptydict"])
+def test_universe_file_failures_tolerated_loud(
+        name, content, fragment, tmp_path):
+    path = tmp_path / name
+    if content is not None:
+        path.write_text(content, encoding="utf-8")
+    result = package_universe_rows(path, lambda b: None)
+    assert result["rows"] == []
+    assert result["summary"] == {"present": 0, "missing": 0, "total": 0}
+    if fragment is None:
+        assert result["warnings"] == []
+    else:
+        assert len(result["warnings"]) == 1
+        assert fragment in result["warnings"][0]
+
+
+def test_universe_resolver_seams(tmp_path):
+    db = {"alpha_tool": {"package": "alpha-cmd"},
+          "beta_tool": {"package": "beta-cmd"}}
+    path = _universe_file(tmp_path, json.dumps(db))
+
+    up = package_universe_rows(path, lambda b: "/usr/bin/" + b)
+    assert up["rows"] == [
+        {"tool": "alpha_tool", "binary": "alpha-cmd", "present": True,
+         "path": "/usr/bin/alpha-cmd"},
+        {"tool": "beta_tool", "binary": "beta-cmd", "present": True,
+         "path": "/usr/bin/beta-cmd"},
+    ]
+    assert up["summary"] == {"present": 2, "missing": 0, "total": 2}
+    assert up["warnings"] == []
+
+    down = package_universe_rows(path, lambda b: None)
+    assert all(not row["present"] and row["path"] is None
+               for row in down["rows"])
+    assert down["summary"] == {"present": 0, "missing": 2, "total": 2}
+    assert down["warnings"] == []
+
+    def _boom(binary):
+        raise RuntimeError("probe unavailable")
+
+    boom = package_universe_rows(path, _boom)
+    assert all(row["present"] is False and row["path"] is None
+               for row in boom["rows"])
+    assert len(boom["warnings"]) == 2
+    assert all("resolver raised" in w for w in boom["warnings"])
+
+    hostile = package_universe_rows(path, lambda b: 42)
+    assert all(row["present"] is False for row in hostile["rows"])
+    assert len(hostile["warnings"]) == 2
+    assert all("marked missing" in w for w in hostile["warnings"])
+
+
+def test_universe_resolver_receives_scrubbed_package_once(tmp_path):
+    db = {"a_tool": {"package": "a-cmd"},
+          "b_tool": {"package": "b\x01cmd"}}
+    calls = []
+
+    def spy(binary):
+        calls.append(binary)
+        return None
+
+    result = package_universe_rows(
+        _universe_file(tmp_path, json.dumps(db)), spy)
+    assert sorted(calls) == ["a-cmd", "bcmd"]  # scrubbed, one call each
+    assert result["summary"] == {"present": 0, "missing": 2, "total": 2}
+    assert result["warnings"] == []
+
+
+def test_universe_echoes_scrubbed_and_deterministic(tmp_path):
+    db = {"a\x01tool": {"package": "c\x02md\nX"}}
+    path = _universe_file(tmp_path, json.dumps(db))
+    result = package_universe_rows(path, lambda b: "/bin/\x03zed\n" + b)
+    assert result["rows"] == [
+        {"tool": "atool", "binary": "cmdX", "present": True,
+         "path": "/bin/zedcmdX"},
+    ]
+    again = package_universe_rows(path, lambda b: "/bin/\x03zed\n" + b)
+    assert result == again
+    assert json.loads(json.dumps(result)) == result
+
+
+def test_universe_generated_at_injected_verbatim_or_none(tmp_path):
+    path = _universe_file(
+        tmp_path, json.dumps({"one_tool": {"package": "one-cmd"}}))
+    none_result = package_universe_rows(path, lambda b: None)
+    assert none_result["generated_at"] is None
+    stamp = "2026-10-08T09:00:00+00:00"
+    stamped = package_universe_rows(path, lambda b: None,
+                                    generated_at=stamp)
+    assert stamped["generated_at"] == stamp
+
+
+def test_universe_non_callable_resolver_is_refused_closed(tmp_path):
+    path = _universe_file(tmp_path, "{}")
+    for bad_resolver in (42, "which", {"a": 1}):
+        with pytest.raises(ValueError) as err:
+            package_universe_rows(path, bad_resolver)
+        assert "resolver" in str(err.value)

@@ -1,0 +1,6203 @@
+{
+  "nmap": {
+    "package": "nmap",
+    "category": "information-gathering",
+    "desc": "Network exploration tool",
+    "mb": 5.2,
+    "priority": 10,
+    "tags": [
+      "network",
+      "scanner"
+    ]
+  },
+  "masscan": {
+    "package": "masscan",
+    "category": "information-gathering",
+    "desc": "Fastest port scanner",
+    "mb": 0.5,
+    "priority": 9,
+    "tags": [
+      "network",
+      "fast"
+    ]
+  },
+  "netdiscover": {
+    "package": "netdiscover",
+    "category": "information-gathering",
+    "desc": "ARP reconnaissance",
+    "mb": 0.2,
+    "priority": 8,
+    "tags": [
+      "arp",
+      "lan"
+    ]
+  },
+  "recon-ng": {
+    "package": "recon-ng",
+    "category": "social-engineering",
+    "desc": "Recon framework",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "recon"
+    ]
+  },
+  "theharvester": {
+    "package": "theharvester",
+    "category": "information-gathering",
+    "desc": "Email harvester",
+    "mb": 2.1,
+    "priority": 8,
+    "tags": [
+      "email",
+      "osint"
+    ]
+  },
+  "maltego": {
+    "package": "maltego",
+    "category": "social-engineering",
+    "desc": "OSINT tool",
+    "mb": 125.0,
+    "priority": 8,
+    "tags": [
+      "osint"
+    ]
+  },
+  "shodan": {
+    "package": "shodan",
+    "category": "information-gathering",
+    "desc": "Shodan client",
+    "mb": 3.5,
+    "priority": 8,
+    "tags": [
+      "osint",
+      "search"
+    ]
+  },
+  "dnsrecon": {
+    "package": "dnsrecon",
+    "category": "information-gathering",
+    "desc": "DNS enumeration",
+    "mb": 1.2,
+    "priority": 8,
+    "tags": [
+      "dns"
+    ]
+  },
+  "enum4linux": {
+    "package": "enum4linux",
+    "category": "information-gathering",
+    "desc": "SMB enumeration",
+    "mb": 0.8,
+    "priority": 8,
+    "tags": [
+      "smb",
+      "windows"
+    ]
+  },
+  "whois": {
+    "package": "whois",
+    "category": "information-gathering",
+    "desc": "Domain lookup",
+    "mb": 0.1,
+    "priority": 7,
+    "tags": [
+      "dns",
+      "domain"
+    ]
+  },
+  "dig": {
+    "package": "dnsutils",
+    "category": "information-gathering",
+    "desc": "DNS lookup",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "dns"
+    ]
+  },
+  "host": {
+    "package": "bind9-host",
+    "category": "information-gathering",
+    "desc": "DNS lookup",
+    "mb": 0.2,
+    "priority": 7,
+    "tags": [
+      "dns"
+    ]
+  },
+  "fierce": {
+    "package": "fierce",
+    "category": "information-gathering",
+    "desc": "DNS recon",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "dns",
+      "subdomains"
+    ]
+  },
+  "dnsenum": {
+    "package": "dnsenum",
+    "category": "information-gathering",
+    "desc": "DNS enumeration",
+    "mb": 0.8,
+    "priority": 7,
+    "tags": [
+      "dns"
+    ]
+  },
+  "sublist3r": {
+    "package": "sublist3r",
+    "category": "information-gathering",
+    "desc": "Subdomain enum",
+    "mb": 1.2,
+    "priority": 8,
+    "tags": [
+      "subdomains"
+    ]
+  },
+  "subfinder": {
+    "package": "subfinder",
+    "category": "information-gathering",
+    "desc": "Fast subdomain enum",
+    "mb": 8.5,
+    "priority": 9,
+    "tags": [
+      "subdomains",
+      "fast"
+    ]
+  },
+  "amass": {
+    "package": "amass",
+    "category": "information-gathering",
+    "desc": "Asset discovery",
+    "mb": 25.0,
+    "priority": 9,
+    "tags": [
+      "recon",
+      "assets"
+    ]
+  },
+  "knock": {
+    "package": "knockpy",
+    "category": "information-gathering",
+    "desc": "Subdomain enum",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "subdomains"
+    ]
+  },
+  "nbtscan": {
+    "package": "nbtscan",
+    "category": "information-gathering",
+    "desc": "NetBIOS scanner",
+    "mb": 0.2,
+    "priority": 7,
+    "tags": [
+      "netbios"
+    ]
+  },
+  "onesixtyone": {
+    "package": "onesixtyone",
+    "category": "information-gathering",
+    "desc": "SNMP scanner",
+    "mb": 0.2,
+    "priority": 7,
+    "tags": [
+      "snmp"
+    ]
+  },
+  "ike-scan": {
+    "package": "ike-scan",
+    "category": "information-gathering",
+    "desc": "IKE scanner",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "ike",
+      "vpn"
+    ]
+  },
+  "ldapsearch": {
+    "package": "ldap-utils",
+    "category": "information-gathering",
+    "desc": "LDAP search",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "ldap",
+      "ad"
+    ]
+  },
+  "spiderfoot": {
+    "package": "spiderfoot",
+    "category": "information-gathering",
+    "desc": "OSINT automation",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "osint"
+    ]
+  },
+  "metagoofil": {
+    "package": "metagoofil",
+    "category": "information-gathering",
+    "desc": "Metadata harvester",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "metadata"
+    ]
+  },
+  "sherlock": {
+    "package": "sherlock",
+    "category": "social-engineering",
+    "desc": "Username search",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "osint"
+    ]
+  },
+  "holehe": {
+    "package": "holehe",
+    "category": "social-engineering",
+    "desc": "Email check",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "email"
+    ]
+  },
+  "phoneinfoga": {
+    "package": "phoneinfoga",
+    "category": "information-gathering",
+    "desc": "Phone investigation",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "phone",
+      "osint"
+    ]
+  },
+  "datasploit": {
+    "package": "datasploit",
+    "category": "information-gathering",
+    "desc": "OSINT framework",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "osint"
+    ]
+  },
+  "searchsploit": {
+    "package": "exploitdb",
+    "category": "exploitation",
+    "desc": "Exploit search",
+    "mb": 85.0,
+    "priority": 9,
+    "tags": [
+      "exploits",
+      "search"
+    ]
+  },
+  "dmitry": {
+    "package": "dmitry",
+    "category": "information-gathering",
+    "desc": "Info gathering",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "recon"
+    ]
+  },
+  "p0f": {
+    "package": "p0f",
+    "category": "information-gathering",
+    "desc": "OS fingerprint",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "fingerprint"
+    ]
+  },
+  "unicornscan": {
+    "package": "unicornscan",
+    "category": "information-gathering",
+    "desc": "TCP scanner",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "scanner"
+    ]
+  },
+  "fping": {
+    "package": "fping",
+    "category": "information-gathering",
+    "desc": "Fast ping",
+    "mb": 0.2,
+    "priority": 7,
+    "tags": [
+      "ping"
+    ]
+  },
+  "hping3": {
+    "package": "hping3",
+    "category": "information-gathering",
+    "desc": "Advanced ping",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "ping"
+    ]
+  },
+  "arp-scan": {
+    "package": "arp-scan",
+    "category": "information-gathering",
+    "desc": "ARP scanner",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "arp"
+    ]
+  },
+  "zenmap": {
+    "package": "zenmap",
+    "category": "information-gathering",
+    "desc": "Nmap GUI",
+    "mb": 8.0,
+    "priority": 6,
+    "tags": [
+      "nmap",
+      "gui"
+    ]
+  },
+  "ntopng": {
+    "package": "ntopng",
+    "category": "information-gathering",
+    "desc": "Traffic monitor",
+    "mb": 15.0,
+    "priority": 6,
+    "tags": [
+      "monitoring"
+    ]
+  },
+  "iftop": {
+    "package": "iftop",
+    "category": "information-gathering",
+    "desc": "Bandwidth monitor",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "bandwidth"
+    ]
+  },
+  "nethogs": {
+    "package": "nethogs",
+    "category": "information-gathering",
+    "desc": "Process bandwidth",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "bandwidth"
+    ]
+  },
+  "ipcalc": {
+    "package": "ipcalc",
+    "category": "information-gathering",
+    "desc": "IP calculator",
+    "mb": 0.1,
+    "priority": 6,
+    "tags": [
+      "ip"
+    ]
+  },
+  "ghunt": {
+    "package": "ghunt",
+    "category": "information-gathering",
+    "desc": "Google investigate",
+    "mb": 2.5,
+    "priority": 7,
+    "tags": [
+      "google",
+      "osint"
+    ]
+  },
+  "littlebrother": {
+    "package": "littlebrother",
+    "category": "information-gathering",
+    "desc": "People search",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "people",
+      "osint"
+    ]
+  },
+  "osint-scraper": {
+    "package": "osint-scraper",
+    "category": "information-gathering",
+    "desc": "OSINT scraper",
+    "mb": 2.5,
+    "priority": 6,
+    "tags": [
+      "osint"
+    ]
+  },
+  "google": {
+    "package": "google",
+    "category": "information-gathering",
+    "desc": "Google search",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "search"
+    ]
+  },
+  "xprobe2": {
+    "package": "xprobe2",
+    "category": "information-gathering",
+    "desc": "OS fingerprint",
+    "mb": 0.8,
+    "priority": 6,
+    "tags": [
+      "fingerprint"
+    ]
+  },
+  "ndiff": {
+    "package": "ndiff",
+    "category": "information-gathering",
+    "desc": "Nmap diff",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "nmap"
+    ]
+  },
+  "smtp-user-enum": {
+    "package": "smtp-user-enum",
+    "category": "information-gathering",
+    "desc": "SMTP enum",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "smtp"
+    ]
+  },
+  "snmpwalk": {
+    "package": "snmp",
+    "category": "information-gathering",
+    "desc": "SNMP enum",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "snmp"
+    ]
+  },
+  "jexboss": {
+    "package": "jexboss",
+    "category": "information-gathering",
+    "desc": "JBoss enum",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "jboss"
+    ]
+  },
+  "dnsmap": {
+    "package": "dnsmap",
+    "category": "information-gathering",
+    "desc": "DNS mapper",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "dns"
+    ]
+  },
+  "nikto": {
+    "package": "nikto",
+    "category": "vulnerability-analysis",
+    "desc": "Web server scanner",
+    "mb": 2.5,
+    "priority": 9,
+    "tags": [
+      "web",
+      "scanner"
+    ]
+  },
+  "openvas": {
+    "package": "openvas-scanner",
+    "category": "vulnerability-analysis",
+    "desc": "Vuln scanner",
+    "mb": 85.0,
+    "priority": 9,
+    "tags": [
+      "vuln",
+      "network"
+    ]
+  },
+  "wpscan": {
+    "package": "wpscan",
+    "category": "vulnerability-analysis",
+    "desc": "WordPress scanner",
+    "mb": 12.0,
+    "priority": 8,
+    "tags": [
+      "wordpress",
+      "cms"
+    ]
+  },
+  "sslscan": {
+    "package": "sslscan",
+    "category": "vulnerability-analysis",
+    "desc": "SSL scanner",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "ssl",
+      "tls"
+    ]
+  },
+  "sslyze": {
+    "package": "sslyze",
+    "category": "vulnerability-analysis",
+    "desc": "SSL analyzer",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "ssl",
+      "tls"
+    ]
+  },
+  "nuclei": {
+    "package": "nuclei",
+    "category": "web-application",
+    "desc": "Template scanner",
+    "mb": 25.0,
+    "priority": 9,
+    "tags": [
+      "templates"
+    ]
+  },
+  "skipfish": {
+    "package": "skipfish",
+    "category": "vulnerability-analysis",
+    "desc": "Web scanner",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "web"
+    ]
+  },
+  "w3af": {
+    "package": "w3af",
+    "category": "vulnerability-analysis",
+    "desc": "Web attack framework",
+    "mb": 25.0,
+    "priority": 8,
+    "tags": [
+      "web",
+      "framework"
+    ]
+  },
+  "arachni": {
+    "package": "arachni",
+    "category": "vulnerability-analysis",
+    "desc": "Web scanner",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "web"
+    ]
+  },
+  "commix": {
+    "package": "commix",
+    "category": "vulnerability-analysis",
+    "desc": "Command injection",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "injection"
+    ]
+  },
+  "dotdotpwn": {
+    "package": "dotdotpwn",
+    "category": "vulnerability-analysis",
+    "desc": "Dir traversal",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "traversal"
+    ]
+  },
+  "golismero": {
+    "package": "golismero",
+    "category": "vulnerability-analysis",
+    "desc": "Web framework",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "web"
+    ]
+  },
+  "whatweb": {
+    "package": "whatweb",
+    "category": "vulnerability-analysis",
+    "desc": "Web fingerprint",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "fingerprint"
+    ]
+  },
+  "wafw00f": {
+    "package": "wafw00f",
+    "category": "vulnerability-analysis",
+    "desc": "WAF detector",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "waf"
+    ]
+  },
+  "joomscan": {
+    "package": "joomscan",
+    "category": "vulnerability-analysis",
+    "desc": "Joomla scanner",
+    "mb": 1.5,
+    "priority": 6,
+    "tags": [
+      "joomla"
+    ]
+  },
+  "droopescan": {
+    "package": "droopescan",
+    "category": "vulnerability-analysis",
+    "desc": "Drupal scanner",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "drupal"
+    ]
+  },
+  "cmsmap": {
+    "package": "cmsmap",
+    "category": "vulnerability-analysis",
+    "desc": "CMS scanner",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "cms"
+    ]
+  },
+  "testssl": {
+    "package": "testssl",
+    "category": "vulnerability-analysis",
+    "desc": "TLS testing",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "tls",
+      "ssl"
+    ]
+  },
+  "thc-ipv6": {
+    "package": "thc-ipv6",
+    "category": "vulnerability-analysis",
+    "desc": "IPv6 toolkit",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "ipv6"
+    ]
+  },
+  "lynis": {
+    "package": "lynis",
+    "category": "vulnerability-analysis",
+    "desc": "Security audit",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "audit"
+    ]
+  },
+  "tiger": {
+    "package": "tiger",
+    "category": "vulnerability-analysis",
+    "desc": "Unix checker",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "unix"
+    ]
+  },
+  "chkrootkit": {
+    "package": "chkrootkit",
+    "category": "vulnerability-analysis",
+    "desc": "Rootkit checker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "rootkit"
+    ]
+  },
+  "rkhunter": {
+    "package": "rkhunter",
+    "category": "vulnerability-analysis",
+    "desc": "Rootkit hunter",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "rootkit"
+    ]
+  },
+  "aide": {
+    "package": "aide",
+    "category": "vulnerability-analysis",
+    "desc": "File integrity",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "integrity"
+    ]
+  },
+  "tripwire": {
+    "package": "tripwire",
+    "category": "vulnerability-analysis",
+    "desc": "File monitoring",
+    "mb": 5.0,
+    "priority": 6,
+    "tags": [
+      "integrity"
+    ]
+  },
+  "ossec": {
+    "package": "ossec-hids",
+    "category": "vulnerability-analysis",
+    "desc": "Host IDS",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "ids"
+    ]
+  },
+  "snort": {
+    "package": "snort",
+    "category": "vulnerability-analysis",
+    "desc": "Network IDS",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "ids",
+      "nids"
+    ]
+  },
+  "suricata": {
+    "package": "suricata",
+    "category": "vulnerability-analysis",
+    "desc": "Threat detection",
+    "mb": 8.0,
+    "priority": 8,
+    "tags": [
+      "ids",
+      "threat"
+    ]
+  },
+  "zeek": {
+    "package": "zeek",
+    "category": "vulnerability-analysis",
+    "desc": "Network monitor",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "monitoring"
+    ]
+  },
+  "maldetect": {
+    "package": "maldetect",
+    "category": "vulnerability-analysis",
+    "desc": "Malware scanner",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "malware"
+    ]
+  },
+  "cisco-torch": {
+    "package": "cisco-torch",
+    "category": "vulnerability-analysis",
+    "desc": "Cisco scanner",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "cisco"
+    ]
+  },
+  "vulnscan": {
+    "package": "vulnscan",
+    "category": "vulnerability-analysis",
+    "desc": "Vuln scanner",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "vuln"
+    ]
+  },
+  "nessus": {
+    "package": "nessus",
+    "category": "vulnerability-analysis",
+    "desc": "Commercial scanner",
+    "mb": 500.0,
+    "priority": 9,
+    "tags": [
+      "vuln",
+      "commercial"
+    ]
+  },
+  "qualys": {
+    "package": "qualys-vm",
+    "category": "vulnerability-analysis",
+    "desc": "Qualys VM",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "vuln",
+      "cloud"
+    ]
+  },
+  "rapid7": {
+    "package": "rapid7-insightvm",
+    "category": "vulnerability-analysis",
+    "desc": "InsightVM",
+    "mb": 200.0,
+    "priority": 7,
+    "tags": [
+      "vuln"
+    ]
+  },
+  "zap": {
+    "package": "owasp-zap",
+    "category": "vulnerability-analysis",
+    "desc": "OWASP ZAP",
+    "mb": 120.0,
+    "priority": 9,
+    "tags": [
+      "web",
+      "proxy"
+    ]
+  },
+  "burp": {
+    "package": "burpsuite",
+    "category": "vulnerability-analysis",
+    "desc": "Burp Suite",
+    "mb": 150.0,
+    "priority": 10,
+    "tags": [
+      "web",
+      "proxy"
+    ]
+  },
+  "sslh": {
+    "package": "sslh",
+    "category": "vulnerability-analysis",
+    "desc": "SSL multiplexer",
+    "mb": 0.3,
+    "priority": 5,
+    "tags": [
+      "ssl"
+    ]
+  },
+  "webinspect": {
+    "package": "webinspect",
+    "category": "vulnerability-analysis",
+    "desc": "Web inspector",
+    "mb": 200.0,
+    "priority": 7,
+    "tags": [
+      "web"
+    ]
+  },
+  "acunetix": {
+    "package": "acunetix",
+    "category": "vulnerability-analysis",
+    "desc": "Web scanner",
+    "mb": 150.0,
+    "priority": 8,
+    "tags": [
+      "web",
+      "commercial"
+    ]
+  },
+  "appscan": {
+    "package": "appscan",
+    "category": "vulnerability-analysis",
+    "desc": "App scanner",
+    "mb": 300.0,
+    "priority": 7,
+    "tags": [
+      "web",
+      "commercial"
+    ]
+  },
+  "netsparker": {
+    "package": "netsparker",
+    "category": "vulnerability-analysis",
+    "desc": "Web scanner",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "web"
+    ]
+  },
+  "invicti": {
+    "package": "invicti",
+    "category": "vulnerability-analysis",
+    "desc": "Web scanner",
+    "mb": 150.0,
+    "priority": 7,
+    "tags": [
+      "web"
+    ]
+  },
+  "qualys-webapp": {
+    "package": "qualys-webapp",
+    "category": "vulnerability-analysis",
+    "desc": "Web app scanning",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "web",
+      "cloud"
+    ]
+  },
+  "veracode": {
+    "package": "veracode",
+    "category": "vulnerability-analysis",
+    "desc": "App security",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "commercial"
+    ]
+  },
+  "checkmarx": {
+    "package": "checkmarx",
+    "category": "vulnerability-analysis",
+    "desc": "SAST scanner",
+    "mb": 200.0,
+    "priority": 7,
+    "tags": [
+      "sast"
+    ]
+  },
+  "fortify": {
+    "package": "fortify",
+    "category": "vulnerability-analysis",
+    "desc": "SAST scanner",
+    "mb": 250.0,
+    "priority": 7,
+    "tags": [
+      "sast"
+    ]
+  },
+  "sonarqube": {
+    "package": "sonarqube",
+    "category": "vulnerability-analysis",
+    "desc": "Code quality",
+    "mb": 150.0,
+    "priority": 8,
+    "tags": [
+      "sast",
+      "code"
+    ]
+  },
+  "dependency-check": {
+    "package": "dependency-check",
+    "category": "vulnerability-analysis",
+    "desc": "Dependency scanner",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "sca"
+    ]
+  },
+  "retire": {
+    "package": "retire",
+    "category": "vulnerability-analysis",
+    "desc": "JS scanner",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "javascript"
+    ]
+  },
+  "snyk": {
+    "package": "snyk",
+    "category": "vulnerability-analysis",
+    "desc": "Dependency scanner",
+    "mb": 25.0,
+    "priority": 8,
+    "tags": [
+      "sca"
+    ]
+  },
+  "trivy": {
+    "package": "trivy",
+    "category": "vulnerability-analysis",
+    "desc": "Container scanner",
+    "mb": 25.0,
+    "priority": 9,
+    "tags": [
+      "container"
+    ]
+  },
+  "anchore": {
+    "package": "anchore",
+    "category": "vulnerability-analysis",
+    "desc": "Container scanner",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "container"
+    ]
+  },
+  "clair": {
+    "package": "clair",
+    "category": "vulnerability-analysis",
+    "desc": "Container scanner",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "container"
+    ]
+  },
+  "grype": {
+    "package": "grype",
+    "category": "vulnerability-analysis",
+    "desc": "Vuln scanner",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "vuln"
+    ]
+  },
+  "sqlmap": {
+    "package": "sqlmap",
+    "category": "database",
+    "desc": "SQL injection",
+    "mb": 3.2,
+    "priority": 10,
+    "tags": [
+      "sqli"
+    ]
+  },
+  "burpsuite": {
+    "package": "burpsuite",
+    "category": "web-application",
+    "desc": "Web proxy",
+    "mb": 150.0,
+    "priority": 10,
+    "tags": [
+      "proxy",
+      "web"
+    ]
+  },
+  "owasp-zap": {
+    "package": "owasp-zap",
+    "category": "web-application",
+    "desc": "Web proxy",
+    "mb": 120.0,
+    "priority": 9,
+    "tags": [
+      "proxy",
+      "web"
+    ]
+  },
+  "gobuster": {
+    "package": "gobuster",
+    "category": "web-application",
+    "desc": "Dir brute-force",
+    "mb": 8.5,
+    "priority": 9,
+    "tags": [
+      "bruteforce",
+      "dir"
+    ]
+  },
+  "dirb": {
+    "package": "dirb",
+    "category": "web-application",
+    "desc": "Dir scanner",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "dir",
+      "scanner"
+    ]
+  },
+  "dirbuster": {
+    "package": "dirbuster",
+    "category": "web-application",
+    "desc": "Dir brute-force GUI",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "dir",
+      "gui"
+    ]
+  },
+  "ffuf": {
+    "package": "ffuf",
+    "category": "web-application",
+    "desc": "Fast fuzzer",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "fuzzer",
+      "fast"
+    ]
+  },
+  "wfuzz": {
+    "package": "wfuzz",
+    "category": "web-application",
+    "desc": "Web fuzzer",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "fuzzer"
+    ]
+  },
+  "feroxbuster": {
+    "package": "feroxbuster",
+    "category": "web-application",
+    "desc": "Fast dir enum",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "dir",
+      "fast"
+    ]
+  },
+  "gospider": {
+    "package": "gospider",
+    "category": "web-application",
+    "desc": "Web crawler",
+    "mb": 8.0,
+    "priority": 8,
+    "tags": [
+      "crawler"
+    ]
+  },
+  "hakrawler": {
+    "package": "hakrawler",
+    "category": "web-application",
+    "desc": "Web crawler",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "crawler"
+    ]
+  },
+  "katana": {
+    "package": "katana",
+    "category": "web-application",
+    "desc": "Crawling framework",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "crawler"
+    ]
+  },
+  "gau": {
+    "package": "gau",
+    "category": "web-application",
+    "desc": "URL fetcher",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "urls"
+    ]
+  },
+  "waybackurls": {
+    "package": "waybackurls",
+    "category": "web-application",
+    "desc": "Wayback URLs",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "urls",
+      "archive"
+    ]
+  },
+  "httpx": {
+    "package": "httpx",
+    "category": "web-application",
+    "desc": "HTTP toolkit",
+    "mb": 8.0,
+    "priority": 9,
+    "tags": [
+      "http",
+      "toolkit"
+    ]
+  },
+  "dalfox": {
+    "package": "dalfox",
+    "category": "web-application",
+    "desc": "XSS scanner",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "xss"
+    ]
+  },
+  "xsstrike": {
+    "package": "xsstrike",
+    "category": "web-application",
+    "desc": "XSS detection",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "xss"
+    ]
+  },
+  "noxss": {
+    "package": "noxss",
+    "category": "web-application",
+    "desc": "XSS scanner",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "xss"
+    ]
+  },
+  "xsser": {
+    "package": "xsser",
+    "category": "web-application",
+    "desc": "XSS exploiter",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "xss"
+    ]
+  },
+  "beef": {
+    "package": "beef-xss",
+    "category": "exploitation",
+    "desc": "Browser exploit",
+    "mb": 45.0,
+    "priority": 7,
+    "tags": [
+      "browser",
+      "xss"
+    ]
+  },
+  "setoolkit": {
+    "package": "set",
+    "category": "social-engineering",
+    "desc": "SET toolkit",
+    "mb": 35.0,
+    "priority": 9,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "phishing-frenzy": {
+    "package": "phishing-frenzy",
+    "category": "social-engineering",
+    "desc": "Phishing platform",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "gophish": {
+    "package": "gophish",
+    "category": "social-engineering",
+    "desc": "Phishing",
+    "mb": 25.0,
+    "priority": 9,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "evilginx": {
+    "package": "evilginx",
+    "category": "web-application",
+    "desc": "MFA phishing",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "phishing",
+      "mfa"
+    ]
+  },
+  "modlishka": {
+    "package": "modlishka",
+    "category": "social-engineering",
+    "desc": "Proxy phishing",
+    "mb": 8.0,
+    "priority": 8,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "muraena": {
+    "package": "muraena",
+    "category": "social-engineering",
+    "desc": "Phishing proxy",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "jwt-tool": {
+    "package": "jwt-tool",
+    "category": "web-application",
+    "desc": "JWT toolkit",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "jwt",
+      "token"
+    ]
+  },
+  "jose": {
+    "package": "jose",
+    "category": "web-application",
+    "desc": "JWT tool",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "jwt"
+    ]
+  },
+  "postman": {
+    "package": "postman",
+    "category": "web-application",
+    "desc": "API testing",
+    "mb": 150.0,
+    "priority": 8,
+    "tags": [
+      "api",
+      "testing"
+    ]
+  },
+  "insomnia": {
+    "package": "insomnia",
+    "category": "web-application",
+    "desc": "API client",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "api"
+    ]
+  },
+  "httpie": {
+    "package": "httpie",
+    "category": "web-application",
+    "desc": "HTTP client",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "http",
+      "cli"
+    ]
+  },
+  "curl": {
+    "package": "curl",
+    "category": "web-application",
+    "desc": "HTTP client",
+    "mb": 1.0,
+    "priority": 9,
+    "tags": [
+      "http",
+      "cli"
+    ]
+  },
+  "wget": {
+    "package": "wget",
+    "category": "web-application",
+    "desc": "File downloader",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "download"
+    ]
+  },
+  "httrack": {
+    "package": "httrack",
+    "category": "web-application",
+    "desc": "Website copier",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "download",
+      "mirror"
+    ]
+  },
+  "sitecopy": {
+    "package": "sitecopy",
+    "category": "web-application",
+    "desc": "Website copier",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "download"
+    ]
+  },
+  "webscarab": {
+    "package": "webscarab",
+    "category": "web-application",
+    "desc": "Web proxy",
+    "mb": 15.0,
+    "priority": 6,
+    "tags": [
+      "proxy"
+    ]
+  },
+  "paros": {
+    "package": "paros",
+    "category": "web-application",
+    "desc": "Web proxy",
+    "mb": 20.0,
+    "priority": 6,
+    "tags": [
+      "proxy"
+    ]
+  },
+  "fiddler": {
+    "package": "fiddler",
+    "category": "web-application",
+    "desc": "Web debugger",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "proxy",
+      "debug"
+    ]
+  },
+  "mitmproxy": {
+    "package": "mitmproxy",
+    "category": "snooping",
+    "desc": "MITM proxy",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "mitm",
+      "proxy"
+    ]
+  },
+  "bettercap": {
+    "package": "bettercap",
+    "category": "snooping",
+    "desc": "MITM framework",
+    "mb": 12.0,
+    "priority": 9,
+    "tags": [
+      "mitm"
+    ]
+  },
+  "responder": {
+    "package": "responder",
+    "category": "snooping",
+    "desc": "LLMNR poisoner",
+    "mb": 1.0,
+    "priority": 10,
+    "tags": [
+      "llmnr",
+      "poison"
+    ]
+  },
+  "hashcat": {
+    "package": "hashcat",
+    "category": "cryptography",
+    "desc": "Hash cracker",
+    "mb": 8.5,
+    "priority": 10,
+    "tags": [
+      "hash"
+    ]
+  },
+  "john": {
+    "package": "john",
+    "category": "cryptography",
+    "desc": "Password cracker",
+    "mb": 5.0,
+    "priority": 10,
+    "tags": [
+      "password"
+    ]
+  },
+  "hydra": {
+    "package": "hydra",
+    "category": "password",
+    "desc": "Network cracker",
+    "mb": 1.2,
+    "priority": 9,
+    "tags": [
+      "bruteforce"
+    ]
+  },
+  "medusa": {
+    "package": "medusa",
+    "category": "password",
+    "desc": "Parallel cracker",
+    "mb": 0.8,
+    "priority": 8,
+    "tags": [
+      "bruteforce"
+    ]
+  },
+  "ncrack": {
+    "package": "ncrack",
+    "category": "password",
+    "desc": "Network cracker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "bruteforce"
+    ]
+  },
+  "patator": {
+    "package": "patator",
+    "category": "password",
+    "desc": "Multi cracker",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "bruteforce"
+    ]
+  },
+  "cewl": {
+    "package": "cewl",
+    "category": "password",
+    "desc": "Wordlist gen",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "wordlist"
+    ]
+  },
+  "crunch": {
+    "package": "crunch",
+    "category": "password",
+    "desc": "Wordlist gen",
+    "mb": 0.2,
+    "priority": 8,
+    "tags": [
+      "wordlist"
+    ]
+  },
+  "sqlninja": {
+    "package": "sqlninja",
+    "category": "database",
+    "desc": "SQL Server",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "mssql"
+    ]
+  },
+  "sqlsus": {
+    "package": "sqlsus",
+    "category": "database",
+    "desc": "MySQL injection",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "mysql"
+    ]
+  },
+  "mdb-tools": {
+    "package": "mdb-tools",
+    "category": "database",
+    "desc": "Access DB",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "access"
+    ]
+  },
+  "sqliteman": {
+    "package": "sqliteman",
+    "category": "database",
+    "desc": "SQLite manager",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "sqlite"
+    ]
+  },
+  "pgadmin": {
+    "package": "pgadmin3",
+    "category": "database",
+    "desc": "PostgreSQL",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "postgresql"
+    ]
+  },
+  "mysql-workbench": {
+    "package": "mysql-workbench",
+    "category": "database",
+    "desc": "MySQL",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "mysql"
+    ]
+  },
+  "mongodb": {
+    "package": "mongodb",
+    "category": "database",
+    "desc": "MongoDB",
+    "mb": 200.0,
+    "priority": 7,
+    "tags": [
+      "nosql"
+    ]
+  },
+  "redis-tools": {
+    "package": "redis-tools",
+    "category": "database",
+    "desc": "Redis",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "redis"
+    ]
+  },
+  "cassandra": {
+    "package": "cassandra",
+    "category": "database",
+    "desc": "Cassandra DB",
+    "mb": 300.0,
+    "priority": 6,
+    "tags": [
+      "cassandra",
+      "nosql"
+    ]
+  },
+  "neo4j": {
+    "package": "neo4j",
+    "category": "database",
+    "desc": "Graph DB",
+    "mb": 250.0,
+    "priority": 6,
+    "tags": [
+      "graph"
+    ]
+  },
+  "couchdb": {
+    "package": "couchdb",
+    "category": "database",
+    "desc": "CouchDB",
+    "mb": 50.0,
+    "priority": 6,
+    "tags": [
+      "nosql"
+    ]
+  },
+  "influxdb": {
+    "package": "influxdb",
+    "category": "database",
+    "desc": "Time series DB",
+    "mb": 100.0,
+    "priority": 6,
+    "tags": [
+      "influx",
+      "timeseries"
+    ]
+  },
+  "elastic": {
+    "package": "elasticsearch",
+    "category": "database",
+    "desc": "Elasticsearch",
+    "mb": 400.0,
+    "priority": 7,
+    "tags": [
+      "elastic",
+      "search"
+    ]
+  },
+  "kibana": {
+    "package": "kibana",
+    "category": "maintenance",
+    "desc": "Log visualization",
+    "mb": 300.0,
+    "priority": 8,
+    "tags": [
+      "logs",
+      "viz"
+    ]
+  },
+  "logstash": {
+    "package": "logstash",
+    "category": "maintenance",
+    "desc": "Log processor",
+    "mb": 200.0,
+    "priority": 7,
+    "tags": [
+      "logs"
+    ]
+  },
+  "cupp": {
+    "package": "cupp",
+    "category": "password",
+    "desc": "User wordlist",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "wordlist"
+    ]
+  },
+  "rsmangler": {
+    "package": "rsmangler",
+    "category": "password",
+    "desc": "Wordlist mangler",
+    "mb": 0.3,
+    "priority": 6,
+    "tags": [
+      "wordlist"
+    ]
+  },
+  "mentalist": {
+    "package": "mentalist",
+    "category": "password",
+    "desc": "Wordlist GUI",
+    "mb": 5.0,
+    "priority": 6,
+    "tags": [
+      "gui"
+    ]
+  },
+  "hash-identifier": {
+    "package": "hash-identifier",
+    "category": "password",
+    "desc": "Hash ID",
+    "mb": 0.1,
+    "priority": 8,
+    "tags": [
+      "hash"
+    ]
+  },
+  "haiti": {
+    "package": "haiti",
+    "category": "password",
+    "desc": "Hash ID",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "hash"
+    ]
+  },
+  "johnny": {
+    "package": "johnny",
+    "category": "password",
+    "desc": "John GUI",
+    "mb": 5.0,
+    "priority": 6,
+    "tags": [
+      "gui"
+    ]
+  },
+  "hashcat-utils": {
+    "package": "hashcat-utils",
+    "category": "password",
+    "desc": "Hashcat utils",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "utils"
+    ]
+  },
+  "oclhashcat": {
+    "package": "oclhashcat",
+    "category": "password",
+    "desc": "OpenCL hashcat",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "gpu",
+      "opencl"
+    ]
+  },
+  "pyrit": {
+    "package": "pyrit",
+    "category": "password",
+    "desc": "WPA cracker",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "wpa",
+      "wifi"
+    ]
+  },
+  "cowpatty": {
+    "package": "cowpatty",
+    "category": "password",
+    "desc": "WPA cracker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "wpa",
+      "wifi"
+    ]
+  },
+  "genpmk": {
+    "package": "genpmk",
+    "category": "password",
+    "desc": "PMK generator",
+    "mb": 0.3,
+    "priority": 6,
+    "tags": [
+      "wpa"
+    ]
+  },
+  "rainbowcrack": {
+    "package": "rainbowcrack",
+    "category": "password",
+    "desc": "Rainbow tables",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "rainbow"
+    ]
+  },
+  "rtgen": {
+    "package": "rtgen",
+    "category": "password",
+    "desc": "Rainbow gen",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "rainbow"
+    ]
+  },
+  "rtpwn": {
+    "package": "rtpwn",
+    "category": "password",
+    "desc": "Rainbow pwn",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "rainbow"
+    ]
+  },
+  "bcrypt-crack": {
+    "package": "bcrypt-crack",
+    "category": "password",
+    "desc": "Bcrypt cracker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "bcrypt"
+    ]
+  },
+  "ntlm-crack": {
+    "package": "ntlm-crack",
+    "category": "password",
+    "desc": "NTLM cracker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "ntlm"
+    ]
+  },
+  "kerberoast": {
+    "package": "kerberoast",
+    "category": "password",
+    "desc": "Kerberos attack",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "kerberos",
+      "ad"
+    ]
+  },
+  "aircrack-ng": {
+    "package": "aircrack-ng",
+    "category": "wireless",
+    "desc": "WiFi suite",
+    "mb": 3.5,
+    "priority": 10,
+    "tags": [
+      "wifi"
+    ]
+  },
+  "reaver": {
+    "package": "reaver",
+    "category": "wireless",
+    "desc": "WPS cracker",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "wps"
+    ]
+  },
+  "wifite2": {
+    "package": "wifite",
+    "category": "wireless",
+    "desc": "Auto WiFi",
+    "mb": 2.0,
+    "priority": 9,
+    "tags": [
+      "automation"
+    ]
+  },
+  "kismet": {
+    "package": "kismet",
+    "category": "wireless",
+    "desc": "WiFi detector",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "detector"
+    ]
+  },
+  "wifiphisher": {
+    "package": "wifiphisher",
+    "category": "wireless",
+    "desc": "WiFi phishing",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "fluxion": {
+    "package": "fluxion",
+    "category": "wireless",
+    "desc": "WiFi MITM",
+    "mb": 2.5,
+    "priority": 7,
+    "tags": [
+      "mitm"
+    ]
+  },
+  "hostapd": {
+    "package": "hostapd",
+    "category": "wireless",
+    "desc": "AP daemon",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "ap",
+      "fake"
+    ]
+  },
+  "hostapd-wpe": {
+    "package": "hostapd-wpe",
+    "category": "wireless",
+    "desc": "WPE hostapd",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "wpe"
+    ]
+  },
+  "freeradius": {
+    "package": "freeradius",
+    "category": "wireless",
+    "desc": "RADIUS server",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "radius"
+    ]
+  },
+  "eaphammer": {
+    "package": "eaphammer",
+    "category": "wireless",
+    "desc": "EVIL TWIN",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "eap"
+    ]
+  },
+  "mana": {
+    "package": "mana",
+    "category": "wireless",
+    "desc": "MITM toolkit",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "mitm"
+    ]
+  },
+  "wig": {
+    "package": "wig",
+    "category": "wireless",
+    "desc": "Wireless info",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "info"
+    ]
+  },
+  "wash": {
+    "package": "wash",
+    "category": "wireless",
+    "desc": "WPS scanner",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "wps",
+      "scanner"
+    ]
+  },
+  "bully": {
+    "package": "bully",
+    "category": "wireless",
+    "desc": "WPS cracker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "wps"
+    ]
+  },
+  "pixiewps": {
+    "package": "pixiewps",
+    "category": "wireless",
+    "desc": "Pixie dust",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "wps"
+    ]
+  },
+  "hcxdumptool": {
+    "package": "hcxdumptool",
+    "category": "wireless",
+    "desc": "WiFi capture",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "capture"
+    ]
+  },
+  "hcxtools": {
+    "package": "hcxtools",
+    "category": "wireless",
+    "desc": "WiFi tools",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "tools"
+    ]
+  },
+  "mdk3": {
+    "package": "mdk3",
+    "category": "wireless",
+    "desc": "WiFi attack",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "attack"
+    ]
+  },
+  "mdk4": {
+    "package": "mdk4",
+    "category": "wireless",
+    "desc": "WiFi attack v4",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "attack"
+    ]
+  },
+  "tshark": {
+    "package": "tshark",
+    "category": "snooping",
+    "desc": "CLI wireshark",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "packets",
+      "cli"
+    ]
+  },
+  "wireshark": {
+    "package": "wireshark",
+    "category": "snooping",
+    "desc": "Packet analyzer",
+    "mb": 45.0,
+    "priority": 10,
+    "tags": [
+      "packets",
+      "gui"
+    ]
+  },
+  "tcpdump": {
+    "package": "tcpdump",
+    "category": "snooping",
+    "desc": "Packet sniffer",
+    "mb": 0.5,
+    "priority": 10,
+    "tags": [
+      "packets",
+      "cli"
+    ]
+  },
+  "ettercap": {
+    "package": "ettercap-text-only",
+    "category": "snooping",
+    "desc": "MITM suite",
+    "mb": 2.5,
+    "priority": 9,
+    "tags": [
+      "mitm"
+    ]
+  },
+  "driftnet": {
+    "package": "driftnet",
+    "category": "snooping",
+    "desc": "Image sniffer",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "images"
+    ]
+  },
+  "urlsnarf": {
+    "package": "urlsnarf",
+    "category": "snooping",
+    "desc": "URL sniffer",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "urls"
+    ]
+  },
+  "dsniff": {
+    "package": "dsniff",
+    "category": "snooping",
+    "desc": "Password sniffer",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "passwords"
+    ]
+  },
+  "sslsplit": {
+    "package": "sslsplit",
+    "category": "snooping",
+    "desc": "SSL MITM",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "ssl",
+      "mitm"
+    ]
+  },
+  "sslstrip": {
+    "package": "sslstrip",
+    "category": "snooping",
+    "desc": "SSL stripper",
+    "mb": 0.5,
+    "priority": 9,
+    "tags": [
+      "ssl",
+      "strip"
+    ]
+  },
+  "sslstrip2": {
+    "package": "sslstrip2",
+    "category": "wireless",
+    "desc": "SSL stripper v2",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "ssl"
+    ]
+  },
+  "hstsstrip": {
+    "package": "hstsstrip",
+    "category": "wireless",
+    "desc": "HSTS stripper",
+    "mb": 0.3,
+    "priority": 6,
+    "tags": [
+      "hsts"
+    ]
+  },
+  "metasploit": {
+    "package": "metasploit-framework",
+    "category": "exploitation",
+    "desc": "MSF framework",
+    "mb": 250.0,
+    "priority": 10,
+    "tags": [
+      "framework"
+    ]
+  },
+  "empire": {
+    "package": "empire",
+    "category": "exploitation",
+    "desc": "Post-exploit",
+    "mb": 85.0,
+    "priority": 9,
+    "tags": [
+      "powershell"
+    ]
+  },
+  "powersploit": {
+    "package": "powersploit",
+    "category": "exploitation",
+    "desc": "PowerShell",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "powershell"
+    ]
+  },
+  "cobaltstrike": {
+    "package": "cobaltstrike",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 100.0,
+    "priority": 9,
+    "tags": [
+      "c2",
+      "commercial"
+    ]
+  },
+  "sliver": {
+    "package": "sliver",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 50.0,
+    "priority": 9,
+    "tags": [
+      "c2"
+    ]
+  },
+  "havoc": {
+    "package": "havoc",
+    "category": "exploitation",
+    "desc": "Post-exploit",
+    "mb": 40.0,
+    "priority": 8,
+    "tags": [
+      "post-exploit"
+    ]
+  },
+  "mythic": {
+    "package": "mythic",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 100.0,
+    "priority": 8,
+    "tags": [
+      "c2"
+    ]
+  },
+  "covenant": {
+    "package": "covenant",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "c2"
+    ]
+  },
+  "nighthawk": {
+    "package": "nighthawk",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "c2"
+    ]
+  },
+  "brute ratel": {
+    "package": "brute-ratel",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "c2",
+      "commercial"
+    ]
+  },
+  "metasploit-credential": {
+    "package": "metasploit-credential",
+    "category": "exploitation",
+    "desc": "MSF creds",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "metasploit"
+    ]
+  },
+  "msfpc": {
+    "package": "msfpc",
+    "category": "exploitation",
+    "desc": "MSF payload creator",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "metasploit",
+      "payloads"
+    ]
+  },
+  "venom": {
+    "package": "venom",
+    "category": "exploitation",
+    "desc": "Payload gen",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "payloads"
+    ]
+  },
+  "msfvenom": {
+    "package": "metasploit-framework",
+    "category": "exploitation",
+    "desc": "Payload generator",
+    "mb": 250.0,
+    "priority": 10,
+    "tags": [
+      "payloads"
+    ]
+  },
+  "shellnoob": {
+    "package": "shellnoob",
+    "category": "exploitation",
+    "desc": "Shellcode",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "shellcode"
+    ]
+  },
+  "pwntools": {
+    "package": "pwntools",
+    "category": "exploitation",
+    "desc": "CTF toolkit",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "ctf"
+    ]
+  },
+  "radare2": {
+    "package": "radare2",
+    "category": "reverse-engineering",
+    "desc": "Reverse framework",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "framework"
+    ]
+  },
+  "r2pipe": {
+    "package": "r2pipe",
+    "category": "exploitation",
+    "desc": "Radare2 pipe",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "radare2"
+    ]
+  },
+  "angr": {
+    "package": "angr",
+    "category": "reverse-engineering",
+    "desc": "Binary analysis",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "analysis",
+      "symbolic"
+    ]
+  },
+  "gepardo": {
+    "package": "gepardo",
+    "category": "exploitation",
+    "desc": "Binary analyzer",
+    "mb": 10.0,
+    "priority": 6,
+    "tags": [
+      "binary"
+    ]
+  },
+  "binaryninja": {
+    "package": "binaryninja",
+    "category": "reverse-engineering",
+    "desc": "Binary ninja",
+    "mb": 200.0,
+    "priority": 9,
+    "tags": [
+      "disassembler",
+      "commercial"
+    ]
+  },
+  "ida-free": {
+    "package": "ida-free",
+    "category": "reverse-engineering",
+    "desc": "IDA disassembler",
+    "mb": 500.0,
+    "priority": 10,
+    "tags": [
+      "disassembler"
+    ]
+  },
+  "hopper": {
+    "package": "hopper",
+    "category": "reverse-engineering",
+    "desc": "Disassembler",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "disassembler"
+    ]
+  },
+  "objdump": {
+    "package": "binutils",
+    "category": "reverse-engineering",
+    "desc": "Object dump",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "binary"
+    ]
+  },
+  "strings": {
+    "package": "binutils",
+    "category": "reverse-engineering",
+    "desc": "String extractor",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "strings"
+    ]
+  },
+  "file": {
+    "package": "file",
+    "category": "exploitation",
+    "desc": "File type detector",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "analysis"
+    ]
+  },
+  "exiftool": {
+    "package": "libimage-exiftool-perl",
+    "category": "exploitation",
+    "desc": "Metadata extractor",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "metadata"
+    ]
+  },
+  "foremost": {
+    "package": "foremost",
+    "category": "forensics",
+    "desc": "File carver",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "carving"
+    ]
+  },
+  "scalpel": {
+    "package": "scalpel",
+    "category": "forensics",
+    "desc": "File carver",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "carving"
+    ]
+  },
+  "photorec": {
+    "package": "testdisk",
+    "category": "forensics",
+    "desc": "File recovery",
+    "mb": 1.5,
+    "priority": 9,
+    "tags": [
+      "recovery"
+    ]
+  },
+  "testdisk": {
+    "package": "testdisk",
+    "category": "forensics",
+    "desc": "Partition recovery",
+    "mb": 1.5,
+    "priority": 9,
+    "tags": [
+      "recovery"
+    ]
+  },
+  "sleuthkit": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Forensics toolkit",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "disk"
+    ]
+  },
+  "autopsy": {
+    "package": "autopsy",
+    "category": "forensics",
+    "desc": "DFIR platform",
+    "mb": 120.0,
+    "priority": 9,
+    "tags": [
+      "disk",
+      "gui"
+    ]
+  },
+  "binwalk": {
+    "package": "binwalk",
+    "category": "forensics",
+    "desc": "Firmware analysis",
+    "mb": 3.5,
+    "priority": 9,
+    "tags": [
+      "firmware"
+    ]
+  },
+  "firmwalker": {
+    "package": "firmwalker",
+    "category": "forensics",
+    "desc": "Firmware walker",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "firmware"
+    ]
+  },
+  "fatcat": {
+    "package": "fatcat",
+    "category": "exploitation",
+    "desc": "FAT forensics",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "fat",
+      "forensics"
+    ]
+  },
+  "fls": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "File list",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "files"
+    ]
+  },
+  "mimikatz": {
+    "package": "mimikatz",
+    "category": "post-exploitation",
+    "desc": "Cred extractor",
+    "mb": 2.5,
+    "priority": 10,
+    "tags": [
+      "creds"
+    ]
+  },
+  "mimikittenz": {
+    "package": "mimikittenz",
+    "category": "post-exploitation",
+    "desc": "Linux mimikatz",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "linux",
+      "credentials"
+    ]
+  },
+  "lazagne": {
+    "package": "lazagne",
+    "category": "post-exploitation",
+    "desc": "Password recovery",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "passwords"
+    ]
+  },
+  "linpeas": {
+    "package": "linpeas",
+    "category": "post-exploitation",
+    "desc": "Linux privesc",
+    "mb": 5.0,
+    "priority": 10,
+    "tags": [
+      "linux"
+    ]
+  },
+  "winpeas": {
+    "package": "winpeas",
+    "category": "post-exploitation",
+    "desc": "Windows privesc",
+    "mb": 10.0,
+    "priority": 10,
+    "tags": [
+      "windows"
+    ]
+  },
+  "seatbelt": {
+    "package": "seatbelt",
+    "category": "post-exploitation",
+    "desc": "Windows enum",
+    "mb": 3.0,
+    "priority": 9,
+    "tags": [
+      "windows",
+      "enum"
+    ]
+  },
+  "sharpup": {
+    "package": "sharpup",
+    "category": "post-exploitation",
+    "desc": "Windows privesc",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "windows",
+      "privesc"
+    ]
+  },
+  "sharpweb": {
+    "package": "sharpweb",
+    "category": "post-exploitation",
+    "desc": "Browser creds",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "browsers",
+      "creds"
+    ]
+  },
+  "sharpdpapi": {
+    "package": "sharpdpapi",
+    "category": "post-exploitation",
+    "desc": "DPAPI decryption",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "dpapi",
+      "windows"
+    ]
+  },
+  "rubeus": {
+    "package": "rubeus",
+    "category": "post-exploitation",
+    "desc": "Kerberos toolkit",
+    "mb": 3.0,
+    "priority": 9,
+    "tags": [
+      "kerberos",
+      "ad"
+    ]
+  },
+  "bloodhound": {
+    "package": "bloodhound",
+    "category": "post-exploitation",
+    "desc": "AD analysis",
+    "mb": 50.0,
+    "priority": 10,
+    "tags": [
+      "ad"
+    ]
+  },
+  "sharphound": {
+    "package": "sharphound",
+    "category": "post-exploitation",
+    "desc": "AD collector",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "ad",
+      "collector"
+    ]
+  },
+  "windapsearch": {
+    "package": "windapsearch",
+    "category": "post-exploitation",
+    "desc": "Windows AD enum",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "ad",
+      "enum"
+    ]
+  },
+  "powermad": {
+    "package": "powermad",
+    "category": "post-exploitation",
+    "desc": "Machine account abuse",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "ad",
+      "machine"
+    ]
+  },
+  "adrecon": {
+    "package": "adrecon",
+    "category": "post-exploitation",
+    "desc": "AD recon",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "ad"
+    ]
+  },
+  "crackmapexec": {
+    "package": "crackmapexec",
+    "category": "post-exploitation",
+    "desc": "AD attack",
+    "mb": 15.0,
+    "priority": 10,
+    "tags": [
+      "ad"
+    ]
+  },
+  "netexec": {
+    "package": "netexec",
+    "category": "post-exploitation",
+    "desc": "Network exec",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "network",
+      "exec"
+    ]
+  },
+  "impacket": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "Network protocols",
+    "mb": 5.0,
+    "priority": 10,
+    "tags": [
+      "protocols"
+    ]
+  },
+  "psexec": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "PsExec",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "execution",
+      "smb"
+    ]
+  },
+  "wmiexec": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "WMI exec",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "wmi",
+      "execution"
+    ]
+  },
+  "smbexec": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "SMB exec",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "smb",
+      "execution"
+    ]
+  },
+  "secretsdump": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "Secrets dump",
+    "mb": 5.0,
+    "priority": 10,
+    "tags": [
+      "credentials",
+      "dump"
+    ]
+  },
+  "goldenpac": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "Golden ticket",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "kerberos",
+      "ticket"
+    ]
+  },
+  "silverticket": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "Silver ticket",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "kerberos",
+      "ticket"
+    ]
+  },
+  "dcsync": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "DC sync",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "dc",
+      "sync"
+    ]
+  },
+  "mimikatz-powershell": {
+    "package": "powersploit",
+    "category": "post-exploitation",
+    "desc": "PS mimikatz",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "powershell",
+      "creds"
+    ]
+  },
+  "invoke-mimikatz": {
+    "package": "powersploit",
+    "category": "post-exploitation",
+    "desc": "Invoke mimikatz",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "powershell"
+    ]
+  },
+  "invoke-kerberoast": {
+    "package": "powersploit",
+    "category": "post-exploitation",
+    "desc": "Kerberoasting",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "kerberos"
+    ]
+  },
+  "powerview": {
+    "package": "powerview",
+    "category": "post-exploitation",
+    "desc": "PowerShell AD",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "powershell",
+      "ad"
+    ]
+  },
+  "powercat": {
+    "package": "powercat",
+    "category": "post-exploitation",
+    "desc": "PowerShell netcat",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "powershell",
+      "network"
+    ]
+  },
+  "nishang": {
+    "package": "nishang",
+    "category": "exploitation",
+    "desc": "PowerShell",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "powershell"
+    ]
+  },
+  "psattack": {
+    "package": "psattack",
+    "category": "post-exploitation",
+    "desc": "PS attack toolkit",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "powershell"
+    ]
+  },
+  "empire-powershell": {
+    "package": "empire",
+    "category": "post-exploitation",
+    "desc": "Empire PS",
+    "mb": 85.0,
+    "priority": 9,
+    "tags": [
+      "powershell",
+      "c2"
+    ]
+  },
+  "caesar": {
+    "package": "caesar",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "c2"
+    ]
+  },
+  "trevorc2": {
+    "package": "trevorc2",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "c2"
+    ]
+  },
+  "volatility": {
+    "package": "volatility",
+    "category": "forensics",
+    "desc": "Memory forensics",
+    "mb": 15.0,
+    "priority": 10,
+    "tags": [
+      "memory"
+    ]
+  },
+  "volatility3": {
+    "package": "volatility3",
+    "category": "forensics",
+    "desc": "Memory forensics v3",
+    "mb": 20.0,
+    "priority": 10,
+    "tags": [
+      "memory"
+    ]
+  },
+  "rekall": {
+    "package": "rekall",
+    "category": "forensics",
+    "desc": "Memory analysis",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "memory"
+    ]
+  },
+  "tsk": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "TSK tools",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "disk"
+    ]
+  },
+  "icat": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Image cat",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "image"
+    ]
+  },
+  "blkls": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Block list",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "blocks"
+    ]
+  },
+  "blkcat": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Block cat",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "blocks"
+    ]
+  },
+  "fsstat": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Filesystem stats",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "filesystem"
+    ]
+  },
+  "img_stat": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Image stats",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "image"
+    ]
+  },
+  "mmls": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Partition list",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "partitions"
+    ]
+  },
+  "mmcat": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Partition cat",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "partitions"
+    ]
+  },
+  "vls": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Volume list",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "volumes"
+    ]
+  },
+  "vcat": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Volume cat",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "volumes"
+    ]
+  },
+  "hfind": {
+    "package": "sleuthkit",
+    "category": "forensics",
+    "desc": "Hash find",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "hash"
+    ]
+  },
+  "md5sum": {
+    "package": "coreutils",
+    "category": "forensics",
+    "desc": "MD5 hash",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "hash"
+    ]
+  },
+  "sha1sum": {
+    "package": "coreutils",
+    "category": "forensics",
+    "desc": "SHA1 hash",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "hash"
+    ]
+  },
+  "sha256sum": {
+    "package": "coreutils",
+    "category": "forensics",
+    "desc": "SHA256 hash",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "hash"
+    ]
+  },
+  "hashdeep": {
+    "package": "hashdeep",
+    "category": "forensics",
+    "desc": "Hash suite",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "hash"
+    ]
+  },
+  "ssdeep": {
+    "package": "ssdeep",
+    "category": "forensics",
+    "desc": "Fuzzy hash",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "hash",
+      "fuzzy"
+    ]
+  },
+  "bulk_extractor": {
+    "package": "bulk-extractor",
+    "category": "forensics",
+    "desc": "Feature extractor",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "extraction"
+    ]
+  },
+  "ubireader": {
+    "package": "ubireader",
+    "category": "forensics",
+    "desc": "UBI reader",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "ubi",
+      "flash"
+    ]
+  },
+  "ghidra": {
+    "package": "ghidra",
+    "category": "reverse-engineering",
+    "desc": "NSA reverse",
+    "mb": 500.0,
+    "priority": 10,
+    "tags": [
+      "disassembler"
+    ]
+  },
+  "cutter": {
+    "package": "cutter",
+    "category": "reverse-engineering",
+    "desc": "Radare2 GUI",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "gui",
+      "radare2"
+    ]
+  },
+  "rizin": {
+    "package": "rizin",
+    "category": "reverse-engineering",
+    "desc": "Reverse framework",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "framework"
+    ]
+  },
+  "readelf": {
+    "package": "binutils",
+    "category": "reverse-engineering",
+    "desc": "ELF reader",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "elf"
+    ]
+  },
+  "nm": {
+    "package": "binutils",
+    "category": "reverse-engineering",
+    "desc": "Symbol list",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "symbols"
+    ]
+  },
+  "strace": {
+    "package": "strace",
+    "category": "reverse-engineering",
+    "desc": "Syscall tracer",
+    "mb": 1.0,
+    "priority": 9,
+    "tags": [
+      "tracing"
+    ]
+  },
+  "ltrace": {
+    "package": "ltrace",
+    "category": "reverse-engineering",
+    "desc": "Library tracer",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "tracing"
+    ]
+  },
+  "gdb": {
+    "package": "gdb",
+    "category": "reverse-engineering",
+    "desc": "GNU debugger",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "debugger"
+    ]
+  },
+  "gdb-peda": {
+    "package": "gdb-peda",
+    "category": "reverse-engineering",
+    "desc": "GDB enhancement",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "gdb",
+      "peda"
+    ]
+  },
+  "gdb-gef": {
+    "package": "gdb-gef",
+    "category": "reverse-engineering",
+    "desc": "GDB GEF",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "gdb",
+      "gef"
+    ]
+  },
+  "pwndbg": {
+    "package": "pwndbg",
+    "category": "reverse-engineering",
+    "desc": "GDB pwndbg",
+    "mb": 2.0,
+    "priority": 9,
+    "tags": [
+      "gdb"
+    ]
+  },
+  "rr": {
+    "package": "rr",
+    "category": "reverse-engineering",
+    "desc": "Record & replay",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "debugger",
+      "replay"
+    ]
+  },
+  "angr-management": {
+    "package": "angr-management",
+    "category": "reverse-engineering",
+    "desc": "Angr GUI",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "gui",
+      "angr"
+    ]
+  },
+  "keystone": {
+    "package": "keystone-engine",
+    "category": "reverse-engineering",
+    "desc": "Assembler framework",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "assembler"
+    ]
+  },
+  "capstone": {
+    "package": "capstone",
+    "category": "reverse-engineering",
+    "desc": "Disassembler framework",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "disassembler"
+    ]
+  },
+  "unicorn": {
+    "package": "unicorn-engine",
+    "category": "reverse-engineering",
+    "desc": "CPU emulator",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "emulator"
+    ]
+  },
+  "qemu": {
+    "package": "qemu-system-x86",
+    "category": "reverse-engineering",
+    "desc": "System emulator",
+    "mb": 100.0,
+    "priority": 8,
+    "tags": [
+      "emulator",
+      "system"
+    ]
+  },
+  "bochs": {
+    "package": "bochs",
+    "category": "reverse-engineering",
+    "desc": "x86 emulator",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "emulator",
+      "x86"
+    ]
+  },
+  "wine": {
+    "package": "wine",
+    "category": "reverse-engineering",
+    "desc": "Windows emulator",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "emulator",
+      "windows"
+    ]
+  },
+  "pe-bear": {
+    "package": "pe-bear",
+    "category": "reverse-engineering",
+    "desc": "PE analyzer",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "pe",
+      "windows"
+    ]
+  },
+  "pefile": {
+    "package": "pefile",
+    "category": "reverse-engineering",
+    "desc": "PE parser",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "pe",
+      "parser"
+    ]
+  },
+  "upx": {
+    "package": "upx",
+    "category": "reverse-engineering",
+    "desc": "Packer/unpacker",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "packer"
+    ]
+  },
+  "unpacker": {
+    "package": "unpacker",
+    "category": "reverse-engineering",
+    "desc": "Generic unpacker",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "unpacker"
+    ]
+  },
+  "die": {
+    "package": "die",
+    "category": "reverse-engineering",
+    "desc": "Detect it easy",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "detector"
+    ]
+  },
+  "exeinfo-pe": {
+    "package": "exeinfo-pe",
+    "category": "reverse-engineering",
+    "desc": "EXE info",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "exe"
+    ]
+  },
+  "resource-hacker": {
+    "package": "resource-hacker",
+    "category": "reverse-engineering",
+    "desc": "Resource editor",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "resources"
+    ]
+  },
+  "ollydbg": {
+    "package": "ollydbg",
+    "category": "reverse-engineering",
+    "desc": "Win32 debugger",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "debugger",
+      "windows"
+    ]
+  },
+  "x64dbg": {
+    "package": "x64dbg",
+    "category": "reverse-engineering",
+    "desc": "x64 debugger",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "debugger",
+      "x64"
+    ]
+  },
+  "ngrep": {
+    "package": "ngrep",
+    "category": "snooping",
+    "desc": "Network grep",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "grep",
+      "network"
+    ]
+  },
+  "tcptrace": {
+    "package": "tcptrace",
+    "category": "snooping",
+    "desc": "TCP trace analyzer",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "tcp",
+      "analysis"
+    ]
+  },
+  "tcpreplay": {
+    "package": "tcpreplay",
+    "category": "snooping",
+    "desc": "TCP replay",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "tcp",
+      "replay"
+    ]
+  },
+  "tcpflow": {
+    "package": "tcpflow",
+    "category": "snooping",
+    "desc": "TCP flow capture",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "tcp",
+      "flow"
+    ]
+  },
+  "tcpick": {
+    "package": "tcpick",
+    "category": "snooping",
+    "desc": "TCP sniffer",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "tcp",
+      "sniffer"
+    ]
+  },
+  "mitm-relay": {
+    "package": "mitm-relay",
+    "category": "snooping",
+    "desc": "MITM relay",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "mitm",
+      "relay"
+    ]
+  },
+  "ntlmrelayx": {
+    "package": "impacket",
+    "category": "snooping",
+    "desc": "NTLM relay",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "ntlm",
+      "relay"
+    ]
+  },
+  "mailsnarf": {
+    "package": "dsniff",
+    "category": "snooping",
+    "desc": "Mail sniffer",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "email"
+    ]
+  },
+  "msgsnarf": {
+    "package": "dsniff",
+    "category": "snooping",
+    "desc": "Message sniffer",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "messages"
+    ]
+  },
+  "filesnarf": {
+    "package": "dsniff",
+    "category": "snooping",
+    "desc": "File sniffer",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "files"
+    ]
+  },
+  "webspy": {
+    "package": "dsniff",
+    "category": "snooping",
+    "desc": "Web session viewer",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "web"
+    ]
+  },
+  "passive-scan": {
+    "package": "passive-scan",
+    "category": "snooping",
+    "desc": "Passive scanner",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "passive"
+    ]
+  },
+  "passiverecon": {
+    "package": "passiverecon",
+    "category": "snooping",
+    "desc": "Passive recon",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "passive",
+      "recon"
+    ]
+  },
+  "ansible": {
+    "package": "ansible",
+    "category": "maintenance",
+    "desc": "Configuration mgmt",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "automation",
+      "config"
+    ]
+  },
+  "puppet": {
+    "package": "puppet",
+    "category": "maintenance",
+    "desc": "Config management",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "automation"
+    ]
+  },
+  "chef": {
+    "package": "chef",
+    "category": "maintenance",
+    "desc": "Config management",
+    "mb": 150.0,
+    "priority": 7,
+    "tags": [
+      "automation"
+    ]
+  },
+  "saltstack": {
+    "package": "saltstack",
+    "category": "maintenance",
+    "desc": "Config management",
+    "mb": 80.0,
+    "priority": 7,
+    "tags": [
+      "automation"
+    ]
+  },
+  "terraform": {
+    "package": "terraform",
+    "category": "maintenance",
+    "desc": "Infrastructure as code",
+    "mb": 30.0,
+    "priority": 8,
+    "tags": [
+      "iac",
+      "cloud"
+    ]
+  },
+  "vagrant": {
+    "package": "vagrant",
+    "category": "maintenance",
+    "desc": "Dev environments",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "vm",
+      "dev"
+    ]
+  },
+  "packer": {
+    "package": "packer",
+    "category": "maintenance",
+    "desc": "Image builder",
+    "mb": 25.0,
+    "priority": 7,
+    "tags": [
+      "images",
+      "build"
+    ]
+  },
+  "consul": {
+    "package": "consul",
+    "category": "maintenance",
+    "desc": "Service discovery",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "discovery",
+      "service"
+    ]
+  },
+  "vault": {
+    "package": "vault",
+    "category": "maintenance",
+    "desc": "Secrets management",
+    "mb": 30.0,
+    "priority": 8,
+    "tags": [
+      "secrets"
+    ]
+  },
+  "nomad": {
+    "package": "nomad",
+    "category": "maintenance",
+    "desc": "Workload orchestrator",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "orchestration"
+    ]
+  },
+  "kubernetes": {
+    "package": "kubernetes",
+    "category": "maintenance",
+    "desc": "Container orchestration",
+    "mb": 100.0,
+    "priority": 8,
+    "tags": [
+      "k8s",
+      "containers"
+    ]
+  },
+  "kubectl": {
+    "package": "kubectl",
+    "category": "maintenance",
+    "desc": "K8s CLI",
+    "mb": 25.0,
+    "priority": 8,
+    "tags": [
+      "k8s",
+      "cli"
+    ]
+  },
+  "helm": {
+    "package": "helm",
+    "category": "cloud",
+    "desc": "K8s helm",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "istio": {
+    "package": "istio",
+    "category": "maintenance",
+    "desc": "Service mesh",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "mesh",
+      "service"
+    ]
+  },
+  "prometheus": {
+    "package": "prometheus",
+    "category": "maintenance",
+    "desc": "Monitoring",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "monitoring"
+    ]
+  },
+  "grafana": {
+    "package": "grafana",
+    "category": "maintenance",
+    "desc": "Dashboards",
+    "mb": 100.0,
+    "priority": 8,
+    "tags": [
+      "dashboards",
+      "monitoring"
+    ]
+  },
+  "elasticsearch": {
+    "package": "elasticsearch",
+    "category": "maintenance",
+    "desc": "Search engine",
+    "mb": 400.0,
+    "priority": 8,
+    "tags": [
+      "search",
+      "logs"
+    ]
+  },
+  "filebeat": {
+    "package": "filebeat",
+    "category": "maintenance",
+    "desc": "Log shipper",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "logs",
+      "shipping"
+    ]
+  },
+  "aws-cli": {
+    "package": "awscli",
+    "category": "cloud",
+    "desc": "AWS CLI",
+    "mb": 50.0,
+    "priority": 9,
+    "tags": [
+      "aws"
+    ]
+  },
+  "aws-nuke": {
+    "package": "aws-nuke",
+    "category": "cloud",
+    "desc": "AWS account nuke",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "aws",
+      "cleanup"
+    ]
+  },
+  "pacu": {
+    "package": "pacu",
+    "category": "cloud",
+    "desc": "AWS exploit",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "aws"
+    ]
+  },
+  "cloudsploit": {
+    "package": "cloudsploit",
+    "category": "cloud",
+    "desc": "AWS audit",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "aws"
+    ]
+  },
+  "prowler": {
+    "package": "prowler",
+    "category": "cloud",
+    "desc": "AWS security",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "aws"
+    ]
+  },
+  "scout-suite": {
+    "package": "scout-suite",
+    "category": "cloud",
+    "desc": "Multi-cloud",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "cloud"
+    ]
+  },
+  "cloudmapper": {
+    "package": "cloudmapper",
+    "category": "cloud",
+    "desc": "AWS visualization",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "aws",
+      "viz"
+    ]
+  },
+  "cartography": {
+    "package": "cartography",
+    "category": "cloud",
+    "desc": "Infrastructure mapper",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "mapping"
+    ]
+  },
+  "azure-cli": {
+    "package": "azure-cli",
+    "category": "cloud",
+    "desc": "Azure CLI",
+    "mb": 100.0,
+    "priority": 8,
+    "tags": [
+      "azure"
+    ]
+  },
+  "azure-cli-extensions": {
+    "package": "azure-cli-extensions",
+    "category": "cloud",
+    "desc": "Azure extensions",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "azure"
+    ]
+  },
+  "powershell-azure": {
+    "package": "az",
+    "category": "cloud",
+    "desc": "Azure PowerShell",
+    "mb": 80.0,
+    "priority": 7,
+    "tags": [
+      "azure",
+      "powershell"
+    ]
+  },
+  "gcloud": {
+    "package": "google-cloud-sdk",
+    "category": "cloud",
+    "desc": "GCP CLI",
+    "mb": 200.0,
+    "priority": 8,
+    "tags": [
+      "gcp"
+    ]
+  },
+  "gcp-cli": {
+    "package": "gcp-cli",
+    "category": "cloud",
+    "desc": "GCP tools",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "gcp"
+    ]
+  },
+  "gcp-exploitkit": {
+    "package": "gcp-exploitkit",
+    "category": "cloud",
+    "desc": "GCP exploits",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "gcp",
+      "exploit"
+    ]
+  },
+  "doctl": {
+    "package": "doctl",
+    "category": "cloud",
+    "desc": "DigitalOcean CLI",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "digitalocean"
+    ]
+  },
+  "linode-cli": {
+    "package": "linode-cli",
+    "category": "cloud",
+    "desc": "Linode CLI",
+    "mb": 15.0,
+    "priority": 6,
+    "tags": [
+      "linode"
+    ]
+  },
+  "vultr-cli": {
+    "package": "vultr-cli",
+    "category": "cloud",
+    "desc": "Vultr CLI",
+    "mb": 10.0,
+    "priority": 6,
+    "tags": [
+      "vultr"
+    ]
+  },
+  "openstack-cli": {
+    "package": "python-openstackclient",
+    "category": "cloud",
+    "desc": "OpenStack CLI",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "openstack"
+    ]
+  },
+  "openstack-security": {
+    "package": "openstack-security",
+    "category": "cloud",
+    "desc": "OpenStack security",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "openstack",
+      "security"
+    ]
+  },
+  "terraform-provider-aws": {
+    "package": "terraform-provider-aws",
+    "category": "cloud",
+    "desc": "Terraform AWS",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "terraform",
+      "aws"
+    ]
+  },
+  "terraform-provider-azure": {
+    "package": "terraform-provider-azurerm",
+    "category": "cloud",
+    "desc": "Terraform Azure",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "terraform",
+      "azure"
+    ]
+  },
+  "terraform-provider-gcp": {
+    "package": "terraform-provider-google",
+    "category": "cloud",
+    "desc": "Terraform GCP",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "terraform",
+      "gcp"
+    ]
+  },
+  "cloud-inventory": {
+    "package": "cloud-inventory",
+    "category": "cloud",
+    "desc": "Cloud inventory",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "inventory"
+    ]
+  },
+  "cloud-security-scanner": {
+    "package": "cloud-security-scanner",
+    "category": "cloud",
+    "desc": "Cloud scanner",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "security",
+      "scanner"
+    ]
+  },
+  "kube-bench": {
+    "package": "kube-bench",
+    "category": "cloud",
+    "desc": "K8s CIS",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "kube-hunter": {
+    "package": "kube-hunter",
+    "category": "cloud",
+    "desc": "K8s pentest",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "kubesec": {
+    "package": "kubesec",
+    "category": "cloud",
+    "desc": "K8s security",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "kubeaudit": {
+    "package": "kubeaudit",
+    "category": "cloud",
+    "desc": "K8s audit",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "stern": {
+    "package": "stern",
+    "category": "cloud",
+    "desc": "K8s logs",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "k9s": {
+    "package": "k9s",
+    "category": "cloud",
+    "desc": "K8s TUI",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "evilginx2": {
+    "package": "evilginx2",
+    "category": "social-engineering",
+    "desc": "MFA phishing",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "mfa"
+    ]
+  },
+  "king-phisher": {
+    "package": "king-phisher",
+    "category": "social-engineering",
+    "desc": "Phishing campaign",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "simple-phishing": {
+    "package": "simple-phishing",
+    "category": "social-engineering",
+    "desc": "Simple phishing",
+    "mb": 5.0,
+    "priority": 6,
+    "tags": [
+      "phishing"
+    ]
+  },
+  "phishery": {
+    "package": "phishery",
+    "category": "social-engineering",
+    "desc": "SSL phishing",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "ssl"
+    ]
+  },
+  "gophish-templates": {
+    "package": "gophish-templates",
+    "category": "social-engineering",
+    "desc": "Gophish templates",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "templates"
+    ]
+  },
+  "social-engineer-toolkit-extra": {
+    "package": "set-extra",
+    "category": "social-engineering",
+    "desc": "SET extras",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "set"
+    ]
+  },
+  "maigret": {
+    "package": "maigret",
+    "category": "social-engineering",
+    "desc": "Username OSINT",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "osint"
+    ]
+  },
+  "socialscan": {
+    "package": "socialscan",
+    "category": "social-engineering",
+    "desc": "Email/user check",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "email",
+      "username"
+    ]
+  },
+  "whatsmyname": {
+    "package": "whatsmyname",
+    "category": "social-engineering",
+    "desc": "Username check",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "username"
+    ]
+  },
+  "usersearch": {
+    "package": "usersearch",
+    "category": "social-engineering",
+    "desc": "User search",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "user"
+    ]
+  },
+  "email-enum": {
+    "package": "email-enum",
+    "category": "social-engineering",
+    "desc": "Email enum",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "email"
+    ]
+  },
+  "libnfc": {
+    "package": "libnfc",
+    "category": "rfid",
+    "desc": "NFC library",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "nfc"
+    ]
+  },
+  "nfc-tools": {
+    "package": "nfc-tools",
+    "category": "rfid",
+    "desc": "NFC tools",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "nfc"
+    ]
+  },
+  "nfcutils": {
+    "package": "nfcutils",
+    "category": "rfid",
+    "desc": "NFC utilities",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "nfc"
+    ]
+  },
+  "mfoc": {
+    "package": "mfoc",
+    "category": "rfid",
+    "desc": "Mifare cracker",
+    "mb": 0.5,
+    "priority": 9,
+    "tags": [
+      "mifare"
+    ]
+  },
+  "mfcuk": {
+    "package": "mfcuk",
+    "category": "rfid",
+    "desc": "Mifare cracker",
+    "mb": 0.5,
+    "priority": 9,
+    "tags": [
+      "mifare"
+    ]
+  },
+  "mifare-classic-format": {
+    "package": "mifare-classic-format",
+    "category": "rfid",
+    "desc": "Mifare formatter",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "mifare"
+    ]
+  },
+  "nfc-list": {
+    "package": "nfc-list",
+    "category": "rfid",
+    "desc": "NFC lister",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "nfc"
+    ]
+  },
+  "nfc-read": {
+    "package": "nfc-read",
+    "category": "rfid",
+    "desc": "NFC reader",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "nfc"
+    ]
+  },
+  "nfc-write": {
+    "package": "nfc-write",
+    "category": "rfid",
+    "desc": "NFC writer",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "nfc"
+    ]
+  },
+  "nfc-emulate": {
+    "package": "nfc-emulate",
+    "category": "rfid",
+    "desc": "NFC emulator",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "nfc",
+      "emulator"
+    ]
+  },
+  "nfc-sniff": {
+    "package": "nfc-sniff",
+    "category": "rfid",
+    "desc": "NFC sniffer",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "nfc",
+      "sniffer"
+    ]
+  },
+  "chameleon-mini": {
+    "package": "chameleon-mini",
+    "category": "rfid",
+    "desc": "Chameleon",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "chameleon"
+    ]
+  },
+  "proxmark3": {
+    "package": "proxmark3",
+    "category": "rfid",
+    "desc": "Proxmark3",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "proxmark"
+    ]
+  },
+  "rfidiot": {
+    "package": "rfidiot",
+    "category": "rfid",
+    "desc": "RFID toolkit",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "rfid"
+    ]
+  },
+  "rfid-crack": {
+    "package": "rfid-crack",
+    "category": "rfid",
+    "desc": "RFID cracker",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "rfid",
+      "cracker"
+    ]
+  },
+  "dnswalk": {
+    "package": "dnswalk",
+    "category": "information-gathering",
+    "desc": "DNS walker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "dns"
+    ]
+  },
+  "zone-transfer": {
+    "package": "fierce",
+    "category": "information-gathering",
+    "desc": "DNS zone transfer",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "dns",
+      "zone"
+    ]
+  },
+  "whois-domaintools": {
+    "package": "whois",
+    "category": "information-gathering",
+    "desc": "DomainTools whois",
+    "mb": 0.1,
+    "priority": 7,
+    "tags": [
+      "domain"
+    ]
+  },
+  "builtwith": {
+    "package": "builtwith",
+    "category": "information-gathering",
+    "desc": "BuiltWith tech detector",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "tech",
+      "detector"
+    ]
+  },
+  "wappalyzer": {
+    "package": "wappalyzer",
+    "category": "information-gathering",
+    "desc": "Tech stack detector",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "tech"
+    ]
+  },
+  "webanalyze": {
+    "package": "webanalyze",
+    "category": "information-gathering",
+    "desc": "Web tech analyzer",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "web",
+      "tech"
+    ]
+  },
+  "cmseek": {
+    "package": "cmseek",
+    "category": "information-gathering",
+    "desc": "CMS detector",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "cms"
+    ]
+  },
+  "whatcms": {
+    "package": "whatcms",
+    "category": "information-gathering",
+    "desc": "What CMS detector",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "cms"
+    ]
+  },
+  "detectify": {
+    "package": "detectify",
+    "category": "information-gathering",
+    "desc": "Security scanner",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "security"
+    ]
+  },
+  "securitytrails": {
+    "package": "securitytrails",
+    "category": "information-gathering",
+    "desc": "Security Trails API",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "dns",
+      "osint"
+    ]
+  },
+  "censys": {
+    "package": "censys",
+    "category": "information-gathering",
+    "desc": "Censys search",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "search",
+      "osint"
+    ]
+  },
+  "binaryedge": {
+    "package": "binaryedge",
+    "category": "information-gathering",
+    "desc": "BinaryEdge search",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "search"
+    ]
+  },
+  "fullhunt": {
+    "package": "fullhunt",
+    "category": "information-gathering",
+    "desc": "FullHunt API",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "api",
+      "recon"
+    ]
+  },
+  "chaos": {
+    "package": "chaos",
+    "category": "information-gathering",
+    "desc": "Project Chaos",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "recon",
+      "dataset"
+    ]
+  },
+  "assetnote": {
+    "package": "assetnote",
+    "category": "information-gathering",
+    "desc": "Assetnote search",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "assets"
+    ]
+  },
+  "urlscan": {
+    "package": "urlscan",
+    "category": "information-gathering",
+    "desc": "urlscan.io API",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "urls"
+    ]
+  },
+  "virustotal": {
+    "package": "virustotal",
+    "category": "information-gathering",
+    "desc": "VirusTotal API",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "malware",
+      "osint"
+    ]
+  },
+  "hybrid-analysis": {
+    "package": "hybrid-analysis",
+    "category": "information-gathering",
+    "desc": "Hybrid Analysis",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "malware"
+    ]
+  },
+  "malwarebazaar": {
+    "package": "malwarebazaar",
+    "category": "information-gathering",
+    "desc": "MalwareBazaar",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "malware"
+    ]
+  },
+  "vulners": {
+    "package": "vulners",
+    "category": "vulnerability-analysis",
+    "desc": "Vulners API",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "vuln",
+      "api"
+    ]
+  },
+  "cve-search": {
+    "package": "cve-search",
+    "category": "vulnerability-analysis",
+    "desc": "CVE search",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "cve"
+    ]
+  },
+  "cvedetails": {
+    "package": "cvedetails",
+    "category": "vulnerability-analysis",
+    "desc": "CVE details",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "cve"
+    ]
+  },
+  "exploit-db": {
+    "package": "exploitdb",
+    "category": "vulnerability-analysis",
+    "desc": "Exploit DB",
+    "mb": 85.0,
+    "priority": 9,
+    "tags": [
+      "exploits"
+    ]
+  },
+  "vulndb": {
+    "package": "vulndb",
+    "category": "vulnerability-analysis",
+    "desc": "Vuln DB",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "vuln"
+    ]
+  },
+  "osv-scanner": {
+    "package": "osv-scanner",
+    "category": "vulnerability-analysis",
+    "desc": "OSV scanner",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "osv",
+      "scanner"
+    ]
+  },
+  "safety": {
+    "package": "safety",
+    "category": "vulnerability-analysis",
+    "desc": "Python safety",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "python",
+      "deps"
+    ]
+  },
+  "bandit": {
+    "package": "bandit",
+    "category": "vulnerability-analysis",
+    "desc": "Python security",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "python",
+      "sast"
+    ]
+  },
+  "eslint-security": {
+    "package": "eslint",
+    "category": "vulnerability-analysis",
+    "desc": "JS security",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "javascript"
+    ]
+  },
+  "brakeman": {
+    "package": "brakeman",
+    "category": "vulnerability-analysis",
+    "desc": "Rails scanner",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "rails",
+      "ruby"
+    ]
+  },
+  "bundler-audit": {
+    "package": "bundler-audit",
+    "category": "vulnerability-analysis",
+    "desc": "Bundler audit",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "ruby",
+      "deps"
+    ]
+  },
+  "npm-audit": {
+    "package": "npm",
+    "category": "vulnerability-analysis",
+    "desc": "NPM audit",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "npm",
+      "deps"
+    ]
+  },
+  "yarn-audit": {
+    "package": "yarn",
+    "category": "vulnerability-analysis",
+    "desc": "Yarn audit",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "yarn",
+      "deps"
+    ]
+  },
+  "composer-security": {
+    "package": "composer",
+    "category": "vulnerability-analysis",
+    "desc": "Composer security",
+    "mb": 10.0,
+    "priority": 7,
+    "tags": [
+      "php",
+      "deps"
+    ]
+  },
+  "cargo-audit": {
+    "package": "cargo-audit",
+    "category": "vulnerability-analysis",
+    "desc": "Rust audit",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "rust",
+      "deps"
+    ]
+  },
+  "go-audit": {
+    "package": "govulncheck",
+    "category": "vulnerability-analysis",
+    "desc": "Go vuln check",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "go"
+    ]
+  },
+  "dotnet-scan": {
+    "package": "dotnet-scan",
+    "category": "vulnerability-analysis",
+    "desc": ".NET scanner",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "dotnet"
+    ]
+  },
+  "java-dep-check": {
+    "package": "dependency-check",
+    "category": "vulnerability-analysis",
+    "desc": "Java dep check",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "java"
+    ]
+  },
+  "pip-audit": {
+    "package": "pip-audit",
+    "category": "vulnerability-analysis",
+    "desc": "Pip audit",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "python",
+      "pip"
+    ]
+  },
+  "poetry-security": {
+    "package": "poetry",
+    "category": "vulnerability-analysis",
+    "desc": "Poetry security",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "python",
+      "poetry"
+    ]
+  },
+  "nosqlmap": {
+    "package": "nosqlmap",
+    "category": "web-application",
+    "desc": "NoSQL injection",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "nosql"
+    ]
+  },
+  "xspear": {
+    "package": "xspear",
+    "category": "web-application",
+    "desc": "XSS scanner",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "xss"
+    ]
+  },
+  "xss-conqueror": {
+    "package": "xss-conqueror",
+    "category": "web-application",
+    "desc": "XSS conqueror",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "xss"
+    ]
+  },
+  "xss-labs": {
+    "package": "xss-labs",
+    "category": "web-application",
+    "desc": "XSS labs",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "xss",
+      "training"
+    ]
+  },
+  "csrfTester": {
+    "package": "csrfTester",
+    "category": "web-application",
+    "desc": "CSRF tester",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "csrf"
+    ]
+  },
+  "csrfPoC": {
+    "package": "csrfPoC",
+    "category": "web-application",
+    "desc": "CSRF PoC",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "csrf"
+    ]
+  },
+  "ssrf-tester": {
+    "package": "ssrf-tester",
+    "category": "web-application",
+    "desc": "SSRF tester",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "ssrf"
+    ]
+  },
+  "ssrfMap": {
+    "package": "ssrfMap",
+    "category": "web-application",
+    "desc": "SSRF mapper",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "ssrf"
+    ]
+  },
+  "file-upload-scanner": {
+    "package": "file-upload-scanner",
+    "category": "web-application",
+    "desc": "File upload scanner",
+    "mb": 1.5,
+    "priority": 7,
+    "tags": [
+      "upload"
+    ]
+  },
+  "lfi-scanner": {
+    "package": "lfi-scanner",
+    "category": "web-application",
+    "desc": "LFI scanner",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "lfi"
+    ]
+  },
+  "rfi-scanner": {
+    "package": "rfi-scanner",
+    "category": "web-application",
+    "desc": "RFI scanner",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "rfi"
+    ]
+  },
+  "xxeinjector": {
+    "package": "xxeinjector",
+    "category": "web-application",
+    "desc": "XXE injector",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "xxe"
+    ]
+  },
+  "xxer": {
+    "package": "xxer",
+    "category": "web-application",
+    "desc": "XXE tester",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "xxe"
+    ]
+  },
+  "jwt-hack": {
+    "package": "jwt-hack",
+    "category": "web-application",
+    "desc": "JWT hacker",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "jwt"
+    ]
+  },
+  "jwt-crack": {
+    "package": "jwt-crack",
+    "category": "web-application",
+    "desc": "JWT cracker",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "jwt"
+    ]
+  },
+  "api-scanner": {
+    "package": "api-scanner",
+    "category": "web-application",
+    "desc": "API scanner",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "api"
+    ]
+  },
+  "graphql-scanner": {
+    "package": "graphql-scanner",
+    "category": "web-application",
+    "desc": "GraphQL scanner",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "graphql"
+    ]
+  },
+  "inql": {
+    "package": "inql",
+    "category": "web-application",
+    "desc": "GraphQL recon",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "graphql"
+    ]
+  },
+  "soapui": {
+    "package": "soapui",
+    "category": "web-application",
+    "desc": "SOAP tester",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "soap",
+      "api"
+    ]
+  },
+  "msfconsole": {
+    "package": "metasploit-framework",
+    "category": "exploitation",
+    "desc": "MSF console",
+    "mb": 250.0,
+    "priority": 10,
+    "tags": [
+      "msf"
+    ]
+  },
+  "msfrpc": {
+    "package": "metasploit-framework",
+    "category": "exploitation",
+    "desc": "MSF RPC",
+    "mb": 250.0,
+    "priority": 9,
+    "tags": [
+      "msf",
+      "rpc"
+    ]
+  },
+  "armitage": {
+    "package": "armitage",
+    "category": "exploitation",
+    "desc": "MSF GUI",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "msf",
+      "gui"
+    ]
+  },
+  "dradis": {
+    "package": "dradis",
+    "category": "exploitation",
+    "desc": "Collab framework",
+    "mb": 30.0,
+    "priority": 7,
+    "tags": [
+      "collab"
+    ]
+  },
+  "faraday": {
+    "package": "faraday",
+    "category": "exploitation",
+    "desc": "Pentest framework",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "framework"
+    ]
+  },
+  "defectdojo": {
+    "package": "defectdojo",
+    "category": "exploitation",
+    "desc": "Vuln management",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "vuln",
+      "mgmt"
+    ]
+  },
+  "serpico": {
+    "package": "serpico",
+    "category": "exploitation",
+    "desc": "Report generator",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "reporting"
+    ]
+  },
+  "pwnat": {
+    "package": "pwnat",
+    "category": "exploitation",
+    "desc": "NAT bypass",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "nat"
+    ]
+  },
+  "ligolo": {
+    "package": "ligolo",
+    "category": "exploitation",
+    "desc": "Pivot tool",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "pivot"
+    ]
+  },
+  "ligolo-ng": {
+    "package": "ligolo-ng",
+    "category": "exploitation",
+    "desc": "Pivot tool NG",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "pivot"
+    ]
+  },
+  "chisel": {
+    "package": "chisel",
+    "category": "exploitation",
+    "desc": "Tunnel tool",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "tunnel"
+    ]
+  },
+  "sshuttle": {
+    "package": "sshuttle",
+    "category": "exploitation",
+    "desc": "SSH VPN",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "ssh",
+      "vpn"
+    ]
+  },
+  "proxychains": {
+    "package": "proxychains-ng",
+    "category": "exploitation",
+    "desc": "Proxy chains",
+    "mb": 0.5,
+    "priority": 9,
+    "tags": [
+      "proxy"
+    ]
+  },
+  "tor": {
+    "package": "tor",
+    "category": "exploitation",
+    "desc": "Tor anonymizer",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "anonymity"
+    ]
+  },
+  "tor-browser": {
+    "package": "tor-browser",
+    "category": "exploitation",
+    "desc": "Tor browser",
+    "mb": 100.0,
+    "priority": 7,
+    "tags": [
+      "browser"
+    ]
+  },
+  "i2p": {
+    "package": "i2p",
+    "category": "exploitation",
+    "desc": "I2P network",
+    "mb": 30.0,
+    "priority": 6,
+    "tags": [
+      "anonymity"
+    ]
+  },
+  "obfs4proxy": {
+    "package": "obfs4proxy",
+    "category": "exploitation",
+    "desc": "Obfuscation proxy",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "obfs"
+    ]
+  },
+  "meek": {
+    "package": "meek",
+    "category": "exploitation",
+    "desc": "Pluggable transport",
+    "mb": 3.0,
+    "priority": 6,
+    "tags": [
+      "transport"
+    ]
+  },
+  "snowflake": {
+    "package": "snowflake",
+    "category": "exploitation",
+    "desc": "Tor snowflake",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "tor"
+    ]
+  },
+  "macpeas": {
+    "package": "macpeas",
+    "category": "post-exploitation",
+    "desc": "Mac privesc",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "mac"
+    ]
+  },
+  "dockpeas": {
+    "package": "dockpeas",
+    "category": "post-exploitation",
+    "desc": "Docker privesc",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "docker"
+    ]
+  },
+  "k8s-peas": {
+    "package": "k8s-peas",
+    "category": "post-exploitation",
+    "desc": "K8s privesc",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "k8s"
+    ]
+  },
+  "evil-winrm": {
+    "package": "evil-winrm",
+    "category": "post-exploitation",
+    "desc": "WinRM shell",
+    "mb": 2.0,
+    "priority": 9,
+    "tags": [
+      "winrm"
+    ]
+  },
+  "kerbrute": {
+    "package": "kerbrute",
+    "category": "post-exploitation",
+    "desc": "Kerberos brute",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "kerberos"
+    ]
+  },
+  "getnpusers": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "AS-REP roast",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "kerberos"
+    ]
+  },
+  "ticketer": {
+    "package": "impacket",
+    "category": "post-exploitation",
+    "desc": "Golden ticket",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "kerberos"
+    ]
+  },
+  "davidtools": {
+    "package": "davidtools",
+    "category": "post-exploitation",
+    "desc": "AD tools",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "ad"
+    ]
+  },
+  "ldapdomaindump": {
+    "package": "ldapdomaindump",
+    "category": "post-exploitation",
+    "desc": "LDAP dumper",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "ldap"
+    ]
+  },
+  "pyldap": {
+    "package": "python3-ldap",
+    "category": "post-exploitation",
+    "desc": "Python LDAP",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "ldap"
+    ]
+  },
+  "enum4linux-ng": {
+    "package": "enum4linux-ng",
+    "category": "post-exploitation",
+    "desc": "SMB enum NG",
+    "mb": 1.5,
+    "priority": 8,
+    "tags": [
+      "smb"
+    ]
+  },
+  "smbmap": {
+    "package": "smbmap",
+    "category": "post-exploitation",
+    "desc": "SMB mapper",
+    "mb": 1.0,
+    "priority": 9,
+    "tags": [
+      "smb"
+    ]
+  },
+  "memdump": {
+    "package": "memdump",
+    "category": "forensics",
+    "desc": "Memory dumper",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "memory"
+    ]
+  },
+  "liME": {
+    "package": "lime",
+    "category": "forensics",
+    "desc": "Linux memory",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "memory",
+      "linux"
+    ]
+  },
+  "winpmem": {
+    "package": "winpmem",
+    "category": "forensics",
+    "desc": "Windows memory",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "memory",
+      "windows"
+    ]
+  },
+  "osxpmem": {
+    "package": "osxpmem",
+    "category": "forensics",
+    "desc": "Mac memory",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "memory",
+      "mac"
+    ]
+  },
+  "afflib": {
+    "package": "afflib",
+    "category": "forensics",
+    "desc": "AFF library",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "aff",
+      "images"
+    ]
+  },
+  "ewf-tools": {
+    "package": "libewf",
+    "category": "forensics",
+    "desc": "EWF tools",
+    "mb": 3.0,
+    "priority": 8,
+    "tags": [
+      "ewf",
+      "images"
+    ]
+  },
+  "vmdk-tools": {
+    "package": "libvmdk",
+    "category": "forensics",
+    "desc": "VMDK tools",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "vmdk"
+    ]
+  },
+  "vhdi-tools": {
+    "package": "libvhdi",
+    "category": "forensics",
+    "desc": "VHDI tools",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "vhdi"
+    ]
+  },
+  "qemu-img": {
+    "package": "qemu-utils",
+    "category": "forensics",
+    "desc": "QEMU image",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "images"
+    ]
+  },
+  "guymager": {
+    "package": "guymager",
+    "category": "forensics",
+    "desc": "Disk imager",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "imaging"
+    ]
+  },
+  "ddrescue": {
+    "package": "gddrescue",
+    "category": "forensics",
+    "desc": "Data rescue",
+    "mb": 0.5,
+    "priority": 9,
+    "tags": [
+      "recovery"
+    ]
+  },
+  "safecopy": {
+    "package": "safecopy",
+    "category": "forensics",
+    "desc": "Safe copy",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "copy"
+    ]
+  },
+  "dc3dd": {
+    "package": "dc3dd",
+    "category": "forensics",
+    "desc": "Patched dd",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "dd",
+      "imaging"
+    ]
+  },
+  "ida-pro": {
+    "package": "ida-pro",
+    "category": "reverse-engineering",
+    "desc": "IDA Pro",
+    "mb": 500.0,
+    "priority": 10,
+    "tags": [
+      "disassembler"
+    ]
+  },
+  "jeb": {
+    "package": "jeb",
+    "category": "reverse-engineering",
+    "desc": "JEB decompiler",
+    "mb": 200.0,
+    "priority": 8,
+    "tags": [
+      "decompiler"
+    ]
+  },
+  "dnspy": {
+    "package": "dnspy",
+    "category": "reverse-engineering",
+    "desc": ".NET debugger",
+    "mb": 20.0,
+    "priority": 9,
+    "tags": [
+      "dotnet"
+    ]
+  },
+  "ildasm": {
+    "package": "mono-devel",
+    "category": "reverse-engineering",
+    "desc": ".NET disassembler",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "dotnet"
+    ]
+  },
+  "jd-gui": {
+    "package": "jd-gui",
+    "category": "mobile",
+    "desc": "Java decompiler",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "java"
+    ]
+  },
+  "cfr": {
+    "package": "cfr",
+    "category": "reverse-engineering",
+    "desc": "Java decompiler",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "java"
+    ]
+  },
+  "fernflower": {
+    "package": "fernflower",
+    "category": "reverse-engineering",
+    "desc": "Java decompiler",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "java"
+    ]
+  },
+  "procyon": {
+    "package": "procyon",
+    "category": "reverse-engineering",
+    "desc": "Java decompiler",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "java"
+    ]
+  },
+  "apktool": {
+    "package": "apktool",
+    "category": "mobile",
+    "desc": "APK reverse",
+    "mb": 10.0,
+    "priority": 9,
+    "tags": [
+      "android"
+    ]
+  },
+  "jadx": {
+    "package": "jadx",
+    "category": "mobile",
+    "desc": "DEX decompiler",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "android"
+    ]
+  },
+  "bytecode-viewer": {
+    "package": "bytecode-viewer",
+    "category": "reverse-engineering",
+    "desc": "Java viewer",
+    "mb": 20.0,
+    "priority": 7,
+    "tags": [
+      "java"
+    ]
+  },
+  "recaf": {
+    "package": "recaf",
+    "category": "reverse-engineering",
+    "desc": "Java editor",
+    "mb": 15.0,
+    "priority": 7,
+    "tags": [
+      "java"
+    ]
+  },
+  "asmtools": {
+    "package": "asmtools",
+    "category": "reverse-engineering",
+    "desc": "ASM tools",
+    "mb": 5.0,
+    "priority": 6,
+    "tags": [
+      "java",
+      "asm"
+    ]
+  },
+  "classfile-reader": {
+    "package": "classfile-reader",
+    "category": "reverse-engineering",
+    "desc": "Class reader",
+    "mb": 2.0,
+    "priority": 6,
+    "tags": [
+      "java"
+    ]
+  },
+  "asleap": {
+    "package": "asleap",
+    "category": "wireless",
+    "desc": "LEAP cracker",
+    "mb": 0.3,
+    "priority": 7,
+    "tags": [
+      "leap"
+    ]
+  },
+  "eapmd5pass": {
+    "package": "eapmd5pass",
+    "category": "wireless",
+    "desc": "EAP-MD5 cracker",
+    "mb": 0.3,
+    "priority": 6,
+    "tags": [
+      "eap"
+    ]
+  },
+  "wifi-honey": {
+    "package": "wifi-honey",
+    "category": "wireless",
+    "desc": "WiFi honey",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "honey"
+    ]
+  },
+  "istioctl": {
+    "package": "istio",
+    "category": "cloud",
+    "desc": "Istio CLI",
+    "mb": 50.0,
+    "priority": 7,
+    "tags": [
+      "istio"
+    ]
+  },
+  "brute-ratel": {
+    "package": "brute-ratel",
+    "category": "exploitation",
+    "desc": "C2 framework",
+    "mb": 50.0,
+    "priority": 8,
+    "tags": [
+      "c2"
+    ]
+  },
+  "msfvenom-helper": {
+    "package": "msfvenom-helper",
+    "category": "exploitation",
+    "desc": "Payload helper",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "payloads"
+    ]
+  },
+  "valgrind": {
+    "package": "valgrind",
+    "category": "reverse-engineering",
+    "desc": "Memory debugger",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "debugger"
+    ]
+  },
+  "gdb-multiarch": {
+    "package": "gdb-multiarch",
+    "category": "reverse-engineering",
+    "desc": "Multi-arch GDB",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "debugger"
+    ]
+  },
+  "peda": {
+    "package": "gdb-peda",
+    "category": "reverse-engineering",
+    "desc": "GDB PEDA",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "gdb"
+    ]
+  },
+  "gef": {
+    "package": "gdb-gef",
+    "category": "reverse-engineering",
+    "desc": "GDB GEF",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "gdb"
+    ]
+  },
+  "rr-debugger": {
+    "package": "rr",
+    "category": "reverse-engineering",
+    "desc": "Record replay",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "debugger"
+    ]
+  },
+  "fuzzing": {
+    "package": "afl",
+    "category": "reverse-engineering",
+    "desc": "AFL fuzzer",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "fuzzing"
+    ]
+  },
+  "libfuzzer": {
+    "package": "libfuzzer",
+    "category": "reverse-engineering",
+    "desc": "LibFuzzer",
+    "mb": 3.0,
+    "priority": 7,
+    "tags": [
+      "fuzzing"
+    ]
+  },
+  "mobSF": {
+    "package": "mobsf",
+    "category": "mobile",
+    "desc": "Mobile Security Framework",
+    "mb": 100.0,
+    "priority": 9,
+    "tags": [
+      "android",
+      "ios"
+    ]
+  },
+  "frida": {
+    "package": "frida-tools",
+    "category": "mobile",
+    "desc": "Dynamic instrumentation",
+    "mb": 20.0,
+    "priority": 9,
+    "tags": [
+      "instrumentation"
+    ]
+  },
+  "objection": {
+    "package": "objection",
+    "category": "mobile",
+    "desc": "Runtime exploration",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "runtime"
+    ]
+  },
+  "androguard": {
+    "package": "androguard",
+    "category": "mobile",
+    "desc": "Android analysis",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "android"
+    ]
+  },
+  "qark": {
+    "package": "qark",
+    "category": "mobile",
+    "desc": "Android security",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "android"
+    ]
+  },
+  "drozer": {
+    "package": "drozer",
+    "category": "mobile",
+    "desc": "Android attack",
+    "mb": 15.0,
+    "priority": 8,
+    "tags": [
+      "android"
+    ]
+  },
+  "intentspector": {
+    "package": "intentspector",
+    "category": "mobile",
+    "desc": "Intent analyzer",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "android"
+    ]
+  },
+  "firmware-mod-kit": {
+    "package": "firmware-mod-kit",
+    "category": "iot",
+    "desc": "Firmware mod",
+    "mb": 10.0,
+    "priority": 8,
+    "tags": [
+      "firmware"
+    ]
+  },
+  "fwe": {
+    "package": "fwe",
+    "category": "iot",
+    "desc": "Firmware extractor",
+    "mb": 2.0,
+    "priority": 7,
+    "tags": [
+      "firmware"
+    ]
+  },
+  "sasquatch": {
+    "package": "sasquatch",
+    "category": "iot",
+    "desc": "SquashFS extractor",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "squashfs"
+    ]
+  },
+  "ubi-reader": {
+    "package": "ubireader",
+    "category": "iot",
+    "desc": "UBI reader",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "ubi"
+    ]
+  },
+  "jefferson": {
+    "package": "jefferson",
+    "category": "iot",
+    "desc": "JFFS2 extractor",
+    "mb": 1.0,
+    "priority": 6,
+    "tags": [
+      "jffs2"
+    ]
+  },
+  "cramfs-tools": {
+    "package": "cramfsprogs",
+    "category": "iot",
+    "desc": "CramFS tools",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "cramfs"
+    ]
+  },
+  "yaffs2-utils": {
+    "package": "yaffs2utils",
+    "category": "iot",
+    "desc": "YAFFS2 tools",
+    "mb": 0.5,
+    "priority": 6,
+    "tags": [
+      "yaffs"
+    ]
+  },
+  "router-exploiter": {
+    "package": "routersploit",
+    "category": "iot",
+    "desc": "Router exploit",
+    "mb": 15.0,
+    "priority": 9,
+    "tags": [
+      "router",
+      "exploit"
+    ]
+  },
+  "iot-defender": {
+    "package": "iot-defender",
+    "category": "iot",
+    "desc": "IoT scanner",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "iot",
+      "scanner"
+    ]
+  },
+  "shodan-iot": {
+    "package": "shodan",
+    "category": "iot",
+    "desc": "Shodan IoT",
+    "mb": 3.5,
+    "priority": 8,
+    "tags": [
+      "iot",
+      "search"
+    ]
+  },
+  "gpg": {
+    "package": "gnupg",
+    "category": "cryptography",
+    "desc": "GPG encryption",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "encryption"
+    ]
+  },
+  "openssl": {
+    "package": "openssl",
+    "category": "cryptography",
+    "desc": "OpenSSL toolkit",
+    "mb": 5.0,
+    "priority": 10,
+    "tags": [
+      "crypto"
+    ]
+  },
+  "cryptsetup": {
+    "package": "cryptsetup",
+    "category": "cryptography",
+    "desc": "Disk encryption",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "disk"
+    ]
+  },
+  "veracrypt": {
+    "package": "veracrypt",
+    "category": "cryptography",
+    "desc": "VeraCrypt",
+    "mb": 20.0,
+    "priority": 8,
+    "tags": [
+      "encryption"
+    ]
+  },
+  "truecrack": {
+    "package": "truecrack",
+    "category": "cryptography",
+    "desc": "TrueCrypt cracker",
+    "mb": 1.0,
+    "priority": 7,
+    "tags": [
+      "cracker"
+    ]
+  },
+  "ccrypt": {
+    "package": "ccrypt",
+    "category": "cryptography",
+    "desc": "File encryption",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "encryption"
+    ]
+  },
+  "steghide": {
+    "package": "steghide",
+    "category": "steganography",
+    "desc": "Steganography tool",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "stego"
+    ]
+  },
+  "stegsolve": {
+    "package": "stegsolve",
+    "category": "steganography",
+    "desc": "Image stego",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "image"
+    ]
+  },
+  "zsteg": {
+    "package": "zsteg",
+    "category": "steganography",
+    "desc": "PNG/BMP stego",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "png"
+    ]
+  },
+  "stegseek": {
+    "package": "stegseek",
+    "category": "steganography",
+    "desc": "Stego cracker",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "cracker"
+    ]
+  },
+  "outguess": {
+    "package": "outguess",
+    "category": "steganography",
+    "desc": "Stego tool",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "stego"
+    ]
+  },
+  "openstego": {
+    "package": "openstego",
+    "category": "steganography",
+    "desc": "Stego tool",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "stego"
+    ]
+  },
+  "shred": {
+    "package": "coreutils",
+    "category": "anti-forensics",
+    "desc": "Secure delete",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "deletion"
+    ]
+  },
+  "wipe": {
+    "package": "wipe",
+    "category": "anti-forensics",
+    "desc": "Secure wipe",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "deletion"
+    ]
+  },
+  "bleachbit": {
+    "package": "bleachbit",
+    "category": "anti-forensics",
+    "desc": "System cleaner",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "cleaner"
+    ]
+  },
+  "timestomp": {
+    "package": "timestomp",
+    "category": "anti-forensics",
+    "desc": "Time modifier",
+    "mb": 0.5,
+    "priority": 7,
+    "tags": [
+      "timestamp"
+    ]
+  },
+  "touch": {
+    "package": "coreutils",
+    "category": "anti-forensics",
+    "desc": "Touch files",
+    "mb": 5.0,
+    "priority": 7,
+    "tags": [
+      "timestamp"
+    ]
+  },
+  "samhashdump": {
+    "package": "samhashdump",
+    "category": "anti-forensics",
+    "desc": "SAM dumper",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "windows"
+    ]
+  },
+  "misp": {
+    "package": "misp",
+    "category": "threat-intel",
+    "desc": "Threat platform",
+    "mb": 200.0,
+    "priority": 8,
+    "tags": [
+      "threat",
+      "platform"
+    ]
+  },
+  "yara": {
+    "package": "yara",
+    "category": "threat-intel",
+    "desc": "Malware patterns",
+    "mb": 2.0,
+    "priority": 9,
+    "tags": [
+      "malware"
+    ]
+  },
+  "capa": {
+    "package": "capa",
+    "category": "threat-intel",
+    "desc": "Malware capabilities",
+    "mb": 5.0,
+    "priority": 8,
+    "tags": [
+      "malware"
+    ]
+  },
+  "pe-sieve": {
+    "package": "pe-sieve",
+    "category": "threat-intel",
+    "desc": "PE scanner",
+    "mb": 2.0,
+    "priority": 8,
+    "tags": [
+      "pe"
+    ]
+  },
+  "netcat": {
+    "package": "netcat",
+    "category": "networking",
+    "desc": "Swiss army knife",
+    "mb": 0.5,
+    "priority": 10,
+    "tags": [
+      "network"
+    ]
+  },
+  "ncat": {
+    "package": "nmap",
+    "category": "networking",
+    "desc": "Nmap netcat",
+    "mb": 5.0,
+    "priority": 9,
+    "tags": [
+      "network"
+    ]
+  },
+  "socat": {
+    "package": "socat",
+    "category": "networking",
+    "desc": "Socket cat",
+    "mb": 1.0,
+    "priority": 9,
+    "tags": [
+      "network"
+    ]
+  },
+  "cryptcat": {
+    "package": "cryptcat",
+    "category": "networking",
+    "desc": "Encrypted netcat",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "crypto",
+      "network"
+    ]
+  },
+  "ping": {
+    "package": "iputils-ping",
+    "category": "networking",
+    "desc": "Ping utility",
+    "mb": 0.2,
+    "priority": 9,
+    "tags": [
+      "network"
+    ]
+  },
+  "traceroute": {
+    "package": "traceroute",
+    "category": "networking",
+    "desc": "Trace route",
+    "mb": 0.3,
+    "priority": 8,
+    "tags": [
+      "network"
+    ]
+  },
+  "mtr": {
+    "package": "mtr",
+    "category": "networking",
+    "desc": "My traceroute",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "network"
+    ]
+  },
+  "netstat": {
+    "package": "net-tools",
+    "category": "networking",
+    "desc": "Network stats",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "network"
+    ]
+  },
+  "ss": {
+    "package": "iproute2",
+    "category": "networking",
+    "desc": "Socket stats",
+    "mb": 1.0,
+    "priority": 8,
+    "tags": [
+      "network"
+    ]
+  },
+  "lsof": {
+    "package": "lsof",
+    "category": "networking",
+    "desc": "List open files",
+    "mb": 0.5,
+    "priority": 8,
+    "tags": [
+      "files"
+    ]
+  }
+}
