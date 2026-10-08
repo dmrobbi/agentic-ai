@@ -22,9 +22,6 @@ unavailable - the widget can never crash on a missing input:
   owner-gated scripts/lab/pve-lab-battery.sh; the parse convention is
   documented in the module). No path -> metric skipped (unknown); the
   recipe lives in docs/KA-LAB-TARGET.md.
-- evidence count: artifact files discovered recursively under
-  kali_agent_v4/evidence/ (the EVIDENCE_PACKAGE pattern) when the tree
-  is discoverable, else None.
 
 Links are curated constants only - every URL was verified live at
 curation time (2026-10-07, bounded fetch); dead candidates are dropped
@@ -70,7 +67,6 @@ from agentic_ai.agents.cyber import owner_widget as OW  # the pure module
 OUT = ROOT / "data" / "owner_widget.json"
 CORPUS_FIXTURE = (ROOT / "tests" / "fixtures" / "cve"
                   / "cve_eval_corpus.json")
-EVIDENCE_DIR = ROOT / "kali_agent_v4" / "evidence"
 GENERATED = OW.GENERATED
 PROBE_TIMEOUT = 900
 
@@ -109,16 +105,6 @@ def lazy_coverage():
         return None, None
 
 
-def discover_evidence(path=EVIDENCE_DIR):
-    """Evidence artifact FILES under path, recursively (the EVIDENCE_PACKAGE
-    pattern); [] when the tree is missing - the caller degrades."""
-    if not path.is_dir():
-        return []
-    return sorted(
-        str(found.relative_to(path))
-        for found in path.rglob("*") if found.is_file())
-
-
 def battery_from_log(path):
     """Parse the battery transcript at path, or None when no path was
     given or the file is absent (the metric then skips - never crashes)."""
@@ -154,20 +140,16 @@ def probe_suite(timeout=PROBE_TIMEOUT):
 
 def offline_payload_text():
     """The OFFLINE sample payload text - the exact committed data/
-    owner_widget.json bytes: lazily imported coverage inputs, discovered
-    evidence count, no suite probe, no battery log."""
+    owner_widget.json bytes: lazily imported coverage inputs, no suite
+    probe, no battery log."""
     corpus, matcher = lazy_coverage()
-    evidence = discover_evidence()
     payload = OW.build_payload(
         corpus=corpus,
         matcher=matcher,
         battery=None,
-        evidence_count=len(evidence) or None,
         links=CURATED_LINKS,
         generated=GENERATED,
         suite_note=SAMPLE_SUITE_NOTE,
-        evidence_note="regenerate via tools/build_owner_widget.py when the"
-                      " evidence tree changes",
     )
     return OW.payload_json_text(payload)
 
@@ -204,19 +186,15 @@ def main(argv=None):
         collected, verdict = probe_suite()
     corpus, matcher = lazy_coverage()
     battery = battery_from_log(battery_path)
-    evidence = discover_evidence()
     payload = OW.build_payload(
         collected_total=collected,
         verdict=verdict,
         corpus=corpus,
         matcher=matcher,
         battery=battery,
-        evidence_count=len(evidence) or None,
         links=CURATED_LINKS,
         generated=GENERATED,
         suite_note=None if probe else SAMPLE_SUITE_NOTE,
-        evidence_note="regenerate via tools/build_owner_widget.py when the"
-                      " evidence tree changes",
     )
     text = OW.payload_json_text(payload)
     if print_text:
@@ -225,10 +203,10 @@ def main(argv=None):
     out.parent.mkdir(parents=True, exist_ok=True)
     out.write_text(text, encoding="utf-8")
     metrics = payload["blocks"][0]["items"]
-    print("OWNER-WIDGET-OK out=%s blocks=%d suite=%s coverage=%s battery=%s"
-          " evidence=%s" % (out, len(payload["blocks"]),
-                            metrics[0]["value"], metrics[1]["value"],
-                            metrics[2]["value"], metrics[3]["value"]))
+    print("OWNER-WIDGET-OK out=%s blocks=%d suite=%s coverage=%s"
+          " battery=%s" % (out, len(payload["blocks"]),
+                           metrics[0]["value"], metrics[1]["value"],
+                           metrics[2]["value"]))
     return 0
 
 

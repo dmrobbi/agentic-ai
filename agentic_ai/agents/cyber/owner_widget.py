@@ -1,7 +1,9 @@
 """Owner one-glance dashboard widget (KA-100) - the payload builder.
 
 Spec ("[100] Owner dashboard widget"): one-glance status - suite state,
-CVE-DB coverage %, last battery run, evidence count.
+CVE-DB coverage %, last battery run (the fourth headline, the
+kali_agent_v4 evidence count, retired 2026-10-08 with the facade's
+removal).
 
 The output is OpenClaw dashboard `session:report`-compatible - a payload
 whose blocks follow the report contract:
@@ -35,10 +37,7 @@ ALL STRUCTURE lives here; NOTHING is fetched:
 - battery state arrives INJECTED (a dict as parse_battery_log returns, or
   transcript text) - real runs are owner-gated per docs/KA-LAB-TARGET.md
   and the tool script skips the metric when no --battery-log path is
-  given;
-- evidence count arrives INJECTED (the tool counts artifact files
-  recursively under kali_agent_v4/evidence/, the EVIDENCE_PACKAGE
-  pattern, when the tree is discoverable).
+  given.
 
 Degradation contract: every missing or unusable input renders as
 {"value": "unknown", "detail": <reason>} instead of raising - a hostile
@@ -68,7 +67,6 @@ METRIC_LABELS = (
     "suite state",
     "CVE-DB coverage %",
     "last battery run",
-    "evidence count",
 )
 
 TESTS_DIR_HINT = "tests/"
@@ -348,34 +346,6 @@ def battery_metric(state=None, note=None):
     return _metric(value, detail, note)
 
 
-# ------------------------------------------------ headline 4: evidence
-
-def evidence_metric(count=None, note=None):
-    """Headline metric - the evidence artifact count under kali_agent_v4's
-    evidence pattern, INJECTED (the tool walks the tree; this module never
-    reads the disk). Zero is a real state ("0"); a missing count degrades
-    to unknown; wrong-typed counts degrade with the reason."""
-    if count is None:
-        return _unknown("no evidence count provided/discoverable", note)
-    if isinstance(count, bool) or count == "":
-        return _unknown("evidence count must be an integer or numeric"
-                        " string", note)
-    if isinstance(count, int):
-        number = count
-    elif isinstance(count, str) and count.strip().isdigit():
-        number = int(count.strip())
-    else:
-        return _unknown("evidence count must be an integer or numeric"
-                        " string", note)
-    if number < 0:
-        return _unknown("evidence count must not be negative", note)
-    return _metric(
-        str(number),
-        "files counted under kali_agent_v4/evidence/ recursively (the"
-        " KaliAgent v4 EVIDENCE_PACKAGE pattern)",
-        note)
-
-
 # ---------------------------------------------------------------- links
 
 def valid_links(items):
@@ -416,9 +386,9 @@ def valid_links(items):
 # -------------------------------------------------------------- builder
 
 def build_payload(*, collected_total=None, verdict=None, corpus=None,
-                  matcher=None, battery=None, evidence_count=None,
+                  matcher=None, battery=None,
                   links=None, suite_note=None, coverage_note=None,
-                  battery_note=None, evidence_note=None,
+                  battery_note=None,
                   generated=GENERATED):
     """Assemble the owner widget payload (session:report-compatible):
     blocks [metrics, table, links?] in that order - links omitted when no
@@ -429,7 +399,6 @@ def build_payload(*, collected_total=None, verdict=None, corpus=None,
         suite_metric(collected_total, verdict, suite_note),
         coverage_metric(corpus, matcher, coverage_note),
         battery_metric(battery, battery_note),
-        evidence_metric(evidence_count, evidence_note),
     ]
     metrics = [{"label": label, **item}
                for label, item in zip(METRIC_LABELS, built)]

@@ -10,8 +10,9 @@ THE HOUSE GATE SHAPE:
   tuple and nothing else. Asserting any other shape (a dict, a raise,
   a third element) is the test's bug, not this module's.
 
-CONSENT DISCIPLINE (generalizes kali_agent_v4's evidence discipline;
-read-only inspiration - v4 is not imported):
+CONSENT DISCIPLINE (generalizes the removed kali_agent_v4 generation's
+evidence discipline - read-only inspiration, nothing imported; that
+line's record lives at git history c965747):
 - A non-dry-run execution (real effects: live scans, exploit steps,
   anything touching a target system) REQUIRES an owner-signed consent
   RECORD: a structured ConsentRecord carrying engagement_id, action,

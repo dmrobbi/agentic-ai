@@ -1,8 +1,14 @@
-"""KA-099 tests - skill sync: the kali-agent and agentic-roles skills carry
-the lab battery + runbook references additively, with gate names only (never
-values), real repo-relative paths, and no emojis. Source-scan only: it reads
-the two SKILL.md files and asserts referenced paths exist on disk via
-pathlib relative to the repo root. No git, no network, no execution."""
+"""KA-099 tests - skill sync: the agentic-roles skill carries the lab
+battery + runbook references additively, with gate names only (never
+values), real repo-relative paths, and no emojis. Source-scan only: it
+reads the SKILL.md file and asserts referenced paths exist on disk via
+pathlib relative to the repo root. No git, no network, no execution.
+
+History: the test originally synced BOTH skills (kali-agent +
+agentic-roles); the kali-agent skill was the operating manual of the
+standalone kali_agent_v4 CLI facade and left HEAD with the 2026-10-08
+dead-generation cleanup (history c965747) - the sync is now
+agentic-roles-only."""
 
 import re
 from pathlib import Path
@@ -12,7 +18,6 @@ import pytest
 REPO = Path(__file__).resolve().parent.parent
 SECTION = "## Lab battery + runbook references"
 SKILLS = {
-    "kali-agent": REPO / "skills" / "kali-agent" / "SKILL.md",
     "agentic-roles": REPO / "skills" / "agentic-roles" / "SKILL.md",
 }
 
@@ -64,22 +69,9 @@ def test_gates_referenced_by_name_not_value(key):
     assert encoded == []
 
 
-def test_content_markers_per_file():
-    kali = SKILLS["kali-agent"].read_text(encoding="utf-8")
+def test_content_markers():
     roles = SKILLS["agentic-roles"].read_text(encoding="utf-8")
-    # kali-agent: harness battery + runbook + gates + evidence discipline.
-    for marker in (
-        "docker/fleet-harness",
-        "docs/KA-LAB-DETECTION.md",
-        "docs/ka_healthcheck_row.md",
-        "KA_LAB_BATTERY",
-        "KA_FLEET_HARNESS",
-        "KA_LAB_CONSENT",
-        "KA_BATTERY_CONSENT",
-        "evidence/",
-    ):
-        assert marker in kali, marker
-    # agentic-roles: the same set from the ROLE perspective.
+    # agentic-roles: the battery/runbook set from the ROLE perspective.
     for marker in (
         "docker/fleet-harness",
         "docs/KA-LAB-DETECTION.md",

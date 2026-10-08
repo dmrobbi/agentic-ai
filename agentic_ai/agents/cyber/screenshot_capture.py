@@ -11,8 +11,8 @@ import, no network facilities, no wall-clock reads.
 THE PLAYWRIGHT-ON-THING1 RECIPE (DOCUMENTATION ONLY - nothing in this
 module executes it):
 
-  thing1's kali_agent_v4/venv carries the playwright CLI; the runner
-  lives on that host and is owner-gated. One capture is one call:
+  the runner host's playwright CLI (PATH); the runner lives on that
+  host and is owner-gated. One capture is one call:
 
     playwright screenshot --browser=chromium \
       --viewport-size="1280,720" \

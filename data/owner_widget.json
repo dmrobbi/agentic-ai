@@ -20,11 +20,6 @@
      "label": "last battery run",
      "value": "unknown",
      "detail": "no battery log passed (skipped when absent; battery runs are owner-gated per docs/KA-LAB-TARGET.md)"
-    },
-    {
-     "label": "evidence count",
-     "value": "24",
-     "detail": "files counted under kali_agent_v4/evidence/ recursively (the KaliAgent v4 EVIDENCE_PACKAGE pattern); regenerate via tools/build_owner_widget.py when the evidence tree changes"
     }
    ]
   },
@@ -51,11 +46,6 @@
      "last battery run",
      "unknown",
      "absent"
-    ],
-    [
-     "evidence count",
-     "ok",
-     "injected"
     ]
    ]
   },

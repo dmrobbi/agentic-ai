@@ -2,18 +2,22 @@
 degradation, determinism and string coercion over INJECTED inputs only.
 
 Pinned here: the session:report block order (metrics, table, links?),
-the exact four headline metric labels, the {label, value, detail} item
+the exact three headline metric labels, the {label, value, detail} item
 shape with STRING values/details, per-metric degradation to
-{"value": "unknown", ...} (suite / coverage / battery / evidence), the
+{"value": "unknown", ...} (suite / coverage / battery), the
 grep-equivalent verdict + collect-total parsing (last match wins, never
 tail), battery transcript parsing (documented [battery]-line convention,
-consent-gate refusals), zero-vs-missing evidence counts, http(s)-only
+consent-gate refusals), http(s)-only
 link validation (file:// and every other scheme dropped), determinism
 (identical injections -> identical payload and identical JSON text), the
 committed sample data/owner_widget.json matching the offline builder
 byte-for-byte and its structural contract, and module purity (no
 subprocess/pytest/network/disk imports; and no Mixin class, so the
 module stays out of the tool-versions scan set).
+
+History: the fourth headline (the evidence count under the removed
+kali_agent_v4 facade's evidence package) was retired 2026-10-08 with
+dead-generation cleanup; its degradation tests left with it.
 
 No pytest runs, no /tmp reads, no network in these tests: every test
 feeds injected structures; the only path reads are the committed repo
@@ -120,13 +124,13 @@ def test_payload_shape_and_block_order():
         collected_total=5121, verdict="5120 passed, 1 failed",
         corpus=CORPUS, matcher=FULL,
         battery={"verdict": "pass", "when": "2026-10-05T21:04Z"},
-        evidence_count=24, links=GOOD_LINKS)
+        links=GOOD_LINKS)
     assert set(payload) == {"schema", "generated", "blocks"}
     assert payload["schema"] == OW.SCHEMA
     assert payload["generated"] == OW.GENERATED
     assert OW.UNKNOWN == "unknown"
     assert OW.METRIC_LABELS == ("suite state", "CVE-DB coverage %",
-                                "last battery run", "evidence count")
+                                "last battery run")
     assert [block["type"] for block in payload["blocks"]] == \
         ["metrics", "table", "links"]
     items = payload["blocks"][0]["items"]
@@ -138,7 +142,7 @@ def test_payload_shape_and_block_order():
     assert set(table) == {"type", "title", "columns", "rows"}
     assert table["columns"] == ["metric", "state", "source"]
     rows = table["rows"]
-    assert len(rows) == 4
+    assert len(rows) == 3
     for row, label, item in zip(rows, OW.METRIC_LABELS, items):
         assert row[0] == label
         assert (row[1] == "ok") == (item["value"] != OW.UNKNOWN)
@@ -152,12 +156,12 @@ def test_payload_determinism_full_build():
         collected_total=5121, verdict="5120 passed, 1 failed",
         corpus=CORPUS, matcher=FULL,
         battery={"verdict": "pass", "when": "2026-10-05T21:04Z"},
-        evidence_count=24, links=GOOD_LINKS)
+        links=GOOD_LINKS)
     two = OW.build_payload(
         collected_total=5121, verdict="5120 passed, 1 failed",
         corpus=CORPUS, matcher=FULL,
         battery={"verdict": "pass", "when": "2026-10-05T21:04Z"},
-        evidence_count=24, links=GOOD_LINKS)
+        links=GOOD_LINKS)
     assert one == two
     text = OW.payload_json_text(two)
     assert text.endswith("\n")
@@ -166,10 +170,10 @@ def test_payload_determinism_full_build():
 
 def test_payload_never_raises_on_hostile_inputs():
     payload = OW.build_payload(corpus=42, matcher="nope", battery=[1, 2],
-                               evidence_count={}, verdict=7.5,
+                               verdict=7.5,
                                collected_total=True)
     items = payload["blocks"][0]["items"]
-    assert len(items) == 4
+    assert len(items) == 3
     assert all(isinstance(item["value"], str) for item in items)
 
 
@@ -275,24 +279,6 @@ def test_battery_metric_states(state, note, value_fragment,
         assert detail_fragment in metric["detail"]
 
 
-# ------------------------------------------------------ evidence count
-
-@pytest.mark.parametrize(("count", "value"), [
-    (24, "24"), (0, "0"), ("18", "18"),
-])
-def test_evidence_metric_counts(count, value):
-    metric = OW.evidence_metric(count)
-    assert metric["value"] == value
-    assert "kali_agent_v4/evidence/" in metric["detail"]
-
-
-@pytest.mark.parametrize("count", [None, True, "-3"])
-def test_evidence_metric_degrades(count):
-    metric = OW.evidence_metric(count)
-    assert metric["value"] == OW.UNKNOWN
-    assert metric["detail"]
-
-
 # -------------------------------------------------------------- links
 
 def test_valid_links_keeps_https_in_order_and_dedupes():
@@ -335,8 +321,7 @@ def test_builder_offline_matches_committed_bytes():
     assert text == DATA.read_text(encoding="utf-8")
     assert BUILD.OUT.name == "owner_widget.json"
     assert callable(BUILD.main) and callable(BUILD.probe_suite)
-    assert callable(BUILD.lazy_coverage) and callable(
-        BUILD.discover_evidence)
+    assert callable(BUILD.lazy_coverage)
     links = BUILD.CURATED_LINKS
     assert links and all(
         entry["url"].startswith("https://") for entry in links)

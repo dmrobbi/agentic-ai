@@ -51,7 +51,9 @@ Verified usage examples (all executed before publishing) live in
   omitted the biblical_scholar and V2 cyber agents).
 - Ops that hit real systems (kali/redteam tooling, cloud connectors) say so
   in their op docstrings; everything in `card`/`ops`/`list` is side-effect-free.
-- The kali family has its own skill: [agentic-ai/skills/kali-agent](../kali-agent/SKILL.md).
+- The kali role agents live in the registry (`kali`, `kali_v2`); the
+  standalone kali-agent skill was removed 2026-10-08 with the
+  kali_agent_v4 facade cleanup (its record: git history c965747).
 
 ## House rules
 

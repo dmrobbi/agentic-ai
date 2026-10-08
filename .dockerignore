@@ -10,7 +10,6 @@
 dashboard/dist
 dashboard/dist.tar.gz
 dashboard_v2/frontend/dist
-kali_agent_v4/venv
 venv
 venv-pptx
 .venv
@@ -21,7 +20,6 @@ docs/papers_stsgym
 examples
 benchmarks
 tests
-kali_agent_v4
 *.md
 !README.md
 .claude

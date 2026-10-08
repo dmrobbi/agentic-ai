@@ -9,8 +9,9 @@ agents KaliAgent (2,758 lines; ~40-tool DB, MetasploitRPC, execute_tool flow,
 6 parsers, 5 playbooks) + KaliAgentV2 (1,321 lines; OutputParsers for
 nmap/sqlmap/nuclei/crackmapexec, CVEMatchingEngine, ToolRecommendationEngine,
 RemediationEngine), the three mixins (web_pentest / redteam / xss) with their
-generated catalogs (725-tool red-team, 15-tool XSS), the kali_agent_v4 CLI
-generation (live-fire + evidence discipline), and the SOC fleet around them
+generated catalogs (725-tool red-team, 15-tool XSS), the removed
+kali_agent_v4 CLI facade (a print-only simulation, retired 2026-10-08;
+its record = git history c965747), and the SOC fleet around them
 (Wazuh, kevstig, laya, patch monitor, tickets, pve-lab). Suite today: 2007
 passed / 5 skipped._
 
@@ -256,7 +257,10 @@ test floor AND make the first lab battery repeatable.
 ## Where each lives
 
 - Mixins/catalogs/tests: `agentic_ai/agents/cyber/`, `tools/`, `tests/` (this repo).
-- v4 work: `kali_agent_v4/` (the CLI generation; evidence discipline).
+- v4 work: REMOVED 2026-10-08 - the `kali_agent_v4/` CLI was a
+  print-only simulation facade; its record lives at git history c965747
+  (the salvageable work was transplanted: the 602-tool package universe
+  and the CVE dossiers).
 - Fleet tie-ins: SOC scripts (`scripts/soc/`), the tickets/healthcheck/bridges.
 - Lab work: the pve-lab cluster (gus2) for staged targets.
 

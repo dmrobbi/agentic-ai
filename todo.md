@@ -732,3 +732,55 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   lineage lives in git history); .dockerignore pruned to kali_agent_v4
   only; docs/KALIAGENT_V3_ROADMAP.md and the docs/papers_stsgym
   kali_dashboard path mentions kept as historical documents.
+
+## KA merge + facade cleanup (2026-10-08, the owner merge order)
+
+- Review (09:1x): per-dead-generation transposition review, everything
+  read from git history c965747. A-set = the v3 602-tool package
+  universe + the two externally-verified CVE workspaces (defense-only);
+  the CVEs proved REAL via Rapid7/CERT-EU/Securonix (41089, active-
+  exploit since June 2026, not in KEV) and oss-security/RHSB-2026-005/
+  Ubuntu (46243). B-set = the kali_dashboard engagement UI (its server
+  wired the live chassis) - owner-shaped, deferred.
+- A1 LANDED 82b84f8: tools/build_kali_packages.py (pinned-history
+  extraction, validating verbatim round-trip, --verify marker) +
+  cyber/data/kali_packages.json (602 rows / 22 categories pinned) +
+  package_doctor.package_universe_rows (the doctor seam over the FILE;
+  tolerated-loud file handling).
+- A2 LANDED 3970eb1: tools/build_cve_dossiers.py (re-authored
+  defense-only literals + provenance) + cyber/data/cve_dossiers.json
+  (2 dossiers, exact 12-field rows) + cyber/cve_dossiers.py
+  (cve_dossiers_index + cve_dossier_outline; scrub echo128/content2000
+  split; broken catalog refuses closed).
+- Facade verdict (code-level, the merge completing the arc): the kept
+  kali_agent_v4 = a print-only simulation - hardcoded doctor/status
+  rows, a stub dashboard, a pass-empty c2, a "simulate update check"
+  comment, and an evidence package of canned demo transcripts
+  (TEST-NET hosts with invented names); the KA-013 parity pins had
+  already reported the no-execution static finding. The owner's
+  "clean up the old dead code" = the removal.
+- CLEANUP LANDED: kali_agent_v4/ removed (155 tracked files: the CLI,
+  9 phase dirs, the canned evidence, the marketing docs; + the 293M
+  untracked venv) + skills/kali-agent/ removed (the facade's manual,
+  no test pinned it except the sync - reworked); owner_widget's
+  evidence-count headline retired (it counted the facade's canned
+  evidence) with build_payload slimmed and data/owner_widget.json
+  regenerated (determinism byte-verified x2, offline text == committed
+  bytes); test_generation_parity re-based onto the two chassis
+  generations (the v4 findings survive as the history paragraph);
+  test_skill_sync now agentic-roles-only; consent_gate/screenshot_
+  capture docstrings reworded; agentic-roles cross-ref reworded;
+  options-100 + building-conventions docs now document the removal;
+  .dockerignore fully free of kali_agent_v4; build_kali_packages
+  newline hygiene folded in.
+- Gates per landing: full suite green every commit (final: 5294 passed
+  / 41 skipped / 0 failed), flake8 7.4.1 (CI command) = 0,
+  BASELINE_SUITE_TOTAL measured-aligned each commit (5332 / 5346 /
+  5335), lockstep pushes ls-remote-verified (82b84f8, 3970eb1, + this
+  commit).
+- Kept as historical record: docs/KALIAGENT_V3_ROADMAP.md + the
+  papers_stsgym kali_dashboard path mentions.
+- Still open (owner): the build job red (registry HTTPS vs
+  insecure-registries, idm); the kevstig gitlab mirror (fresh PAT /
+  UI-create); www.stsgym.com CNAME; pyproject author attribution;
+  stsphotos fate; the gitlab reconcile.

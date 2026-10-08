@@ -78,7 +78,9 @@ Planner/mixin modules land at `agentic_ai/agents/cyber/<topic>.py`:
   drift alarm, not a decoration.
 - Lab/live batteries skip cleanly by default behind env-var gates (house
   precedent: `BRUTEFORCE_E2E=1`); anything live or destructive requires
-  owner consent and follows kali_agent_v4's evidence discipline.
+  owner consent and follows the consent/evidence discipline
+  (consent_gate + evidence_chain - the generalization of the removed
+  kali_agent_v4 pattern; its record lives at git history c965747).
 
 ## 6. Suite baseline discipline
 
