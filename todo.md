@@ -784,3 +784,105 @@ builder + data file. NO edits to kali.py / kali_v2.py — the phase integration 
   insecure-registries, idm); the kevstig gitlab mirror (fresh PAT /
   UI-create); www.stsgym.com CNAME; pyproject author attribution;
   stsphotos fate; the gitlab reconcile.
+
+## LUKS container-ops import (2026-10-11)
+
+_Owner request: "this is what todo" — cyberanchor's LUKS gist decomposed into
+phase-end-integrated builders. Source: gist 6535a5b38ceb4c57986d4c8324e0a94c
+("CryptSetup | LUKS cryptocontainer CheatSheet"; created 2025-04-30, updated
+2026-10-10; single 14.6 KB Markdown file; **no license** -> the standing gate
+applies: everything re-authored in-house, credit "inspired by cyberanchor's gist
+6535a5b3" in front-matter + commit messages, verbatim prose never copied)._
+
+_Coverage (what it has): LUKS2 container creation with two tuned profiles (fast:
+PBKDF2/sha256/256-bit, 1M iterations; secure: Argon2id/sha512/512-bit), the
+open -> mkfs.ext4 -> mount -> close loop, key-file creation + slot management,
+complex-passphrase handling (escaping + hexdump verification), passphrase
+derivation from a BIP-39 seed via the "7w" web tool, a key-file-from-image trick
+with pinned SHA-512 hashes, header backup/restore, detached-header workflows.
+This is a METHODOLOGY sheet, not a link directory: ~8 binaries + 2 web
+generators -> decision: no `*_tools.json` catalog; the doc table carries tooling.
+External URLs live-verified 2026-10-11: cryptony.app seed generator, dlepex
+7w generator, wikimedia sample image — all HTTP 200 (record them with the
+verified date; re-verify in LUK-02)._
+
+_Findings the builders fix (checked against the gist text):_
+1. **Command/note contradiction** — the secure profile pins `--pbkdf-memory
+   4194304` (4 GiB) while its own note recommends `1048576` (1 GiB) on
+   limited-RAM hosts; in-house default = 1 GiB (4 GiB as noted variant).
+2. **Slot "add" that kills** — "Add to slot 0 using key file from slot 3"
+   starts with `luksKillSlot` on slot 0, silently destroying the existing
+   slot-0 credential; in-house wording names it ROTATION + confirmation gate.
+3. **Geometry-blind header wipe** — header removal overwrites "the first
+   4 MB"; a LUKS2 header area is typically 16+ MiB (the gist's own secure
+   config: 16 MiB keyslots + 256 KiB metadata), so the magic constant leaves
+   most of the header on disk; in-house wipe length derives from `luksDump`
+   geometry.
+4. **Wallet-seed tie-in risk** — disk passphrases derived from a BIP-39
+   mnemonic through a third-party web tool couple two high-value secrets plus
+   unverifiable client-side trust; in-house writes methodology + explicit
+   warning only, prefers local derivation, carries no mnemonic/passphrase
+   material.
+5. **Host drift** — the gist assumes Arch/pacman; this host = Ubuntu 24.04;
+   probed 2026-10-11: cryptsetup + e2fsprogs ABSENT (dd/sha512sum present,
+   passwordless sudo available); LUK-01 lands the apt install + re-probe.
+
+_Section safety rails: file-backed containers under `mktemp -d` scratch ONLY —
+no block-device ops without owner-signed consent; runnable artifacts refuse
+paths outside their scratch; mixin ops inherit the standing guardrails (planners
+only, scrub, validate_target gate)._
+
+- [ ] **LUK-01 · Host prep + command smoke** — [BUILDER][S][lab]
+  - **Owns:** nothing committed (runs + records only)
+  - **Goal:** `apt-get install cryptsetup e2fsprogs`, probe versions, run the
+    FAST profile end-to-end on a 16 MB /tmp scratch file (luksFormat →
+    luksAddKey → open --test-passphrase → luksDump), capture the transcript.
+  - **Done:** transcript handed to LUK-02 (chat/memory, not a repo file); host
+    re-probe shows both packages present.
+
+- [ ] **LUK-02 · Re-authored ops guide** — [BUILDER][M][none] (dep: LUK-01)
+  - **Owns:** `docs/LUKS_OPS.md` (new)
+  - **Goal:** in-house LUKS2 container-ops guide covering the gist's arc with
+    all five findings corrected; front-matter credit line; parameter tables
+    (fast vs secure), slot-map table (what rotate/test/kill touch),
+    header-geometry section (luksDump → wipe size), BIP-39/7w as methodology +
+    warning; host appendix with LUK-01's transcript + URL re-verification.
+  - **Done:** every command block re-derived and consistent with the observed
+    `cryptsetup` version; no gist prose verbatim; doc committed as Dawn.
+
+- [ ] **LUK-03 · Full-loop verification script** — [BUILDER][M][lab] (dep: LUK-01)
+  - **Owns:** `scripts/ops/luks_verify.sh` (new)
+  - **Goal:** scripted PASS/FAIL matrix over the whole guide: container create
+    (both profiles), open/mkfs/mount, canary write+read, key/slot ops (add,
+    rotate slot 0, kill), test-passphrase per key type, header backup/restore
+    round-trip, detached-header create + mount cycle, close + cleanup.
+    Scratch-only paths; refuses targets outside its mktemp dir; exit 0 iff all
+    PASS.
+  - **Done:** one local run with the PASS matrix recorded (script stdout → the
+    LUK-02 doc appendix); shellcheck-clean if shellcheck is available.
+
+- [ ] **LUK-04 · Ops mixin for the kali chassis** — [BUILDER][M][none]
+  - **Owns:** `agentic_ai/agents/cyber/luks_ops.py` (new),
+    `tests/test_luks_ops.py` (new), ONE baseline line:
+    `tests/test_ka_conventions.py` BASELINE_SUITE_TOTAL bump (this is the task
+    that moves the count, per the standing guardrails)
+  - **Goal:** LuksOpsMixin, planner ops never executing: profile builders
+    (fast/secure param dicts, target-injected), slot-plan op (add/rotate/kill
+    sequences with confirmation flags), header-geometry wipe-plan op, detached-
+    header plan, test-passphrase checklists. `wp_scrub_target` on inputs,
+    validate_target via getattr (silent fallback), no subprocess/os.system/eval
+    (source assert + test pin). Tests: shapes, scrub rejections (metachar/
+    newline/null), unknown-profile errors carrying the known list, payload-free
+    methodology strings, order-agnostic lookup assertions.
+  - **Done:** suite green with the bumped baseline; mixin imported nowhere yet.
+
+- [ ] **LUK-05 · [INTEGRATION] chassis wiring + fleet reference** — [INTEGRATION][S][none] (dep: LUK-04; LUK-02 for doc cross-refs)
+  - **Owns:** `agentic_ai/agents/cyber/kali.py`, `agentic_ai/agents/cyber/kali_v2.py`,
+    `skills/agentic-roles/references/role-ops.md`
+  - **Goal:** import + inherit LuksOpsMixin on BOTH chassis generations (class
+    line + mixin stack, matching the 20 existing mixins); regenerate role-ops.md
+    (span-anchored edits — row texts repeat across kali sections, anchor on
+    distinct neighbors or the following section header); doc cross-ref one-liner
+    in the mixin docstring if LUK-06 doc naming changed.
+  - **Done:** FULL suite + flake8 green; LuksOpsMixin present on both
+    generations per the registry smoke; lockstep push ls-remote-verified.
