@@ -313,7 +313,45 @@ No key available with this passphrase.
 ```
 
 (Scratch passphrase placeholder `smoke-luk01-2026`, 64 MB container, fast profile, wiped after
-capture. Secure-profile timings plus the full-loop matrix land with `scripts/ops/luks_verify.sh`.)
+capture.)
+
+### A.2 — LUK-03 full-loop matrix (2026-10-11)
+
+Runner: `scripts/ops/luks_verify.sh` — file-backed, scratch-only, rerunnable anytime. First
+run went out with a builder bug (key material staged AFTER the format/open rows that consume
+it → 12 cascade FAILs on a raw container); fixed by staging keys in the materials section —
+the rerun that landed:
+
+```text
+== LUKS2 full-loop verification matrix (scratch: /tmp/luk_verify.NKLKpK) ==
+[PASS      ] container-file
+[PASS      ] format-fast
+[PASS      ] header-geometry-parse
+[PASS      ] luksOpen
+[PASS      ] canary-roundtrip
+[PASS      ] add-keyfile-slot2
+[PASS      ] test-pass-default
+[PASS      ] negative-control
+[PASS      ] test-pass-stdin
+[PASS      ] raw-bytes-newline
+[PASS      ] test-pass-slot2
+[PASS      ] rotate-stage-slot5
+[PASS      ] rotate-test-slot5
+[PASS      ] rotate-kill-slot0
+[PASS      ] rotate-readd-slot0
+[PASS      ] header-backup
+[PASS      ] header-dump-verify
+[PASS      ] detached-format
+[PASS      ] detached-no-builtin-header
+[PASS      ] detached-luksOpen
+[PASS      ] detached-header-dump
+== matrix: 21 PASS / 0 FAIL / 0 SKIP ==
+VERDICT: ALL-CHECKS-OK (exit 0)
+```
+
+Notes: `shellcheck` was not installed on the run host (skipped, recorded). The `raw-bytes-newline`
+row passes EITHER way with the doc-accurate message — the file-formatted container rejects the
+newline-terminated variant (raw-byte semantics, section 2), which is what the landing run showed.
 
 ## Appendix B — source link inventory (live-verified 2026-10-11)
 
