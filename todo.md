@@ -824,8 +824,11 @@ _Findings the builders fix (checked against the gist text):_
    warning only, prefers local derivation, carries no mnemonic/passphrase
    material.
 5. **Host drift** — the gist assumes Arch/pacman; this host = Ubuntu 24.04;
-   probed 2026-10-11: cryptsetup + e2fsprogs ABSENT (dd/sha512sum present,
-   passwordless sudo available); LUK-01 lands the apt install + re-probe.
+   probe 2026-10-11 REVISED during LUK-01: the first probe hit the user PATH
+   (which omits /usr/sbin → false negative); both packages were ALREADY
+   installed (cryptsetup 2.7.0, e2fsprogs 1.47.0, passwordless sudo
+   available) — LUK-01's install step became a no-op noop-check; binaries
+   called by absolute path throughout.
 
 _Section safety rails: file-backed containers under `mktemp -d` scratch ONLY —
 no block-device ops without owner-signed consent; runnable artifacts refuse
