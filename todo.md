@@ -898,7 +898,7 @@ only, scrub, validate_target gate)._
   method notes) + 31-test contract file + `BASELINE_SUITE_TOTAL` 5335->5366 +
   the KA-064 census resolved (SCAN_MODULES + the doc's `_meta`). Full suite
   5325/41/0 mask-free green; flake8 green.
-- **LUK-05** landed `<hash>` (Dawn Robbins): imports + class lines on BOTH
+- **LUK-05** landed `cf3c240` (Dawn Robbins): imports + class lines on BOTH
   chassis generations; role-ops.md +8 rows x2 sections, sort-verified on disk
   (192 + 126). FULL suite + flake8 green (5325/41/0, exit 0; FLAKE8-GREEN);
   registry smoke 8/8 ops callable on both agents.
