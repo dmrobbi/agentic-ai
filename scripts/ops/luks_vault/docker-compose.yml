@@ -1,0 +1,18 @@
+services:
+  luks-vault:
+    build: .
+    image: luks-vault:1.0
+    container_name: luks-vault
+    # privileged is required for this design: LUKS2 + dm-crypt is a
+    # kernel-level encryption layer - the container must be allowed to
+    # attach loop devices and open the mapper. No unprivileged path
+    # keeps real LUKS (the ask). The vault image never leaves the
+    # named volume; the credential travels by stdin only.
+    privileged: true
+    volumes:
+      - luks-vault-vol:/vault
+    stop_grace_period: 30s
+
+volumes:
+  luks-vault-vol:
+    name: luks-vault-vol
