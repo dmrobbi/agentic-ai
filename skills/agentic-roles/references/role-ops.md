@@ -728,6 +728,8 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `kevstig_fan_out` |  | kali | kevstig coverage.json -> routed CVEs + matching recommendations (KA-067). |
 | `list_tools` |  | kali | List available tools. |
 | `log` |  | base | Log an action for transparency. |
+| `luks_method_notes` |  | luks_ops | The in-house methodology summary: the five findings + the two verified trapdoors (LUK-04). |
+| `luks_test_passphrase_checklist` |  | luks_ops | The open --test-passphrase checklist; path references only, no secret material (LUK-04). |
 | `malware_index` |  | malware_ops | The four sample kinds + module policy overview (KA-039). |
 | `malware_policy` |  | malware_ops | static_first + detonate_sandbox_only policy rows (KA-039). |
 | `medusa_bruteforce` |  | kali | Parallel brute forcer. |
@@ -749,12 +751,18 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `plan_cloud` |  | cloud_pentest | The 6-phase sandbox-account plan per cloud (KA-033). |
 | `plan_container_escape` |  | container_pentest | Escape-surface planner arcs (KA-034). |
 | `plan_contract_audit` |  | chain_ops | The 7-phase testnet-only contract audit arc (KA-046). |
+| `plan_detached_header` |  | luks_ops | Detached-header create/open/extract/verify arc; restore-then-test discipline (LUK-04). |
 | `plan_detonation` |  | malware_ops | Detonation plan; refuses without a sandbox record (sandbox-only gate) (KA-039). |
 | `plan_device_audit` |  | network_device | The 6-phase lab-only device audit arc (KA-040). |
 | `plan_finding_triage` |  | chain_ops | Findings -> analyzer/tool triage mapping (KA-046). |
 | `plan_forensics` |  | forensics_ops | The analyst arc per kind (KA-038). |
 | `plan_full_engagement` |  | full_engagement | Composes recon -> web -> xss -> privesc (+extension lanes) into one scrubbed plan (KA-050). |
+| `plan_header_backup_restore` |  | luks_ops | Header backup/restore rows with the unlock-oracle warning (LUK-04). |
+| `plan_header_wipe` |  | luks_ops | Geometry-derived header-wipe plan; parses luksDump, rejects the 4 MB constant (LUK-04). |
 | `plan_impersonation_exercise` |  | socialeng_ops | Consent-gated impersonation exercise plan (scenario classes only) (KA-042). |
+| `plan_luks_create` |  | luks_ops | Container-creation plan: FAST (pbkdf2 1M iter) or SECURE (Argon2id, 1 GiB default) profiles (LUK-04). |
+| `plan_luks_open_close` |  | luks_ops | Lifecycle rows: open/mkfs/mount/close with root flags; real-0600-keyfile rule (LUK-04). |
+| `plan_luks_slot_ops` |  | luks_ops | Slot plans: add / rotate_slot_0 / kill_slot; destructive rows gated on confirm=True (LUK-04). |
 | `plan_mobile_apk` |  | mobile_pentest | APK static-first planner (KA-035). |
 | `plan_mobile_ipa` |  | mobile_pentest | IPA static-first planner (KA-035). |
 | `plan_modbus` |  | ics_iot | Modbus TCP/RTU read-only arc (passive tap) (KA-043). |
@@ -881,6 +889,8 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `k8s_rbac_checklist` |  | container_pentest | K8s RBAC checklist rows (KA-034). |
 | `kevstig_fan_out` |  | kali_v2 | kevstig coverage.json -> routed CVEs + matching recommendations (KA-067). |
 | `list_tools` |  | kali_v2 | List available tools. |
+| `luks_method_notes` |  | luks_ops | The in-house methodology summary: the five findings + the two verified trapdoors (LUK-04). |
+| `luks_test_passphrase_checklist` |  | luks_ops | The open --test-passphrase checklist; path references only, no secret material (LUK-04). |
 | `malware_index` |  | malware_ops | The four sample kinds + module policy overview (KA-039). |
 | `malware_policy` |  | malware_ops | static_first + detonate_sandbox_only policy rows (KA-039). |
 | `match_exploits_for_cve` |  | kali_v2 | Find exploits for a CVE. |
@@ -897,12 +907,18 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `plan_cloud` |  | cloud_pentest | The 6-phase sandbox-account plan per cloud (KA-033). |
 | `plan_container_escape` |  | container_pentest | Escape-surface planner arcs (KA-034). |
 | `plan_contract_audit` |  | chain_ops | The 7-phase testnet-only contract audit arc (KA-046). |
+| `plan_detached_header` |  | luks_ops | Detached-header create/open/extract/verify arc; restore-then-test discipline (LUK-04). |
 | `plan_detonation` |  | malware_ops | Detonation plan; refuses without a sandbox record (sandbox-only gate) (KA-039). |
 | `plan_device_audit` |  | network_device | The 6-phase lab-only device audit arc (KA-040). |
 | `plan_finding_triage` |  | chain_ops | Findings -> analyzer/tool triage mapping (KA-046). |
 | `plan_forensics` |  | forensics_ops | The analyst arc per kind (KA-038). |
 | `plan_full_engagement` |  | full_engagement | Composes recon -> web -> xss -> privesc (+extension lanes) into one scrubbed plan (KA-050). |
+| `plan_header_backup_restore` |  | luks_ops | Header backup/restore rows with the unlock-oracle warning (LUK-04). |
+| `plan_header_wipe` |  | luks_ops | Geometry-derived header-wipe plan; parses luksDump, rejects the 4 MB constant (LUK-04). |
 | `plan_impersonation_exercise` |  | socialeng_ops | Consent-gated impersonation exercise plan (scenario classes only) (KA-042). |
+| `plan_luks_create` |  | luks_ops | Container-creation plan: FAST (pbkdf2 1M iter) or SECURE (Argon2id, 1 GiB default) profiles (LUK-04). |
+| `plan_luks_open_close` |  | luks_ops | Lifecycle rows: open/mkfs/mount/close with root flags; real-0600-keyfile rule (LUK-04). |
+| `plan_luks_slot_ops` |  | luks_ops | Slot plans: add / rotate_slot_0 / kill_slot; destructive rows gated on confirm=True (LUK-04). |
 | `plan_mobile_apk` |  | mobile_pentest | APK static-first planner (KA-035). |
 | `plan_mobile_ipa` |  | mobile_pentest | IPA static-first planner (KA-035). |
 | `plan_modbus` |  | ics_iot | Modbus TCP/RTU read-only arc (passive tap) (KA-043). |

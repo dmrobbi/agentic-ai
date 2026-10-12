@@ -33,6 +33,7 @@ from agentic_ai.agents.cyber.mobile_pentest import MobileMixin
 from agentic_ai.agents.cyber.wireless_pentest import WirelessMixin
 from agentic_ai.agents.cyber.osint_pentest import OSINTMixin
 from agentic_ai.agents.cyber.forensics_ops import ForensicsMixin
+from agentic_ai.agents.cyber.luks_ops import LuksOpsMixin
 from agentic_ai.agents.cyber.malware_ops import MalwareAnalysisMixin
 from agentic_ai.agents.cyber.network_device import NetworkDeviceMixin
 from agentic_ai.agents.cyber.api_pentest import APIPentestMixin
@@ -1387,7 +1388,7 @@ def _validate_command_args(args: list) -> None:
 class KaliAgent(MalwareAnalysisMixin, NetworkDeviceMixin, APIPentestMixin, SocialEngMixin, IcsIoTMixin,
         PostExploitMixin, WebAuthMixin, ContractAnalysisMixin, FullEngagementMixin, WebPentestMixin, RedTeamMixin,
         XssMixin, PrivescMixin, ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin, OSINTMixin,
-        ForensicsMixin, BaseAgent):
+        ForensicsMixin, LuksOpsMixin, BaseAgent):
     """
     Kali Linux Tool Orchestration Agent
 

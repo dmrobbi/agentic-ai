@@ -864,7 +864,7 @@ only, scrub, validate_target gate)._
   - **Done:** one local run with the PASS matrix recorded (script stdout → the
     LUK-02 doc appendix); shellcheck-clean if shellcheck is available.
 
-- [ ] **LUK-04 · Ops mixin for the kali chassis** — [BUILDER][M][none]
+- [x] **LUK-04 · Ops mixin for the kali chassis** — [BUILDER][M][none]
   - **Owns:** `agentic_ai/agents/cyber/luks_ops.py` (new),
     `tests/test_luks_ops.py` (new), ONE baseline line:
     `tests/test_ka_conventions.py` BASELINE_SUITE_TOTAL bump (this is the task
@@ -879,7 +879,7 @@ only, scrub, validate_target gate)._
     methodology strings, order-agnostic lookup assertions.
   - **Done:** suite green with the bumped baseline; mixin imported nowhere yet.
 
-- [ ] **LUK-05 · [INTEGRATION] chassis wiring + fleet reference** — [INTEGRATION][S][none] (dep: LUK-04; LUK-02 for doc cross-refs)
+- [x] **LUK-05 · [INTEGRATION] chassis wiring + fleet reference** — [INTEGRATION][S][none] (dep: LUK-04; LUK-02 for doc cross-refs)
   - **Owns:** `agentic_ai/agents/cyber/kali.py`, `agentic_ai/agents/cyber/kali_v2.py`,
     `skills/agentic-roles/references/role-ops.md`
   - **Goal:** import + inherit LuksOpsMixin on BOTH chassis generations (class
@@ -889,3 +889,20 @@ only, scrub, validate_target gate)._
     in the mixin docstring if LUK-06 doc naming changed.
   - **Done:** FULL suite + flake8 green; LuksOpsMixin present on both
     generations per the registry smoke; lockstep push ls-remote-verified.
+
+### LUK close-out (2026-10-12; owner "fire LUK" 18:20 UTC)
+
+- **LUK-04** landed `6ed28f9` (Dawn Robbins): `LuksOpsMixin` doc-mirrored planner
+  (profiles 1 GiB-default/4-GiB-variant, slot ops with the rotation confirmation
+  gate, geometry-derived header wipes, backup/restore, detached arcs, checklist,
+  method notes) + 31-test contract file + `BASELINE_SUITE_TOTAL` 5335->5366 +
+  the KA-064 census resolved (SCAN_MODULES + the doc's `_meta`). Full suite
+  5325/41/0 mask-free green; flake8 green.
+- **LUK-05** landed `<hash>` (Dawn Robbins): imports + class lines on BOTH
+  chassis generations; role-ops.md +8 rows x2 sections, sort-verified on disk
+  (192 + 126). FULL suite + flake8 green (5325/41/0, exit 0; FLAKE8-GREEN);
+  registry smoke 8/8 ops callable on both agents.
+- The campaign's catches (the pin-drift alarm, the pipe-mask repeat, the dead
+  validate_target routing, the script-assert family) live in
+  `memory/defects/2026-10-12-luk-defect-journal.md` + the INDEX rows per the
+  defect-journal system.
