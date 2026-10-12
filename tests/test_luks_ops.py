@@ -281,3 +281,63 @@ def test_no_exec_tokens():
     assert "eval(" not in text
     assert "popen" not in text.lower()
     assert "import os" not in text
+
+
+# -- TPM machine-binding plans (LUK-06: the vault container arc mirrored) --
+
+def test_tpm_enroll_plan_shape(host, scratch):
+    plan = host.plan_tpm_enroll(scratch, "vault.img", "key")
+    enroll = plan["rows"][0]["cmd"]
+    assert enroll.startswith("/usr/bin/systemd-cryptenroll")
+    assert "--tpm2-device=auto" in enroll
+    assert "--unlock-key-file=" + plan["key"] in enroll
+    assert plan["container"] in enroll
+    verify = plan["rows"][1]["cmd"]
+    assert "luksDump" in verify and "Tokens" in verify
+    notes = plan["notes"]
+    assert "machine IS the authority" in notes
+    assert "passphrase slot" in notes and "recovery" in notes
+    assert plan["consent_rail"] == "scratch-only; no block-device ops"
+
+
+def test_tpm_enroll_pcrs_row_and_validation(host, scratch):
+    plan = host.plan_tpm_enroll(scratch, "vault.img", "key", pcrs="0+2+7")
+    assert "--tpm2-pcrs=0+2+7" in plan["rows"][0]["cmd"]
+    with pytest.raises(ValueError):
+        host.plan_tpm_enroll(scratch, "vault.img", "key", pcrs="0+2;x")
+    with pytest.raises(ValueError):
+        host.plan_tpm_enroll(scratch, "vault.img", "key", pcrs="99")
+    with pytest.raises(ValueError):
+        host.plan_tpm_enroll(scratch, "vault.img", "key", pcrs=7)
+
+
+def test_tpm_unlock_plan_shape(host, scratch):
+    plan = host.plan_tpm_unlock(scratch, "vault.img", mapper_name="cryptvol")
+    open_row = plan["rows"][0]["cmd"]
+    assert "--token-only" in open_row
+    assert "< /dev/null" in open_row
+    assert plan["container"] in open_row
+    assert open_row.endswith(" cryptvol < /dev/null")
+    assert plan["rows"][1]["cmd"].endswith("/dev/mapper/cryptvol")
+    assert any("luksClose" in r["cmd"] for r in plan["rows"])
+    notes = plan["notes"]
+    assert "no credential" in notes
+    assert "foreign machine" in notes
+
+
+def test_tpm_names_guarded(host, scratch):
+    with pytest.raises(ValueError):
+        host.plan_tpm_enroll(scratch, "bad/name", "key")
+    with pytest.raises(ValueError):
+        host.plan_tpm_enroll(scratch, "vault.img", "bad name")
+    with pytest.raises(ValueError):
+        host.plan_tpm_unlock(scratch, "vault.img", mapper_name="bad/name")
+    with pytest.raises(ValueError):
+        host.plan_tpm_unlock(scratch, "vault.img", mapper_name="bad name")
+
+
+def test_tpm_unlock_rows_carry_no_key_material(host, scratch):
+    unlock = host.plan_tpm_unlock(scratch, "vault.img")
+    joined = " ".join(r["cmd"] for r in unlock["rows"])
+    assert "key-file" not in joined
+    assert "printf" not in joined

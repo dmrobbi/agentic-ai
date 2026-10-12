@@ -279,7 +279,50 @@ printf '%s' '<pass>' | /usr/sbin/cryptsetup luksAddKey container.img --key-slot 
 # volume activation (root)
 sudo /usr/sbin/cryptsetup luksOpen container.img cryptvol --key-file=key
 sudo umount /mnt/cryptvol && sudo /usr/sbin/cryptsetup luksClose cryptvol
+# TPM machine-binding (the host's real TPM 2.0; enrollment runs unprivileged on a 0600 key file)
+/usr/bin/systemd-cryptenroll --tpm2-device=auto --unlock-key-file=key container.img
+sudo /usr/sbin/cryptsetup open --token-only container.img cryptvol < /dev/null
 ```
+
+## 11. TPM machine-binding (the vault container arc, 2026-10-12)
+
+The vault container (`scripts/ops/luks_vault/`) binds its payload key to the HOST's
+TPM 2.0. LIVE-verified end-to-end: the enrolled token's credentialless unseal x2
+(fresh + post-lock), the empty-credential enroll rejected, the slot-kill
+foreign-machine simulation (the unseal failed fast), the passphrase recovery — the
+20-leg definitive cycle green, every leg exit-code checked.
+
+```bash
+# the credential = a real 0600 key file (never argv/env); the seal leaves the
+# passphrase slot untouched = recovery + off-machine credential
+/usr/bin/systemd-cryptenroll --tpm2-device=auto --unlock-key-file=key container.img
+# verify the systemd-tpm2 token landed (measured shape: PCR 7, sha256 bank, ECC SRK):
+/usr/sbin/cryptsetup luksDump container.img | sed -n '/^Tokens/,$p'
+# the TPM-bound open: NO credential; stdin closed so a failed consult fails fast
+sudo /usr/sbin/cryptsetup open --token-only container.img cryptvol < /dev/null
+sudo mkfs.ext4 -q /dev/mapper/cryptvol    # one-time: only on a fresh payload
+sudo mkdir -p /mnt/cryptvol && sudo mount /dev/mapper/cryptvol /mnt/cryptvol
+```
+
+Semantics (measured, stated plainly):
+
+- The machine IS the authority post-enrollment: any root process on the enrolled
+  machine can unseal (the token consult on plain `cryptsetup open`); after any
+  successful open the kernel keyring carries the volume key and later opens succeed
+  without the token.
+- The wrong-credential rejection = PRE-enrollment and OFF-machine (the negative
+  controls in section 2 still prove it).
+- The `systemd-cryptsetup attach` helper WEDGES on its ask-password FIFO after a
+  failed consult even with a closed stdin (measured) — use the CLI's
+  `open --token-only`.
+- Revoke a machine: `luksKillSlot` its slot (authenticate with a DIFFERENT slot's
+  credential; never kill the last working slot). A missing binding fails the
+  consult FAST and the vault stays locked — the foreign-machine behavior.
+- HA posture (documented in the container README + the public guide repo;
+  cluster live-proof = run-first): the physical-chip fleet (a shared image enrolled
+  per node, active-passive under a cluster HA manager) or the vTPM carrier (PVE's
+  `tpmstate0`; KubeVirt's persistent TPM state = a since-v1.0 feature with actively
+  maintained live-migration fixes).
 
 ---
 

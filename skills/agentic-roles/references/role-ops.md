@@ -773,6 +773,8 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
 | `plan_s7` |  | ics_iot | S7comm read-only arc (port 102) (KA-043). |
 | `plan_static` |  | malware_ops | The 6-phase static analysis arc (acquire/triage/static/family/gate/report) (KA-039). |
+| `plan_tpm_enroll` |  | luks_ops | TPM machine-binding plan: systemd-cryptenroll seal (the 0600 key via --unlock-key-file; the token verify row); machine-authority semantics (LUK-06). |
+| `plan_tpm_unlock` |  | luks_ops | TPM-bound open plan: cryptsetup --token-only (stdin closed, fail-fast), one-time fs + mount + close rows (LUK-06). |
 | `plan_web_pentest` |  | web_pentest | Return the 12-phase engagement plan for a target. |
 | `plan_webauth` |  | webauth_ops | The 7-phase SSO/OAuth/JWT methodology arc (KA-045). |
 | `plan_wireless_capture` |  | wireless_pentest | Monitor-mode capture planner (KA-036). |
@@ -929,6 +931,8 @@ agent id. Run any op with `agenticai agent run <id> --op <op> --args '{...}'`;
 | `plan_redteam` |  | redteam_pentest | The red-team phase arc for a scope: goal, tool count, and example |
 | `plan_s7` |  | ics_iot | S7comm read-only arc (port 102) (KA-043). |
 | `plan_static` |  | malware_ops | The 6-phase static analysis arc (acquire/triage/static/family/gate/report) (KA-039). |
+| `plan_tpm_enroll` |  | luks_ops | TPM machine-binding plan: systemd-cryptenroll seal (the 0600 key via --unlock-key-file; the token verify row); machine-authority semantics (LUK-06). |
+| `plan_tpm_unlock` |  | luks_ops | TPM-bound open plan: cryptsetup --token-only (stdin closed, fail-fast), one-time fs + mount + close rows (LUK-06). |
 | `plan_web_pentest` |  | web_pentest | Return the 12-phase engagement plan for a target. |
 | `plan_webauth` |  | webauth_ops | The 7-phase SSO/OAuth/JWT methodology arc (KA-045). |
 | `plan_wireless_capture` |  | wireless_pentest | Monitor-mode capture planner (KA-036). |

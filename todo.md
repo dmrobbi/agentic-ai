@@ -835,7 +835,7 @@ no block-device ops without owner-signed consent; runnable artifacts refuse
 paths outside their scratch; mixin ops inherit the standing guardrails (planners
 only, scrub, validate_target gate)._
 
-- [ ] **LUK-01 · Host prep + command smoke** — [BUILDER][S][lab]
+- [x] **LUK-01 · Host prep + command smoke** — [BUILDER][S][lab]
   - **Owns:** nothing committed (runs + records only)
   - **Goal:** `apt-get install cryptsetup e2fsprogs`, probe versions, run the
     FAST profile end-to-end on a 16 MB /tmp scratch file (luksFormat →
@@ -843,7 +843,7 @@ only, scrub, validate_target gate)._
   - **Done:** transcript handed to LUK-02 (chat/memory, not a repo file); host
     re-probe shows both packages present.
 
-- [ ] **LUK-02 · Re-authored ops guide** — [BUILDER][M][none] (dep: LUK-01)
+- [x] **LUK-02 · Re-authored ops guide** — [BUILDER][M][none] (dep: LUK-01)
   - **Owns:** `docs/LUKS_OPS.md` (new)
   - **Goal:** in-house LUKS2 container-ops guide covering the gist's arc with
     all five findings corrected; front-matter credit line; parameter tables
@@ -853,7 +853,7 @@ only, scrub, validate_target gate)._
   - **Done:** every command block re-derived and consistent with the observed
     `cryptsetup` version; no gist prose verbatim; doc committed as Dawn.
 
-- [ ] **LUK-03 · Full-loop verification script** — [BUILDER][M][lab] (dep: LUK-01)
+- [x] **LUK-03 · Full-loop verification script** — [BUILDER][M][lab] (dep: LUK-01)
   - **Owns:** `scripts/ops/luks_verify.sh` (new)
   - **Goal:** scripted PASS/FAIL matrix over the whole guide: container create
     (both profiles), open/mkfs/mount, canary write+read, key/slot ops (add,
@@ -889,6 +889,26 @@ only, scrub, validate_target gate)._
     in the mixin docstring if LUK-06 doc naming changed.
   - **Done:** FULL suite + flake8 green; LuksOpsMixin present on both
     generations per the registry smoke; lockstep push ls-remote-verified.
+
+- [x] **LUK-06 · TPM machine-binding verbs (mixin) + fleet sync** — [BUILDER][M][lab] (dep: LUK-04/05; the vault container's TPM arc)
+  - **Owns:** `agentic_ai/agents/cyber/luks_ops.py` (2 plan methods + 3 constants),
+    `tests/test_luks_ops.py` (+5 tests), `docs/LUKS_OPS.md` (section 11 + the
+    quick-ref rows), `docs/LUKS_EXECUTIVE_SUMMARY.md` (the TPM subsection + the
+    lives rows), `skills/agentic-roles/references/role-ops.md` (2 rows x2 tables),
+    `todo.md` (the LUK-01/02/03 flips), `.flake8` (the reproducible gate config:
+    max-line-length = 100 — the prior gate's flags were unrecorded; this = the
+    recorded one)
+  - **Goal:** mirror the vault container's LIVE-verified TPM machine-binding
+    (the stdin-credential enroll via --unlock-key-file; the --token-only unseal
+    with the closed stdin; the machine-authority + foreign-machine semantics)
+    into the chassis planner and the two fleet docs; the planner stays
+    execution-free.
+  - **Acceptance:** the new tests green; the FULL suite (the exact CI flags) +
+    flake8 green; the docs' claims doc-mirrored only (the executable = the
+    container entry); lockstep push ls-remote-verified.
+  - **Done:** 2026-10-12 — both plan methods landed with the measured notes;
+    5 contract tests; the docs synced; the role-ops rows x2; the checkbox flips;
+    the gates green; landed in this task's commit (the close-out fills the hash).
 
 ### LUK close-out (2026-10-12; owner "fire LUK" 18:20 UTC)
 

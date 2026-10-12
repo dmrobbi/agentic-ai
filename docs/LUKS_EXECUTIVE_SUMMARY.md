@@ -58,6 +58,31 @@ The fleet default for the secure profile = 1 GiB Argon2id memory (the reference 
 contradicted itself: a 4 GiB pin vs a 1 GiB recommendation; 4 GiB stays documented as an
 explicit RAM-rich variant only).
 
+## TPM machine-binding (2026-10-12 arc)
+
+The vault container's entry grew `tpm-enroll`/`tpm-unlock` — LIVE-verified on the
+host's real TPM 2.0 (the 20-leg definitive cycle, every leg exit-code checked):
+
+- `tpm-enroll` seals the payload's disk key to THE HOST'S chip (systemd-cryptenroll
+  `--tpm2-device=auto`; the credential = a real 0600 key file via
+  `--unlock-key-file`, stdin-fed, shredded after — never argv/env). Measured token:
+  systemd-tpm2, PCR 7 (sha256 bank), ECC SRK. The passphrase slot stays = recovery
+  + off-machine credential.
+- `tpm-unlock` opens with NO credential: `cryptsetup open --token-only`, stdin
+  closed (the `systemd-cryptsetup attach` helper wedges on its ask-password FIFO —
+  measured — the CLI path is deterministic and fails fast).
+- THE MACHINE IS THE AUTHORITY once enrolled: the token consult opens for any root
+  process on the enrolled machine, and the kernel keyring satisfies reopens after
+  any successful open. The wrong-credential rejection = PRE-enrollment +
+  OFF-machine. The foreign-machine behavior = VERIFIED by the slot-kill simulation
+  (the unseal failed fast; the vault stayed locked; the recovery opened).
+- HA posture: the physical-chip fleet (a shared image enrolled per node,
+  active-passive under a cluster HA manager; LUKS2 = 32 slots, one per node) or the
+  vTPM carrier (PVE's `tpmstate0`; KubeVirt's persistent TPM/UEFI state = a
+  since-v1.0 feature with the live-migration fixes actively maintained into 2026).
+  Documented in the container README + the public guide repo; the cluster
+  live-proof = run-first.
+
 ## Verification posture (how we know it works)
 
 - **Full-loop matrix**: `scripts/ops/luks_verify.sh` runs 21 checks end-to-end —
@@ -71,6 +96,12 @@ explicit RAM-rich variant only).
   two different keys.
 - **Negative controls are part of the matrix**: wrong credentials must keep being
   rejected.
+- **The TPM arc (2026-10-12)**: the vault container's definitive cycle — 20 legs
+  green (the entry's selftest, both negatives, the credentialless unseal x2, the
+  canary persistence inside the cipher, the no-plaintext-at-rest leak-check, the
+  slot-kill foreign-sim, the passphrase recovery; the empty-credential enroll
+  rejected). Full story: `docs/TESTING_AND_VERIFICATION.md` in the public guide
+  repo (dmrobbi/luks-container-guide).
 
 ## What the fleet changed from the reference sheet
 
@@ -96,5 +127,11 @@ explicit RAM-rich variant only).
   `6ed28f9`/`cf3c240` on 2026-10-12) — planner-only ops on both kali chassis
   generations; results are review artifacts, nothing executes; block-device ops stay
   consent-gated by the standing rail.
+- Vault container: `scripts/ops/luks_vault/` (the Dockerfile + compose + entry +
+  orchestrator; landed `7f24088`; the TPM machine-binding arc landed `fb5ad6c` on
+  2026-10-12 — LIVE-verified: the credentialless unseal x2, the slot-kill
+  foreign-sim, the passphrase recovery).
+- Public guide repo: github.com/dmrobbi/luks-container-guide (the TPM+HA sync +
+  `docs/TESTING_AND_VERIFICATION.md`; landed `99aa7a5` on 2026-10-12).
 
 <!-- project: idm.wezzel.com/crab-meat-repos/agentic-ai -->

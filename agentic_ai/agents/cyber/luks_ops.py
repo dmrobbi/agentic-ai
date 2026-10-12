@@ -54,6 +54,13 @@ LUKS_MAX_SLOTS = 32  # LUKS2 key-slot id space (0..31); slots are regions, not p
 
 LUKS_SLOT_OP_KINDS = ("add", "rotate_slot_0", "kill_slot")
 
+# TPM machine-binding (LUK-06): the vault container's measured arc's planner
+# mirror. systemd-cryptenroll lives in /usr/bin (finding 5's absolute-path
+# discipline); cryptsetup rides LUKS_BIN (/usr/sbin).
+LUKS_TPM_ENROLL_BIN = "/usr/bin/systemd-cryptenroll"
+LUKS_TPM_PCR_MAX = 23  # PCRs 0..23 on a TPM 2.0
+LUKS_TPM2_PCRS_RE = re.compile(r"\A\d{1,2}(?:\+\d{1,2})*\Z")
+
 
 class LuksOpsMixin:
     """LUKS2 container-ops planning methods; safe on any host object.
@@ -326,6 +333,98 @@ class LuksOpsMixin:
                           "volume; keep a recovery key on a free slot "
                           "BEFORE rotating or killing; slots are "
                           "storage regions, not priority"),
+                "consent_rail": "scratch-only; no block-device ops"}
+
+    # -- TPM machine-binding (the vault container's measured arc, LUK-06) --
+    def plan_tpm_enroll(self, scratch: str, container_name: str,
+                        key_name: str = "key", pcrs: Optional[str] = None
+                        ) -> Dict[str, Any]:
+        """TPM machine-binding plan: seal the container's payload key to
+        the HOST's TPM 2.0 (systemd-cryptenroll --tpm2-device=auto).
+
+        Mirrors the vault container's LIVE-verified arc (2026-10-12): the
+        credential travels as a real 0600 key file via
+        --unlock-key-file (never argv/env); a systemd-tpm2 token lands
+        with the passphrase slot untouched as recovery. Nothing runs.
+        """
+        container = self._luks_under_scratch(scratch,
+                                             self._luks_guard_name(
+                                                 container_name,
+                                                 "container"))
+        key = self._luks_under_scratch(scratch,
+                                       self._luks_guard_name(key_name, "key"))
+        pcr_row = ""
+        if pcrs is not None:
+            if not isinstance(pcrs, str) or not LUKS_TPM2_PCRS_RE.match(pcrs):
+                raise ValueError(
+                    "pcrs must be TPM indices joined by '+' (e.g. '0+2+7')")
+            over = [n for n in pcrs.split("+") if int(n) > LUKS_TPM_PCR_MAX]
+            if over:
+                raise ValueError(
+                    f"pcr index out of range (0..{LUKS_TPM_PCR_MAX}): "
+                    f"{', '.join(over)}")
+            pcr_row = f" --tpm2-pcrs={pcrs}"
+        return {"container": container, "key": key, "pcrs": pcrs,
+                "rows": [
+                    {"requires_root": False,
+                     "cmd": (f"{LUKS_TPM_ENROLL_BIN} --tpm2-device=auto"
+                             f"{pcr_row} --unlock-key-file={key} "
+                             f"{container}")},
+                    {"requires_root": False,
+                     "cmd": (f"{LUKS_BIN} luksDump {container} | "
+                             "sed -n '/^Tokens/,$p'")},
+                ],
+                "notes": (
+                    "TPM 2.0 required; measured token shape: systemd-tpm2, "
+                    "PCR 7 bank sha256, ECC SRK (default pcrs); the "
+                    "passphrase slot stays = the recovery + off-machine "
+                    "credential; post-enrollment the machine IS the "
+                    "authority: any root process on the enrolled machine "
+                    "can open (the token consult on plain opens; the "
+                    "kernel keyring satisfies reopens after any success) "
+                    "- the WRONG-CREDENTIAL rejection is a PRE-ENROLLMENT "
+                    "and OFF-machine property; revoking a machine = "
+                    "luksKillSlot its slot (authenticate with a different "
+                    "slot's credential; never the last working slot)"),
+                "consent_rail": "scratch-only; no block-device ops"}
+
+    def plan_tpm_unlock(self, scratch: str, container_name: str,
+                        mapper_name: str = "cryptvol") -> Dict[str, Any]:
+        """TPM-bound open plan: NO credential anywhere - the unseal
+        goes through the enrolled systemd-tpm2 token; stdin stays CLOSED
+        so a failed token consult fails fast (the systemd-cryptsetup
+        attach helper wedges on its ask-password FIFO even with stdin
+        closed - measured 2026-10-12; the CLI --token-only path is
+        deterministic). Rows mirror the vault entry's LIVE-verified
+        shape: token-only open, one-time filesystem, mount, close.
+        Nothing runs.
+        """
+        container = self._luks_under_scratch(scratch,
+                                             self._luks_guard_name(
+                                                 container_name,
+                                                 "container"))
+        mapper = self._luks_guard_name(mapper_name, "mapper")
+        mp = "/mnt/" + mapper
+        return {"container": container, "mapper": mapper,
+                "rows": [
+                    {"requires_root": True,
+                     "cmd": (f"sudo {LUKS_BIN} open --token-only "
+                             f"{container} {mapper} < /dev/null")},
+                    {"requires_root": True,
+                     "cmd": f"sudo {MKFS_BIN} -q /dev/mapper/{mapper}"},
+                    {"requires_root": True,
+                     "cmd": (f"sudo mkdir -p {mp} && sudo mount"
+                             f" /dev/mapper/{mapper} {mp}")},
+                    {"requires_root": True,
+                     "cmd": (f"sudo umount {mp} && sudo {LUKS_BIN}"
+                             f" luksClose {mapper}")},
+                ],
+                "notes": ("no credential enters argv, env, or stdin; a "
+                          "foreign machine (no usable binding) fails the "
+                          "consult fast and the vault stays locked; the "
+                          "mkfs row applies only to a fresh payload (the "
+                          "one-time filesystem; existing filesystems "
+                          "mount directly)"),
                 "consent_rail": "scratch-only; no block-device ops"}
 
     # -- header geometry ---------------------------------------------------

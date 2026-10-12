@@ -39,7 +39,9 @@ from agentic_ai.agents.cyber.wireless_pentest import WirelessMixin
 from agentic_ai.agents.registry import create_agent, resolve_agent_class
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
-BASELINE_SUITE_TOTAL = 5366  # LUK-04 (LuksOpsMixin + 31 contract tests, 2026-10-12)
+# LUK-04 (LuksOpsMixin + 31) + LUK-06 (+5 TPM tests); 2026-10-12.
+# The pin = the pytest --collect-only total (the pin test itself included).
+BASELINE_SUITE_TOTAL = 5371
 
 EXPECTED_MIXINS = (WebPentestMixin, RedTeamMixin, XssMixin, PrivescMixin,
     ADMixin, CloudMixin, ContainerMixin, MobileMixin, WirelessMixin,
