@@ -19,6 +19,8 @@ usage: luks_vault.sh <cmd>
   up               start the pid1 entry (idle; locks on stop)
   create [stdin: pass] <mb>  create vault.img (urandom + LUKS2 fast profile; the keyslot binds the stdin credential)
   unlock           passphrase via stdin (pipe your 0600 file in; never echoed)
+  tpm-enroll [stdin: pass]  seal the payload key to THIS machine's TPM (recovery = the passphrase slot)
+  tpm-unlock       open via the enrolled TPM binding (no stdin passphrase)
   lock             unmount + luksClose (the image LOCKED again)
   status           image integrity + mapper state
   selftest         the full loop on a container-side /tmp scratch (the vault untouched)
@@ -42,6 +44,8 @@ case "$cmd" in
     unlock)
         docker compose exec -T luks-vault vault_entry unlock
         ;;
+    tpm-enroll) docker compose exec -T luks-vault vault_entry tpm-enroll ;;
+    tpm-unlock) docker compose exec -T luks-vault vault_entry tpm-unlock ;;
     lock)     docker compose exec -T luks-vault vault_entry lock ;;
     status)   docker compose exec -T luks-vault vault_entry status ;;
     selftest) docker compose exec -T luks-vault vault_entry selftest ;;

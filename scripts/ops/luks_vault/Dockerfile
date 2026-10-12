@@ -3,7 +3,7 @@ FROM ubuntu:24.04
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-        cryptsetup e2fsprogs util-linux bash coreutils \
+        cryptsetup e2fsprogs util-linux bash coreutils systemd tpm2-tools \
     && rm -rf /var/lib/apt/lists/*
 
 COPY vault_entry.sh /usr/local/bin/vault_entry

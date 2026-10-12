@@ -12,7 +12,7 @@
 # Scratch rail (the LUKS campaign's standing rule): the selftest runs on
 # a /tmp scratch image only; the real vault image in /vault is untouched
 # by it. Block-device ops stay consent-gated on the host.
-set -u
+set -euo pipefail
 
 VAULT_DIR="${VAULT_DIR:-/vault}"
 IMG="$VAULT_DIR/vault.img"
@@ -21,6 +21,45 @@ MNT="/mnt/$MAPPER"
 CS=/usr/sbin/cryptsetup
 MKFS=/usr/sbin/mkfs.ext4
 TUNE=/usr/sbin/tune2fs
+
+_mode_tpm_enroll() {
+    [ -e "$IMG" ] || { echo "no vault image" >&2; exit 1; }
+    # SYSTEMD enrollment: the seal binds THIS chip's measured PCRs (default
+    # incl. PCR7/SecureBoot state) - after this the payload's key can only
+    # be unsealed on the machine carrying the TPM the seal landed on. The
+    # passphrase slot stays as the recovery backup. The EXISTING credential
+    # travels by STDIN (the same discipline as create/unlock): staged 0600,
+    # handed via --unlock-key-file, then shredded - never argv/env/disk-rest.
+    local stage=/run/stage-enroll.key rc=0
+    cat > "$stage"
+    chmod 600 "$stage"
+    if systemd-cryptenroll --tpm2-device=auto --unlock-key-file="$stage" "$IMG"; then
+        echo "VAULT-TPM-ENROLL-OK (key sealed to this machine's TPM)"
+    else
+        rc=1
+        echo "VAULT-TPM-ENROLL-FAILED (the TPM seal did not land)" >&2
+    fi
+    shred -u "$stage"
+    return "$rc"
+}
+
+_mode_tpm_unlock() {
+    [ -e "$IMG" ] || { echo "no vault image" >&2; exit 1; }
+    # SYSTEMD TPM2-backed unseal through the cryptsetup CLI's token path:
+    # --token-only = the enrolled binding or NOTHING (no ask-password agent,
+    # no hang; stdin closed = the token's absence fails fast). The plain
+    # systemd-cryptsetup attach wedges on its ask-password FIFO when the
+    # unseal fails - measured tonight; the CLI path is the robust one.
+    "$CS" open --token-only "$IMG" "$MAPPER" < /dev/null || { echo "VAULT-TPM-UNSEAL-FAILED" >&2; exit 1; }
+    # one-time filesystem: mkfs.ext4 only when the payload has no ext4 yet
+    if ! "$TUNE" -l "/dev/mapper/$MAPPER" >/dev/null 2>&1; then
+        "$MKFS" -q "/dev/mapper/$MAPPER"
+    fi
+    mkdir -p "$MNT"
+    mount "/dev/mapper/$MAPPER" "$MNT" || { echo "VAULT-TPM-MOUNT-FAILED" >&2; exit 1; }
+    chown "$(id -u):$(id -g)" "$MNT"
+    echo "VAULT-TPM-UNLOCK-OK mapper=$MAPPER mnt=$MNT"
+}
 
 _lock_now() {
     if command -v mountpoint >/dev/null 2>&1 && mountpoint -q "$MNT" 2>/dev/null; then
@@ -41,6 +80,8 @@ usage: vault_entry.sh <mode>
   create <mb> [stdin: passphrase]  urandom-fill + luksFormat; the keyslot binds YOUR credential -> VAULT-CREATE-OK
   unlock   stdin: passphrase  open mapper (+one-time mkfs/mount when the payload has no ext4 fs yet), shred the staged key -> VAULT-UNLOCK-OK
   lock     unmount + luksClose -> VAULT-LOCK-OK
+  tpm-enroll [stdin: passphrase]  seal the payload key to THIS machine's TPM (systemd-cryptenroll) -> VAULT-TPM-ENROLL-OK
+  tpm-unlock   open via the enrolled TPM binding (no stdin passphrase) -> VAULT-TPM-UNLOCK-OK
   status   isLuks + mapper state + img stat -> VAULT-LOCKED | VAULT-OPENED
   selftest the full loop on a /tmp scratch image (the real vault untouched) -> VAULT-SELFTEST-OK
 USAGE
@@ -149,6 +190,8 @@ case "$1" in
         while :; do sleep 60 & wait $!; done
         ;;
     create) _mode_create "${2:-}" ;;
+    tpm-enroll) _mode_tpm_enroll ;;
+    tpm-unlock) _mode_tpm_unlock ;;
     unlock) _mode_unlock ;;
     lock) _lock_now; echo "VAULT-LOCK-OK mapper=$MAPPER" ;;
     status) _mode_status ;;
