@@ -908,7 +908,7 @@ only, scrub, validate_target gate)._
     container entry); lockstep push ls-remote-verified.
   - **Done:** 2026-10-12 — both plan methods landed with the measured notes;
     5 contract tests; the docs synced; the role-ops rows x2; the checkbox flips;
-    the gates green; landed in this task's commit (the close-out fills the hash).
+    the gates green; landed in commit `5dbf835`.
 
 ### LUK close-out (2026-10-12; owner "fire LUK" 18:20 UTC)
 
@@ -922,6 +922,15 @@ only, scrub, validate_target gate)._
   chassis generations; role-ops.md +8 rows x2 sections, sort-verified on disk
   (192 + 126). FULL suite + flake8 green (5325/41/0, exit 0; FLAKE8-GREEN);
   registry smoke 8/8 ops callable on both agents.
+- **LUK-06** landed `5dbf835` (Dawn Robbins): `plan_tpm_enroll`/
+  `plan_tpm_unlock` (planner-only; the measured machine-authority +
+  foreign-machine + ask-FIFO notes) + 5 contract tests; LUKS_OPS section 11 +
+  the quick-ref rows; the SUMMARY (the TPM subsection + the posture row + the
+  lives rows: the vault container `7f24088`/`fb5ad6c`, the guide repo
+  `99aa7a5`); role-ops 2 rows x2 tables (sort-verified); todo flips
+  LUK-01/02/03; `.flake8` = the gate config (max-line-length = 100; the prior
+  gate's flags were unrecorded). FULL suite 5330/41 PYTEST_EXIT=0; flake8
+  green; the suite pin = 5371 (the pin counts the pin test itself).
 - The campaign's catches (the pin-drift alarm, the pipe-mask repeat, the dead
   validate_target routing, the script-assert family) live in
   `memory/defects/2026-10-12-luk-defect-journal.md` + the INDEX rows per the
