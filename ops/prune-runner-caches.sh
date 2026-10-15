@@ -22,12 +22,12 @@
 #   4. Always log what it would / did remove.
 #
 # Usage:
-#   sudo /home/user/.openclaw/workspace/agentic-ai/ops/prune-runner-caches.sh [--apply]
+#   sudo /home/wez/agentic-ai/ops/prune-runner-caches.sh [--apply]
 #   (must run as root or via sudo — /var/lib/docker/volumes is not
 #   world-readable on Ubuntu.)
 #
 # Cron: daily 04:30 UTC after the Wazuh backup at 03:00 UTC.
-#   30 4 * * * root /home/user/.openclaw/workspace/agentic-ai/ops/prune-runner-caches.sh --apply
+#   30 4 * * * root /home/wez/agentic-ai/ops/prune-runner-caches.sh --apply
 #
 # Exit codes:
 #   0 = success (including dry-run with no errors)
@@ -40,7 +40,7 @@ MAX_AGE_DAYS="${MAX_AGE_DAYS:-14}"
 DRY_RUN=1
 [ "${1:-}" = "--apply" ] && DRY_RUN=0
 
-LOG="${LOG:-/home/user/logs/prune-runner-caches.log}"
+LOG="${LOG:-/home/wez/logs/prune-runner-caches.log}"
 VOLUMES_ROOT="${VOLUMES_ROOT:-/var/lib/docker/volumes}"
 
 command -v docker >/dev/null 2>&1 || { echo "ERROR: docker not on PATH" >&2; exit 1; }

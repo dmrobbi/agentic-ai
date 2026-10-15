@@ -5,7 +5,7 @@
 # component is down. Pairs with the failure-modes runbook at
 # docs/soc/agentic-soc-failure-modes.md.
 #
-# Cron: */5 * * * * /home/user/.openclaw/workspace/agentic-ai/ops/wazuh-heartbeat.sh
+# Cron: */5 * * * * /home/wez/agentic-ai/ops/wazuh-heartbeat.sh
 #
 # Checks performed:
 #   H1. Wazuh manager container up + manager API reachable
@@ -28,15 +28,15 @@
 #   2 = script error (docker missing, container not found, etc.)
 #
 # Heartbeat status file (parseable shell-source, written every run):
-#   /home/user/logs/wazuh-heartbeat.status
+#   /home/wez/logs/wazuh-stack-heartbeat.status
 
 # Allow unset env vars; we default inside the script.
 set -o pipefail
 
 # Configuration (all defaultable)
-INDEXER_CONTAINER="${INDEXER_CONTAINER:-wazuh-stack_wazuh.indexer_1}"
+INDEXER_CONTAINER="${INDEXER_CONTAINER:-wazuh-stack-wazuh.indexer-1}"
 MANAGER_CONTAINER="${MANAGER_CONTAINER:-wazuh-stack-wazuh.manager-1}"
-DASHBOARD_CONTAINER="${DASHBOARD_CONTAINER:-wazuh-stack_wazuh.dashboard_1}"
+DASHBOARD_CONTAINER="${DASHBOARD_CONTAINER:-wazuh-stack-wazuh.dashboard-1}"
 INDEXER_URL="${INDEXER_URL:-https://127.0.0.1:9200}"
 INDEXER_USER="${INDEXER_USER:-admin}"
 INDEXER_PASSWORD="${INDEXER_PASSWORD:-CHANGE_ME}"
@@ -45,9 +45,9 @@ DASHBOARD_URL="${DASHBOARD_URL:-https://127.0.0.1:5601}"
 MIN_ACTIVE_AGENTS="${MIN_ACTIVE_AGENTS:-4}"
 DISK_WARN_PCT="${DISK_WARN_PCT:-85}"
 BACKUP_MAX_AGE_HOURS="${BACKUP_MAX_AGE_HOURS:-36}"
-LOG_FILE="${LOG_FILE:-/home/user/logs/wazuh-heartbeat.log}"
-STATUS_FILE="${STATUS_FILE:-/home/user/logs/wazuh-heartbeat.status}"
-PAGE_FILE="${PAGE_FILE:-/home/user/logs/wazuh-heartbeat-page.log}"
+LOG_FILE="${LOG_FILE:-/home/wez/logs/wazuh-stack-heartbeat.log}"
+STATUS_FILE="${STATUS_FILE:-/home/wez/logs/wazuh-stack-heartbeat.status}"
+PAGE_FILE="${PAGE_FILE:-/home/wez/logs/wazuh-stack-heartbeat-page.log}"
 RECIPIENT="${WAZUH_REPORTS_RECIPIENT:-user@example.com}"
 SMTP_ENV="${SMTP_ENV:-/etc/agentic-soc/soc-mailbox.env}"
 
@@ -68,7 +68,7 @@ page() {
 $*
 
 Run the verification checklist in docs/soc/agentic-soc-failure-modes.md
-or /home/user/.openclaw/workspace/runbooks/wazuh-indexer-auth-pipeline.md.
+or /home/wez/.openclaw/workspace/runbooks/wazuh-indexer-auth-pipeline.md.
 "
       REASON="$*" python3 - <<PY
 import os, sys, smtplib, ssl
@@ -136,7 +136,7 @@ fi
 # H5. Active agents — load creds from the same env file as the rest of the SOC.
 # The manager API requires a JWT (Bearer token) for /agents, not basic auth.
 # Get a JWT from /security/user/authenticate, then use it.
-WAZUH_CREDS_FILE="${WAZUH_CREDS_FILE:-/home/user/.openclaw/workspace/secrets/wazuh-agent-keys-2026-08-03.env}"
+WAZUH_CREDS_FILE="${WAZUH_CREDS_FILE:-/home/wez/.openclaw/soc/secrets/wazuh-manager-api.env}"
 WAZUH_API_USER_VAL=""
 WAZUH_API_PASSWORD_VAL=""
 if [ -r "$WAZUH_CREDS_FILE" ]; then
@@ -165,9 +165,9 @@ if [ -n "$DISK_PCT" ] && [ "$DISK_PCT" -ge "$DISK_WARN_PCT" ] 2>/dev/null; then
 fi
 
 # H7. Recent backup
-LATEST_BACKUP=$(find /home/user/wazuh-stack-backups -maxdepth 2 -name "wazuh-stack-*.tar.zst" -mmin "-$((BACKUP_MAX_AGE_HOURS*60))" 2>/dev/null | head -1)
+LATEST_BACKUP=$(find /home/wez/wazuh-stack-backups -maxdepth 2 -name "wazuh-stack-*.tar.zst" -mmin "-$((BACKUP_MAX_AGE_HOURS*60))" 2>/dev/null | head -1)
 if [ -z "$LATEST_BACKUP" ]; then
-  LATEST_AGE=$(find /home/user/wazuh-stack-backups -maxdepth 2 -name "wazuh-stack-*.tar.zst" -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
+  LATEST_AGE=$(find /home/wez/wazuh-stack-backups -maxdepth 2 -name "wazuh-stack-*.tar.zst" -printf '%T@\n' 2>/dev/null | sort -n | tail -1)
   if [ -z "$LATEST_AGE" ]; then
     FAILURES+=("H7: no backup found")
   else

@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# /home/user/bin/wazuh-indexer-selftest.sh
+# /home/wez/bin/wazuh-indexer-selftest.sh
 #
 # Shared selftest for Wazuh indexer-dependent cron scripts
 # (morning-highlights, daily-digest).
@@ -37,7 +37,7 @@
 #
 # Usage:
 #   . $REPORTS_ENV   # set REPORTS_MAILBOX, REPORTS_MAILBOX_PW, SMTP_HOST, SMTP_PORT
-#   /home/user/bin/wazuh-indexer-selftest.sh [RECIPIENT]
+#   /home/wez/bin/wazuh-indexer-selftest.sh [RECIPIENT]
 #
 # Optional env vars (with defaults):
 #   WAZUH_INDEXER_URL=https://127.0.0.1:9200
@@ -46,7 +46,7 @@
 #   WAZUH_SELFTEST_TIMEOUT=30
 #   WAZUH_SELFTEST_RECIPIENT=user@example.com   (default; can override as arg 1)
 #   WAZUH_SELFTEST_MIN_HITS=1
-#   LOGFILE=/home/user/logs/wazuh-indexer-selftest.log
+#   LOGFILE=/home/wez/logs/wazuh-indexer-selftest.log
 
 set -u
 
@@ -69,7 +69,7 @@ WAZUH_INDEXER_USERNAME="${WAZUH_INDEXER_USERNAME:-admin}"
 WAZUH_INDEXER_PASSWORD="${WAZUH_INDEXER_PASSWORD:-CHANGE_ME}"
 WAZUH_SELFTEST_TIMEOUT="${WAZUH_SELFTEST_TIMEOUT:-30}"
 WAZUH_SELFTEST_MIN_HITS="${WAZUH_SELFTEST_MIN_HITS:-1}"
-LOGFILE="${LOGFILE:-/home/user/logs/wazuh-indexer-selftest.log}"
+LOGFILE="${LOGFILE:-/home/wez/logs/wazuh-indexer-selftest.log}"
 RECIPIENT="${1:-${WAZUH_SELFTEST_RECIPIENT:-user@example.com}}"
 LOG_TAG="${LOG_TAG:-wazuh-selftest}"
 
